@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.wise.commons.rqstmst.service.WaqRqstVrfDtlsMapper" >
+  <resultMap id="BaseResultMap" type="kr.wise.commons.rqstmst.service.WaqRqstVrfDtls" >
+    <id column="BIZ_DTL_CD" property="bizDtlCd" jdbcType="VARCHAR" />
+    <id column="RQST_NO" property="rqstNo" jdbcType="VARCHAR" />
+    <id column="RQST_SNO" property="rqstSno" jdbcType="DECIMAL" />
+    <id column="VRF_SNO" property="vrfSno" jdbcType="DECIMAL" />
+    <result column="RQST_DTL_SNO" property="rqstDtlSno" jdbcType="DECIMAL" />
+    <result column="VRF_DTL_CD" property="vrfDtlCd" jdbcType="VARCHAR" />
+    <result column="VRF_DTLS" property="vrfDtls" jdbcType="VARCHAR" />
+    <result column="VRF_DESCN" property="vrfDescn" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    BIZ_DTL_CD, RQST_NO, RQST_SNO, VRF_SNO, RQST_DTL_SNO, VRF_DTL_CD, VRF_DTLS
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="kr.wise.commons.rqstmst.service.WaqRqstVrfDtls" >
+    select 
+    <include refid="Base_Column_List" />
+    from WAQ_RQST_VRF_DTLS
+    where BIZ_DTL_CD = #{bizDtlCd,jdbcType=VARCHAR}
+      and RQST_NO = #{rqstNo,jdbcType=VARCHAR}
+      and RQST_SNO = #{rqstSno,jdbcType=DECIMAL}
+      and VRF_SNO = #{vrfSno,jdbcType=DECIMAL}
+  </select>
+  <select id="selectList" resultMap="BaseResultMap" parameterType="kr.wise.commons.rqstmst.service.WaqRqstVrfDtls" >
+    select  A.BIZ_DTL_CD
+            ,A.RQST_NO
+            ,A.RQST_SNO
+            ,A.VRF_SNO
+            ,A.RQST_DTL_SNO
+            ,B.COMM_DTL_CD AS VRF_DTL_CD
+            ,B.COMM_DTL_CD_NM AS VRF_DTLS
+            ,B.OBJ_DESCN AS VRF_DESCN    
+      from WAQ_RQST_VRF_DTLS A
+	    INNER JOIN WAA_COMM_DCD C
+	       ON C.COMM_DCD = 'VRF_DTL_CD'
+		  and C.EXP_DTM = DATE_FORMAT( '9999-12-31', '%Y-%m-%d')
+		  and C.REG_TYP_CD IN ('C', 'U')
+		LEFT OUTER JOIN WAA_COMM_DTL_CD B
+          ON A.VRF_DTL_CD = B.COMM_DTL_CD
+		 AND B.COMM_DCD_ID = C.COMM_DCD_ID -- '100000000003264' -- 검증상세코드
+         AND B.EXP_DTM = DATE_FORMAT( '9999-12-31', '%Y-%m-%d')
+         AND B.REG_TYP_CD IN ('C', 'U')
+    where A.BIZ_DTL_CD = #{bizDtlCd,jdbcType=VARCHAR}
+       and A.RQST_NO = #{rqstNo,jdbcType=VARCHAR}
+    <if test="rqstSno != null" >
+       and A.RQST_SNO = #{rqstSno,jdbcType=DECIMAL}
+    </if>
+    <if test="rqstDtlSno != null" >
+      and RQST_DTL_SNO = #{rqstDtlSno,jdbcType=DECIMAL}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="kr.wise.commons.rqstmst.service.WaqRqstVrfDtls" >
+    delete from WAQ_RQST_VRF_DTLS
+    where BIZ_DTL_CD = #{bizDtlCd,jdbcType=VARCHAR}
+      and RQST_NO = #{rqstNo,jdbcType=VARCHAR}
+      and RQST_SNO = #{rqstSno,jdbcType=DECIMAL}
+      and VRF_SNO = #{vrfSno,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteSelective" parameterType="kr.wise.commons.rqstmst.service.WaqRqstVrfDtls" >
+    delete from WAQ_RQST_VRF_DTLS
+    where BIZ_DTL_CD = #{bizDtlCd,jdbcType=VARCHAR}
+      and RQST_NO = #{rqstNo,jdbcType=VARCHAR}
+    <if test="rqstSno != null" >
+      and RQST_SNO = #{rqstSno,jdbcType=DECIMAL}
+    </if>
+    <if test="vrfSno != null" >
+      and VRF_SNO = #{vrfSno,jdbcType=DECIMAL}
+    </if>
+    <if test="rqstDtlSno != null" >
+      and RQST_DTL_SNO = #{rqstDtlSno,jdbcType=DECIMAL}
+    </if>
+  </delete>
+  <delete id="deleteByRqstNo" parameterType="kr.wise.commons.rqstmst.service.WaqRqstVrfDtls" >
+    delete from WAQ_RQST_VRF_DTLS
+      where RQST_NO = #{rqstNo}
+  </delete>
+  <insert id="insert" parameterType="kr.wise.commons.rqstmst.service.WaqRqstVrfDtls" >
+    insert into WAQ_RQST_VRF_DTLS (BIZ_DTL_CD, RQST_NO, RQST_SNO, 
+      VRF_SNO, RQST_DTL_SNO, VRF_DTL_CD, VRF_DTLS
+      )
+    values (#{bizDtlCd,jdbcType=VARCHAR}, #{rqstNo,jdbcType=VARCHAR}, #{rqstSno,jdbcType=DECIMAL}, 
+      #{vrfSno,jdbcType=DECIMAL}, #{rqstDtlSno,jdbcType=DECIMAL}, #{vrfDtlCd,jdbcType=VARCHAR}, #{vrfDtls,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="kr.wise.commons.rqstmst.service.WaqRqstVrfDtls" >
+    insert into WAQ_RQST_VRF_DTLS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bizDtlCd != null" >
+        BIZ_DTL_CD,
+      </if>
+      <if test="rqstNo != null" >
+        RQST_NO,
+      </if>
+      <if test="rqstSno != null" >
+        RQST_SNO,
+      </if>
+      <if test="vrfSno != null" >
+        VRF_SNO,
+      </if>
+      <if test="vrfDtlCd != null" >
+        VRF_DTL_CD,
+      </if>
+      <if test="vrfDtls != null" >
+        VRF_DTLS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bizDtlCd != null" >
+        #{bizDtlCd,jdbcType=VARCHAR},
+      </if>
+      <if test="rqstNo != null" >
+        #{rqstNo,jdbcType=VARCHAR},
+      </if>
+      <if test="rqstSno != null" >
+        #{rqstSno,jdbcType=DECIMAL},
+      </if>
+      <if test="vrfSno != null" >
+        #{vrfSno,jdbcType=DECIMAL},
+      </if>
+      <if test="vrfDtlCd != null" >
+        #{vrfDtlCd,jdbcType=VARCHAR},
+      </if>
+      <if test="vrfDtls != null" >
+        #{vrfDtls,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="kr.wise.commons.rqstmst.service.WaqRqstVrfDtls" >
+    update WAQ_RQST_VRF_DTLS
+    <set >
+      <if test="vrfDtlCd != null" >
+        VRF_DTL_CD = #{vrfDtlCd,jdbcType=VARCHAR},
+      </if>
+      <if test="vrfDtls != null" >
+        VRF_DTLS = #{vrfDtls,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where BIZ_DTL_CD = #{bizDtlCd,jdbcType=VARCHAR}
+      and RQST_NO = #{rqstNo,jdbcType=VARCHAR}
+      and RQST_SNO = #{rqstSno,jdbcType=DECIMAL}
+      and VRF_SNO = #{vrfSno,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="kr.wise.commons.rqstmst.service.WaqRqstVrfDtls" >
+    update WAQ_RQST_VRF_DTLS
+    set VRF_DTL_CD = #{vrfDtlCd,jdbcType=VARCHAR},
+      VRF_DTLS = #{vrfDtls,jdbcType=VARCHAR}
+    where BIZ_DTL_CD = #{bizDtlCd,jdbcType=VARCHAR}
+      and RQST_NO = #{rqstNo,jdbcType=VARCHAR}
+      and RQST_SNO = #{rqstSno,jdbcType=DECIMAL}
+      and VRF_SNO = #{vrfSno,jdbcType=DECIMAL}
+  </update>
+  
+  
+  <update id="updateVrfCd" parameterType="map">
+  	UPDATE ${tblnm} A
+    SET A.VRF_CD = (SELECT CASE WHEN MAX(B.VRF_SNO) IS NULL THEN '1' ELSE '2' END
+                    FROM WAQ_RQST_VRF_DTLS B
+                    WHERE B.BIZ_DTL_CD = #{bizDtlCd}
+                      AND B.RQST_NO = A.RQST_NO
+                      AND B.RQST_SNO = A.RQST_SNO)
+    WHERE A.RQST_NO = #{rqstNo,jdbcType=VARCHAR}
+      AND A.VRF_CD = '4'
+  </update>
+
+  
+  <update id="updateVrfCdDtlsNo" parameterType="map">
+  	UPDATE ${tblnm} A
+    SET A.VRF_CD = (SELECT CASE WHEN MAX(B.VRF_SNO) IS NULL THEN '1' ELSE '2' END
+                      FROM WAQ_RQST_VRF_DTLS B
+                     WHERE B.BIZ_DTL_CD = #{bizDtlCd}
+                       AND B.RQST_NO = A.RQST_NO
+                       AND B.RQST_SNO = A.RQST_SNO
+                       AND B.RQST_DTL_SNO = A.RQST_DTL_SNO
+                       AND B.RQST_DTL_DTL_SNO = A.RQST_DTL_DTL_SNO
+                   )
+    WHERE A.RQST_NO = #{rqstNo,jdbcType=VARCHAR}
+      AND A.VRF_CD = '4'
+  </update>
+  
+  
+  <update id="">
+  -- 변경사항 없는 경우 별도 업데이트
+  	UPDATE ${tblnm} A
+    SET A.VRF_CD = (SELECT CASE WHEN MAX(B.VRF_SNO) IS NULL THEN '1' ELSE '2' END
+                    FROM WAQ_RQST_VRF_DTLS B
+                    WHERE B.BIZ_DTL_CD = #{bizDtlCd}
+                      AND B.RQST_NO = A.RQST_NO
+                      AND B.RQST_SNO = A.RQST_SNO
+                      AND B.RQST_DTL_SNO = A.RQST_DTL_SNO)
+    WHERE A.RQST_NO = #{rqstNo,jdbcType=VARCHAR}
+      AND A.VRF_CD = '2'
+  </update>
+  
+  
+<!--   검증관련 쿼리 -->
+
+  <sql id="insertVrfDtlSql">
+  	INSERT INTO WAQ_RQST_VRF_DTLS
+  	(
+  	    BIZ_DTL_CD
+      , RQST_NO
+	  , RQST_SNO
+	  , VRF_SNO
+	  , RQST_DTL_SNO
+	  , VRF_DTL_CD
+	  , VRF_DTLS
+  	)
+	SELECT #{bizDtlCd} AS BIZ_DTL_CD
+           ,A.RQST_NO
+	       ,A.RQST_SNO
+	       ,IFNULL(C.VRF_SNO,0) + 1 AS VRF_SNO
+	       ,0 AS RQST_DTL_SNO
+	       ,#{vrfDtlCd} AS VRF_DTL_CD
+	       ,NULL AS VRF_DTLS
+	FROM ${tblnm} A
+	LEFT OUTER JOIN (SELECT MAX(VRF_SNO) AS VRF_SNO
+	                       ,RQST_NO
+	                       ,RQST_SNO
+	                 FROM WAQ_RQST_VRF_DTLS A
+	                 WHERE A.BIZ_DTL_CD = #{bizDtlCd}
+	                   AND A.RQST_NO = #{rqstNo}
+	                 GROUP BY RQST_NO, RQST_SNO) C
+	   ON A.RQST_NO = C.RQST_NO
+	  AND A.RQST_SNO = C.RQST_SNO
+	  WHERE A.RQST_NO = #{rqstNo,jdbcType=VARCHAR}
+  </sql>
+
+  <sql id="insertVrfDtlSnoSql">
+  	INSERT INTO WAQ_RQST_VRF_DTLS
+  	(
+  	    BIZ_DTL_CD
+      , RQST_NO
+	  , RQST_SNO
+	  , VRF_SNO
+	  , RQST_DTL_SNO
+	  , VRF_DTL_CD
+	  , VRF_DTLS
+  	)
+	SELECT #{bizDtlCd} AS BIZ_DTL_CD
+           ,A.RQST_NO
+	       ,A.RQST_SNO
+	       ,IFNULL(C.VRF_SNO,0) + 1 AS VRF_SNO
+	       ,A.RQST_DTL_SNO
+	       ,#{vrfDtlCd} AS VRF_DTL_CD
+	       ,NULL AS VRF_DTLS
+	FROM ${tblnm} A
+	LEFT OUTER JOIN (SELECT MAX(VRF_SNO) AS VRF_SNO
+	                       ,RQST_NO
+	                       ,RQST_SNO
+	                       ,RQST_DTL_SNO
+	                 FROM WAQ_RQST_VRF_DTLS A
+	                 WHERE A.BIZ_DTL_CD = #{bizDtlCd}
+	                   AND A.RQST_NO = #{rqstNo}
+	                 GROUP BY RQST_NO, RQST_SNO, RQST_DTL_SNO) C
+	   ON A.RQST_NO = C.RQST_NO
+	  AND A.RQST_SNO = C.RQST_SNO
+	  AND A.RQST_DTL_SNO = C.RQST_DTL_SNO
+	  WHERE A.RQST_NO = #{rqstNo,jdbcType=VARCHAR}
+  </sql>
+  
+  <sql id="updateVrfNotChg">
+    UPDATE ${tblnm} A
+       SET A.VRF_CD = '5'
+         , A.REG_TYP_CD = NULL
+     WHERE A.RQST_NO = #{rqstNo,jdbcType=VARCHAR}
+  </sql>
+  
+   <sql id="insertVrfDtlDtlSnoSql">
+  	INSERT INTO WAQ_RQST_VRF_DTLS
+  	(BIZ_DTL_CD, RQST_NO, RQST_SNO, VRF_SNO, RQST_DTL_SNO, VRF_DTL_CD, VRF_DTLS, RQST_DTL_DTL_SNO)
+	SELECT #{bizDtlCd} AS BIZ_DTL_CD
+         , A.RQST_NO
+	     , A.RQST_SNO	       
+	     , IFNULL(C.VRF_SNO,0) + 1 AS VRF_SNO
+	     , A.RQST_DTL_SNO
+	     , #{vrfDtlCd} AS VRF_DTL_CD
+	     , NULL AS VRF_DTLS
+	     , A.RQST_DTL_DTL_SNO
+	FROM ${tblnm} A
+	     LEFT JOIN (SELECT MAX(VRF_SNO) AS VRF_SNO
+	                      , RQST_NO
+	                      , RQST_SNO
+	                      , RQST_DTL_SNO
+	                      , RQST_DTL_DTL_SNO
+	                  FROM WAQ_RQST_VRF_DTLS A
+	                 WHERE A.BIZ_DTL_CD = #{bizDtlCd}
+	                   AND A.RQST_NO = #{rqstNo}
+	                 GROUP BY RQST_NO, RQST_SNO, RQST_DTL_SNO, RQST_DTL_DTL_SNO) C
+	   ON A.RQST_NO          = C.RQST_NO
+	  AND A.RQST_SNO         = C.RQST_SNO
+	  AND A.RQST_DTL_SNO     = C.RQST_DTL_SNO
+	  AND A.RQST_DTL_DTL_SNO = C.RQST_DTL_DTL_SNO
+	  WHERE A.RQST_NO = #{rqstNo,jdbcType=VARCHAR}
+  </sql>
+  
+  <update id="updateVrfCdsNo" parameterType="map">
+  	UPDATE ${tblnm} A
+    SET A.VRF_CD = (SELECT CASE WHEN MAX(B.VRF_SNO) IS NULL THEN '1' ELSE '2' END
+                    FROM WAQ_RQST_VRF_DTLS B
+                    WHERE B.BIZ_DTL_CD = #{bizDtlCd}
+                      AND B.RQST_NO = A.RQST_NO
+                      AND B.RQST_SNO = A.RQST_SNO
+                      AND B.RQST_DTL_SNO = A.RQST_DTL_SNO)
+    WHERE A.RQST_NO = #{rqstNo,jdbcType=VARCHAR} 
+      AND A.VRF_CD = '4'
+  </update>
+  
+</mapper>

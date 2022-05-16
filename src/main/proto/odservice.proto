@@ -1,0 +1,41 @@
+﻿syntax = "proto3";
+
+import "summary.proto";
+
+option java_multiple_files = true;
+option java_package = "kr.wise.advisor.prepare.outlier.grpc";
+option java_outer_classname = "OutlierProcess";
+
+package kr.wise.advisor.prepare.outlier;
+
+service OdService {
+	rpc lof (OdRequest) returns (OdResponse) {}
+	rpc ocsvm (OdRequest) returns (OdResponse) {}
+	rpc ee (OdRequest) returns (OdResponse) {}
+	rpc isofor (OdRequest) returns (OdResponse) {}
+}
+
+message OdRequest {
+	string tableName = 1;
+	repeated string attributes = 2;
+	repeated string varId = 3;
+	// number of neighborhoods only for LOF
+	uint32 num = 4;
+	// value between 0 and 0.3
+	float contamination = 5;
+	kr.wise.advisor.prepare.summary.TargetDbms tgtDbms = 6;
+}
+
+message OdResponse {
+	// -1 for no error, 0 for bad request, 1 for process error
+	int32 error = 1;
+	repeated bool results = 2;
+	repeated ColResponse colres = 3;
+
+}
+
+message ColResponse {
+	string arrtnm = 1;
+	string varId = 2;
+	repeated float colval = 3;
+}

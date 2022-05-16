@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.wise.dq.model.service.WamNiaPdmMapper" >
+  <resultMap id="BaseResultMap" type="kr.wise.dq.model.service.WamNiaPdmCol" extends="kr.wise.commons.cmm.service.CommonMapper.BaseResultMap">
+    <result column="COL_ID"        property="colId"     jdbcType="VARCHAR" />
+    <result column="ORG_NM"        property="orgNm"     jdbcType="VARCHAR" />
+    <result column="DB_NM"         property="dbNm"      jdbcType="VARCHAR" />
+    <result column="TBL_PNM"       property="tblPnm"    jdbcType="VARCHAR" />
+    <result column="TBL_LNM"       property="tblLnm"    jdbcType="VARCHAR" />
+    <result column="COL_PNM"       property="colPnm"    jdbcType="VARCHAR" />
+    <result column="COL_LNM"       property="colLnm"    jdbcType="DECIMAL" />
+    <result column="STND_CD_YN"    property="stndCdYn"  jdbcType="DECIMAL" />
+    <result column="STND_CD_NM"    property="stndCdNm"  jdbcType="VARCHAR" />
+    <result column="COL_DESCN"     property="colDescn"  jdbcType="VARCHAR" />
+    <result column="DATA_TYPE"     property="dataType"  jdbcType="VARCHAR" />
+    <result column="DATA_LEN"      property="dataLen"   jdbcType="VARCHAR" />
+    <result column="DATA_SCAL"     property="dataScal"  jdbcType="VARCHAR" /> 
+    <result column="DATA_FRM"      property="dataFrm"   jdbcType="DECIMAL" />
+    <result column="NOT_NULL_YN"   property="notNullYn" jdbcType="DECIMAL" />
+    <result column="PK_YN"         property="pkYn"      jdbcType="VARCHAR" />
+    <result column="FK_YN"         property="fkYn"      jdbcType="VARCHAR" />
+    <result column="CONSTRNT"      property="constrnt"  jdbcType="VARCHAR" />
+    <result column="PRSN_YN"       property="prsnYn"    jdbcType="VARCHAR" />
+    <result column="ENC_YN"        property="encYn"     jdbcType="VARCHAR" /> 
+    <result column="OPEN_YN"       property="openYn"    jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="PdmResultMap" type="kr.wise.dq.model.service.WamNiaPdmCol" extends="kr.wise.commons.cmm.service.CommonMapper.BaseResultMap">
+    <result column="ANA_CTNS"      property="anaCtns"    jdbcType="VARCHAR" />
+    <result column="ANA_DTM"       property="anaDtm"     jdbcType="VARCHAR" />
+    <result column="TBL_CNT"       property="tblCnt"     jdbcType="DECIMAL" />
+    <result column="TBL_ERR_CNT"   property="tblErrCnt"  jdbcType="DECIMAL" />
+    <result column="TBL_ERR_RT"    property="tblErrRt"   jdbcType="DECIMAL" />
+    <result column="COL_CNT"       property="colCnt"     jdbcType="DECIMAL" />
+    <result column="COL_ERR_CNT"   property="colErrCnt"  jdbcType="DECIMAL" />
+    <result column="COL_ERR_RT"    property="colErrRt"   jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap id="ColResultMap" type="kr.wise.dq.model.service.WamNiaPdmCol" extends="kr.wise.commons.cmm.service.CommonMapper.BaseResultMap">
+    <result column="ANA_CTNS"      property="anaCtns"     jdbcType="VARCHAR" />
+    <result column="ANA_DTM"       property="anaDtm"      jdbcType="VARCHAR" />
+    <result column="COL_CNT"       property="colCnt"      jdbcType="DECIMAL" />
+    <result column="COL_NCHAR_CNT" property="colNcharCnt" jdbcType="DECIMAL" />
+    <result column="COL_NCHAR_RT"  property="colNcharRt"  jdbcType="DECIMAL" />
+    <result column="COL_SPACE_CNT" property="colSpaceCnt" jdbcType="DECIMAL" />
+    <result column="COL_SPACE_RT"  property="colSpaceRt"  jdbcType="DECIMAL" />
+    <result column="COL_ERR_CNT"   property="colErrCnt"   jdbcType="DECIMAL" />
+    <result column="COL_ERR_RT"    property="colErrRt"    jdbcType="DECIMAL" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    COL_ID, EXP_DTM, STR_DTM, ORG_NM, DB_NM, TBL_PNM, TBL_LNM, COL_PNM, COL_LNM  
+    , STND_CD_YN, STND_CD_NM, COL_DESCN, DATA_TYPE, DATA_LEN, DATA_SCAL, DATA_FRM
+    , NOT_NULL_YN, PK_YN, FK_YN, CONSTRNT, PRSN_YN, ENC_YN, OPEN_YN
+    , OBJ_DESCN, OBJ_VERS, REG_TYP_CD
+  </sql>
+  
+  <select id="selectNiaPdmColList" resultMap="BaseResultMap" parameterType="kr.wise.dq.model.service.WamNiaPdmCol" >
+  	SELECT 
+  	        COL_ID, EXP_DTM, STR_DTM, ORG_NM, DB_NM, TBL_PNM, TBL_LNM, COL_PNM, COL_LNM  
+		    , STND_CD_YN, STND_CD_NM, COL_DESCN, DATA_TYPE, DATA_LEN, DATA_SCAL, DATA_FRM
+		    , NOT_NULL_YN, PK_YN, FK_YN, CONSTRNT, PRSN_YN, ENC_YN, OPEN_YN
+		    , OBJ_DESCN, OBJ_VERS, REG_TYP_CD
+  	  FROM WAM_NIA_PDM_COL
+  	 WHERE 1=1
+  	 AND REG_TYP_CD IN ('C', 'U')
+  	 <if test='searchFlag == "Pdm"'>
+  	 AND (
+  	  (NULLIF(TBL_PNM,'') IS NULL OR NULLIF(TBL_LNM,'') IS NULL)
+		 OR
+		 (TBL_PNM = ' ' OR TBL_LNM = ' ')
+		 OR 
+		 (NULLIF(COL_PNM,'') IS NULL OR NULLIF(COL_LNM,'') IS NULL)
+		 OR (COL_PNM = ' ' OR COL_LNM = ' ')
+	)
+  	 </if>
+  	 <if test='searchFlag == "Col"'>
+  	 AND IF(COL_LNM REGEXP '^[0-9a-zA-Z가-힣]+$', 'y', 'n')  = 'n'
+  	 </if>
+  	 <if test="colLnm != null">
+  	 AND UPPER(COL_LNM) LIKE CONCAT('%' , UPPER(#{colLnm,jdbcType=VARCHAR}) , '%' ) 
+  	 </if>
+  	 <if test="colPnm != null">
+  	 AND UPPER(COL_PNM) LIKE CONCAT('%' , UPPER(#{colPnm,jdbcType=VARCHAR}) , '%' ) 
+  	 </if>
+  	 <if test="stndCdYn != null">
+  	 AND UPPER(STND_CD_YN) LIKE CONCAT('%' , UPPER(#{stndCdYn,jdbcType=VARCHAR}) , '%' ) 
+  	 </if>
+  	 <if test="stndCdNm != null">
+  	 AND UPPER(STND_CD_NM) LIKE CONCAT('%' , UPPER(#{stndCdNm,jdbcType=VARCHAR}) , '%' ) 
+  	 </if>  	   	   	 
+  </select>
+  
+  <insert id="insertNiaPdmCol" parameterType="kr.wise.dq.model.service.WamNiaPdmCol" >
+    insert into WAM_NIA_PDM_COL 
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="colId != null" >
+        COL_ID,
+      </if>
+        EXP_DTM,
+        STR_DTM,
+      <if test="orgNm != null" >
+        ORG_NM,
+      </if>
+      <if test="dbNm != null" >
+        DB_NM,
+      </if>
+      <if test="tblPnm != null" >
+        TBL_PNM,
+      </if>
+      <if test="tblLnm != null" >
+        TBL_LNM,
+      </if>
+      <if test="colPnm != null" >
+        COL_PNM,
+      </if>
+      <if test="colLnm != null" >
+        COL_LNM,
+      </if>
+      <if test="stndCdYn != null" >
+        STND_CD_YN,
+      </if>
+      <if test="stndCdNm != null" >
+        STND_CD_NM,
+      </if>
+      <if test="colDescn != null" >
+        COL_DESCN,
+      </if>
+      <if test="dataType != null" >
+        DATA_TYPE,
+      </if>
+      <if test="dataLen != null" >
+        DATA_LEN,
+      </if>
+      <if test="dataScal != null" >
+        DATA_SCAL,
+        </if>
+      <if test="dataFrm != null" >
+        DATA_FRM,
+        </if>
+      <if test="notNullYn != null" >
+        NOT_NULL_YN,
+        </if>
+      <if test="pkYn != null" >
+        PK_YN,
+        </if>
+      <if test="fkYn != null" >
+        FK_YN,
+        </if>
+      <if test="constrnt != null" >
+        CONSTRNT,
+        </if>
+      <if test="prsnYn != null" >
+        PRSN_YN,
+        </if>
+      <if test="encYn != null" >
+        ENC_YN,
+        </if>
+      <if test="openYn != null" >
+        OPEN_YN,
+        </if>
+      <if test="objDescn != null" >
+        OBJ_DESCN,
+        </if>
+      <if test="objVers != null" >
+        OBJ_VERS,
+        </if>
+      <if test="regTypCd != null" >
+        REG_TYP_CD,
+        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="colId != null" >
+        #{colId,jdbcType=VARCHAR},
+      </if>
+        STR_TO_DATE('99991231', '%Y%m%d'),
+        now(),
+      <if test="orgNm != null" >
+        #{orgNm,jdbcType=VARCHAR},
+      </if>
+      <if test="dbNm != null" >
+        #{dbNm,jdbcType=VARCHAR},
+      </if>
+      <if test="tblPnm != null" >
+        #{tblPnm,jdbcType=VARCHAR},
+      </if>
+      <if test="tblLnm != null" >
+        #{tblLnm,jdbcType=VARCHAR},
+      </if>
+      <if test="colPnm != null" >
+        #{colPnm,jdbcType=VARCHAR},
+      </if>
+      <if test="colLnm != null" >
+        #{colLnm,jdbcType=VARCHAR},
+      </if>
+      <if test="stndCdYn != null" >
+        #{stndCdYn,jdbcType=VARCHAR},
+      </if>
+      <if test="stndCdNm != null" >
+        #{stndCdNm,jdbcType=VARCHAR},
+      </if>
+      <if test="colDescn != null" >
+        #{colDescn,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null" >
+        UPPER(#{dataType,jdbcType=VARCHAR}),
+      </if>
+      <if test="dataLen != null" >
+        #{dataLen,jdbcType=VARCHAR},
+      </if>
+      <if test="dataScal != null" >
+        #{dataScal,jdbcType=VARCHAR},
+        </if>
+      <if test="dataFrm != null" >
+        #{dataFrm,jdbcType=VARCHAR},
+        </if>
+      <if test="notNullYn != null" >
+        #{notNullYn,jdbcType=VARCHAR},
+        </if>
+      <if test="pkYn != null" >
+        #{pkYn,jdbcType=VARCHAR},
+        </if>
+      <if test="fkYn != null" >
+        #{fkYn,jdbcType=VARCHAR},
+        </if>
+      <if test="constrnt != null" >
+        #{constrnt,jdbcType=VARCHAR},
+        </if>
+      <if test="prsnYn != null" >
+        #{prsnYn,jdbcType=VARCHAR},
+        </if>
+      <if test="encYn != null" >
+        #{encYn,jdbcType=VARCHAR},
+        </if>
+      <if test="openYn != null" >
+        #{openYn,jdbcType=VARCHAR},
+        </if>
+      <if test="objDescn != null" >
+        #{objDescn,jdbcType=VARCHAR},
+        </if>
+      <if test="objVers != null" >
+        #{objVers,jdbcType=VARCHAR},
+        </if>
+      <if test="regTypCd != null" >
+        #{regTypCd,jdbcType=VARCHAR},
+        </if>
+    </trim>
+  </insert>
+  
+	<update id="updateByPrimaryKey" parameterType="kr.wise.dq.model.service.WamNiaPdmCol" >
+    update WAM_NIA_PDM_COL
+    set ORG_NM = #{orgNm, jdbcType=VARCHAR}
+		,DB_NM = #{dbNm, jdbcType=VARCHAR}
+		,TBL_PNM = #{tblPnm, jdbcType=VARCHAR}
+		,TBL_LNM = #{tblLnm, jdbcType=VARCHAR}
+		,COL_PNM = #{colPnm, jdbcType=VARCHAR}
+		,COL_LNM = #{colLnm, jdbcType=VARCHAR}
+		,STND_CD_YN = #{stndCdYn, jdbcType=VARCHAR}
+		,STND_CD_NM = #{stndCdNm, jdbcType=VARCHAR}
+		,COL_DESCN = #{colDescn, jdbcType=VARCHAR}
+		,DATA_TYPE = UPPER(#{dataType, jdbcType=VARCHAR})
+		,DATA_LEN = #{dataLen, jdbcType=VARCHAR}
+		,DATA_SCAL = #{dataScal, jdbcType=VARCHAR}
+		,DATA_FRM = #{dataFrm, jdbcType=VARCHAR}
+		,NOT_NULL_YN = #{notNullYn, jdbcType=VARCHAR}
+		,PK_YN = #{pkYn, jdbcType=VARCHAR}
+		,FK_YN = #{fkYn, jdbcType=VARCHAR}
+		,CONSTRNT = #{constrnt, jdbcType=VARCHAR}
+		,PRSN_YN = #{prsnYn, jdbcType=VARCHAR}
+		,ENC_YN = #{encYn, jdbcType=VARCHAR}
+		,OPEN_YN = #{openYn, jdbcType=VARCHAR}
+		,OBJ_DESCN = #{objDescn, jdbcType=VARCHAR}
+		,REG_TYP_CD = #{regTypCd, jdbcType=VARCHAR}
+    where COL_ID = #{colId,jdbcType=VARCHAR}
+ 	 </update>
+ 	 
+  <delete id="deleteAll">
+  	DELETE FROM WAM_NIA_PDM_COL
+  </delete>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String"  >
+    delete from WAM_NIA_PDM_COL
+    where COL_ID = #{colId,jdbcType=VARCHAR}
+  </delete>
+  
+  <select id="selectAnaPdm" resultMap="PdmResultMap" >
+  	SELECT '누락 테이블명/컬럼명 진단' AS ANA_CTNS, NOW() AS ANA_DTM
+      , A.TBL_CNT, B.TBL_ERR_CNT, CASE WHEN A.TBL_CNT = 0 THEN 0 ELSE (B.TBL_ERR_CNT/A.TBL_CNT) END AS TBL_ERR_RT
+      , C.COL_CNT, D.COL_ERR_CNT, CASE WHEN C.COL_CNT = 0 THEN 0 ELSE (D.COL_ERR_CNT/C.COL_CNT) END AS COL_ERR_RT
+	  FROM (SELECT COUNT(*) AS TBL_CNT
+			  FROM WAM_NIA_PDM_COL) A,
+		   (SELECT COUNT(*) AS TBL_ERR_CNT
+			  FROM WAM_NIA_PDM_COL
+			 WHERE (
+			 (NULLIF(TBL_PNM,'') IS NULL OR NULLIF(TBL_LNM,'') IS NULL)
+			 OR 
+			 (TBL_PNM = ' ' OR TBL_LNM = ' ')
+			 )) B,
+		   (SELECT COUNT(*) AS COL_CNT
+			  FROM WAM_NIA_PDM_COL) C,
+		   (SELECT COUNT(*) AS COL_ERR_CNT
+			  FROM WAM_NIA_PDM_COL
+			 WHERE (
+			 (NULLIF(COL_PNM,'') IS NULL OR NULLIF(COL_LNM,'') IS NULL)
+			 OR 
+			 (COL_PNM = ' ' OR COL_LNM = ' ')
+			 )) D
+  </select>
+  
+  <select id="selectAnaCol" resultMap="ColResultMap" >
+  	<![CDATA[
+  	SELECT '컬럼한글명 진단' AS ANA_CTNS, NOW() AS ANA_DTM
+      , A.COL_CNT
+      , B.COL_NCHAR_CNT, CASE WHEN A.COL_CNT = 0 THEN 0 ELSE (B.COL_NCHAR_CNT/A.COL_CNT) END AS COL_NCHAR_RT
+      , C.COL_SPACE_CNT, CASE WHEN A.COL_CNT = 0 THEN 0 ELSE (C.COL_SPACE_CNT/A.COL_CNT) END AS COL_SPACE_RT
+      , D.COL_ERR_CNT, CASE WHEN A.COL_CNT = 0 THEN 0 ELSE (D.COL_ERR_CNT/A.COL_CNT) END AS COL_ERR_RT
+  FROM (SELECT COUNT(*) AS COL_CNT
+         FROM WAM_NIA_PDM_COL) A,
+       (SELECT COUNT(*) AS COL_NCHAR_CNT
+		  FROM WAM_NIA_PDM_COL
+		 WHERE IF(COL_LNM REGEXP '^[/\s0-9a-zA-Z가-힣ㄱ-ㅎㅏ-ㅣ[:space:][:blank:]]+$', 'y', 'n')  = 'n'
+		 AND (COL_LNM <> '' or COL_LNM <> ' ')) B,
+	   (SELECT COUNT(*) AS COL_SPACE_CNT
+		  FROM WAM_NIA_PDM_COL
+		 WHERE (IF(COL_LNM REGEXP '[[:space:][:blank:]]+', 'y', 'n')  = 'y'
+                OR COL_LNM = ''
+                OR COL_LNM = ' ')) C,
+       (SELECT COUNT(*) AS COL_ERR_CNT
+		  FROM WAM_NIA_PDM_COL
+		 WHERE IF(COL_LNM REGEXP '[ㄱ-ㅎㅏ-ㅣ]', 'y', 'n')  = 'y') D
+	]]>
+  </select>
+  
+  <insert id="insertNiaPdmAna" parameterType="kr.wise.dq.model.service.WamNiaPdmCol" >
+    insert into WAM_NIA_PDM_ANA  
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+    <if test="anaCtns != null" >
+      ANA_CTNS,
+    </if>
+    <if test="anaDtm != null" >
+      ANA_DTM,
+      </if>
+    <if test="tblCnt != null" >
+      TBL_CNT,
+      </if>
+    <if test="tblErrCnt != null" >
+      TBL_ERR_CNT,
+      </if>
+    <if test="tblErrRt != null" >
+      TBL_ERR_RT,
+      </if>
+    <if test="colCnt != null" >
+      COL_CNT,
+      </if>
+    <if test="colErrCnt != null" >
+      COL_ERR_CNT,
+      </if>
+    <if test="colErrRt != null" >
+      COL_ERR_RT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="anaCtns != null" >
+      #{anaCtns,jdbcType=VARCHAR},
+    </if>
+    <if test="anaDtm != null" >
+      #{anaDtm,jdbcType=VARCHAR},
+      </if>
+    <if test="tblCnt != null" >
+      #{tblCnt,jdbcType=VARCHAR},
+      </if>
+    <if test="tblErrCnt != null" >
+      #{tblErrCnt,jdbcType=VARCHAR},
+      </if>
+    <if test="tblErrRt != null" >
+      #{tblErrRt,jdbcType=VARCHAR},
+      </if>
+    <if test="colCnt != null" >
+      #{colCnt,jdbcType=VARCHAR},
+      </if>
+    <if test="colErrCnt != null" >
+      #{colErrCnt,jdbcType=VARCHAR},
+      </if>
+    <if test="colErrRt != null" >
+      #{colErrRt,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="insertNiaColAna" parameterType="kr.wise.dq.model.service.WamNiaPdmCol" >
+    insert into WAM_NIA_COL_ANA  
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+    <if test="anaCtns != null" >
+      ANA_CTNS,
+    </if>
+    <if test="anaDtm != null" >
+      ANA_DTM,
+      </if>
+    <if test="colCnt != null" >
+      COL_CNT,
+      </if>
+    <if test="colNcharCnt != null" >
+      COL_NCHAR_CNT,
+      </if>
+    <if test="colNcharRt != null" >
+      COL_NCHAR_RT,
+      </if>
+    <if test="colSpaceCnt != null" >
+      COL_SPACE_CNT,
+      </if>
+      <if test="colSpaceRt != null" >
+      COL_SPACE_RT,
+      </if>
+    <if test="colErrCnt != null" >
+      COL_ERR_CNT,
+      </if>
+    <if test="colErrRt != null" >
+      COL_ERR_RT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="anaCtns != null" >
+      #{anaCtns,jdbcType=VARCHAR},
+    </if>
+    <if test="anaDtm != null" >
+      #{anaDtm,jdbcType=VARCHAR},
+      </if>
+    <if test="colCnt != null" >
+      #{colCnt,jdbcType=VARCHAR},
+      </if>
+    <if test="colNcharCnt != null" >
+      #{colNcharCnt,jdbcType=VARCHAR},
+      </if>
+    <if test="colNcharRt != null" >
+      #{colNcharRt,jdbcType=VARCHAR},
+      </if>
+    <if test="colSpaceCnt != null" >
+      #{colSpaceCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="colSpaceRt != null" >
+      #{colSpaceRt,jdbcType=VARCHAR},
+      </if>
+    <if test="colErrCnt != null" >
+      #{colErrCnt,jdbcType=VARCHAR},
+      </if>
+    <if test="colErrRt != null" >
+      #{colErrRt,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+      <select id="selectCodeGapList" resultMap="BaseResultMap">
+	SELECT B.*
+	FROM WAM_NIA_PDM_COL B
+	WHERE STND_CD_NM NOT IN(SELECT COMM_CD_NM FROM WAM_CD_VAL A
+						WHERE A.ORG_NM = B.ORG_NM)
+  </select>  
+  
+    <select id="selectDbCodeGapList" resultMap="BaseResultMap">
+	SELECT B.*
+	FROM WAM_NIA_PDM_COL B
+	WHERE STND_CD_NM NOT IN(SELECT COMM_CD_NM FROM DB_WAM_CD_VAL A
+						WHERE A.DB_NM = B.DB_NM
+						AND A.ORG_NM = B.ORG_NM)
+  </select>
+  
+   <select id="selectAnaPdmLst" resultMap="PdmResultMap">
+	SELECT ANA_CTNS
+	      ,ANA_DTM
+	      ,TBL_CNT
+	      ,TBL_ERR_CNT
+	      ,TBL_ERR_RT
+	      ,COL_CNT
+	      ,COL_ERR_CNT
+	      ,COL_ERR_RT
+	 FROM WAM_NIA_PDM_ANA
+  </select>  
+  
+   <select id="selectAnaColLst" resultMap="ColResultMap">
+	SELECT ANA_CTNS
+	      ,ANA_DTM
+	      ,COL_CNT
+	      ,COL_NCHAR_CNT
+	      ,COL_NCHAR_RT
+	      ,COL_SPACE_CNT
+	      ,COL_SPACE_RT
+	      ,COL_ERR_CNT
+	      ,COL_ERR_RT
+	 FROM WAM_NIA_COL_ANA
+  </select>  
+  
+   <select id="selectDbCodeExistList" resultMap="BaseResultMap">
+	SELECT B.*
+	FROM WAM_NIA_PDM_COL B
+	WHERE STND_CD_NM IN(SELECT COMM_CD_NM FROM DB_WAM_CD_VAL A
+						WHERE A.DB_NM = B.DB_NM
+						AND A.ORG_NM = B.ORG_NM)
+  </select>
+  
+   <select id="selectCodeExistList" resultMap="BaseResultMap">
+	SELECT B.*
+	FROM WAM_NIA_PDM_COL B
+	WHERE STND_CD_NM IN(SELECT COMM_CD_NM FROM WAM_CD_VAL A
+						WHERE A.ORG_NM = B.ORG_NM)
+  </select>
+  
+  <select id="deletedupData" resultMap="BaseResultMap">
+  <![CDATA[
+		SELECT 
+		COL_ID
+		,ORG_NM
+		,COL_LNM
+		,COL_DESCN
+		,COL_PNM
+		,DATA_TYPE
+		,DATA_LEN
+		,DATA_SCAL
+		,DATA_FRM
+		,PRSN_YN
+		,ENC_YN
+		,OPEN_YN
+		 FROM(
+		SELECT ROW_NUMBER() OVER(PARTITION BY COL_PNM,COL_LNM,DATA_TYPE,DATA_LEN,DATA_SCAL ORDER BY COL_ID ASC ) AS RNUM
+		, A.*
+		FROM WAM_NIA_PDM_COL A
+		) B
+		WHERE RNUM = 1
+		AND B.COL_PNM <> ''
+		AND B.COL_PNM <> ' '
+		AND B.COL_PNM IS NOT NULL 
+		AND B.COL_LNM <> ''
+		AND B.COL_LNM <> ' '
+		AND B.COL_LNM IS NOT NULL 
+	]]>
+  </select>
+  
+</mapper>

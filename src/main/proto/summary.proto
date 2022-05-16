@@ -1,0 +1,97 @@
+﻿syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "kr.wise.advisor.prepare.summary.grpc";
+option java_outer_classname = "SummaryProcess";
+
+package kr.wise.advisor.prepare.summary;
+
+service SummaryService {
+	// Get summary data for specified table
+	rpc GetSummary (TableRequest) returns (SummaryReply) {}
+	// 히스토그램 조회 (컬럼기준)
+	rpc GetHistogram (ColRequest) returns (HistResponse) {}
+	// boxplot + outlier 호출
+	rpc GetBoxOutlier (ColRequest) returns (BoxResponse) {}
+	// Do LOF procedure for outlier marking
+//	rpc DoLof (LofRequest) returns (LofResponse) {}
+}
+
+message TableRequest {
+	string tableName = 1;
+	TargetDbms tgtDbms = 2;
+}
+
+message ColRequest {
+	string tableName = 1;  	//테이블명
+	string colName = 2;		//컬럼명
+	string varId = 3;		//변수ID
+	TargetDbms tgtDbms = 4;
+}
+
+
+//타겟 DBMS 사용처 : 분석용 테이블의 정보를 처리하기 위한 DB접속정보
+//파이썬에서는 DBMS유형코드에 따라 DB별 접속정보를 생성한다.
+//사용 컬럼 : dbmsTypCd, connTrgLnkUrl, connTrgDrvrNm, dbConnAcId, dbConnAcPwd, dbSchPnm
+//dbSchPnm(DB스키마물리명)이 존재하는 경우 DB접속계정ID와 틀린경우 테이블명 앞에 사용한다. (예: "DB스키마물리명.테이블명")
+message TargetDbms {
+	string dbConnTrgId = 1; 	//DB접속대상ID
+    string dbConnTrgPnm= 2;		//DB접속대상물리명
+    string dbConnTrgLnm= 3;		//DB접속대상논리명
+    string dbmsTypCd= 4;		//DBMS유형코드 (ORA	-ORACLE, SYQ-SYBASEIQ, SYA-SYBASEASE, DB2-DB2, MSQ-MS-SQL, ALT-ALTIBASE, MYS-Mysql)
+    string dbmsVersCd= 5;		//DBMS버전코드
+
+    string connTrgDbLnkChrw= 6;  //접속대상DB연결문자열
+    string connTrgLnkUrl= 7;	 //접속대상연결URL
+    string connTrgDrvrNm= 8;	 //접속대상드라이버명
+
+    string dbConnAcId= 9;	//DB접속계정ID
+    string dbConnAcPwd= 10;	//DB접속계정비밀번호
+    string dbSchId= 11;		//DB스키마ID
+    string dbSchPnm= 12;	//DB스키마물리명
+    string dbSchLnm= 13;	//DB스키마논리명
+
+}
+
+message BoxResponse {
+	string varId = 1; //변수ID : HistRequest의 변수ID를 리턴한다.
+	Summary summary = 2;
+	repeated float outVal = 3;
+}
+
+message SummaryReply {
+	repeated Summary summaries = 1;
+}
+
+//summary 응답...
+message Summary {
+	string name = 13;  	//컬럼명
+	uint32 count = 1;	//전체수
+	float mean = 2;		//평균
+	float min = 3;		//최소값
+	float std = 4;		//표준편차
+	float q1 = 5;		//1분위수
+	float q2 = 6;		//2분위수(중앙값)
+	float q3 = 7;		//3분위수
+	float max = 8;		//최대값
+	uint32 unique = 9;	//유니크수
+	string top = 10;	//최빈값
+	uint32 freq = 11;	//최빈값 갯수
+	string type = 12;	//변수타입
+}
+
+//히스토그램 응답... 컬럼의 히스토그
+message HistResponse {
+	string varId = 1; //변수ID : HistRequest의 변수ID를 리턴한다.
+	repeated float strVal= 2;  //구간시작값
+	repeated float sctVal = 3; //구간 카운터 수
+}
+
+//message LofRequest {
+//	string tableName = 1;
+//	uint32 num = 2;
+//}
+//
+//message LofResponse {
+//	repeated bool results = 1;
+//}

@@ -1,0 +1,61 @@
+﻿syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "kr.wise.advisor.prepare.domain.grpc";
+option java_outer_classname = "DmnPredictProcess";
+
+package kr.wise.advisor.prepare.domain;
+
+service DmnPredict {
+	// Get summary data for specified table
+	rpc GetDmnPredict (DmnRequest) returns (DmnResponse) {}
+	// Do LOF procedure for outlier marking
+//	rpc DoLof (LofRequest) returns (LofResponse) {}
+}
+
+message DmnRequest {
+	string rqstNo = 1;
+	TargetDbms tgtDbms = 2;
+
+}
+
+//타겟 DBMS 사용처 : 분석용 테이블의 정보를 처리하기 위한 DB접속정보
+//파이썬에서는 DBMS유형코드에 따라 DB별 접속정보를 생성한다.
+//사용 컬럼 : dbmsTypCd, connTrgLnkUrl, connTrgDrvrNm, dbConnAcId, dbConnAcPwd, dbSchPnm
+//dbSchPnm(DB스키마물리명)이 존재하는 경우 DB접속계정ID와 틀린경우 테이블명 앞에 사용한다. (예: "DB스키마물리명.테이블명")
+message TargetDbms {
+	string dbConnTrgId = 1; 	//DB접속대상ID
+    string dbConnTrgPnm= 2;		//DB접속대상물리명
+    string dbConnTrgLnm= 3;		//DB접속대상논리명
+    string dbmsTypCd= 4;		//DBMS유형코드 (ORA	-ORACLE, SYQ-SYBASEIQ, SYA-SYBASEASE, DB2-DB2, MSQ-MS-SQL, ALT-ALTIBASE, MYS-Mysql)
+    string dbmsVersCd= 5;		//DBMS버전코드
+
+    string connTrgDbLnkChrw= 6;  //접속대상DB연결문자열
+    string connTrgLnkUrl= 7;	 //접속대상연결URL
+    string connTrgDrvrNm= 8;	 //접속대상드라이버명
+
+    string dbConnAcId= 9;	//DB접속계정ID
+    string dbConnAcPwd= 10;	//DB접속계정비밀번호
+    string dbSchId= 11;		//DB스키마ID
+    string dbSchPnm= 12;	//DB스키마물리명
+    string dbSchLnm= 13;	//DB스키마논리명
+
+}
+
+message DmnResponse {
+	repeated DmnPredictResult dmnpdtlist = 1;
+}
+
+message DmnPredictResult {
+	string anlVarId = 1;
+	repeated float dmnPrb = 2;
+}
+
+//message LofRequest {
+//	string tableName = 1;
+//	uint32 num = 2;
+//}
+//
+//message LofResponse {
+//	repeated bool results = 1;
+//}

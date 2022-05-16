@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+import "summary.proto";
+
+option java_multiple_files = true;
+option java_package = "kr.wise.advisor.prepare.textcluster.grpc";
+option java_outer_classname = "TextProcess";
+
+package kr.wise.advisor.prepare.textcluster;
+
+service texthandling {
+	rpc data_matching (txtMchRequest) returns (txtMchResponse) {}
+	rpc textClustering (txtClstrRequest) returns (txtClstrResponse) {}
+}
+
+message txtMchRequest {
+	InfoDb sourceTb =1;
+	InfoDb targetTb =2;
+	kr.wise.advisor.prepare.summary.TargetDbms tgtDbms = 3;
+}
+message InfoDb{
+	string tableName = 1;
+	repeated string col_name = 2;
+}
+
+message txtMchResponse {
+	repeated TxtMch colVal = 1;
+	repeated txtMchResult result = 2;
+
+}
+
+message txtMchResult {
+	repeated TxtMch txtMch =1;
+}
+
+message TxtMch {
+	repeated string col_val = 1;
+	float similarity = 2;
+}
+
+message txtClstrRequest {
+	string tableName = 1;
+	string col_name = 2;
+	kr.wise.advisor.prepare.summary.TargetDbms tgtDbms = 3;
+}
+
+message txtClstrResponse{
+	repeated TxtClstr txtClstr = 1;
+}
+
+message TxtClstr {
+	string recommand = 1;
+	repeated string result = 2;
+}

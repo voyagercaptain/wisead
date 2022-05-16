@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.wise.meta.stnd.service.WamWhereUsedMapper" >
+  <resultMap id="BaseResultMap" type="kr.wise.meta.stnd.service.WamWhereUsed" >
+    <id column="OBJ_TYPE" property="objType" jdbcType="VARCHAR" />
+    <result column="OBJ_ID" property="objId" jdbcType="VARCHAR" />
+    <result column="OBJ_NM" property="objNm" jdbcType="VARCHAR" />
+    <result column="OBJ_LNM" property="objLnm" jdbcType="VARCHAR" />
+    <result column="OBJ_PNM" property="objPnm" jdbcType="VARCHAR" />
+	<result column="OF_DOMAIN" property="ofDomain" jdbcType="VARCHAR" />
+  </resultMap>
+  
+<select id="selectDmnWhereUsedList" resultMap="BaseResultMap" parameterType="java.lang.String" >
+SELECT * FROM
+(SELECT 'STWD' AS OBJ_TYPE
+      ,'표준단어' AS OBJ_NM
+      ,B.STWD_ID AS OBJ_ID
+      ,B.STWD_LNM AS OBJ_LNM
+      ,B.STWD_PNM AS OBJ_PNM
+      ,C.DMN_ID AS OF_DOMAIN
+   FROM WAM_STWD_CNFG A INNER JOIN WAM_STWD B
+   ON A.STWD_ID = B.STWD_ID 
+   AND B.REG_TYP_CD IN ('C', 'U')
+   INNER JOIN WAM_DMN C
+   ON A.OBJ_ID = C.DMN_ID
+   AND C.REG_TYP_CD IN ('C', 'U')
+UNION ALL 
+SELECT 'INFO' AS OBJ_TYPE
+      ,'인포타입' AS OBJ_NM
+      ,B.INFOTP_ID AS OBJ_ID
+      ,B.INFOTP_LNM AS OBJ_LNM
+      ,'' AS OBJ_PNM
+      ,A.DMN_ID AS OF_DOMAIN
+   FROM WAM_DMN A INNER JOIN WAA_INFO_TYPE B
+   ON A.INFOTP_ID = B.INFOTP_ID
+   AND A.REG_TYP_CD IN ('C', 'U')
+   AND B.EXP_DTM = DATE_FORMAT( '9999-12-31', '%Y-%m-%d')
+UNION ALL
+SELECT 'SDITM' AS OBJ_TYPE
+      ,'표준용어' AS OBJ_NM
+      ,A.SDITM_ID AS OBJ_ID
+      ,A.SDITM_LNM AS OBJ_LNM
+      ,A.SDITM_PNM AS OBJ_PNM
+      ,A.DMN_ID AS OF_DOMAIN
+   FROM WAM_SDITM A
+   WHERE A.REG_TYP_CD IN ('C', 'U')
+UNION ALL
+SELECT 'TABLE' AS OBJ_TYPE
+      ,'테이블' AS OBJ_NM
+      ,A.PDM_TBL_ID AS OBJ_ID
+      ,A.PDM_TBL_LNM AS OBJ_LNM
+      ,A.PDM_TBL_PNM AS OBJ_PNM
+      ,D.DMN_ID AS OF_DOMAIN
+   FROM WAM_PDM_TBL A INNER JOIN WAM_PDM_COL B
+   ON A.PDM_TBL_ID = B.PDM_TBL_ID
+   AND A.REG_TYP_CD IN ('C', 'U')
+   INNER JOIN WAM_SDITM C
+   ON B.SDITM_ID = C.SDITM_ID
+   AND C.REG_TYP_CD IN ('C', 'U')
+   INNER JOIN WAM_DMN D
+   ON C.DMN_ID = D.DMN_ID) A
+   
+   
+   
+   WHERE A.OF_DOMAIN = #{dmnId,jdbcType=VARCHAR}
+</select>
+<select id="selectStwdWhereUsedList" resultMap="BaseResultMap" parameterType="kr.wise.meta.stnd.service.WamStwd" >
+SELECT * FROM
+(SELECT 'STWD' AS OBJ_TYPE
+      ,'표준단어' AS OBJ_NM
+      ,B.STWD_ID AS OBJ_ID
+      ,B.STWD_LNM AS OBJ_LNM
+      ,B.STWD_PNM AS OBJ_PNM
+      ,B.STWD_ID AS OF_DOMAIN
+   FROM WAM_STWD B
+   WHERE B.REG_TYP_CD IN ('C', 'U')
+UNION ALL   
+SELECT 'DMN' AS OBJ_TYPE
+      ,'도메인' AS OBJ_NM
+      ,C.DMN_ID AS OBJ_ID
+      ,C.DMN_LNM AS OBJ_LNM
+      ,C.DMN_PNM AS OBJ_PNM
+      ,B.STWD_ID AS OF_DOMAIN
+   FROM WAM_STWD_CNFG A INNER JOIN WAM_STWD B
+   ON A.STWD_ID = B.STWD_ID 
+   AND B.REG_TYP_CD IN ('C', 'U')
+   INNER JOIN WAM_DMN C
+   ON A.OBJ_ID = C.DMN_ID
+   AND C.REG_TYP_CD IN ('C', 'U')
+UNION ALL  
+/*SELECT 'SDITM' AS OBJ_TYPE
+      ,'표준용어' AS OBJ_NM
+      ,C.SDITM_ID AS OBJ_ID
+      ,C.SDITM_LNM AS OBJ_LNM
+      ,C.SDITM_PNM AS OBJ_PNM
+      ,B.STWD_ID AS OF_DOMAIN
+   FROM WAM_STWD_CNFG A INNER JOIN WAM_STWD B
+   ON A.STWD_ID = B.STWD_ID 
+   AND B.REG_TYP_CD IN ('C', 'U')
+   INNER JOIN WAM_SDITM C
+   ON A.OBJ_ID = C.SDITM_ID
+   AND C.REG_TYP_CD IN ('C', 'U')*/
+   SELECT 'SDITM' AS OBJ_TYPE
+      ,'표준용어' AS OBJ_NM
+      ,C.SDITM_ID AS OBJ_ID
+      ,C.SDITM_LNM AS OBJ_LNM
+      ,C.SDITM_PNM AS OBJ_PNM
+      , #{stwdId,jdbcType=VARCHAR} AS OF_DOMAIN
+   FROM WAM_SDITM C
+   WHERE (C.SDITM_PNM LIKE '%#_'||#{stwdPnm,jdbcType=VARCHAR} ESCAPE '#'
+        OR C.SDITM_PNM LIKE #{stwdPnm,jdbcType=VARCHAR}||'#_%' ESCAPE '#'
+        OR C.SDITM_PNM LIKE '%#_'||#{stwdPnm,jdbcType=VARCHAR}||'#_%' ESCAPE '#')
+UNION ALL  
+/*SELECT 'TABLE' AS OBJ_TYPE
+      ,'테이블' AS OBJ_NM
+      ,A.PDM_TBL_ID AS OBJ_ID
+      ,A.PDM_TBL_LNM AS OBJ_LNM
+      ,A.PDM_TBL_PNM AS OBJ_PNM
+      ,E.STWD_ID AS OF_DOMAIN
+   FROM WAM_PDM_TBL A INNER JOIN WAM_PDM_COL B
+   ON A.PDM_TBL_ID = B.PDM_TBL_ID
+   AND A.REG_TYP_CD IN ('C', 'U')
+   INNER JOIN WAM_SDITM C
+   ON B.SDITM_ID = C.SDITM_ID
+   AND C.REG_TYP_CD IN ('C', 'U')
+   INNER JOIN WAM_STWD_CNFG D
+   ON C.DMN_ID = D.OBJ_ID
+   INNER JOIN WAM_STWD E
+   ON D.OBJ_ID = E.STWD_ID
+UNION ALL*/
+SELECT 'SYMN' AS OBJ_TYPE
+      ,'유사어' AS OBJ_NM
+      ,A.SYMN_ID AS OBJ_ID
+      ,A.SYMN_LNM AS OBJ_LNM
+      ,A.SYMN_PNM AS OBJ_PNM
+      ,B.STWD_ID AS OF_DOMAIN
+   FROM WAM_SYMN A INNER JOIN WAM_STWD B
+   ON A.STWD_ID = B.STWD_ID
+   AND A.REG_TYP_CD IN ('C', 'U') 
+) A
+ WHERE A.OF_DOMAIN = #{stwdId,jdbcType=VARCHAR}
+</select>  
+<select id="selectSditmWhereUsedList" resultMap="BaseResultMap" parameterType="java.lang.String" >
+ SELECT * FROM
+(SELECT 'STWD' AS OBJ_TYPE
+      ,'표준단어' AS OBJ_NM
+      ,C.STWD_ID AS OBJ_ID
+      ,C.STWD_LNM AS OBJ_LNM
+      ,C.STWD_PNM AS OBJ_PNM
+      ,B.SDITM_ID AS OF_DOMAIN
+   FROM WAM_STWD_CNFG A INNER JOIN WAM_SDITM B
+        ON A.OBJ_ID = B.SDITM_ID
+        INNER JOIN WAM_STWD C
+        ON A.STWD_ID = C.STWD_ID
+UNION ALL   
+SELECT 'DMN' AS OBJ_TYPE
+      ,'도메인' AS OBJ_NM
+      ,C.DMN_ID AS OBJ_ID
+      ,C.DMN_LNM AS OBJ_LNM
+      ,C.DMN_PNM AS OBJ_PNM
+      ,D.SDITM_ID AS OF_DOMAIN
+<!--    FROM WAM_STWD_CNFG A INNER JOIN WAM_STWD B -->
+<!--    ON A.STWD_ID = B.STWD_ID  -->
+<!--    AND B.REG_TYP_CD IN ('C', 'U') -->
+<!--    INNER JOIN WAM_DMN C -->
+<!--    ON A.OBJ_ID = C.DMN_ID -->
+<!--    AND C.REG_TYP_CD IN ('C', 'U') -->
+  FROM WAM_DMN C
+   INNER JOIN WAM_SDITM D
+   ON C.DMN_ID = D.DMN_ID
+   AND D.REG_TYP_CD IN ('C', 'U')
+UNION ALL  
+SELECT 'INFO' AS OBJ_TYPE
+      ,'인포타입' AS OBJ_NM
+      ,B.INFOTP_ID AS OBJ_ID
+      ,B.INFOTP_LNM AS OBJ_LNM
+      ,'' AS OBJ_PNM
+      ,C.SDITM_ID AS OF_DOMAIN
+   FROM WAM_DMN A INNER JOIN WAA_INFO_TYPE B
+   ON A.INFOTP_ID = B.INFOTP_ID
+   AND A.REG_TYP_CD IN ('C', 'U')
+   AND B.EXP_DTM = DATE_FORMAT( '9999-12-31', '%Y-%m-%d')
+   INNER JOIN WAM_SDITM C
+   ON A.DMN_ID = C.DMN_ID
+   AND C.REG_TYP_CD IN ('C', 'U')
+UNION ALL  
+SELECT 'TABLE' AS OBJ_TYPE
+      ,'테이블' AS OBJ_NM
+      ,A.PDM_TBL_ID AS OBJ_ID
+      ,A.PDM_TBL_LNM AS OBJ_LNM
+      ,A.PDM_TBL_PNM AS OBJ_PNM
+      ,C.SDITM_ID AS OF_DOMAIN
+   FROM WAM_PDM_TBL A INNER JOIN WAM_PDM_COL B
+   ON A.PDM_TBL_ID = B.PDM_TBL_ID
+   AND A.REG_TYP_CD IN ('C', 'U')
+   INNER JOIN WAM_SDITM C
+   ON B.SDITM_ID = C.SDITM_ID
+   AND C.REG_TYP_CD IN ('C', 'U')) A
+ 
+ WHERE A.OF_DOMAIN = #{sditmId,jdbcType=VARCHAR}
+ </select>
+
+</mapper>

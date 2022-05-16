@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.wise.commons.user.service.WaaLicMapper" >
+  <resultMap id="BaseResultMap" type="kr.wise.commons.user.service.WaaLic" >
+    <id column="MAC_ADDR" property="macAddr" jdbcType="VARCHAR" />
+    <result column="LIC_KEY" property="licKey" jdbcType="VARCHAR" />
+    <result column="ORG_NM" property="orgNm" jdbcType="VARCHAR" />
+    <result column="CHRG_USER_NM" property="chrgUserNm" jdbcType="VARCHAR" />
+    <result column="CHRG_EMAIL" property="chrgEmail" jdbcType="VARCHAR" />
+    <result column="CHRG_TEL_NO" property="chrgTelNo" jdbcType="VARCHAR" />
+    <result column="WRIT_DTM" property="writDtm" jdbcType="VARCHAR" />
+    <result column="REG_TYP_CD" property="regTpyCd" jdbcType="VARCHAR" />
+    <result column="EXP_DTM" property="expDtm" jdbcType="VARCHAR" />
+    <result column="OBJ_VERS" property="objVers" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    MAC_ADDR, EXP_DTM, LIC_KEY, ORG_NM, CHRG_USER_NM,
+    CHRG_TEL_NO, CHRG_EMAIL, OBJ_VERS, REG_TYP_CD, WRIT_DTM
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from WAA_LIC
+    where LIC_KEY = #{licKey,jdbcType=VARCHAR}
+    AND EXP_DTM = DATE_FORMAT( '9999-12-31', '%Y-%m-%d')
+    AND REG_TYP_CD IN ('C', 'U')
+  </select>
+  
+  <insert id="insertSelective" parameterType="kr.wise.commons.user.service.WaaLic" >
+  	insert into WAA_LIC
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      	LIC_KEY,
+      	MAC_ADDR,
+        EXP_DTM,
+        WRIT_DTM,
+      <if test="orgNm != null" >
+        ORG_NM,
+      </if>
+      <if test="chrgUserNm != null" >
+        CHRG_USER_NM,
+      </if>
+      <if test="chrgTelNo != null" >
+        CHRG_TEL_NO,
+      </if>
+      <if test="chrgEmail != null" >
+        CHRG_EMAIL,
+      </if>
+      <if test="objVers != null" >
+        OBJ_VERS,
+      </if>
+      <if test="regTypCd != null" >
+        REG_TYP_CD,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      	#{licKey,jdbcType=VARCHAR},
+      	#{macAddr,jdbcType=VARCHAR},
+        DATE_FORMAT( '9999-12-31', '%Y-%m-%d'),
+        now(),
+      <if test="orgNm != null" >
+        #{orgNm,jdbcType=VARCHAR},
+      </if>
+      <if test="chrgUserNm != null" >
+        #{chrgUserNm,jdbcType=VARCHAR},
+      </if>
+      <if test="chrgTelNo != null" >
+        #{chrgTelNo,jdbcType=VARCHAR},
+      </if>
+      <if test="chrgEmail != null" >
+        #{chrgEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="objVers != null" >
+        #{objVers,jdbcType=VARCHAR},
+      </if>
+      <if test="regTypCd != null" >
+        #{regTypCd,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectList" parameterType="kr.wise.commons.user.service.WaaLic" resultMap="BaseResultMap">
+  	SELECT 
+      	A.MAC_ADDR, A.EXP_DTM, A.LIC_KEY, A.ORG_NM, A.CHRG_USER_NM,
+    	A.CHRG_TEL_NO, A.CHRG_EMAIL, A.OBJ_VERS, A.REG_TYP_CD, A.WRIT_DTM
+    FROM WAA_LIC A
+    <where>
+    	A.EXP_DTM = DATE_FORMAT( '9999-12-31', '%Y-%m-%d')
+    	AND A.REG_TYP_CD IN ('C', 'U')
+       	  <if test="orgNm != null" >
+        	AND A.ORG_NM = #{orgNm,jdbcType=VARCHAR},
+	      </if>
+	      <if test="chrgUserNm != null" >
+	        AND A.CHRG_USER_NM = #{chrgUserNm,jdbcType=VARCHAR},
+	      </if>
+	      <if test="chrgTelNo != null" >
+	        AND A.CHRG_TEL_NO = #{chrgTelNo,jdbcType=VARCHAR},
+	      </if>
+	      <if test="chrgEmail != null" >
+	        AND A.CHRG_EMAIL = #{chrgEmail,jdbcType=VARCHAR},
+	      </if>
+      </where>
+      		ORDER BY A.ORG_NM
+    </select>
+    
+    <update id="updateExpDtm" parameterType="kr.wise.commons.user.service.WaaLic" >
+	    UPDATE WAA_LIC
+	    SET EXP_DTM = now()
+	    WHERE MAC_ADDR = #{macAddr,jdbcType=VARCHAR}
+	    AND EXP_DTM = DATE_FORMAT( '9999-12-31', '%Y-%m-%d')
+    </update>
+
+    
+</mapper>

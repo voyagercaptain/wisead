@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.wise.dq.stnd.service.DbWamCdValMapper">
+  <resultMap id="BaseResultMap" type="kr.wise.dq.stnd.service.DbWamCdVal" extends="kr.wise.commons.cmm.service.CommonMapper.BaseResultMap">
+    <id column="CD_VAL_ID" property="cdValId" jdbcType="VARCHAR" />
+    <result column="CD_VAL" property="cdVal" jdbcType="VARCHAR" />
+    <result column="CD_VAL_NM" property="cdValNm" jdbcType="VARCHAR" />
+    <result column="DMN_ID" property="dmnId" jdbcType="VARCHAR" />
+    <result column="UPP_CD_VAL_ID" property="uppCdValId" jdbcType="VARCHAR" />
+    <result column="RQST_NO" property="rqstNo" jdbcType="VARCHAR" />
+    <result column="RQST_SNO" property="rqstSno" jdbcType="DECIMAL" />
+    <result column="RQST_DTL_SNO" property="rqstDtlSno" jdbcType="DECIMAL" />
+    <result column="OBJ_DESCN" property="objDescn" jdbcType="VARCHAR" />
+    <result column="OBJ_VERS" property="objVers" jdbcType="DECIMAL" />
+    <result column="REG_TYP_CD" property="regTypCd" jdbcType="VARCHAR" />
+    <result column="FRS_RQST_DTM" property="frsRqstDtm" jdbcType="TIMESTAMP" />
+    <result column="FRS_RQST_USER_ID" property="frsRqstUserId" jdbcType="VARCHAR" />
+    <result column="RQST_DTM" property="rqstDtm" jdbcType="TIMESTAMP" />
+    <result column="RQST_USER_ID" property="rqstUserId" jdbcType="VARCHAR" />
+    <result column="APRV_DTM" property="aprvDtm" jdbcType="TIMESTAMP" />
+    <result column="APRV_USER_ID" property="aprvUserId" jdbcType="VARCHAR" />
+    <result column="DISP_ORD" property="dispOrd" jdbcType="DECIMAL" />
+    <result column="APL_STR_DT" property="aplStrDt" jdbcType="VARCHAR" />
+    <result column="APL_END_DT" property="aplEndDt" jdbcType="VARCHAR" />
+    <result column="EXP_DTM" property="expDtm" jdbcType="DATE" />
+    <result column="STR_DTM" property="strDtm" jdbcType="DATE" />
+    <result column="UPP_CD_VAL" property="uppCdVal" 	jdbcType="VARCHAR" />
+    <result column="VV_NOTE1" property="vvNote1" 	jdbcType="VARCHAR" />
+    <result column="VV_NOTE2" property="vvNote2" 	jdbcType="VARCHAR" />
+    <result column="VV_NOTE3" property="vvNote3" 	jdbcType="VARCHAR" />
+    <result column="VV_NOTE4" property="vvNote4" 	jdbcType="VARCHAR" />
+    <result column="VV_NOTE5" property="vvNote5" 	jdbcType="VARCHAR" />
+    <result column="VV_NOTE_NM1" property="vvNoteNm1" 	jdbcType="VARCHAR" />
+    <result column="VV_NOTE_NM2" property="vvNoteNm2" 	jdbcType="VARCHAR" />
+    <result column="VV_NOTE_NM3" property="vvNoteNm3" 	jdbcType="VARCHAR" />
+    <result column="VV_NOTE_NM4" property="vvNoteNm4" 	jdbcType="VARCHAR" />
+    <result column="VV_NOTE_NM5" property="vvNoteNm5" 	jdbcType="VARCHAR" />
+    <result column="OUTL_CNTN1" property="outlCntn1" 	jdbcType="VARCHAR" />
+    <result column="OUTL_CNTN2" property="outlCntn2" 	jdbcType="VARCHAR" />
+    <result column="USE_YN" property="useYn" 	jdbcType="VARCHAR" />
+    <result column="COMM_CD_NM" property="commCdNm" jdbcType="VARCHAR"/>
+    <result column="ORG_NM" property="orgNm" jdbcType="VARCHAR"/>
+    <result column="DB_NM" property="dbNm" jdbcType="VARCHAR"/>
+    
+  </resultMap>
+
+	<update id="dbupdateByPrimaryKey" parameterType="kr.wise.dq.stnd.service.DbWamCdVal" >
+    update DB_WAM_CD_VAL
+    set CD_VAL = #{cdVal,jdbcType=VARCHAR},
+      CD_VAL_NM = #{cdValNm, jdbcType=VARCHAR},
+      DB_NM = #{dbNm, jdbcType=VARCHAR},
+      DMN_ID = #{dmnId,jdbcType=VARCHAR},
+      ORG_NM = #{orgNm,jdbcType=VARCHAR},
+      COMM_CD_NM = #{commCdNm, jdbcType=VARCHAR},
+      RQST_NO = #{rqstNo,jdbcType=VARCHAR},
+      RQST_SNO = #{rqstSno,jdbcType=DECIMAL},
+      REG_TYP_CD = #{regTypCd,jdbcType=VARCHAR},
+      FRS_RQST_DTM = #{frsRqstDtm,jdbcType=DATE},
+      FRS_RQST_USER_ID = #{frsRqstUserId,jdbcType=VARCHAR},
+      RQST_DTM = #{rqstDtm,jdbcType=DATE},
+      RQST_USER_ID = #{rqstUserId,jdbcType=VARCHAR},
+      APRV_DTM = #{aprvDtm,jdbcType=DATE},
+      APRV_USER_ID = #{aprvUserId,jdbcType=VARCHAR}
+    where CD_VAL_ID = #{cdValId,jdbcType=VARCHAR}
+  </update>
+  
+  <delete id="dbdeleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from DB_WAM_CD_VAL
+    where CD_VAL_ID = #{cdValId,jdbcType=VARCHAR}
+  </delete>
+  
+  
+  	<insert id="dbinsertSelective" parameterType="kr.wise.dq.stnd.service.DbWamCdVal" >
+	    insert into DB_WAM_CD_VAL
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="cdValId != null" >
+	        CD_VAL_ID,
+	      </if>
+	      <if test="cdVal != null" >
+	        CD_VAL,
+	      </if>
+	      <if test="cdValNm != null" >
+	        CD_VAL_NM,
+	      </if>
+	      <if test="dmnId != null" >
+	        DMN_ID,
+	      </if>
+	      <if test="orgNm != null">
+	      	ORG_NM,
+	      </if>
+	      <if test="dbNm != null">
+	      	DB_NM,
+	      </if>	      
+	      <if test="commCdNm != null">
+	      	COMM_CD_NM,
+	      </if>
+	      <if test="rqstNo != null" >
+	        RQST_NO,
+	      </if>
+	      <if test="rqstSno != null" >
+	        RQST_SNO,
+	      </if>
+	      <if test="objDescn != null" >
+	        OBJ_DESCN,
+	      </if>
+	      <if test="objVers != null" >
+	        OBJ_VERS,
+	      </if>
+	      <if test="regTypCd != null" >
+	        REG_TYP_CD,
+	      </if>
+	        FRS_RQST_DTM,
+	      <if test="frsRqstUserId != null" >
+	        FRS_RQST_USER_ID,
+	      </if>
+	        RQST_DTM,
+	      <if test="rqstUserId != null" >
+	        RQST_USER_ID,
+	      </if>
+	      <if test="aprvDtm != null" >
+	        APRV_DTM,
+	      </if>
+	      <if test="aprvUserId != null" >
+	        APRV_USER_ID,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="cdValId != null" >
+	        #{cdValId, jdbcType=VARCHAR},
+	      </if>
+	      <if test="cdVal != null" >
+	        #{cdVal, jdbcType=VARCHAR},
+	      </if>
+	      <if test="cdValNm != null" >
+	        #{cdValNm, jdbcType=VARCHAR},
+	      </if>
+	      <if test="dmnId != null" >
+	        #{dmnId, jdbcType=VARCHAR},
+	      </if>
+	      <if test="orgNm != null">
+	      	#{orgNm, jdbcType=VARCHAR},
+	      </if>
+	      <if test="dbNm != null">
+	      	#{dbNm, jdbcType=VARCHAR},
+	      </if>	      
+	      <if test="commCdNm != null">
+	      	#{commCdNm, jdbcType=VARCHAR},
+	      </if>	      
+	      <if test="rqstNo != null" >
+	        #{rqstNo,jdbcType=VARCHAR},
+	      </if>
+	      <if test="rqstSno != null" >
+	        #{rqstSno,jdbcType=DECIMAL},
+	      </if>
+	      <if test="objDescn != null" >
+	        #{objDescn,jdbcType=VARCHAR},
+	      </if>
+	      <if test="objVers != null" >
+	        #{objVers,jdbcType=DECIMAL},
+	      </if>
+	      <if test="regTypCd != null" >
+	        #{regTypCd,jdbcType=VARCHAR},
+	      </if>
+	        now(),
+	      <if test="frsRqstUserId != null" >
+	        #{frsRqstUserId,jdbcType=VARCHAR},
+	      </if>
+	        now(),
+	      <if test="rqstUserId != null" >
+	        #{rqstUserId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aprvDtm != null" >
+	        #{aprvDtm,jdbcType=DATE},
+	      </if>
+	      <if test="aprvUserId != null" >
+	        #{aprvUserId,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+	  </insert>
+	  
+	  <select id="selectDbWamList" resultMap="BaseResultMap" parameterType="kr.wise.dq.stnd.service.DbWamCdVal" >
+  	SELECT * FROM 
+  	
+  	(SELECT A.*,
+  		   GET_USER_NM(A.FRS_RQST_USER_ID) AS FRS_RQST_USER_NM,
+    	   GET_USER_NM(A.RQST_USER_ID) AS RQST_USER_NM,
+    	   GET_USER_NM(A.APRV_USER_ID) AS APRV_USER_NM
+   	FROM DB_WAM_CD_VAL A) FSQ -- 임시 Alias
+  	<where>
+		AND REG_TYP_CD IN ('C', 'U')
+      <if test="uppCdVal != null" >
+        AND UPPER(UPP_CD_VAL) LIKE UPPER(CONCAT('%' , #{uppCdVal,jdbcType=VARCHAR} , '%'))
+      </if>
+      <if test="cdVal != null" >
+        AND CD_VAL = #{cdVal,jdbcType=VARCHAR}
+      </if>
+       <if test="dbNm != null" >
+        AND UPPER(DB_NM) LIKE CONCAT('%', UPPER(#{dbNm,jdbcType=VARCHAR}) , '%')
+      </if>     
+      <if test="cdValNm != null" >
+        AND CD_VAL_NM = #{cdValNm,jdbcType=VARCHAR}
+      </if>
+      <if test="objDescn != null" >
+        AND OBJ_DESCN LIKE CONCAT('%' , #{objDescn,jdbcType=VARCHAR} , '%')
+      </if>
+      <if test="objVers != null" >
+        AND OBJ_VERS = #{objVers,jdbcType=DECIMAL}
+      </if>
+      <if test="regTypCd != null" >
+        AND REG_TYP_CD = #{regTypCd,jdbcType=VARCHAR}
+      </if>
+      <if test="frsRqstDtm != null" >
+        AND FRS_RQST_DTM = #{frsRqstDtm,jdbcType=DATE}
+      </if>
+      <if test="frsRqstUserId != null" >
+        AND FRS_RQST_USER_ID = #{frsRqstUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="rqstDtm != null" >
+        AND RQST_DTM = #{rqstDtm,jdbcType=DATE}
+      </if>
+      <if test="rqstUserId != null" >
+        AND RQST_USER_ID = #{rqstUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="aprvDtm != null" >
+        AND APRV_DTM = #{aprvDtm,jdbcType=DATE}
+      </if>
+      <if test="aprvUserId != null" >
+        AND APRV_USER_ID = #{aprvUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="searchBgnDe !=null and searchBgnDe !=''">
+		<![CDATA[ AND DATE_FORMAT(APRV_DTM, '%Y-%m-%d') >= #{searchBgnDe} ]]>
+	  </if>
+	  <if test="searchEndDe !=null and searchEndDe !=''">
+		<![CDATA[ AND DATE_FORMAT(APRV_DTM, '%Y-%m-%d') <= #{searchEndDe} ]]>
+	  </if>
+	  <if test="orgNm != null" >
+        AND UPPER(ORG_NM) LIKE CONCAT('%',UPPER(#{orgNm,jdbcType=VARCHAR}),'%')
+      </if>
+	  <if test="commCdNm != null" >
+        AND UPPER(COMM_CD_NM) LIKE CONCAT('%',UPPER(#{commCdNm,jdbcType=VARCHAR}),'%')
+      </if>      
+  	</where>
+  	ORDER BY CD_VAL_NM
+  </select>
+  
+</mapper>

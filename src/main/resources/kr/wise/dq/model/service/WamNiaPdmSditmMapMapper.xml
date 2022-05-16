@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.wise.dq.model.service.WamNiaPdmSditmMapMapper">
+
+  <resultMap id="BaseResultMap" type="kr.wise.dq.model.service.NiaPdmSditmMapVo" extends="kr.wise.commons.cmm.service.CommonMapper.BaseResultMap">
+    <result column="MAP_YN" jdbcType="VARCHAR" property="mapYn" />
+    <result column="MAP_ID" jdbcType="VARCHAR" property="mapId" />
+    <result column="COL_ID" jdbcType="VARCHAR" property="colId" />
+    <result column="ORG_NM" jdbcType="VARCHAR" property="orgNm" />
+    <result column="DB_NM" jdbcType="VARCHAR" property="dbNm" />
+    <result column="TBL_PNM" jdbcType="VARCHAR" property="tblPnm" />
+    <result column="TBL_LNM" jdbcType="VARCHAR" property="tblLnm" />
+    <result column="COL_PNM" jdbcType="VARCHAR" property="colPnm" />
+    <result column="COL_LNM" jdbcType="VARCHAR" property="colLnm" />
+    <result column="DATA_TYPE" jdbcType="VARCHAR" property="dataType" />
+    <result column="DATA_LEN" jdbcType="VARCHAR" property="dataLen" />
+    <result column="DATA_SCAL" jdbcType="VARCHAR" property="dataScal" />
+    <result column="SDITM_ID" jdbcType="VARCHAR" property="sditmId" />
+    <result column="SDITM_LNM" jdbcType="VARCHAR" property="sditmLnm" />
+    <result column="SDITM_PNM" jdbcType="VARCHAR" property="sditmPnm" />
+    <result column="INFOTP_LNM" jdbcType="VARCHAR" property="infotpLnm" />
+    <result column="OBJ_DESCN" jdbcType="VARCHAR" property="objDescn" />
+  </resultMap>
+  
+  <sql id="getMapListSaved">
+  	<![CDATA[
+  		SELECT 
+		A.MAP_ID
+		,A.STND_NM
+		,A.COL_ID
+		,B.ORG_NM
+		,B.DB_NM
+		,B.TBL_PNM
+		,B.TBL_LNM
+		,B.COL_PNM
+		,B.COL_LNM
+		,B.DATA_TYPE
+		,B.DATA_LEN
+		,B.DATA_SCAL
+		,A.SDITM_ID
+		,IF(A.STND_NM = 'ORG',C.SDITM_PNM,D.SDITM_PNM) AS SDITM_PNM
+		,IF(A.STND_NM = 'ORG',C.SDITM_LNM,D.SDITM_LNM) AS SDITM_LNM
+		,IF(A.STND_NM = 'ORG',C.INFOTP_LNM,D.INFOTP_LNM) AS INFOTP_LNM
+		,IF(A.STND_NM = 'ORG',C.OBJ_DESCN ,D.OBJ_DESCN) AS OBJ_DESCN,
+		CASE WHEN B.COL_ID IS NULL -- DB정보 삭제한 경우
+		OR (C.SDITM_ID IS NULL -- 기관표준용어 삭제한 경우
+		AND D.SDITM_ID IS NULL) -- DB표준 삭제
+		THEN 'N' ELSE 'Y' END MAP_YN
+		FROM WAM_NIA_PDM_SDITM_MAP A 
+		LEFT OUTER JOIN WAM_NIA_PDM_COL B
+		  ON A.COL_ID = B.COL_ID
+		LEFT OUTER  JOIN WAM_SDITM C
+		  ON A.SDITM_ID = C.SDITM_ID
+		  AND C.VRF_RMK IS NULL 
+		  AND A.STND_NM = 'ORG'
+		LEFT OUTER JOIN WAM_DB_SDITM D
+		  ON A.SDITM_ID = D.SDITM_ID
+		  AND D.VRF_RMK IS NULL 
+		  AND A.STND_NM = 'DB'	
+		]]>
+	</sql>
+	<sql id="getMapListNotSaved">
+	<![CDATA[
+		SELECT
+		NULL AS MAP_ID
+		,A.COL_ID
+		,A.ORG_NM
+		,A.DB_NM
+		,A.TBL_PNM
+		,A.TBL_LNM
+		,A.COL_PNM
+		,A.COL_LNM
+		,A.DATA_TYPE
+		,A.DATA_LEN
+		,A.DATA_SCAL		
+		,B.SDITM_ID
+		,B.SDITM_PNM
+		,B.SDITM_LNM
+		,B.INFOTP_LNM
+		,B.OBJ_DESCN
+		,#{stndNm, jdbcType=VARCHAR} AS stndNm
+		FROM WAM_NIA_PDM_COL A 
+		LEFT OUTER JOIN 
+		(SELECT 
+				B.ORG_NM
+				,B.SDITM_ID
+				,B.SDITM_PNM
+				,B.SDITM_LNM
+				,B.INFOTP_LNM
+				,B.OBJ_DESCN
+				,D.DATA_TYPE
+				,D.DATA_LEN 
+				,D.DATA_SCAL 
+				FROM WAM_SDITM B 
+				INNER JOIN WAM_DMN D 
+				  ON B.ORG_NM = D.ORG_NM
+				  AND B.INFOTP_LNM = D.INFOTP_LNM
+				  AND B.VRF_RMK IS NULL) B
+		ON A.COL_LNM = B.SDITM_LNM
+		AND A.COL_PNM = B.SDITM_PNM
+		AND A.DATA_TYPE = B.DATA_TYPE
+		AND IFNULL(A.DATA_LEN,'') = IFNULL(B.DATA_LEN,'')
+		AND IFNULL(A.DATA_SCAL,'') = IFNULL(B.DATA_SCAL,'')
+		AND A.ORG_NM = B.ORG_NM
+		LEFT OUTER JOIN WAM_NIA_PDM_SDITM_MAP C
+		  ON A.COL_ID = C.COL_ID
+		WHERE C.MAP_ID IS NULL
+		]]>
+  </sql>
+  
+  	<sql id="getDBMapListNotSaved">
+	<![CDATA[
+		SELECT
+		NULL AS MAP_ID
+		,A.COL_ID
+		,A.ORG_NM
+		,A.DB_NM
+		,A.TBL_PNM
+		,A.TBL_LNM
+		,A.COL_PNM
+		,A.COL_LNM
+		,A.DATA_TYPE
+		,A.DATA_LEN
+		,A.DATA_SCAL		
+		,B.SDITM_ID
+		,B.SDITM_PNM
+		,B.SDITM_LNM
+		,B.INFOTP_LNM
+		,B.OBJ_DESCN
+		,#{stndNm, jdbcType=VARCHAR} AS stndNm
+		FROM WAM_NIA_PDM_COL A 
+		LEFT OUTER JOIN 
+		(SELECT 
+			B.ORG_NM
+			,B.DB_NM
+			,B.SDITM_ID
+			,B.SDITM_PNM
+			,B.SDITM_LNM
+			,B.INFOTP_LNM
+			,B.OBJ_DESCN
+			,D.DATA_TYPE
+			,D.DATA_LEN 
+			,D.DATA_SCAL 
+			FROM WAM_DB_SDITM B 
+			INNER JOIN WAM_DB_DMN D 
+			  ON B.ORG_NM = D.ORG_NM
+			  AND B.DB_NM = D.DB_NM
+			  AND B.INFOTP_LNM = D.INFOTP_LNM
+			  AND B.VRF_RMK IS NULL) B
+		ON A.COL_LNM = B.SDITM_LNM
+		AND A.COL_PNM = B.SDITM_PNM
+		AND A.DATA_TYPE = B.DATA_TYPE
+		AND IFNULL(A.DATA_LEN,'') = IFNULL(B.DATA_LEN,'')
+		AND IFNULL(A.DATA_SCAL,'') = IFNULL(B.DATA_SCAL,'')
+		AND A.ORG_NM = B.ORG_NM
+		AND A.DB_NM = B.DB_NM
+		LEFT OUTER JOIN WAM_NIA_PDM_SDITM_MAP C
+		  ON A.COL_ID = C.COL_ID
+		WHERE C.MAP_ID IS NULL
+		]]>
+  </sql>
+  
+  	<select id="getStndNm" resultType="java.lang.String">
+
+		SELECT CASE WHEN COUNT(*) > 0
+		THEN 'ORG' 
+		ELSE 'DB'
+		END AS stndNm
+		FROM WAM_SDITM B
+
+  	</select>
+
+	<select id="selectPdmSditmMapRqst" parameterType="kr.wise.dq.model.service.NiaPdmSditmMapVo" resultMap="BaseResultMap">
+	
+		SELECT * FROM (
+		<if test="stndNm.equals('ORG')">
+		 	<include refid="getMapListNotSaved"/>
+		</if>
+		<if test="stndNm.equals('DB')">
+			<include refid="getDBMapListNotSaved"/>
+		</if>
+		) A
+		WHERE 1=1
+		<if test="orgNm != null">
+		AND UPPER(A.ORG_NM) LIKE CONCAT('%',UPPER(#{orgNm, jdbcType=VARCHAR}),'%')
+		</if>
+		<if test="dbNm != null">
+		AND UPPER(A.DB_NM) LIKE CONCAT('%',UPPER(#{dbNm, jdbcType=VARCHAR}),'%')
+		</if>
+		<if test="colLnm != null">
+		AND UPPER(A.COL_LNM) LIKE CONCAT('%',UPPER(#{colLnm, jdbcType=VARCHAR}),'%')
+		</if>
+		<if test="sditmLnm != null">
+		AND UPPER(A.SDITM_LNM) LIKE CONCAT('%',UPPER(#{sditmLnm, jdbcType=VARCHAR}),'%')
+		</if>
+		
+		ORDER BY A.SDITM_LNM DESC		
+	</select>
+	
+	<select id="selectPdmSditmMapList" parameterType="kr.wise.dq.model.service.NiaPdmSditmMapVo" resultMap="BaseResultMap">
+	
+		SELECT *, IF(A.MAP_YN='N','#FF0000',NULL) AS FontColor FROM (
+		 <include refid="getMapListSaved"/>
+		) A
+		WHERE 1=1
+		<if test="orgNm != null">
+		AND UPPER(A.ORG_NM) LIKE CONCAT('%',UPPER(#{orgNm, jdbcType=VARCHAR}),'%')
+		</if>
+		<if test="dbNm != null">
+		AND UPPER(A.DB_NM) LIKE CONCAT('%',UPPER(#{dbNm, jdbcType=VARCHAR}),'%')
+		</if>
+		<if test="colLnm != null">
+		AND UPPER(A.COL_LNM) LIKE CONCAT('%',UPPER(#{colLnm, jdbcType=VARCHAR}),'%')
+		</if>
+		<if test="sditmLnm != null">
+		AND UPPER(A.SDITM_LNM) LIKE CONCAT('%',UPPER(#{sditmLnm, jdbcType=VARCHAR}),'%')
+		</if>
+		
+		ORDER BY A.COL_LNM
+		
+	</select>	
+
+	<select id="getSditmIdByNm" parameterType="kr.wise.dq.model.service.NiaPdmSditmMapVo" resultType="java.lang.String">
+		SELECT SDITM_ID
+		FROM WAM_SDITM
+		WHERE SDITM_LNM = #{sditmLnm, jdbcType=VARCHAR}
+		AND SDITM_PNM = #{sditmPnm, jdbcType=VARCHAR}
+		AND ORG_NM = #{orgNm, jdbcType=VARCHAR}
+		AND VRF_RMK IS NULL
+	</select>
+	
+	<select id="getDbSditmIdByNm" parameterType="kr.wise.dq.model.service.NiaPdmSditmMapVo" resultType="java.lang.String">
+		SELECT SDITM_ID
+		FROM WAM_DB_SDITM
+		WHERE SDITM_LNM = #{sditmLnm, jdbcType=VARCHAR}
+		AND SDITM_PNM = #{sditmPnm, jdbcType=VARCHAR}
+		AND DB_NM = #{dbNm, jdbcType=VARCHAR}
+		AND ORG_NM = #{orgNm, jdbcType=VARCHAR}
+		AND VRF_RMK IS NULL
+	</select>	
+
+	<insert id="insertPdmSditmMap" parameterType="kr.wise.dq.model.service.WamNiaPdmSditmMap">
+		INSERT INTO WAM_NIA_PDM_SDITM_MAP
+		(MAP_ID
+		,COL_ID
+		,SDITM_ID
+		,STR_DTM
+		,STND_NM) 
+		VALUES
+		(#{mapId, jdbcType=VARCHAR}
+		,#{colId, jdbcType=VARCHAR}
+		,#{sditmId, jdbcType=VARCHAR}
+		,CURRENT_TIMESTAMP()
+		,#{stndNm, jdbcType=VARCHAR})
+	</insert>
+
+	<insert id="insertPdmSditmMapAna" parameterType="kr.wise.dq.model.service.WamNiaPdmSditmMapAna">
+		INSERT INTO WAM_NIA_PDM_SDITM_MAP_ANA
+		(ANA_DTM
+		,TOT_COL_CNT
+		,MAP_CNT
+		,MAP_RT)
+		VALUES
+		(
+		#{anaDtm, jdbcType=DATE}
+		,#{totColCnt, jdbcType=VARCHAR}
+		,#{mapCnt, jdbcType=VARCHAR}
+		,#{mapRt, jdbcType=VARCHAR})
+
+	</insert>
+	
+	<select id="getPdmSditmMapAna" parameterType="kr.wise.dq.model.service.WamNiaPdmSditmMapAna" resultType="kr.wise.dq.model.service.WamNiaPdmSditmMapAna">
+		SELECT
+		'12' AS anaCd
+		,ANA_DTM AS anaDtm
+		,TOT_COL_CNT AS totColCnt
+		,MAP_CNT AS mapCnt
+		,MAP_RT AS mapRt
+		FROM WAM_NIA_PDM_SDITM_MAP_ANA
+		ORDER BY anaDtm DESC
+	</select>
+	
+	<update id="updateByMapId" parameterType="kr.wise.dq.model.service.WamNiaPdmSditmMap">
+		UPDATE WAM_NIA_PDM_SDITM_MAP SET
+		COL_ID = #{colId, jdbcType=VARCHAR}
+		,SDITM_ID = #{sditmId, jdbcType=VARCHAR}
+		,STR_DTM = CURRENT_TIMESTAMP()
+		,STND_NM = #{stndNm, jdbcType=VARCHAR}
+		WHERE MAP_ID = #{mapId, jdbcType=VARCHAR}
+	</update>
+
+
+	
+	<select id="selectPdmSditmMapAna" resultType="kr.wise.dq.model.service.WamNiaPdmSditmMapAna">
+		SELECT
+		ANA_CD AS anaCd
+		,ANA_DTM AS anaDtm
+		,TOT_COL_CNT AS totColCnt
+		,MAP_CNT AS mapCnt
+		,IFNULL(CONCAT(ROUND((MAP_CNT/TOT_COL_CNT) * 100,2)),0.00) AS mapRt
+		FROM(
+			SELECT
+			'12' AS ANA_CD
+			,(SELECT MAX(STR_DTM) FROM WAM_NIA_PDM_SDITM_MAP) AS ANA_DTM
+			,(SELECT COUNT(*) FROM WAM_NIA_PDM_COL) AS TOT_COL_CNT
+			,(SELECT COUNT(*) FROM(<include refid="getMapListSaved"/>) A
+				WHERE A.MAP_YN = 'Y') AS MAP_CNT
+		) A
+		
+	</select>
+	
+	<delete id="deletePdmSditmMapList" parameterType="kr.wise.dq.model.service.NiaPdmSditmMapVo">
+		DELETE FROM
+		WAM_NIA_PDM_SDITM_MAP
+		WHERE MAP_ID = #{mapId, jdbcType=VARCHAR}
+	</delete>
+	
+	<select id="getMapIdByColSditm" parameterType="kr.wise.dq.model.service.NiaPdmSditmMapVo" resultType="java.lang.String">
+		SELECT
+		MAP_ID
+		FROM WAM_NIA_PDM_SDITM_MAP
+		WHERE COL_ID = #{colId, jdbcType=VARCHAR}
+		AND SDITM_ID = #{sditmId, jdbcType=VARCHAR}
+		AND STND_NM = #{stndNm, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectPdmAllMapList" parameterType="kr.wise.dq.model.service.NiaPdmSditmMapVo" resultMap="BaseResultMap">
+		SELECT
+		B.MAP_ID
+		,B.STND_NM
+		,A.COL_ID
+		,A.ORG_NM
+		,A.DB_NM
+		,A.TBL_PNM
+		,A.TBL_LNM
+		,A.COL_PNM
+		,A.COL_LNM
+		,A.DATA_TYPE
+		,A.DATA_LEN
+		,A.DATA_SCAL
+		,B.SDITM_ID
+		,B.SDITM_PNM
+		,B.SDITM_LNM
+		,B.INFOTP_LNM
+		,B.OBJ_DESCN
+		,IFNULL(B.MAP_YN,'N') AS MAP_YN
+		FROM WAM_NIA_PDM_COL A
+		LEFT OUTER JOIN (
+		<include refid="getMapListSaved"/>
+		) B
+		ON A.COL_ID = B.COL_ID
+		ORDER BY A.COL_LNM
+	</select>
+
+
+</mapper>
