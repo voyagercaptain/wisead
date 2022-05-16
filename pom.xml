@@ -106,14 +106,7 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>${ch.qos.logback-version}</version>
-		</dependency>
-		<exclusions>
-			<exclusion>
-				<groupId>commons-logging</groupId>
-				<artifactId>commons-logging</artifactId>
-			</exclusion>
-		</exclusions>
-		
+		</dependency>		
 
 		<!-- <dependency>
 			<groupId>opensymphony</groupId>
@@ -685,6 +678,7 @@
   </dependencies>
   <build>
     <finalName>wiseda</finalName>
+    <defaultGoal>install</defaultGoal>
     <extensions>
       <extension>
         <groupId>kr.motd.maven</groupId>
