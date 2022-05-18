@@ -180,7 +180,6 @@
               ON A.USERG_ID = B.USERG_ID
               AND B.EXP_DTM = DATE_FORMAT('9999-12-31','%Y-%m-%d')
               AND B.REG_TYP_CD IN ('C', 'U')
-		    
         WHERE 1=1
           AND LOGIN_AC_ID  = #{loginAcId}
           AND A.EXP_DTM = DATE_FORMAT('9999-12-31','%Y-%m-%d')

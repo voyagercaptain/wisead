@@ -246,7 +246,8 @@
   	     , A.MDL_JSON_INF  	     
   	     , A.WRIT_DTM
   	     , A.WRIT_USER_ID
-  	     , GET_USER_NM(A.WRIT_USER_ID) AS WRIT_USER_NM
+  	     --, GET_USER_NM(A.WRIT_USER_ID) AS WRIT_USER_NM
+  	     , '' AS WRIT_USER_NM
   	     , B.ANA_STR_DTM
   	     , B.ANA_END_DTM
       FROM WAD_UOD A

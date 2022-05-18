@@ -56,12 +56,11 @@
 	  FROM  WAA_PRGM_MENU b
 	  JOIN WAA_USERG_MENU_AUTH A
 	    ON A.MENU_ID = B.MENU_ID
-	   
 	  AND A.EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')
 	  AND A.REG_TYP_CD IN ('C', 'U')
 	where A.USERG_ID = #{usergId,jdbcType=VARCHAR}
 	  AND B.DISP_YN = 'Y'
-	  AND B.EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')
+	  AND B.EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d') 
 	  AND B.REG_TYP_CD IN ('C', 'U')
 	  AND B.MENU_LVL = 0
 	  AND B.MENU_DCD = #{menuDcd,jdbcType=VARCHAR}
@@ -93,7 +92,7 @@
   FROM V_WAA_PRGM_MENU B
        INNER JOIN WAA_USERG_MENU_AUTH A
           ON B.MENU_ID = A.MENU_ID
-         AND A.EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')
+      /*   AND A.EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d') */
 		 AND A.REG_TYP_CD IN ('C', 'U')
  WHERE 1 = 1
    AND B.DISP_YN = 'Y'

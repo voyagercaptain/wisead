@@ -329,25 +329,30 @@ function setlocationmenu(topmenuid, uppmenuid) {
 				<!-- SLC메타 -->
 			</c:when>
 			<c:otherwise>
+				
 				<!-- 			210519 청년인턴용 로고 숨기기 -->
 				<%-- 		   		<div class="logo"><a href="<c:url value="/dqmain.do" />"><img src="<c:url value="/img/logo_dq.png" />" alt="<s:message code='WISE.DQ' />" /></a></div> <!-- 위세디큐 --> --%>
 				<div class="logo">
-
+				
+				
+				
+				 
 					<a href="<c:url value="/dq/model/nia_pdmcol_rqst.do" />"
 						style="display: block; text-align: center; height: 38px; padding-left: 20px; padding-top: 17px; color: #ffffff; position: relative; font-size: 16px; font-weight: 500;">DB표준화
 						관리도구</a>
+					
 					<!-- 위세디큐 -->
-					</li>
+
 				</div>
 				<%--    		<div class="n2logo"><a href="<c:url value="/dqmain.do" />"></a></div> <!-- 위세디큐 --> --%>
 			</c:otherwise>
 		</c:choose>
 		<ul class="n4gnb_menu">
+				
 			<c:forEach var="topmenu" items="${TOP_MENU}" varStatus="status">
 				<li id="topmenu_${topmenu.menuId}" class="topmenu" style=""><c:choose>
 						<c:when
 							test="${topmenu.filePath != 'link' and topmenu.filePath != 'dir' }">
-							<%--        	 		<a onclick=""  href="<c:url value="${topmenu.filePath}" />"> --%>
 							<a onclick="selFunc(this);" href="<c:url value="${topmenu.filePath}" />">
 						</c:when>
 						<c:otherwise>

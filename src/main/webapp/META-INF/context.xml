@@ -1,8 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
  <Context docBase="" path="" reloadable="false" >
-                 
+
+
   <Resource    auth="Container" 
                  name="ds_wiseda" 
+  				type="javax.sql.DataSource" 
+  				driverClassName="cubrid.jdbc.driver.CUBRIDDriver" 
+  				username="dba" 
+  				password="wise12#"
+  				url="jdbc:cubrid:192.168.0.41:33000:wise:::?charset=utf8" 
+  				maxIdle="10" 
+  				maxWait="20000" 
+  				maxActive="10"
+  				validationQuery="select 1 from dual" />
+  				
+
+  <Resource    auth="Container" 
+                 name="ds_mart" 
+  				type="javax.sql.DataSource" 
+  				driverClassName="cubrid.jdbc.driver.CUBRIDDriver" 
+  				username="dba" 
+  				password="wise12#"
+  				url="jdbc:cubrid:192.168.0.41:33000:wise:::?charset=utf8" 
+  				maxIdle="10" 
+  				maxWait="20000" 
+  				maxActive="10"
+  				validationQuery="select 1 from dual" /> 
+  				  				 
+  					                 
+  <Resource    auth="Container" 
+                 name="ds_wiseda_ori" 
   				type="javax.sql.DataSource" 
   				driverClassName="org.mariadb.jdbc.Driver" 
   				username="WISEDA" 
@@ -12,9 +39,11 @@
   				maxWait="20000" 
   				maxActive="10"
   				validationQuery="select 1 from dual" /> 
+
+
                  
   <Resource    auth="Container" 
-                 name="ds_mart" 
+                 name="ds_mart_ori" 
   				type="javax.sql.DataSource" 
   				driverClassName="org.mariadb.jdbc.Driver" 
   				username="WISEDA" 
