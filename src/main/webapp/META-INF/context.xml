@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
  <Context docBase="" path="" reloadable="false" >
 
-
   <Resource    auth="Container" 
                  name="ds_wiseda" 
   				type="javax.sql.DataSource" 

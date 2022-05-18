@@ -329,7 +329,6 @@ function setlocationmenu(topmenuid, uppmenuid) {
 				<!-- SLC메타 -->
 			</c:when>
 			<c:otherwise>
-				
 				<!-- 			210519 청년인턴용 로고 숨기기 -->
 				<%-- 		   		<div class="logo"><a href="<c:url value="/dqmain.do" />"><img src="<c:url value="/img/logo_dq.png" />" alt="<s:message code='WISE.DQ' />" /></a></div> <!-- 위세디큐 --> --%>
 				<div class="logo">

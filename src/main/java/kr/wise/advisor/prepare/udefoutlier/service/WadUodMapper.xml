@@ -240,7 +240,6 @@
   
  
   <select id="selectUdefOutlierList"  parameterType="kr.wise.advisor.prepare.udefoutlier.service.WadUod" resultMap="BaseResultMap">
-  
   	SELECT A.UDF_OTL_DTC_ID
   	     , A.UDF_OTL_DTC_NM
   	     , A.MDL_JSON_INF  	     

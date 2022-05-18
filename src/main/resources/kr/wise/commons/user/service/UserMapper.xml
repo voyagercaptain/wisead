@@ -185,4 +185,5 @@
           AND A.EXP_DTM = DATE_FORMAT('9999-12-31','%Y-%m-%d')
           AND A.REG_TYP_CD IN ('C', 'U')	
 	</select>
+	
 </mapper>

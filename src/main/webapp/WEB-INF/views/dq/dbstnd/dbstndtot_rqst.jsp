@@ -133,7 +133,10 @@ $(window).load(function() {
 
 	//프로파일별 그리드명 셋팅
 	var bizDtlCd = $("form[name=mstFrm] #bizDtlCd").val();
-// 	alert(bizDtlCd);
+ 	alert(bizDtlCd);
+ 	
+ 	bizDtlCd = "STWD";
+ 	
 	if(bizDtlCd == "SDITM" || bizDtlCd == null){
 		grid_name = grid_SDITM;
 	}else if(bizDtlCd == "DMN"){
@@ -156,11 +159,14 @@ $(window).load(function() {
 // 	checkApproveYn($("#mstFrm"));
 
 // 	setTimeOut
-// 	doAction("Search");
+ 	doAction("Search");
+	/*
     setTimeout(function(){
-    	 $( "#tab-SDITM a" ).click();
+    	 //$( "#tab-SDITM a" ).click();
+    	 $( "#tab-STWD a" ).click();
 //     	 doAction("Search");
     },500);
+	*/
     	
 });
 
@@ -555,21 +561,27 @@ function postProcessIBS(res) {
 <div style="clear:both; height:5px;"><span></span></div>
 
 	<div id="tabs">
+	   
 	  <ul>
-	    <li id="tab-SDITM"><a href="#tabs-SDITM"><s:message code="STRD.TERMS"/></a></li><!--표준용어-->
-	    <li id="tab-DMN"><a href="#tabs-DMN"><s:message code="DMN"/></a></li><!-- 도메인-->
-	    <li id="tab-STWD"><a href="#tabs-STWD"><s:message code="STRD.WORD"/></a></li><!--표준단어-->
+	  		  	
+	    <li id="tab-SDITM"><a href="#tabs-SDITM"><s:message code="STRD.TERMS"/></a></li> 
+	    <li id="tab-DMN"><a href="#tabs-DMN"><s:message code="DMN"/></a></li> 
+	    <li id="tab-STWD"><a href="#tabs-STWD"><s:message code="STRD.WORD"/></a></li> 
+	    
 	  </ul>
+	  
+	    
 	  <div id="tabs-SDITM">
 			<div id="detailInfoSDITM"><%@include file="exl/dbstnditem_exl.jsp" %></div>
 	  </div>
 	  <div id="tabs-DMN">
 			<div id="detailInfoDMN"><%@include file="exl/dbstnddmn_exl.jsp" %></div>
 	  </div>
+	  
 	  <div id="tabs-STWD">
 			<div id="detailInfoSTWD"><%@include file="exl/dbstndstwd_exl.jsp" %></div>
 	  </div>	  
-	 </div>
+	</div>
 
 	<div style="clear:both; height:20px;"><span></span></div>
 	<!-- 선택 레코드의 카테고리 별로 있을 경우 탭처리... -->
