@@ -1,4 +1,4 @@
-﻿package kr.wise.commons.sysmgmt.menu.service;
+package kr.wise.commons.sysmgmt.menu.service;
 import kr.wise.commons.cmm.CommonVo;
 
 public class MenuManageVO extends CommonVo {

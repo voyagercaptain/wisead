@@ -1,4 +1,4 @@
-﻿package kr.wise.commons.util;
+package kr.wise.commons.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
