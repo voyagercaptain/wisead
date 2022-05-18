@@ -94,9 +94,22 @@ public class CommStndTotCtrl {
 	public String goCommStndTot(WaqMstr reqmst, ModelMap model,HttpSession session) throws Exception {
     	logger.debug("WaqMstr:{}", reqmst);
     	
-        
-    	return "/dq/stnd/commstndtot_lst";
-    	
+    	/*
+    	String strReturn = "";
+        if("STWD".equals(reqmst.getScreenGb())) {
+        	strReturn = "/dq/stnd/commstndStwd_lst";
+        }
+        else if("DMN".equals(reqmst.getScreenGb())) {
+        	strReturn = "/dq/stnd/commstndDmn_rqst";
+        }
+        else if("SDITM".equals(reqmst.getScreenGb())) {
+        	strReturn = "/dq/stnd/commstndItem_rqst";
+        } 
+        //else {
+        //	strReturn = "/dq/stnd/commstndtot_lst";
+        //}
+		*/
+        return "/dq/stnd/commstndtot_lst";	
 	} 
     
     public void setEmptyToNull(HashMap<String, String> search){

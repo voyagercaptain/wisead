@@ -189,9 +189,22 @@ public class StndTotRqstCtrl {
         
         
         model.addAttribute("codeMap",getcodeMap());
-        
-        
-    	return "/dq/stnd/stndtot_rqst";
+    	
+    	String strReturn = "";
+        if("STWD".equals(reqmst.getScreenGb())) {
+        	strReturn = "/dq/stnd/stndstwd_rqst";
+        }
+        else if("DMN".equals(reqmst.getScreenGb())) {
+        	strReturn = "/dq/stnd/stnddmn_rqst";
+        }
+        else if("SDITM".equals(reqmst.getScreenGb())) {
+        	strReturn = "/dq/stnd/stnditem_rqst";
+        } 
+        //else {
+        //	strReturn = "/dq/stnd/stndtot_rqst";
+        //}
+
+        return strReturn;	
     	
 	} 
 

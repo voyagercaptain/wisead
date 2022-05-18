@@ -333,13 +333,13 @@ function setlocationmenu(topmenuid, uppmenuid) {
 				<%-- 		   		<div class="logo"><a href="<c:url value="/dqmain.do" />"><img src="<c:url value="/img/logo_dq.png" />" alt="<s:message code='WISE.DQ' />" /></a></div> <!-- 위세디큐 --> --%>
 				<div class="logo">
 				
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				
-				
-				 
+				 	<!-- 
 					<a href="<c:url value="/dq/model/nia_pdmcol_rqst.do" />"
 						style="display: block; text-align: center; height: 38px; padding-left: 20px; padding-top: 17px; color: #ffffff; position: relative; font-size: 16px; font-weight: 500;">DB표준화
 						관리도구</a>
-					
+					 -->
 					<!-- 위세디큐 -->
 
 				</div>
@@ -349,7 +349,8 @@ function setlocationmenu(topmenuid, uppmenuid) {
 		<ul class="n4gnb_menu">
 				
 			<c:forEach var="topmenu" items="${TOP_MENU}" varStatus="status">
-				<li id="topmenu_${topmenu.menuId}" class="topmenu" style=""><c:choose>
+				<li id="topmenu_${topmenu.menuId}" class="topmenu" style="">
+					<c:choose>
 						<c:when
 							test="${topmenu.filePath != 'link' and topmenu.filePath != 'dir' }">
 							<a onclick="selFunc(this);" href="<c:url value="${topmenu.filePath}" />">
@@ -357,7 +358,8 @@ function setlocationmenu(topmenuid, uppmenuid) {
 						<c:otherwise>
 							<a onclick="selFunc(this);">
 						</c:otherwise>
-					</c:choose> ${topmenu.menuNm}</a></li>
+					</c:choose> ${topmenu.menuNm}</a>
+				</li>
 			</c:forEach>
 		</ul>
 
