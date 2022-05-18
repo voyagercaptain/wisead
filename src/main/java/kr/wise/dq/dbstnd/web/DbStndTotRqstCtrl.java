@@ -160,14 +160,14 @@ public class DbStndTotRqstCtrl {
 //        5. 취소하는경우 'Q'도 'S'로 변경.
         
       	MstrAprPrcVO mapvo = new MstrAprPrcVO();
-//        System.out.println("요청번호 : " + reqmst.getRqstNo());
-//        System.out.println("요청구분 : " + reqmst.getBizDcd());
-//        System.out.println("아이디 : " + ((LoginVO)session.getAttribute("loginVO")).getId());
+        System.out.println("요청번호 : " + reqmst.getRqstNo());
+        System.out.println("요청구분 : " + reqmst.getBizDcd());
+        System.out.println("아이디 : " + ((LoginVO)session.getAttribute("loginVO")).getId());
         mapvo.setRqst_no(reqmst.getRqstNo());
         mapvo.setWrit_user_id(((LoginVO)session.getAttribute("loginVO")).getId());
         
         int mapcount = approveLineServie.checkRequst(mapvo); 
-//        System.out.println("카운트 : " + mapcount);
+        System.out.println("카운트 : " + mapcount);
         model.addAttribute("checkrequstcount", mapcount);
         model.addAttribute("rqstno",reqmst.getRqstNo());
         model.addAttribute("rqstbizdcd",reqmst.getBizDcd());
@@ -175,9 +175,21 @@ public class DbStndTotRqstCtrl {
         
         model.addAttribute("codeMap",getcodeMap());
         
-        
-    	return "/dq/dbstnd/dbstndtot_rqst";
-    	
+        String strReturn = "";
+        if("STWD".equals(reqmst.getScreenGb())) {
+        	strReturn = "/dq/dbstnd/dbstndstwd_rqst";
+        }
+        else if("DMN".equals(reqmst.getScreenGb())) {
+        	strReturn = "/dq/dbstnd/dbstnddmn_rqst";
+        }
+        else if("SDITM".equals(reqmst.getScreenGb())) {
+        	strReturn = "/dq/dbstnd/dbstnditem_rqst";
+        } 
+        //else {
+        //	strReturn = "/dq/dbstnd/dbstndtot_rqst";
+        //}
+
+        return strReturn;	
 	} 
 
 

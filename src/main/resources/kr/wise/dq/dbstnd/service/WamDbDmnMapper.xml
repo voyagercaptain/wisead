@@ -58,9 +58,9 @@
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select A.* 
-  	  	,(SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.FRS_RQST_USER_ID) AS FRS_RQST_USER_NM
-  	  	,(SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.RQST_USER_ID) AS RQST_USER_NM
-  	  	,(SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.APRV_USER_ID) AS APRV_USER_NM     
+  	  	,(SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.FRS_RQST_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS FRS_RQST_USER_NM
+  	  	,(SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.RQST_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS RQST_USER_NM
+  	  	,(SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.APRV_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS APRV_USER_NM     
 <!--            G.DMNG_LNM, -->
 <!--            G.UPP_DMNG_LNM, -->
 <!--     	   GET_USER_NM(A.FRS_RQST_USER_ID) AS FRS_RQST_USER_NM, -->
@@ -812,7 +812,7 @@
   
   <select id="selectDmnChangeList" resultMap="BaseResultMap" parameterType="java.lang.String" >
     SELECT A.*
-         , (SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.RQST_USER_ID) AS RQST_USER_NM 
+         , (SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.RQST_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS RQST_USER_NM 
     	 , CASE WHEN A.EXP_DTM = DATE_FORMAT( '9999-12-31', '%Y-%m-%d') AND A.REG_TYP_CD IN ('C', 'U') THEN '#0000FF'
     	   ELSE NULL END AS FontColor
       FROM WAH_DMN A

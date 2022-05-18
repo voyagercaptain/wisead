@@ -28,6 +28,7 @@ $(document).ready(function() {
 	
 	//업무구분상세 초기화...
 	$("#mstFrm #bizDtlCd").val("${waqMstr.bizDtlCd}");
+	//$("#mstFrm #bizDtlCd").val("STWD");
 	
 	$("[id$='-${waqMstr.bizDtlCd}'] a").click();
 	
@@ -133,9 +134,9 @@ $(window).load(function() {
 
 	//프로파일별 그리드명 셋팅
 	var bizDtlCd = $("form[name=mstFrm] #bizDtlCd").val();
- 	alert(bizDtlCd);
+ 	//alert(bizDtlCd);
  	
- 	bizDtlCd = "STWD";
+ 	//bizDtlCd = "STWD";
  	
 	if(bizDtlCd == "SDITM" || bizDtlCd == null){
 		grid_name = grid_SDITM;
@@ -159,14 +160,13 @@ $(window).load(function() {
 // 	checkApproveYn($("#mstFrm"));
 
 // 	setTimeOut
- 	doAction("Search");
-	/*
+// 	doAction("Search");
+	
     setTimeout(function(){
-    	 //$( "#tab-SDITM a" ).click();
-    	 $( "#tab-STWD a" ).click();
+    	 $( "#tab-SDITM a" ).click();
 //     	 doAction("Search");
     },500);
-	*/
+	
     	
 });
 
@@ -215,6 +215,7 @@ function doAction(sAction)
 {
 	//프로파일별 그리드명 셋팅
 	var bizDtlCd = $("form[name=mstFrm] #bizDtlCd").val();
+	//alert(bizDtlCd);
 	
 	if(bizDtlCd == "SDITM"){
 		grid_name = grid_SDITM;

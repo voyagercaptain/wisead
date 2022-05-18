@@ -51,7 +51,16 @@ public class WaqMstr extends CommonVo{
     
     private String dtSrchDcd;; //일자검색구분
     
+    
+    private String screenGb;
 
+	public String getScreenGb() {
+		return screenGb;
+	}
+
+	public void setScreenGb(String screenGb) {
+		this.screenGb = screenGb;
+	}
 
 	public String getAprvStatus() {
 		return aprvStatus;
