@@ -1,4 +1,4 @@
-﻿package kr.wise.dq.vrfcrule.service;
+package kr.wise.dq.vrfcrule.service;
 
 import java.util.ArrayList;
 import kr.wise.commons.cmm.CommonVo;

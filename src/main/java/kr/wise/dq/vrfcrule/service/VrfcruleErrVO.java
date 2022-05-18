@@ -1,4 +1,4 @@
-﻿package kr.wise.dq.vrfcrule.service;
+package kr.wise.dq.vrfcrule.service;
 import java.math.BigDecimal;
 import java.util.Date;
 import kr.wise.dq.profile.mstr.service.WamPrfMstrVO;
