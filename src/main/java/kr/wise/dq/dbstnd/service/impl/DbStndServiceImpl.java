@@ -109,14 +109,14 @@ public class DbStndServiceImpl implements DbStndService {
 
 		}
 		
-		wamDbSditmMapper.updateVrfRmkNull();
+		//wamDbSditmMapper.updateVrfRmkNull();
 		//영문약어명 체크  올바르게 들어간 약어인지 체크
 //		wamDbSditmMapper.checkStwdAbr();
 		//형식단어로 끝나는지 체크
-		wamDbSditmMapper.checkDmnYnExsits();
+		//wamDbSditmMapper.checkDmnYnExsits();
 
 		//형식단어로 끝나는지 체크(한글명)
-		wamDbSditmMapper.checkDmnYnExsitsLnm();
+		//wamDbSditmMapper.checkDmnYnExsitsLnm();
 
 		
 		
