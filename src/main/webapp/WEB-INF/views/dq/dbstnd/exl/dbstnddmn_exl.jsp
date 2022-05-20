@@ -193,7 +193,7 @@ function grid_DMN_OnSearchEnd(code, message, stCode, stMsg) {
 
 	<!-- 그리드 입력 입력 -->
 <div id="grid_DMN" class="grid_DMN">
-     <script type="text/javascript">createIBSheet("grid_DMN", "100%", "400px");</script>
+     <script type="text/javascript">createIBSheet("grid_DMN", "100%", "600px");</script>
 </div>
 
 <!-- 그리드 하단 영역 : 레코드 선택시 내용 표시 및 수정 가능하도록 -->
