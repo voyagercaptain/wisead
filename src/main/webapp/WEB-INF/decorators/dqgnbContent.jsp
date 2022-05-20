@@ -309,11 +309,11 @@ function setlocationmenu(topmenuid, uppmenuid) {
 			<!-- <li><a href="<c:url value="/main.do"/>" target="_blank"><img src="<c:url value="/images/nball_quick_meta.png"/>" alt=""><s:message code="META.DATA.SYS" /></a></a></li>  -->
 			<!--  <li><a href="<c:url value="/dqmain.do"/>" target="_blank"><img src="<c:url value="/images/nball_quick_dq.png"/>" alt=""><s:message code="DATA.QLTY.SYS" /></a></a></li> -->
 
-			<%-- <c:if test="${sessionScope.loginVO.isAdminYn == 'Y' }">
+			<c:if test="${sessionScope.loginVO.isAdminYn == 'Y' }">
 				<li id="top_menu_01_05" style="display: block;">
 					<a class="ic_set"><s:message code="MGR"/></a> <!-- 시스템관리 -->
 				</li>
-			</c:if> --%>
+			</c:if>
 		</ul>
 	</div>
 
