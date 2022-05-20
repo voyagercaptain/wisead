@@ -196,8 +196,9 @@
     	<put-attribute name="body" 		expression="/WEB-INF/views/commons/code/{1}.jsp" />
     </definition>
     <definition name="/commons/user/**" extends="da.definition">
-    	<put-attribute name="title" 	value="Admin" />
-        <put-attribute name="header" 	value="/WEB-INF/decorators/adminheaderContent.jsp" />
+    	<put-attribute name="title" 	value="DQ" />
+    	<put-attribute name="header" 	value="/WEB-INF/decorators/dqgnbContent.jsp" />
+        <!-- <put-attribute name="header" 	value="/WEB-INF/decorators/adminheaderContent.jsp" /> -->
 <!--         <put-attribute name="menu" 		value="/WEB-INF/decorators/adminMenuContent.jsp" /> -->
     	<put-attribute name="body" 		expression="/WEB-INF/views/commons/user/{1}.jsp" />
     </definition>
