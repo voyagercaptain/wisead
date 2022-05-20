@@ -30,6 +30,7 @@ import kr.wise.commons.helper.grid.IBSResultVO;
 import kr.wise.commons.helper.grid.IBSheetListVO;
 import kr.wise.commons.util.UtilJson;
 import kr.wise.commons.util.UtilObject;
+import kr.wise.dq.stnd.service.StndCommWordService;
 import kr.wise.dq.stnd.service.StndWordAbrService;
 import kr.wise.dq.stnd.service.StndWordService;
 import kr.wise.dq.stnd.service.WamStwd;
@@ -73,6 +74,9 @@ public class StndWordCtrl {
 
 	@Inject
 	private StndWordService stndWordService;
+	
+	@Inject
+	private StndCommWordService stndCommWordService;
 
 	@Inject
 	private StndWordAbrService stndWordAbrService;
@@ -106,6 +110,24 @@ public class StndWordCtrl {
 		return new IBSheetListVO<WamStwd>(list, list.size());
 
 	}
+	
+	
+	@RequestMapping("/dq/stnd/getStndCommWordlist.do")
+	@ResponseBody
+	public IBSheetListVO<WamStwd> getStndCommWordList(@ModelAttribute WamStwd data, Locale locale) {
+
+		logger.debug("reqvo:{}", data);
+
+		List<WamStwd> list = stndCommWordService.getStndWordList(data);
+
+
+//		ibsJson.MESSAGE = message.getMessage("MSG.SAVE", null, locale);
+
+		return new IBSheetListVO<WamStwd>(list, list.size());
+
+	}
+	
+	
 	/** 표준단어 약어생성 메인페이지 호출 */
 	/** yeonho */
 	@RequestMapping("/dq/stnd/stwdabbreviated_lst.do")

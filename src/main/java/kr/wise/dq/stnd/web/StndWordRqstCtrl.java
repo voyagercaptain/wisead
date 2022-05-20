@@ -52,6 +52,7 @@ import kr.wise.commons.rqstmst.service.WaqMstr;
 import kr.wise.commons.user.service.UserService;
 import kr.wise.commons.util.UtilJson;
 import kr.wise.commons.util.UtilString;
+import kr.wise.dq.stnd.service.StndCommWordRqstService;
 import kr.wise.dq.stnd.service.StndWordAbrService;
 import kr.wise.dq.stnd.service.StndWordRqstService;
 import kr.wise.dq.stnd.service.WamStwd;
@@ -95,6 +96,9 @@ public class StndWordRqstCtrl {
 
 	@Inject
 	private StndWordRqstService stndWordRqstService;
+	
+	@Inject
+	private StndCommWordRqstService stndCommWordRqstService;
 	
 	@Inject
 	private StndWordAbrService stndWordAbrService;
@@ -521,6 +525,48 @@ public class StndWordRqstCtrl {
 	}
 	
 	
+	/** 표준단어 요청 저장 - IBSheet JSON @return insomnia
+	 * @throws Exception */
+	@RequestMapping("/dq/stnd/regStndCommWordWamlist.do")
+	@ResponseBody
+	public IBSResultVO<WaqMstr> regStndCommWordWamlist(@RequestBody WamStwds data, WaqMstr reqmst, HttpSession session, Locale locale) throws Exception {
+		logger.debug("/dq/stnd/regStndWordRqstlist.do");
+		logger.debug("reqmst:{} \ndata:{}", reqmst, data);
+
+		ArrayList<WamStwd> list = data.get("data");
+
+		int result = stndCommWordRqstService.registerWam(list);
+		
+//		String stwdDcd = UtilString.null2Blank(session.getAttribute("stwdDcd"));
+		
+		//동음의의어:H,이음동의어:A,둘다허용:T,유니크:U 
+//		reqmst.setStwdKeyDcd(stwdDcd); 
+
+		//검증없음
+//		result += stndWordRqstService.check(reqmst);
+
+
+//		int result = stndWordRqstService.regStndWordRqstlist(list);
+		String resmsg;
+
+		if(result > 0) {
+			result = 0;
+			resmsg = message.getMessage("MSG.SAVE", null, locale);
+		} else {
+			result = -1;
+			resmsg = message.getMessage("ERR.SAVE", null, locale);
+		}
+
+		String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+
+		//마지막에 최종 업데이트 된 요청마스터 정보를 가져온다.
+//		reqmst = requestMstService.getrequestMst(reqmst);
+
+		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+	}
+	
+	
+	
 	  /** 표준단어 요청 저장 - IBSheet JSON @return insomnia
 		 * @throws Exception */
 		@RequestMapping("/dq/stnd/delstwdwamlist.do")
@@ -564,5 +610,47 @@ public class StndWordRqstCtrl {
 			return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
 		}
 	
+		
+		/** 표준단어 요청 저장 - IBSheet JSON @return insomnia
+		 * @throws Exception */
+		@RequestMapping("/dq/stnd/delCommstwdwamlist.do")
+		@ResponseBody
+		public IBSResultVO<WaqMstr> delCommstwdwamlist(@RequestBody WamStwds data, WaqMstr reqmst, HttpSession session, Locale locale) throws Exception {
+			logger.debug("/dq/stnd/regStndWordRqstlist.do");
+			logger.debug("reqmst:{} \ndata:{}", reqmst, data);
 
+			ArrayList<WamStwd> list = data.get("data");
+            
+			for(int i=0;i<list.size();i++) {
+				list.get(i).setIbsStatus("D");
+			}
+			int result = stndCommWordRqstService.registerWam(list);
+			
+//			String stwdDcd = UtilString.null2Blank(session.getAttribute("stwdDcd"));
+			
+			//동음의의어:H,이음동의어:A,둘다허용:T,유니크:U 
+//			reqmst.setStwdKeyDcd(stwdDcd); 
+
+			//검증없음
+//			result += stndWordRqstService.check(reqmst);
+
+
+//			int result = stndWordRqstService.regStndWordRqstlist(list);
+			String resmsg;
+
+			if(result > 0) {
+				result = 0;
+				resmsg = message.getMessage("MSG.SAVE", null, locale);
+			} else {
+				result = -1;
+				resmsg = message.getMessage("ERR.SAVE", null, locale);
+			}
+
+			String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+
+			//마지막에 최종 업데이트 된 요청마스터 정보를 가져온다.
+//			reqmst = requestMstService.getrequestMst(reqmst);
+
+			return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+		}
 }
