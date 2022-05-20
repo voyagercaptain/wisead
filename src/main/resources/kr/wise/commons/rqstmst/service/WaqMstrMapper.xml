@@ -1163,10 +1163,8 @@
                            AND B.APR_FRML_CD = 'D'
                            AND B.APR_LVL = (SELECT MIN(APR_LVL) FROM WAA_APR_PRC
                                             WHERE RQST_NO = A.RQST_NO AND APRV_DTM IS NULL)   -- 결재대상자가 나인 경우
-             
                             OR RQST_STEP_CD = 'Q' 
                             AND B.APR_FRML_CD = 'G'
-                            
                             AND B.USER_ID IN (SELECT APRG_ID FROM WAA_APRG_USER 
                                               WHERE APRG_ID = B.APRG_ID
                                               AND EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')
@@ -1196,13 +1194,11 @@
                             AND B.APR_LVL = (SELECT MIN(APR_LVL) FROM WAA_APR_PRC
                                              WHERE RQST_NO = A.RQST_NO AND APRV_DTM IS NULL) 
                          THEN '1'
-      
                        ELSE '0'
                        END AS CHECK_APR_LVL
             ,CONCAT(APR_LVL,' / ',(SELECT MAX(APR_LVL) FROM WAA_APR_PRC WHERE RQST_NO = A.RQST_NO),'단계') AS APRV_STEP_LVL           
       FROM WAQ_MSTR A INNER JOIN WAA_APR_PRC B
       ON A.RQST_NO = B.RQST_NO  ) FSQ
-  
       <where> 
       CHECK_APR_LVL = '1'
       <if test="bizDcd != null" >
@@ -1218,7 +1214,6 @@
           <![CDATA[  AND DATE_FORMAT(RQST_DTM, '%Y%m%d') <= DATE_FORMAT(DATE_FORMAT(#{searchEndDe,jdbcType=VARCHAR}, '%Y-%m-%d'), '%Y%m%d') ]]>
        </if>
       </where>
-
       ORDER BY RQST_NO, APR_LVL
   </select>
   
@@ -1265,10 +1260,8 @@
                            AND B.APR_FRML_CD = 'D'
                            AND B.APR_LVL = (SELECT MIN(APR_LVL) FROM WAA_APR_PRC
                                             WHERE RQST_NO = A.RQST_NO AND APRV_DTM IS NULL)   -- 결재대상자가 나인 경우
-             
                             OR RQST_STEP_CD = 'Q' 
                             AND B.APR_FRML_CD = 'G'
-                            
                             AND B.USER_ID IN (SELECT APRG_ID FROM WAA_APRG_USER 
                                               WHERE APRG_ID = B.APRG_ID
                                               AND EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')
@@ -1291,20 +1284,15 @@
                                              WHERE RQST_NO = A.RQST_NO AND APRV_DTM IS NULL) 
                              ]]> 
                          THEN '1'
-      
                        ELSE '0'
                        END AS CHECK_APR_LVL
             ,CONCAT(APR_LVL,' / ',(SELECT MAX(APR_LVL) FROM WAA_APR_PRC WHERE RQST_NO = A.RQST_NO),'단계' ) AS APRV_STEP_LVL          
       FROM WAQ_MSTR A INNER JOIN WAA_APR_PRC B
       ON A.RQST_NO = B.RQST_NO ) FSQ
-      
       <where> 
       CHECK_APR_LVL = '1'
       AND RQST_NM IS NOT NULL
       </where>
-      
-      
-      
       ORDER BY RQST_DTM DESC, RQST_NO, APR_LVL
       ) A
       limit 5
