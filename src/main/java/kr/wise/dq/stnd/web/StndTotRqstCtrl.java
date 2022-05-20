@@ -58,6 +58,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -130,8 +131,8 @@ public class StndTotRqstCtrl {
 	
 
 	/** 표준데이터 엑셀등록  화면이동 - 요청번호가 없을 경우 채번하여 리턴한다. @return insomnia */
-    @RequestMapping("/dq/stnd/stndtot_rqst.do")
-	public String goStndwordrqstForm(WaqMstr reqmst, ModelMap model,HttpSession session) throws Exception {
+    @RequestMapping("/dq/stnd/{screenGb}//stndtot_rqst.do")
+	public String goStndwordrqstForm(WaqMstr reqmst, @PathVariable String screenGb, ModelMap model,HttpSession session) throws Exception {
     	logger.debug("WaqMstr:{}", reqmst);
     	
     	reqmst.setAprLvl(0);		//결재레벨을 지정해줘야 검증부분 확인가능
@@ -191,13 +192,13 @@ public class StndTotRqstCtrl {
         model.addAttribute("codeMap",getcodeMap());
     	
     	String strReturn = "";
-        if("STWD".equals(reqmst.getScreenGb())) {
+        if("STWD".equals(screenGb)) {
         	strReturn = "/dq/stnd/stndstwd_rqst";
         }
-        else if("DMN".equals(reqmst.getScreenGb())) {
+        else if("DMN".equals(screenGb)) {
         	strReturn = "/dq/stnd/stnddmn_rqst";
         }
-        else if("SDITM".equals(reqmst.getScreenGb())) {
+        else if("SDITM".equals(screenGb)) {
         	strReturn = "/dq/stnd/stnditem_rqst";
         } 
         //else {
@@ -211,8 +212,8 @@ public class StndTotRqstCtrl {
     
     
     
-    @RequestMapping("/dq/stnd/commstndtot_rqst.do")
-	public String goCommStndwordrqstForm(WaqMstr reqmst, ModelMap model,HttpSession session) throws Exception {
+    @RequestMapping("/dq/stnd/{screenGb}/commstndtot_rqst.do")
+	public String goCommStndwordrqstForm(WaqMstr reqmst, @PathVariable String screenGb, ModelMap model,HttpSession session) throws Exception {
     	logger.debug("WaqMstr:{}", reqmst);
     	
     	reqmst.setAprLvl(0);		//결재레벨을 지정해줘야 검증부분 확인가능
@@ -272,13 +273,13 @@ public class StndTotRqstCtrl {
         model.addAttribute("codeMap",getcodeMap());
     	
     	String strReturn = "";
-        if("STWD".equals(reqmst.getScreenGb())) {
+        if("STWD".equals(screenGb)) {
         	strReturn = "/dq/stnd/commstndstwd_rqst";
         }
-        else if("DMN".equals(reqmst.getScreenGb())) {
+        else if("DMN".equals(screenGb)) {
         	strReturn = "/dq/stnd/commstnddmn_rqst";
         }
-        else if("SDITM".equals(reqmst.getScreenGb())) {
+        else if("SDITM".equals(screenGb)) {
         	strReturn = "/dq/stnd/commstnditem_rqst";
         } 
         //else {
