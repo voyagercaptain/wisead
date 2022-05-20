@@ -12,6 +12,7 @@ import kr.wise.commons.code.service.CodeListService;
 import kr.wise.commons.helper.grid.IBSheetListVO;
 import kr.wise.commons.util.UtilJson;
 import kr.wise.commons.util.UtilObject;
+import kr.wise.dq.stnd.service.StndCommSditmService;
 import kr.wise.dq.stnd.service.StndSditmService;
 import kr.wise.dq.stnd.service.WamSditm;
 import kr.wise.dq.stnd.service.WamStwd;
@@ -45,6 +46,9 @@ public class StndSditmCtrl {
 
 	@Inject
 	private StndSditmService stndSditmService;
+	
+	@Inject
+	private StndCommSditmService stndCommSditmService;
 
 	@Inject
 	private CodeListService codeListService;
@@ -75,6 +79,22 @@ public class StndSditmCtrl {
 		return new IBSheetListVO<WamSditm>(list, list.size());
 
 	}
+	
+	
+	@RequestMapping("/dq/stnd/getCommsditmlist.do")
+	@ResponseBody
+	public IBSheetListVO<WamSditm> getStndCommItemList(@ModelAttribute WamSditm data, Locale locale) {
+
+		logger.debug("req vo:{}", data);
+
+		List<WamSditm> list = stndCommSditmService.getStndItemList(data);
+
+//		ibsJson.MESSAGE = message.getMessage("MSG.SAVE", null, locale);
+
+		return new IBSheetListVO<WamSditm>(list, list.size());
+
+	}
+
 
 
 	/** 표준 상세정보 조회 */

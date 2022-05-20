@@ -41,6 +41,7 @@ import kr.wise.commons.rqstmst.service.WaqMstr;
 import kr.wise.commons.sysmgmt.basicinfo.service.BasicInfoLvlService;
 import kr.wise.commons.sysmgmt.basicinfo.service.WaaBscLvl;
 import kr.wise.commons.util.UtilJson;
+import kr.wise.dq.stnd.service.StndCommDmnRqstService;
 import kr.wise.dq.stnd.service.StndDmnRqstService;
 import kr.wise.dq.stnd.service.WamDmn;
 import kr.wise.dq.stnd.service.WapDvCanAsm;
@@ -112,6 +113,9 @@ public class StndDmnRqstCtrl {
 
 	@Inject
 	private StndDmnRqstService stndDmnRqstService;
+	
+	@Inject
+	private StndCommDmnRqstService stndCommDmnRqstService;
 
 	@Inject
 	private ApproveLineServie approveLineServie;
@@ -595,6 +599,41 @@ public class StndDmnRqstCtrl {
 		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
 	}
 	
+	
+	
+	/** 도메인 요청 리스트 등록.... @throws Exception insomnia */
+	@RequestMapping("/dq/stnd/regCommdmnWamlist.do")
+	@ResponseBody
+	public IBSResultVO<WaqMstr> regStndCommdmnWamList(@RequestBody WamDmns data, WaqMstr reqmst, Locale locale) throws Exception {
+
+		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+		ArrayList<WamDmn> list = data.get("data");
+
+		int result = stndCommDmnRqstService.registerWam(list);
+
+//		result += stndDmnRqstService.check(reqmst);
+
+		String resmsg;
+
+		if(result > 0 ){
+			result = 0;
+			resmsg = message.getMessage("MSG.SAVE", null, locale);
+		} else {
+			result = -1;
+			resmsg = message.getMessage("ERR.SAVE", null, locale);
+		}
+
+		String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+
+		//마지막에 최종 업데이트 된 요청마스터 정보를 가져온다.
+//		reqmst = requestMstService.getrequestMst(reqmst);
+
+
+		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+	}
+	
+	
+	
 	/** 도메인 요청 리스트 등록.... @throws Exception insomnia */
 	@RequestMapping("/dq/stnd/deldmnWamlist.do")
 	@ResponseBody
@@ -629,6 +668,43 @@ public class StndDmnRqstCtrl {
 
 		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
 	}
+	
+	
+	/** 도메인 요청 리스트 등록.... @throws Exception insomnia */
+	@RequestMapping("/dq/stnd/delCommdmnWamlist.do")
+	@ResponseBody
+	public IBSResultVO<WaqMstr> delStndCommdmnWamList(@RequestBody WamDmns data, WaqMstr reqmst, Locale locale) throws Exception {
+
+		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+		ArrayList<WamDmn> list = data.get("data");
+
+		for(int i=0;i<list.size();i++) {
+			list.get(i).setIbsStatus("D");
+		}
+		
+		int result = stndCommDmnRqstService.registerWam(list);
+
+//		result += stndDmnRqstService.check(reqmst);
+
+		String resmsg;
+
+		if(result > 0 ){
+			result = 0;
+			resmsg = message.getMessage("MSG.SAVE", null, locale);
+		} else {
+			result = -1;
+			resmsg = message.getMessage("ERR.SAVE", null, locale);
+		}
+
+		String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+
+		//마지막에 최종 업데이트 된 요청마스터 정보를 가져온다.
+//		reqmst = requestMstService.getrequestMst(reqmst);
+
+
+		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+	}
+	
 	
 }
 

@@ -31,6 +31,7 @@ import kr.wise.commons.sysmgmt.basicinfo.service.BasicInfoLvlService;
 import kr.wise.commons.sysmgmt.basicinfo.service.WaaBscLvl;
 import kr.wise.commons.util.UtilJson;
 import kr.wise.commons.util.UtilObject;
+import kr.wise.dq.stnd.service.StndCommDomainService;
 import kr.wise.dq.stnd.service.StndDomainService;
 import kr.wise.dq.stnd.service.WamCdVal;
 import kr.wise.dq.stnd.service.WamDmn;
@@ -77,6 +78,9 @@ public class StndDomainCtrl {
 	private StndDomainService stndDomainService;
 	
 	@Inject
+	private StndCommDomainService stndCommDomainService;
+	
+	@Inject
 	private DmngService dmngService;
 	
 	@Inject
@@ -103,6 +107,23 @@ public class StndDomainCtrl {
 		return new IBSheetListVO<WamDmn>(list, list.size());
 
 	}
+	
+	
+	/** 도메인 리스트 조회 */
+	@RequestMapping("/dq/stnd/getCommDomainlist.do")
+	@ResponseBody
+	public IBSheetListVO<WamDmn> getCommDomainList(@ModelAttribute WamDmn data, Locale locale) {
+
+		logger.debug("reqvo:{}", data);
+
+		List<WamDmn> list = stndCommDomainService.getDomainList(data);
+
+//		ibsJson.MESSAGE = message.getMessage("MSG.SAVE", null, locale);
+
+		return new IBSheetListVO<WamDmn>(list, list.size());
+
+	}
+	
 	
 	/** 코드도메인 리스트 조회 */
 	@RequestMapping("/dq/stnd/getDomainlistWithCdVal.do")
