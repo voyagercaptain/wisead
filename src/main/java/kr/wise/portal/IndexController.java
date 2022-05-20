@@ -235,7 +235,8 @@ public class IndexController {
 //		}
 		
 		//임시로 바꿔놓음
-			return "redirect:/dq/model/nia_pdmcol_rqst.do";
+		//return "redirect:/dq/model/nia_pdmcol_rqst.do";
+		return "redirect:/dq/dbstnd/SDITM/stndtot_rqst.do";
 		
 	}
 	
