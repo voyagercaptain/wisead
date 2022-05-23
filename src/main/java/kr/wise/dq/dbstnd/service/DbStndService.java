@@ -27,5 +27,5 @@ public interface DbStndService {
 	
 	Map<String, String>  delItemAutoDiv( List<WapDbDvCanAsm> list) throws Exception;
 	
-	
+	List<WamDbSditm> selectUserDbList(String userId);
 }

@@ -85,6 +85,11 @@ public class DbStndServiceImpl implements DbStndService {
 		// TODO Auto-generated method stub
 		return wamDbStwdMapper.selectList(data);
 	}
+	
+	@Override
+	public List<WamDbSditm> selectUserDbList(String userId) {
+		return wamDbSditmMapper.selectUserDbList(userId);
+	}
 
 	
 	

@@ -54,5 +54,6 @@ public interface WamDbStwdMapper {
 	
 	//사전비교 리스트
 	List<WamDbStwd> selectStndWordComparisonList(String stwdId);
+	
 
 }

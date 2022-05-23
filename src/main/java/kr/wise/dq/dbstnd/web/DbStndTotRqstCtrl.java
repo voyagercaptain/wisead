@@ -173,8 +173,10 @@ public class DbStndTotRqstCtrl {
         model.addAttribute("rqstno",reqmst.getRqstNo());
         model.addAttribute("rqstbizdcd",reqmst.getBizDcd());
         
-        
         model.addAttribute("codeMap",getcodeMap());
+        
+        model.addAttribute("userDbList", dbStndService.selectUserDbList(((LoginVO)session.getAttribute("loginVO")).getId()));
+        
         
         String strReturn = "";
         if("STWD".equals(screenGb)) {
@@ -244,9 +246,11 @@ public class DbStndTotRqstCtrl {
 	
 	@RequestMapping("/dq/dbstnd/getsditmlist.do")
 	@ResponseBody
-	public IBSheetListVO<WamDbSditm> getStndItemList(@ModelAttribute WamDbSditm data, Locale locale) {
+	public IBSheetListVO<WamDbSditm> getStndItemList(@ModelAttribute WamDbSditm data, Locale locale, HttpSession session) {
 
 		logger.debug("req vo:{}", data);
+		
+		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
 
 		List<WamDbSditm> list = dbStndService.getStndItemList(data);
 

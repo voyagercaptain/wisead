@@ -460,7 +460,8 @@ SELECT *
 			 ,A.VRF_RMK
 			 ,CASE WHEN A.VRF_RMK IS NOT NULL THEN '#FF0000' ELSE NULL END AS FontColor
 			 , A.DB_NM
-		FROM WAM_DB_SDITM A            
+		FROM WAM_DB_SDITM A
+		WHERE DB_NM IN (SELECT DB_NAME FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})            
            ) FSQ -- 임시 Alias
   <where>
   <trim prefix="" suffix="" suffixOverrides="," >
@@ -795,6 +796,13 @@ SELECT *
     WHERE VRF_RMK IS NOT NULL 
     </update>
   
+  
+   <select id="selectUserDbList" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT DB_NAME DB_NM 
+      FROM WAA_USER_DB
+     WHERE USER_ID = #{userId,jdbcType=VARCHAR}
+  </select>
+  	
   
   
 </mapper>
