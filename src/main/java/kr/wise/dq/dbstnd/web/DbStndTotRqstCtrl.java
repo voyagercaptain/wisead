@@ -264,9 +264,11 @@ public class DbStndTotRqstCtrl {
 	/** 도메인 리스트 조회 */
 	@RequestMapping("/dq/dbstnd/getDomainlist.do")
 	@ResponseBody
-	public IBSheetListVO<WamDbDmn> getDomainList(@ModelAttribute WamDbDmn data, Locale locale) {
+	public IBSheetListVO<WamDbDmn> getDomainList(@ModelAttribute WamDbDmn data, Locale locale, HttpSession session) {
 
 		logger.debug("reqvo:{}", data);
+		
+		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
 
 		List<WamDbDmn> list = dbStndService.getDomainList(data);
 
@@ -278,9 +280,11 @@ public class DbStndTotRqstCtrl {
 
 	@RequestMapping("/dq/dbstnd/getStndWordlist.do")
 	@ResponseBody
-	public IBSheetListVO<WamDbStwd> getStndWordList(@ModelAttribute WamDbStwd data, Locale locale) {
+	public IBSheetListVO<WamDbStwd> getStndWordList(@ModelAttribute WamDbStwd data, Locale locale, HttpSession session) {
 
 		logger.debug("reqvo:{}", data);
+		
+		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
 
 		List<WamDbStwd> list = dbStndService.getStndWordList(data);
 
