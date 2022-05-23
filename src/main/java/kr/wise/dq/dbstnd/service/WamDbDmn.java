@@ -63,6 +63,9 @@ public class WamDbDmn extends CommonVo{
     private String unit;
     private String admnStndCd;
     
+    private String userId;
+    
+    
 //    private String rqstNo;
 //
 //    private Integer rqstSno;
@@ -84,10 +87,19 @@ public class WamDbDmn extends CommonVo{
 //    private Date aprvDtm;
 //
 //    private String aprvUserId;
-
+    
+    
 
 	public String getDupYn() {
 		return dupYn;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getSaveFrm() {

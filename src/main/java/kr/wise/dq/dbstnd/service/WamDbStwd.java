@@ -92,9 +92,19 @@ public class WamDbStwd extends CommonVo  {
     
     private String fbdnLnm;
     
+    private String userId;
+    
     
 
-    public String getFbdnLnm() {
+    public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getFbdnLnm() {
 		return fbdnLnm;
 	}
 
