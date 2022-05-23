@@ -9,6 +9,7 @@
 <!--     <result column="USERG_ID" property="usergId" jdbcType="VARCHAR" /> -->
     <result column="DEPT_ID" property="deptId" jdbcType="VARCHAR" />
     <result column="JGD_NM" property="jgdNm" jdbcType="VARCHAR" />
+    <result column="DB_NAME" property="dbName" jdbcType="VARCHAR" />
     <result column="USER_TELNO" property="userTelno" jdbcType="VARCHAR" />
     <result column="USER_HTELNO" property="userHtelno" jdbcType="VARCHAR" />
     <result column="EMAIL_ADDR" property="emailAddr" jdbcType="VARCHAR" />
@@ -381,7 +382,8 @@
   <select id="selectList" parameterType="kr.wise.commons.user.service.WaaUser" resultMap="BaseResultMap">
   	SELECT 
       	A.USER_ID, A.EXP_DTM, A.STR_DTM, A.LOGIN_AC_ID, A.USER_NM, A.USERG_ID, A.DEPT_ID, 
-    	A.JGD_NM, A.USER_TELNO, A.USER_HTELNO, A.EMAIL_ADDR, A.EXCL_DWLD_AUTH_YN, A.ID_USE_EXP_DT, A.PWD_EXP_DT, 
+    	A.JGD_NM, (select group_concat(db_name separator ',') as dbName from waa_user_db where user_id = A.USER_ID) DB_NAME,
+    	A.USER_TELNO, A.USER_HTELNO, A.EMAIL_ADDR, A.EXCL_DWLD_AUTH_YN, A.ID_USE_EXP_DT, A.PWD_EXP_DT, 
     	A.OBJ_DESCN, A.OBJ_VERS, A.REG_TYP_CD, A.RQST_DTM, A.RQST_USER_ID, A.APRV_DCD, A.APRV_DTM, A.APRV_USER_ID,
     	B.USERG_LNM, C.DEPT_NM
     FROM WAA_USER A INNER JOIN WAA_USERG B -- LEFT OUTER JOIN WAA_DEPT C
@@ -546,4 +548,21 @@
 		WHERE USER_ID = #{userId} AND EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')
 	</update>
     
+    <delete id="deleteDbNameByUserId" parameterType="java.lang.String" >
+    	DELETE FROM WAA_USER_DB
+    	 WHERE USER_ID = #{userId}
+    </delete>
+    
+    <insert id="registerDbName" parameterType="java.util.Map" >
+		INSERT INTO WAA_USER_DB (USER_ID
+							, DB_NAME
+							, RQST_DTM
+							, RQST_USER_ID
+			  			)
+			          VALUES 
+			          <foreach collection="list" item="item" separator=" , " >
+					        ('${item.userId}', '${item.dbName}', now(), 'admin')
+					  </foreach>
+	</insert>
+	
 </mapper>

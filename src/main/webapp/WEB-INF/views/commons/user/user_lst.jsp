@@ -121,6 +121,7 @@ function initGrid()
                     {Type:"Popup",    Width:130,  SaveName:"deptId",       Align:"Left", Edit:0, Hidden:1},
                     {Type:"Popup",    Width:130,  SaveName:"deptNm",       Align:"Left", Edit:1, Hidden:1},          
                     {Type:"Text",     Width:120,  SaveName:"jgdNm",        Align:"Left", 	 Edit:1},
+                    {Type:"Text",     Width:120,  SaveName:"dbName",        Align:"Left", 	 Edit:1},
                     {Type:"Text",     Width:130,  SaveName:"userTelno",    Align:"Left",   Edit:1, Hidden:0},
                     {Type:"Text",     Width:130,  SaveName:"userHtelno",   Align:"Left",   Edit:1, Hidden:0},
                     {Type:"Text",     Width:130,  SaveName:"emailAddr",      Align:"Left",   Edit:1, Hidden:0},

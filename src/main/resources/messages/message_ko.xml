@@ -4271,7 +4271,7 @@
 <entry key="COMMON.HEADER.PROGRAMLIST"><![CDATA['프로그램명', '저장경로', '프로그램한글명', 'URL', '프로그램설명']]></entry>
 <entry key="COMMON.HEADER.DEPTLST.POP"><![CDATA[No.|부서ID|만료일시|시작일시|부서명|상위부서ID|부서레벨|설명|객체버전|등록유형코드|작성일시|작성사용자ID|전체부서명]]></entry>
 <entry key="COMMON.HEADER.USERSEARCHPOP"><![CDATA[No.|상태|선택|사용자ID|사용자|부서명|사용자그룹|직급]]></entry>
-<entry key="COMMON.HEADER.USER.LST"><![CDATA[No.|업무대행|상태|선택|사용자ID|만료일시|시작일시|로그인ID|사용자명|사용자그룹명|부서ID|부서명|직급명|사용자전화번호|사용자휴대폰번호|이메일주소|엑셀다운로드권한여부|ID사용만료일자|비밀번호만료일자|설명|버전|등록유형|요청일시|요청사용자ID|승인구분코드|작성일시|승인사용자ID|비밀번호변경]]></entry>
+<entry key="COMMON.HEADER.USER.LST"><![CDATA[No.|업무대행|상태|선택|사용자ID|만료일시|시작일시|로그인ID|사용자명|사용자그룹명|부서ID|부서명|직급명|데이터베이스명|사용자전화번호|사용자휴대폰번호|이메일주소|엑셀다운로드권한여부|ID사용만료일자|비밀번호만료일자|설명|버전|등록유형|요청일시|요청사용자ID|승인구분코드|작성일시|승인사용자ID|비밀번호변경]]></entry>
 <entry key="COMMON.HEADER.LIC.LST"><![CDATA[No.|상태|선택|Mac Address|License Key|기관명|사용자명|이메일|전화번호|작성일시|만료일시|등록유형|버전]]></entry>
 <entry key="COMMON.HEADER.USERGROUP.LST"><![CDATA[No.|상태|선택|사용자그룹ID|사용자그룹논리명|사용자그룹물리명|사용자그룹유형|객체설명|객체버전|등록유형|작성일시|작성자ID|작성자명]]></entry>
 <entry key="ADMIN.HEADER.HELPMSTRLIST"><![CDATA[선택|번호|도움말ID|메뉴명|메뉴ID|메뉴명|메뉴전체경로|URL|사용여부|도움말보기]]></entry>

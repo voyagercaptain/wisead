@@ -24,8 +24,11 @@ public class WaaUser extends WaaUserg {
     private String deptPath;
 
     private String jgdNm;
-
-    private String userTelno;
+    
+    // 데이터베이스 정보 추가 by voyager 2022.05.23
+    private String dbName;
+    
+	private String userTelno;
 
     private String userHtelno;
 
@@ -108,6 +111,14 @@ public class WaaUser extends WaaUserg {
     public void setJgdNm(String jgdNm) {
         this.jgdNm = jgdNm;
     }
+    
+    public String getDbName() {
+		return dbName;
+	}
+
+	public void setDbName(String dbName) {
+		this.dbName = dbName;
+	}
 
     public String getUserTelno() {
         return userTelno;

@@ -14,7 +14,9 @@
 package kr.wise.commons.user.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -145,6 +147,28 @@ public class UserServiceImpl implements UserService {
 		record.setRqstUserId(user.getUniqId());
 		record.setAprvUserId(user.getUniqId());
 		result = mapper.insertSelective(record);
+		
+		// 사용자 정보 변경시 데이터베이스 정보 추가 by voyager 2022.05.23
+		if (!"".equals(record.getDbName())) {
+			
+			String[] dbNameArray = record.getDbName().trim().split(",");
+			List<Map<String, String>> dbList = new ArrayList<Map<String, String>>();
+			
+			for (String dbName : dbNameArray) {
+				Map<String, String> dbMap = new HashMap<String, String>();
+				dbMap.put("userId", record.getUserId());
+				dbMap.put("dbName", dbName);
+				dbMap.put("rqstUserId", record.getRqstUserId());
+				
+				dbList.add(dbMap);
+			}
+			// delete all
+			mapper.deleteDbNameByUserId(record.getUsergId());
+			
+			// insert all
+			mapper.registerDbName(dbList);
+		}
+		
 		return result;
 
 		

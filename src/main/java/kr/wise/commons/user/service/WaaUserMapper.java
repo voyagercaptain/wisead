@@ -1,6 +1,7 @@
 package kr.wise.commons.user.service;
 
 import java.util.List;
+import java.util.Map;
 
 import kr.wise.commons.user.WaaUserg;
 
@@ -49,5 +50,10 @@ public interface WaaUserMapper {
     
     //????? ????
     void updateVerify(String userId);
+    
+    // 데이터베이스 정보 추가 by voyager 2022.05.23
+    void registerDbName(List<Map<String, String>> dbList);
 
+    int deleteDbNameByUserId(String userId);
+    
 }
