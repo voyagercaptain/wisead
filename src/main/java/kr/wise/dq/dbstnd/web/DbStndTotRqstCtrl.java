@@ -300,7 +300,7 @@ public class DbStndTotRqstCtrl {
 
 		long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
         
-		int result = dbStndService.registerItemWam(list);
+		int result = dbStndService.registerItemWam(list, reqmst);
 
 		
 		String resmsg;
@@ -335,7 +335,7 @@ public class DbStndTotRqstCtrl {
 			list.get(i).setIbsStatus("D");
 		}
 		
-		int result = dbStndService.registerItemWam(list);
+		int result = dbStndService.registerItemWam(list, reqmst);
 
 		String resmsg;
 

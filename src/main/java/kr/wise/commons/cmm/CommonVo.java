@@ -160,7 +160,7 @@ public class CommonVo {
     
     private String dbNm;
     
-    
+    private String chkYn;
     
 
 	public String getDbNm() {
@@ -771,6 +771,14 @@ public class CommonVo {
 
 	public void setStndAsrt(String stndAsrt) {
 		this.stndAsrt = stndAsrt;
+	}
+
+	public String getChkYn() {
+		return chkYn;
+	}
+
+	public void setChkYn(String chkYn) {
+		this.chkYn = chkYn;
 	}
 	
 	

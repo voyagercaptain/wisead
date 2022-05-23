@@ -479,7 +479,7 @@ public class StndItemRqstCtrl {
 
 
 		
-		int result = stndItemRqstService.registerWam(list);
+		int result = stndItemRqstService.registerWam(list, reqmst);
 
 		
 		String resmsg;
@@ -539,7 +539,7 @@ public class StndItemRqstCtrl {
 			list.get(i).setIbsStatus("D");
 		}
 		
-		int result = stndItemRqstService.registerWam(list);
+		int result = stndItemRqstService.registerWam(list, reqmst);
 
 		String resmsg;
 

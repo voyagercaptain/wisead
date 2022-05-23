@@ -149,6 +149,9 @@ public class UserServiceImpl implements UserService {
 		result = mapper.insertSelective(record);
 		
 		// 사용자 정보 변경시 데이터베이스 정보 추가 by voyager 2022.05.23
+		// delete all
+		mapper.deleteDbNameByUserId(record.getUserId());
+					
 		if (!"".equals(record.getDbName())) {
 			
 			String[] dbNameArray = record.getDbName().trim().split(",");
@@ -157,22 +160,17 @@ public class UserServiceImpl implements UserService {
 			for (String dbName : dbNameArray) {
 				Map<String, String> dbMap = new HashMap<String, String>();
 				dbMap.put("userId", record.getUserId());
-				dbMap.put("dbName", dbName);
+				dbMap.put("dbName", dbName.trim());
 				dbMap.put("rqstUserId", record.getRqstUserId());
 				
 				dbList.add(dbMap);
 			}
-			// delete all
-			mapper.deleteDbNameByUserId(record.getUsergId());
 			
 			// insert all
 			mapper.registerDbName(dbList);
 		}
 		
 		return result;
-
-		
-		
 	}
 
 	@Override

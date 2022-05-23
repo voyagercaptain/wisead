@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import kr.wise.commons.rqstmst.service.WaqMstr;
 import kr.wise.dq.stnd.service.WapDvCanAsm;
 import kr.wise.dq.stnd.service.WapDvCanDic;
 
@@ -14,7 +15,7 @@ public interface DbStndService {
 	
 	List<WamDbStwd> getStndWordList(WamDbStwd data);
 	
-	int registerItemWam(List<WamDbSditm> reglist) throws Exception;
+	int registerItemWam(List<WamDbSditm> reglist, WaqMstr reqmst) throws Exception;
 	
 	int registerDmnWam(List<WamDbDmn> reglist) throws Exception;
 	

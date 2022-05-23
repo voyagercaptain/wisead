@@ -586,6 +586,8 @@ function postProcessIBS(res) {
                    <col style="width:30%;" />
                    <col style="width:20%;" />
                    <col style="width:30%;" />
+                   <col style="width:20%;" />
+                   <col style="width:30%;" />
 <%--                    <col style="width:8%;" /> --%>
 <%--                    <col style="width:35%;" /> --%>
                    </colgroup>
@@ -600,6 +602,8 @@ function postProcessIBS(res) {
                                 <td><input type="text" id="stndNm" name="stndNm" class="wd98p" value="${stndNm}" /></td>
 <%--                                 <th scope="row"><label for="objDescn"><s:message code="CONTENT.TXT" /></label></th> <!-- 설명 --> --%>
 <!--                                 <td><input type="text" id="objDescn" name="objDescn" class="wd98p"/></td> -->
+								<th scope="row"><label for="stndNm">검증여부</label></th> <!-- 표준사전명 -->
+                                <td><input type="checkbox" id="chkYn" name="chkYn" class="wd98p" value="${chkYn}" /></td>
                             </tr>
                    </tbody>
                  </table>   

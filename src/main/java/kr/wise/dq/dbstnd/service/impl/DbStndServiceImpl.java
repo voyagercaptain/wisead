@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.cmm.service.EgovIdGnrService;
 import kr.wise.commons.helper.UserDetailHelper;
+import kr.wise.commons.rqstmst.service.WaqMstr;
 import kr.wise.commons.util.UtilString;
 import kr.wise.dq.dbstnd.service.DbStndService;
 import kr.wise.dq.dbstnd.service.WamDbDmn;
@@ -89,7 +90,7 @@ public class DbStndServiceImpl implements DbStndService {
 	
 	
 	/** 표준항목 요청서 리스트 저장 insomnia */
-	public int registerItemWam(List<WamDbSditm> reglist) throws Exception {
+	public int registerItemWam(List<WamDbSditm> reglist, WaqMstr reqmst) throws Exception {
 
 		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
 		String userid = user.getUniqId();
@@ -109,15 +110,18 @@ public class DbStndServiceImpl implements DbStndService {
 
 		}
 		
-		//wamDbSditmMapper.updateVrfRmkNull();
-		//영문약어명 체크  올바르게 들어간 약어인지 체크
-//		wamDbSditmMapper.checkStwdAbr();
-		//형식단어로 끝나는지 체크
-		//wamDbSditmMapper.checkDmnYnExsits();
+		if ("1".equals(reqmst.getChkYn())) {
+			wamDbSditmMapper.updateVrfRmkNull();
+			//영문약어명 체크  올바르게 들어간 약어인지 체크
+//			wamDbSditmMapper.checkStwdAbr();
+			//형식단어로 끝나는지 체크
+			wamDbSditmMapper.checkDmnYnExsits();
 
-		//형식단어로 끝나는지 체크(한글명)
-		//wamDbSditmMapper.checkDmnYnExsitsLnm();
-
+			//형식단어로 끝나는지 체크(한글명)
+			wamDbSditmMapper.checkDmnYnExsitsLnm();
+		}
+		
+		
 		
 		
 		return result;

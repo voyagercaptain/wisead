@@ -1111,7 +1111,7 @@ public class StndItemRqstServiceImpl implements StndItemRqstService {
 
 		
 		/** 표준항목 요청서 리스트 저장 insomnia */
-		public int registerWam(List<WamSditm> reglist) throws Exception {
+		public int registerWam(List<WamSditm> reglist, WaqMstr reqmst ) throws Exception {
 
 			LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
 			String userid = user.getUniqId();
@@ -1131,15 +1131,16 @@ public class StndItemRqstServiceImpl implements StndItemRqstService {
 
 			}
 			
-			//wammapper.updateVrfRmkNull();
-			//영문약어명 체크  올바르게 들어간 약어인지 체크
-//			wammapper.checkStwdAbr();
-			//형식단어로 끝나는지 체크
-			//wammapper.checkDmnYnExsits();
-
-			//형식단어로 끝나는지 체크(한글명)
-			//wammapper.checkDmnYnExsitsLnm();
-
+			if ("1".equals(reqmst.getChkYn())) {
+				wammapper.updateVrfRmkNull();
+				//영문약어명 체크  올바르게 들어간 약어인지 체크
+	//			wammapper.checkStwdAbr();
+				//형식단어로 끝나는지 체크
+				wammapper.checkDmnYnExsits();
+	
+				//형식단어로 끝나는지 체크(한글명)
+				wammapper.checkDmnYnExsitsLnm();
+			}
 			
 			
 			return result;

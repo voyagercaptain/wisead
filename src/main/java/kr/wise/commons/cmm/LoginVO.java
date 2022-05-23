@@ -67,7 +67,9 @@ public class LoginVO implements Serializable{
 	/** 비밀번호 만기 여부 */
 	private String isPwdExpYn;
 
-
+	/** 로그인 사용자 권한 구분 */
+	private String userRole;
+	
 	/**
 	 * id attribute 를 리턴한다.
 	 * @return String
@@ -290,7 +292,7 @@ public class LoginVO implements Serializable{
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("LoginVO [id=").append(id).append(", name=")
-				.append(name).append(", ihidNum=").append(ihidNum)
+				.append(name).append(", ihidNum=").append(ihidNum).append(userRole)
 				.append(", email=").append(email).append(", password=")
 				.append(password).append(", passwordHint=")
 				.append(passwordHint).append(", passwordCnsr=")
@@ -325,6 +327,12 @@ public class LoginVO implements Serializable{
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public String getUserRole() {
+		return userRole;
+	}
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
 	}
 
 }

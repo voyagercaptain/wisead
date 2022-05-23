@@ -382,9 +382,11 @@ function doAction(sAction)
 
 				url = '<c:url value="/dq/stnd/regStndWordWamlist.do"/>';
 			}
-			
-			
+						
 			var param = $('form[name=mstFrm]').serialize();
+			var chkYn = $('input:checkbox[id="chkYn"]:checked').val();
+			param = param + "&chkYn="+chkYn;
+			
 	        IBSpostJson2(url, ibsSaveJson, param, ibscallback);
 	        
 // 	        $("#BTNREGRQST").show();
@@ -571,6 +573,8 @@ function postProcessIBS(res) {
 	</div>
 </div>
 
+<input type="hidden" name="userRole" id="userRole" value="${sessionScope.loginVO.userRole}" />
+<input type="hidden" name="userRole" id="userRole" value="${sessionScope.loginVO.userRole}" />
 
 <div style="clear:both; height:10px;"><span></span></div>
 <!-- 메뉴 메인 제목 -->
@@ -585,10 +589,12 @@ function postProcessIBS(res) {
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" summary="<s:message code='BFHD.INTG.INQ' />"> <!-- 사전통합조회 -->
                    <caption><s:message code="BFHD.INTG.INQ.FORM" /></caption> <!-- 사전통합 검색폼 -->
                    <colgroup>
-                   <col style="width:20%;" />
-                   <col style="width:30%;" />
-                   <col style="width:20%;" />
-                   <col style="width:30%;" />
+                   <col style="width:15%;" />
+                   <col style="width:15%;" />
+                   <col style="width:15%;" />
+                   <col style="width:15%;" />
+                   <col style="width:15%;" />
+                   <col style="width:15%;" /> 
 <%--                    <col style="width:8%;" /> --%>
 <%--                    <col style="width:35%;" /> --%>
                    </colgroup>
@@ -603,6 +609,8 @@ function postProcessIBS(res) {
                                 <td><input type="text" id="stndNm" name="stndNm" class="wd98p" value="${stndNm}" /></td>
 <%--                                 <th scope="row"><label for="objDescn"><s:message code="CONTENT.TXT" /></label></th> <!-- 설명 --> --%>
 <!--                                 <td><input type="text" id="objDescn" name="objDescn" class="wd98p"/></td> -->
+								<th scope="row"><label for="chkYn">검증여부</label></th> <!-- 표준사전명 -->
+                                <td><input type="checkbox" id="chkYn" name="chkYn" class="wd98p" value="1" /></td>
                             </tr>
                    </tbody>
                  </table>   
@@ -641,6 +649,7 @@ function postProcessIBS(res) {
 				<input type="hidden" name="rvwStsCd" id="rvwStsCd">
 				<input type="hidden" name="rvwConts" id="rvwConts">
 				<input type="hidden" name="rqstUserId" id="rqstUserId" value="${waqMstr.rqstUserId}" />
+				
 				
 			    <table width="100%" border="0" cellspacing="0" cellpadding="0" summary="<s:message code='MSG.TBL.SMRY' />"> <!-- 테이블 서머리입니다. -->
 					<caption><s:message code="SUBJ.TRRT.INFO" /></caption> <!-- 주제영역정보 -->

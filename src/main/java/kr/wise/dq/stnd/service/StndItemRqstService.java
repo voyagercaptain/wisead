@@ -105,5 +105,5 @@ public interface StndItemRqstService extends CommonRqstService {
 	List<WaqSditm> getUnuseStndItemRqstList(WaqSditm data);
 	
 
-	int registerWam(List<WamSditm> list) throws Exception;
+	int registerWam(List<WamSditm> list, WaqMstr reqmst) throws Exception;
 }
