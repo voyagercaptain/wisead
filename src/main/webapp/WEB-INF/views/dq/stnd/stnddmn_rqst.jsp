@@ -611,7 +611,27 @@ function postProcessIBS(res) {
         </form>
 		<div style="clear:both; height:10px;"><span></span></div>
 </div>
-<tiles:insertTemplate template="/WEB-INF/decorators/buttonRqst.jsp" />
+<%-- <tiles:insertTemplate template="/WEB-INF/decorators/buttonRqst.jsp" /> --%>
+		<div class="divLstBtn" style="display: none;">  
+            <div class="bt03">
+			    <button class="btn_search" id="btnSearch" 	name="btnSearch"><s:message code="BTN.READ" /></button> <!-- 전체조회 -->
+			    
+			    <c:if test="${sessionScope.loginVO.userRole eq 'ROLE_ORG'}">
+    				<button class="btn_rqst_new" id="btnRqstNew" name="btnRqstNew"><s:message code="ADDT" /></button> <!-- 추가 -->                                                         
+					  <ul class="add_button_menu" id="addButtonMenu">
+					    <li class="btn_new" id="btnNew"><a><span class="ui-icon ui-icon-pencil"></span><s:message code="NEW.ADDT" /></a></li> <!-- 신규 추가 -->
+					    <li class="btn_chang_add" id="btnChangAdd"><a><span class="ui-icon ui-icon-folder-open"></span><s:message code="CHG.TRGT.ADDT" /></a></li> <!-- 변경대상 추가 -->
+					    <li class="btn_excel_load" id="btnExcelLoad"><a><span class="ui-icon ui-icon-document"></span><s:message code="EXCL.UPLOAD" /></a></li> <!-- 엑셀 올리기 -->
+					  </ul>         
+				    <button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="STRG" /></button> <!-- 저장 --> 
+				    <button class="btn_delete" id="btnDelete" 	name="btnDelete"><s:message code="DEL" /></button> <!-- 삭제 -->
+				</c:if>
+				
+			</div>
+			<div class="bt02"> 
+	          <button class="btn_excel_down"  id="btnExcelDown"  name="btnExcelDown"><s:message code="EXCL.DOWNLOAD" /></button> <!-- 엑셀 내리기 -->                       
+	    	</div>
+        </div>	
 <div style="clear:both; height:5px;"><span></span></div>
 
 	<div id="tabs">
