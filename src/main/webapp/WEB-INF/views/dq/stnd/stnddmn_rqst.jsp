@@ -616,7 +616,7 @@ function postProcessIBS(res) {
             <div class="bt03">
 			    <button class="btn_search" id="btnSearch" 	name="btnSearch"><s:message code="BTN.READ" /></button> <!-- 전체조회 -->
 			    
-			    <c:if test="${sessionScope.loginVO.userRole eq 'ROLE_ORG'}">
+			    <c:if test="${sessionScope.loginVO.usergId eq 'OBJ_00000034586'}">
     				<button class="btn_rqst_new" id="btnRqstNew" name="btnRqstNew"><s:message code="ADDT" /></button> <!-- 추가 -->                                                         
 					  <ul class="add_button_menu" id="addButtonMenu">
 					    <li class="btn_new" id="btnNew"><a><span class="ui-icon ui-icon-pencil"></span><s:message code="NEW.ADDT" /></a></li> <!-- 신규 추가 -->
