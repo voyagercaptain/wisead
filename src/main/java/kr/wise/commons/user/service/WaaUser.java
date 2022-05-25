@@ -27,6 +27,7 @@ public class WaaUser extends WaaUserg {
     
     // 데이터베이스 정보 추가 by voyager 2022.05.23
     private String dbName;
+    private String orgName;
     
 	private String userTelno;
 
@@ -238,6 +239,14 @@ public class WaaUser extends WaaUserg {
 				.append(", verify=").append(verify)
 				.append(", comCd=").append(comCd).append("]");
 		return builder.toString()+super.toString();
+	}
+
+	public String getOrgName() {
+		return orgName;
+	}
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
 	}
 	
 

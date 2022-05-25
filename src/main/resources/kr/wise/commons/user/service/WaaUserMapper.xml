@@ -10,6 +10,7 @@
     <result column="DEPT_ID" property="deptId" jdbcType="VARCHAR" />
     <result column="JGD_NM" property="jgdNm" jdbcType="VARCHAR" />
     <result column="DB_NAME" property="dbName" jdbcType="VARCHAR" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
     <result column="USER_TELNO" property="userTelno" jdbcType="VARCHAR" />
     <result column="USER_HTELNO" property="userHtelno" jdbcType="VARCHAR" />
     <result column="EMAIL_ADDR" property="emailAddr" jdbcType="VARCHAR" />
@@ -383,6 +384,7 @@
   	SELECT 
       	A.USER_ID, A.EXP_DTM, A.STR_DTM, A.LOGIN_AC_ID, A.USER_NM, A.USERG_ID, A.DEPT_ID, 
     	A.JGD_NM, (select group_concat(db_name separator ',') as dbName from waa_user_db where user_id = A.USER_ID) DB_NAME,
+    	(select group_concat(wo.org_nm separator ',') as orgName from waa_org wo, waa_user_org wuo where wuo.user_id = A.USER_ID  and wo.org_cd  = wuo.org_cd) ORG_NAME,
     	A.USER_TELNO, A.USER_HTELNO, A.EMAIL_ADDR, A.EXCL_DWLD_AUTH_YN, A.ID_USE_EXP_DT, A.PWD_EXP_DT, 
     	A.OBJ_DESCN, A.OBJ_VERS, A.REG_TYP_CD, A.RQST_DTM, A.RQST_USER_ID, A.APRV_DCD, A.APRV_DTM, A.APRV_USER_ID,
     	B.USERG_LNM, C.DEPT_NM
