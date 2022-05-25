@@ -94,9 +94,30 @@ public class WamDbStwd extends CommonVo  {
     
     private String userId;
     
+    private String ownrOrg;
+    
+    private String spclNt;
+    
+    
     
 
-    public String getUserId() {
+    public String getOwnrOrg() {
+		return ownrOrg;
+	}
+
+	public void setOwnrOrg(String ownrOrg) {
+		this.ownrOrg = ownrOrg;
+	}
+
+	public String getSpclNt() {
+		return spclNt;
+	}
+
+	public void setSpclNt(String spclNt) {
+		this.spclNt = spclNt;
+	}
+
+	public String getUserId() {
 		return userId;
 	}
 

@@ -37,11 +37,16 @@ function grid_STWD_init() {
 		var cfg = {SearchMode:2,Page:100};
 		SetConfig(cfg);
 		
+		/*
+		var headtext  = "<s:message code='META.HEADER.STNDWORD.RQST'/>";
+ 		*/
+		//No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|STWDID|기관명|DB명|표준단어명|영문약어명|단어영문명|단어설명|형식단어여부|도메인분류명|이음동의어목록|금칙어목록|등록일자|요청자ID|요청자명|요청번호|요청일련번호
+		
+ 		var headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|STWDID|기관명|DB명|표준단어명|영문명|영문약어명|단어설명|형식단어여부|도메인분류명|이음동의어목록|금칙어목록|관리부서명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항";
+		
 		var headers = [
-					{Text:"<s:message code='META.HEADER.STNDWORD.RQST'/>", Align:"Center"}
+					{Text:headtext, Align:"Center"}
 				];
-				//No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|단어명|영문약어명|영문단어명|단어설명|형식단어여부|도메인분류명|이음동의어 및 금칙어 목록|요청일시|요청자ID|요청자명|요청번호|요청일련번호
-				//No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|표준단어논리명|표준단어물리명|영문의미|한자|출처구분|설명|요청일시|요청자ID|요청자명|요청번호|요청일련번호
 		
 		var headerInfo = {Sort:1, ColMove:1, ColResize:1, HeaderCheck:1};
 		
@@ -61,19 +66,21 @@ function grid_STWD_init() {
 					{Type:"Text",   Width:100,  SaveName:"orgNm",   	Align:"Left", Edit:1, KeyField:1},
 					{Type:"Text",   Width:100,  SaveName:"dbNm",     Align:"Left", Edit:1, KeyField:1},
 					{Type:"Text",   Width:100,  SaveName:"stwdLnm",   	Align:"Left", Edit:1, KeyField:1},
-					{Type:"Text",   Width:100,  SaveName:"stwdPnm",   	Align:"Left", Edit:1, KeyField:1}, 
 					{Type:"Text",   Width:150,  SaveName:"engMean", 	Align:"Left", Edit:1, Hidden:0, KeyField:1},
+					{Type:"Text",   Width:100,  SaveName:"stwdPnm",   	Align:"Left", Edit:1, KeyField:1}, 
 					{Type:"Text",   Width:500,  SaveName:"objDescn",	Align:"Left", Edit:1, KeyField:1},
 					{Type:"Combo",  Width:80,   SaveName:"dmnYn",	 	Align:"Center", Edit:1, Hidden:0, KeyField:1},
 					{Type:"Text",   Width:100,  SaveName:"dmnLnm",	 	Align:"Left", Edit:1, Hidden:0},
 					{Type:"Text",   Width:100,  SaveName:"symnLnm",	    Align:"Left", Edit:1, Hidden:0},
 					{Type:"Text",   Width:100,  SaveName:"fbdnLnm",	    Align:"Left", Edit:1, Hidden:0},
 					
+					{Type:"Text",   Width:100,  SaveName:"ownrOrg",      Align:"Left", Edit:1, Hidden:0},  // 소관기관명
 					{Type:"Text",   Width:80,  SaveName:"rqstDtm",  	Align:"Center", Edit:0, Format:"yyyy-MM-dd HH:mm:ss"},
 					{Type:"Text",   Width:60,  SaveName:"rqstUserId",   Align:"Center", Edit:0, Hidden:0},
 					{Type:"Text",   Width:60,  SaveName:"rqstUserNm",   Align:"Center", Edit:0, Hidden:1},
 					{Type:"Text",   Width:60,  SaveName:"rqstNo",       Align:"Center", Edit:0, Hidden:1}, 
-					{Type:"Int",   Width:60,   SaveName:"rqstSno",      Align:"Center", Edit:0, Hidden:1}
+					{Type:"Int",   Width:60,   SaveName:"rqstSno",      Align:"Center", Edit:0, Hidden:1},
+					{Type:"Text",   Width:150,  SaveName:"spclNt",    Align:"Center", Edit:1, Hidden:0}
 				];
 					
 		InitColumns(cols);
