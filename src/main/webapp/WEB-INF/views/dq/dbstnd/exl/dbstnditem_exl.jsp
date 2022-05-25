@@ -37,21 +37,18 @@ function grid_SDITM_init() {
         SetConfig(cfg);
         //merge 설정
         SetMergeSheet(0);
-        
+        /*
 		var headtext  = "<s:message code='META.HEADER.STNDITEM.RQST.IFM.1'/>";
-//  		headtext += "<s:message code='META.HEADER.STNDITEM.RQST.IFM.2'/>";
 		headtext += "<s:message code='META.HEADER.STNDITEM.RQST.IFM.4'/>";
  		headtext += "<s:message code='META.HEADER.STNDITEM.RQST.IFM.3'/>";
+ 		*/
+ 		//<entry key="META.HEADER.STNDITEM.RQST.IFM.1"><![CDATA[No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과]]></entry>
+ 		//<entry key="META.HEADER.STNDITEM.RQST.IFM.4"><![CDATA[|용어ID|기관명|DB명|표준용어명|용어설명|영문약어명|표준도메인명|데이터타입|데이터길이|소수점길이|허용값|저장형식|표현형식|단위|표준코드명|소관기관명]]></entry>
+ 		//<entry key="META.HEADER.STNDITEM.RQST.IFM.3"><![CDATA[|검증결과|등록일자|요청자ID|요청자명|요청번호|요청일련번호]]></entry>
 
-
-
-// 		headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|";
-// 		headtext += "용어명|영문용어명|표준용어설명|도메인명|업무분야|오너쉽기관|행정표준코드";
-// 		headtext += "|요청일시|요청자ID|요청자명|요청번호|요청일련번호";
-
-// 		headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|";
-// 		headtext += "표준용어논리명|표준용어물리명|논리명기준구분|물리명기준구분|도메인논리명|도메인물리명|도메인그룹|인포타입ID|인포타입논리명|데이터타입|길이|암호화여부|개인정보여부";
-// 		headtext += "설명|요청일시|요청자ID|요청자명|요청번호|요청일련번호";
+ 		var headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|";
+ 		headtext += "용어ID|기관명|DB명|표준용어명|용어설명|영문약어명|표준도메인명|데이터타입|데이터길이|소수점길이|영문명|허용값|표준코드명|저장형식|표현형식|단위|관리부서명|업무분야|행정표준코드명";
+ 		headtext += "|검증결과|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항";
 		
 		var headers = [
 					{Text:headtext, Align:"Center"}
@@ -79,24 +76,32 @@ function grid_SDITM_init() {
 					{Type:"Text",   Width:150,  SaveName:"sditmPnm",     Align:"Left", Edit:1, KeyField:1},
 					{Type:"Text",   Width:100,  SaveName:"infotpLnm",	 Align:"Left", Edit:1, Hidden:0, KeyField:1}, //도메인명
 					
-					{Type:"Text",       Width:120,  SaveName:"dataType",	 	Align:"Left", Edit:1, Hidden:1, KeyField:0},
-					{Type:"Int",       Width:100,  SaveName:"dataLen",	 	    Align:"Left", Edit:1, Hidden:1, KeyField:0},
+					{Type:"Text",       Width:120,  SaveName:"dataType",	 	Align:"Left", Edit:1, Hidden:0, KeyField:0},
+					{Type:"Int",       Width:80,  SaveName:"dataLen",	 	    Align:"Left", Edit:1, Hidden:0, KeyField:0},
 					{Type:"Int",       Width:100,  SaveName:"dataScal",	 	Align:"Left", Edit:1, Hidden:1},
 					
-					{Type:"Text",   Width:100,  SaveName:"alwVal",      Align:"Left", Edit:1},   // 허용값
-                    {Type:"Text",   Width:100,  SaveName:"saveFrm", 	 	Align:"Left", Edit:1, Hidden:0, KeyField:0},
-				    {Type:"Text",   Width:100,  SaveName:"exprsnFrm",	 	Align:"Left", Edit:1, Hidden:0},
-				    {Type:"Text",   Width:100,  SaveName:"unit",    	 	Align:"Left", Edit:1, Hidden:0},
+					{Type:"Text",   Width:150,  SaveName:"pnm",     Align:"Left", Edit:1}, //영문명
 					
+					{Type:"Text",   Width:100,  SaveName:"alwVal",      Align:"Left", Edit:1},   // 허용값
+					{Type:"Text",   Width:100,  SaveName:"stndCd", 	      Align:"Left", Edit:1, Hidden:0, ColMerge:0},  //표준코드명
+					
+                    {Type:"Text",   Width:100,  SaveName:"saveFrm", 	 	Align:"Left", Edit:1, Hidden:1, KeyField:0},
+				    {Type:"Text",   Width:100,  SaveName:"exprsnFrm",	 	Align:"Left", Edit:1, Hidden:1},
+				    {Type:"Text",   Width:100,  SaveName:"unit",    	 	Align:"Left", Edit:1, Hidden:1},
+					
+				    {Type:"Text",   Width:100,  SaveName:"ownrOrg",      Align:"Left", Edit:1, Hidden:0},  // 소관기관명
+				    {Type:"Text",   Width:100,  SaveName:"bsnssFld",      Align:"Left", Edit:1, Hidden:0}, //업무분야
+				    
 					{Type:"Text",   Width:100,  SaveName:"admnStndCd", 	      Align:"Left", Edit:1, Hidden:0, ColMerge:0},  //행정표준코드명
-					{Type:"Text",   Width:100,  SaveName:"ownrOrg",      Align:"Left", Edit:1},  // 소관기관명
-					{Type:"Text",   Width:100,  SaveName:"vrfRmk",      Align:"Left", Edit:0},  // 검증결과
+					
+					{Type:"Text",   Width:100,  SaveName:"vrfRmk",      Align:"Left", Edit:0, Hidden:1},  // 검증결과
 					
 					{Type:"Text",   Width:130,  SaveName:"rqstDtm",  	  Align:"Center", Edit:0, Format:"yyyy-MM-dd HH:mm:ss"},
 					{Type:"Text",   Width:150,  SaveName:"rqstUserId",    Align:"Center", Edit:0, Hidden:1, ColMerge:0},
 					{Type:"Text",   Width:150,  SaveName:"rqstUserNm",    Align:"Center", Edit:0, ColMerge:0, Hidden:1},
 					{Type:"Text",   Width:60,   SaveName:"rqstNo",        Align:"Center", Edit:0, Hidden:1, ColMerge:0}, 
-					{Type:"Int",    Width:60,   SaveName:"rqstSno",       Align:"Center", Edit:0, Hidden:1, ColMerge:0}
+					{Type:"Int",    Width:60,   SaveName:"rqstSno",       Align:"Center", Edit:0, Hidden:1, ColMerge:0},
+					{Type:"Text",   Width:150,  SaveName:"spclNt",    Align:"Center", Edit:1, Hidden:0}
 				];
 					
 		InitColumns(cols);

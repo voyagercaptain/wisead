@@ -76,7 +76,46 @@ public class WamDbSditm extends CommonVo {
     
     private String userId;
     
-    public String getUserId() {
+    private String stndCd;
+    private String spclNt;
+    private String bsnssFld;
+    private String pnm;
+    
+    
+    
+    public String getPnm() {
+		return pnm;
+	}
+
+	public void setPnm(String pnm) {
+		this.pnm = pnm;
+	}
+
+	public String getStndCd() {
+		return stndCd;
+	}
+
+	public void setStndCd(String stndCd) {
+		this.stndCd = stndCd;
+	}
+
+	public String getSpclNt() {
+		return spclNt;
+	}
+
+	public void setSpclNt(String spclNt) {
+		this.spclNt = spclNt;
+	}
+
+	public String getBsnssFld() {
+		return bsnssFld;
+	}
+
+	public void setBsnssFld(String bsnssFld) {
+		this.bsnssFld = bsnssFld;
+	}
+
+	public String getUserId() {
 		return userId;
 	}
 
