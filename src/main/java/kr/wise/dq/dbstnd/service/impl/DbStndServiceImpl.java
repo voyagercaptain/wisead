@@ -17,6 +17,8 @@ import kr.wise.dq.dbstnd.service.WamDbDmn;
 import kr.wise.dq.dbstnd.service.WamDbDmnMapper;
 import kr.wise.dq.dbstnd.service.WamDbSditm;
 import kr.wise.dq.dbstnd.service.WamDbSditmMapper;
+import kr.wise.dq.dbstnd.service.WamDbStcd;
+import kr.wise.dq.dbstnd.service.WamDbStcdMapper;
 import kr.wise.dq.dbstnd.service.WamDbStwd;
 import kr.wise.dq.dbstnd.service.WamDbStwdMapper;
 import kr.wise.dq.dbstnd.service.WapDbDvCanAsm;
@@ -53,6 +55,9 @@ public class DbStndServiceImpl implements DbStndService {
 	WamDbStwdMapper wamDbStwdMapper;
 	
 	@Inject
+	WamDbStcdMapper wamDbStcdMapper;
+	
+	@Inject
 	WapDbDvCanAsmMapper wapDbDvCanAsmMapper;
 	
 	@Inject
@@ -85,6 +90,11 @@ public class DbStndServiceImpl implements DbStndService {
 	public List<WamDbStwd> getStndWordList(WamDbStwd data) {
 		// TODO Auto-generated method stub
 		return wamDbStwdMapper.selectList(data);
+	}
+	
+	@Override
+	public List<WamDbStcd> getStndCodelist(WamDbStcd data) {
+		return wamDbStcdMapper.selectList(data);
 	}
 	
 	@Override
@@ -285,7 +295,66 @@ public class DbStndServiceImpl implements DbStndService {
 
 		return result;
 	}
+	
+	
+	/** 표준단어 리스트 등록 insomnia */
+	/** 요청서 내용을 저장한다.(완료 후 임시저장 상태로 변경) insomnia
+	 * @throws Exception */
+	public int registerStcdWam(List<WamDbStcd> reglist) throws Exception {
 
+		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+		String userid = user.getUniqId();
+
+		int result = 0;
+
+		if(reglist != null) {
+			for (WamDbStcd saveVo : (ArrayList<WamDbStcd>)reglist) {
+				//요청번호 셋팅...
+				saveVo.setFrsRqstUserId(userid);
+				saveVo.setRqstUserId(userid);
+				saveVo.setRqstNo("REQ_01");
+
+				//단건 저장...
+				result += saveWamStcd(saveVo);
+			}
+		}
+
+		return result;
+	}
+
+	/** @param saveVo
+	/** @return insomnia
+	 * @throws Exception */
+	private int saveWamStcd(WamDbStcd saveVo) throws Exception {
+
+		int result  = 0;
+
+		String tmpstatus = saveVo.getIbsStatus();
+
+//		Integer sno = saveVo.getRqstSno();
+//
+//		logger.debug("rqstsno:{}", sno);
+		if(UtilString.null2Blank(saveVo.getCommCdId()).equals("")){
+			tmpstatus = "I";
+		}
+		if ("I".equals(tmpstatus)) {
+			//신규 등록 : 나중에 적재를 위해 미리 오브젝트 ID를 셋팅한다...
+			String objid = objectIdGnrService.getNextStringId();
+			saveVo.setCommCdId(objid);
+			saveVo.setRegTypCd("C");
+			result = wamDbStcdMapper.insertSelective(saveVo);
+		} else if ("U".equals(tmpstatus)){
+			//업데이트
+			saveVo.setRegTypCd("U");
+			result = wamDbStcdMapper.updateByPrimaryKey(saveVo);
+		} else if ("D".equals(tmpstatus)) {
+			//요청내용 삭제...
+			result = wamDbStcdMapper.deleteByPrimaryKey(saveVo.getCommCdId());
+		}
+
+		return result;
+	}
+	
 
 	/** 표준항목 자동분할 리스트스 insomnia */
 	public List<WapDbDvCanAsm> getItemDvRqstList(WapDbDvCanDic record) {

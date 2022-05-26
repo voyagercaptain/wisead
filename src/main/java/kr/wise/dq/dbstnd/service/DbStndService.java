@@ -1,12 +1,9 @@
 package kr.wise.dq.dbstnd.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import kr.wise.commons.rqstmst.service.WaqMstr;
-import kr.wise.dq.stnd.service.WapDvCanAsm;
-import kr.wise.dq.stnd.service.WapDvCanDic;
 
 public interface DbStndService {
 
@@ -15,11 +12,15 @@ public interface DbStndService {
 	
 	List<WamDbStwd> getStndWordList(WamDbStwd data);
 	
+	List<WamDbStcd> getStndCodelist(WamDbStcd data);
+	
 	int registerItemWam(List<WamDbSditm> reglist, WaqMstr reqmst) throws Exception;
 	
 	int registerDmnWam(List<WamDbDmn> reglist) throws Exception;
 	
 	int registerStwdWam(List<WamDbStwd> reglist) throws Exception;
+	
+	int registerStcdWam(List<WamDbStcd> reglist) throws Exception;
 	
 
 	List<WapDbDvCanAsm> getItemDvRqstList(WapDbDvCanDic data);

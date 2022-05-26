@@ -43,6 +43,7 @@ import kr.wise.commons.util.UtilString;
 import kr.wise.dq.dbstnd.service.DbStndService;
 
 import kr.wise.dq.dbstnd.service.WamDbSditm;
+import kr.wise.dq.dbstnd.service.WamDbStcd;
 import kr.wise.dq.dbstnd.service.WamDbStwd;
 import kr.wise.dq.dbstnd.service.WapDbDvCanAsm;
 import kr.wise.dq.dbstnd.service.WapDbDvCanDic;
@@ -114,6 +115,9 @@ public class DbStndTotRqstCtrl {
 	static class WamDbDmns extends HashMap<String, ArrayList<WamDbDmn>> {}
 	
 	static class WamDbStwds extends HashMap<String, ArrayList<WamDbStwd>> {}
+	
+	static class WamDbStcds extends HashMap<String, ArrayList<WamDbStcd>> {}
+	
 	
 	/** 표준데이터 엑셀등록  화면이동 - 요청번호가 없을 경우 채번하여 리턴한다. @return insomnia */
     @RequestMapping("/dq/dbstnd/{screenGb}/stndtot_rqst.do")
@@ -187,6 +191,9 @@ public class DbStndTotRqstCtrl {
         }
         else if("SDITM".equals(screenGb)) {
         	strReturn = "/dq/dbstnd/dbstnditem_rqst";
+        }
+        else if("STCD".equals(screenGb)) {
+        	strReturn = "/dq/dbstnd/dbstndstcd_rqst";
         } 
         //else {
         //	strReturn = "/dq/dbstnd/dbstndtot_rqst";
@@ -277,6 +284,28 @@ public class DbStndTotRqstCtrl {
 		return new IBSheetListVO<WamDbDmn>(list, list.size());
 
 	}
+	
+	
+	@RequestMapping("/dq/dbstnd/getStndCodelist.do")
+	@ResponseBody
+	public IBSheetListVO<WamDbStcd> getStndCodelist(@ModelAttribute WamDbStcd data, Locale locale, HttpSession session) {
+
+		logger.debug("reqvo:{}", data);
+		
+		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
+		
+		List<WamDbStcd> list = null;
+		try {
+			list = dbStndService.getStndCodelist(data);
+		} catch(Exception e) {
+			logger.error("", e);
+		}
+
+//		ibsJson.MESSAGE = message.getMessage("MSG.SAVE", null, locale);
+
+		return new IBSheetListVO<WamDbStcd>(list, list.size());
+
+	}
 
 	@RequestMapping("/dq/dbstnd/getStndWordlist.do")
 	@ResponseBody
@@ -297,7 +326,7 @@ public class DbStndTotRqstCtrl {
 	
 	
 	
-	   /** 표준항목 리스트 등록 @throws Exception insomnia */
+	/** 표준항목 리스트 등록 @throws Exception insomnia */
     @RequestMapping("/dq/dbstnd/regitemWamlist.do")
     @ResponseBody
 	public IBSResultVO<WaqMstr> regStndItemWamList(@RequestBody WamDbSditms data, WaqMstr reqmst, Locale locale) throws Exception {
@@ -309,6 +338,43 @@ public class DbStndTotRqstCtrl {
 		long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
         
 		int result = dbStndService.registerItemWam(list, reqmst);
+
+		
+		String resmsg;
+
+		if(result > 0 ){
+			result = 0;
+			resmsg = message.getMessage("MSG.SAVE", null, locale);
+		} else {
+			result = -1;
+			resmsg = message.getMessage("ERR.SAVE", null, locale);
+		}
+		
+		String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+		
+		long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+		long secDiffTime = (afterTime - beforeTime)/1000; //두 시간에 차 계산
+		logger.debug("시간차이(m): {}", secDiffTime);
+		
+		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+	}
+    
+    
+    @RequestMapping("/dq/dbstnd/regStndCodeWamlist.do")
+    @ResponseBody
+	public IBSResultVO<WaqMstr> regStndCodeWamlist(@RequestBody WamDbStcds data, WaqMstr reqmst, Locale locale) throws Exception {
+
+		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+		ArrayList<WamDbStcd> list = data.get("data");
+
+		long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
+        
+		int result = 0;
+		try {
+			result = dbStndService.registerStcdWam(list);
+		} catch (Exception e) {
+			logger.error("", e);
+		}
 
 		
 		String resmsg;
@@ -455,104 +521,134 @@ public class DbStndTotRqstCtrl {
 		}
 		
 		
-		  /** 표준단어 요청 저장 - IBSheet JSON @return insomnia
-			 * @throws Exception */
-			@RequestMapping("/dq/dbstnd/delstwdwamlist.do")
-			@ResponseBody
-			public IBSResultVO<WaqMstr> delstwdwamlist(@RequestBody WamDbStwds data, WaqMstr reqmst, HttpSession session, Locale locale) throws Exception {
-				logger.debug("/dq/dbstnd/regStndWordRqstlist.do");
-				logger.debug("reqmst:{} \ndata:{}", reqmst, data);
+	  /** 표준단어 요청 저장 - IBSheet JSON @return insomnia
+		 * @throws Exception */
+		@RequestMapping("/dq/dbstnd/delstwdwamlist.do")
+		@ResponseBody
+		public IBSResultVO<WaqMstr> delstwdwamlist(@RequestBody WamDbStwds data, WaqMstr reqmst, HttpSession session, Locale locale) throws Exception {
+			logger.debug("/dq/dbstnd/regStndWordRqstlist.do");
+			logger.debug("reqmst:{} \ndata:{}", reqmst, data);
 
-				ArrayList<WamDbStwd> list = data.get("data");
-	            
-				for(int i=0;i<list.size();i++) {
-					list.get(i).setIbsStatus("D");
-				}
-				int result = dbStndService.registerStwdWam(list);
-				
-				String resmsg;
-
-				if(result > 0) {
-					result = 0;
-					resmsg = message.getMessage("MSG.SAVE", null, locale);
-				} else {
-					result = -1;
-					resmsg = message.getMessage("ERR.SAVE", null, locale);
-				}
-
-				String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
-
-
-				return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+			ArrayList<WamDbStwd> list = data.get("data");
+            
+			for(int i=0;i<list.size();i++) {
+				list.get(i).setIbsStatus("D");
 			}
+			int result = dbStndService.registerStwdWam(list);
 			
-			
-			   //표준항목 분할
-		    @RequestMapping("/dq/dbstnd/dbstnditemdiv_lst.do")
-		    public String gostnditemxlspage(@ModelAttribute("search") WaqSditm search) {
+			String resmsg;
 
-		    	return "/dq/dbstnd/dbstnditemdiv_lst";
-		    }
-		    
-		    
+			if(result > 0) {
+				result = 0;
+				resmsg = message.getMessage("MSG.SAVE", null, locale);
+			} else {
+				result = -1;
+				resmsg = message.getMessage("ERR.SAVE", null, locale);
+			}
+
+			String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+
+
+			return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+		}
+		
+		
+		@RequestMapping("/dq/dbstnd/delstcdwamlist.do")
+		@ResponseBody
+		public IBSResultVO<WaqMstr> delstcdwamlist(@RequestBody WamDbStcds data, WaqMstr reqmst, HttpSession session, Locale locale) throws Exception {
+			logger.debug("/dq/dbstnd/delstcdwamlist.do");
+			logger.debug("reqmst:{} \ndata:{}", reqmst, data);
+
+			ArrayList<WamDbStcd> list = data.get("data");
+            
+			for(int i=0;i<list.size();i++) {
+				list.get(i).setIbsStatus("D");
+			}
+			int result = dbStndService.registerStcdWam(list);
+			
+			String resmsg;
+
+			if(result > 0) {
+				result = 0;
+				resmsg = message.getMessage("MSG.SAVE", null, locale);
+			} else {
+				result = -1;
+				resmsg = message.getMessage("ERR.SAVE", null, locale);
+			}
+
+			String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+
+
+			return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+		}
+		
+		
+		   //표준항목 분할
+	    @RequestMapping("/dq/dbstnd/dbstnditemdiv_lst.do")
+	    public String gostnditemxlspage(@ModelAttribute("search") WaqSditm search) {
+
+	    	return "/dq/dbstnd/dbstnditemdiv_lst";
+	    }
+	    
+	    
 //		    /** 표준항목 자동분할 조회...  */
-		    @RequestMapping("/dq/dbstnd/getItemDvRqstList.do")
-		    @ResponseBody
-		    public IBSheetListVO<WapDbDvCanAsm> getItemDvRqstList(WapDbDvCanDic data, Locale locale) {
-		    	logger.debug("division:{}", data);
-		    	
-		    	List<WapDbDvCanAsm> list = dbStndService.getItemDvRqstList(data);
-		    	
-		    	return new IBSheetListVO<WapDbDvCanAsm>(list, list.size());
-		    	
-		    }
-		    
-		    
-		    
+	    @RequestMapping("/dq/dbstnd/getItemDvRqstList.do")
+	    @ResponseBody
+	    public IBSheetListVO<WapDbDvCanAsm> getItemDvRqstList(WapDbDvCanDic data, Locale locale) {
+	    	logger.debug("division:{}", data);
+	    	
+	    	List<WapDbDvCanAsm> list = dbStndService.getItemDvRqstList(data);
+	    	
+	    	return new IBSheetListVO<WapDbDvCanAsm>(list, list.size());
+	    	
+	    }
+	    
+	    
+	    
 
-		    @RequestMapping("/dq/dbstnd/regItemAutoDiv.do")
-		    @ResponseBody
-		    public IBSResultVO<WapDbDvCanAsm> regItemAutoDiv(@RequestBody WapDbDvCanAsms data, Locale locale,WapDbDvCanDic data2) throws Exception {
-		    	logger.debug("division:{}", data);
-		    	List<WapDbDvCanAsm> list = data.get("data");
-		   	
-		    	//항목분할요청 ID
-		    	Map<String, String> resultMap = dbStndService.regItemAutoDiv(list,data2);
-		    	int result = Integer.parseInt(resultMap.get("result"));
-		    	String resmsg;
-		    	
-		    	if(result > 0 ){
-		    		result = 0;
-		    		resmsg = message.getMessage("REQ.DIV.ITEM", null, locale);
-		    	} else {
-		    		result = -1;
-		    		resmsg = message.getMessage("REQ.DIV.ERR", null, locale);
-		    	}
-		    	String action = WiseMetaConfig.IBSAction.REG.getAction();
-		    	
-		    	return new IBSResultVO<WapDbDvCanAsm>(resultMap, result, resmsg, action);
-		    }
-		//    
-		    @RequestMapping("/dq/dbstnd/delItemAutoDiv.do")
-		    @ResponseBody
-		    public IBSResultVO<WapDbDvCanAsm> delItemAutoDiv(@RequestBody WapDbDvCanAsms data, Locale locale) throws Exception {
-		    	logger.debug("division:{}", data);
-		    	List<WapDbDvCanAsm> list = data.get("data");
-		    	
-		    	//항목분할요청 ID
-		    	Map<String, String> resultMap = dbStndService.delItemAutoDiv(list);
-		    	int result = Integer.parseInt(resultMap.get("result"));
-		    	String resmsg;
-		    	
-		    	if(result > 0 ){
-		    		result = 0;
-		    		resmsg = message.getMessage("MSG.DEL", null, locale);
-		    	} else {
-		    		result = -1;
-		    		resmsg = message.getMessage("ERR.DEL", null, locale);
-		    	}
-		    	String action = WiseMetaConfig.IBSAction.DEL.getAction();
-		    	
-		    	return new IBSResultVO<WapDbDvCanAsm>(resultMap, result, resmsg, action);
-		    }
+	    @RequestMapping("/dq/dbstnd/regItemAutoDiv.do")
+	    @ResponseBody
+	    public IBSResultVO<WapDbDvCanAsm> regItemAutoDiv(@RequestBody WapDbDvCanAsms data, Locale locale,WapDbDvCanDic data2) throws Exception {
+	    	logger.debug("division:{}", data);
+	    	List<WapDbDvCanAsm> list = data.get("data");
+	   	
+	    	//항목분할요청 ID
+	    	Map<String, String> resultMap = dbStndService.regItemAutoDiv(list,data2);
+	    	int result = Integer.parseInt(resultMap.get("result"));
+	    	String resmsg;
+	    	
+	    	if(result > 0 ){
+	    		result = 0;
+	    		resmsg = message.getMessage("REQ.DIV.ITEM", null, locale);
+	    	} else {
+	    		result = -1;
+	    		resmsg = message.getMessage("REQ.DIV.ERR", null, locale);
+	    	}
+	    	String action = WiseMetaConfig.IBSAction.REG.getAction();
+	    	
+	    	return new IBSResultVO<WapDbDvCanAsm>(resultMap, result, resmsg, action);
+	    }
+	//    
+	    @RequestMapping("/dq/dbstnd/delItemAutoDiv.do")
+	    @ResponseBody
+	    public IBSResultVO<WapDbDvCanAsm> delItemAutoDiv(@RequestBody WapDbDvCanAsms data, Locale locale) throws Exception {
+	    	logger.debug("division:{}", data);
+	    	List<WapDbDvCanAsm> list = data.get("data");
+	    	
+	    	//항목분할요청 ID
+	    	Map<String, String> resultMap = dbStndService.delItemAutoDiv(list);
+	    	int result = Integer.parseInt(resultMap.get("result"));
+	    	String resmsg;
+	    	
+	    	if(result > 0 ){
+	    		result = 0;
+	    		resmsg = message.getMessage("MSG.DEL", null, locale);
+	    	} else {
+	    		result = -1;
+	    		resmsg = message.getMessage("ERR.DEL", null, locale);
+	    	}
+	    	String action = WiseMetaConfig.IBSAction.DEL.getAction();
+	    	
+	    	return new IBSResultVO<WapDbDvCanAsm>(resultMap, result, resmsg, action);
+	    }
 }
