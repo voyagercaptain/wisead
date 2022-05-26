@@ -21,7 +21,6 @@ var grid_name ;
 
 $(document).ready(function() {
 	
-// 	EnterkeyProcess("Search");
 	//탭 초기화....
 	//$( "#tabs" ).tabs();
 	
@@ -29,7 +28,7 @@ $(document).ready(function() {
 	
 	//업무구분상세 초기화...
 	//$("#mstFrm #bizDtlCd").val("${waqMstr.bizDtlCd}");
-	$("#mstFrm #bizDtlCd").val("SDITM");
+	$("#mstFrm #bizDtlCd").val("STCD");
 	
 	$("[id$='-${waqMstr.bizDtlCd}'] a").click();
 	
@@ -59,7 +58,17 @@ $(document).ready(function() {
 // 	         console.log("dd");
 	         setTimeout(function(){doAction("Search")},500);
 	       }
-	   });	
+	   });
+	   
+	   $( "#tab-STCD a" ).click(function(){
+		      mstFrmReset("STCD");
+		      var retapproveWord =  grid_STCD.RowCount();
+//	 	      console.log(retapproveWord);
+		      if(retapproveWord <= 0){
+//	 	         console.log("dd");
+		         setTimeout(function(){doAction("Search")},500);
+		       }
+		   });	
 	$("#Msthidden").hide();
 
 	
@@ -117,51 +126,14 @@ $(document).ready(function() {
     
     //화면리로드
     $("#btnBlank").click( function(){
-		location.href = '<c:url value="/dq/stnd/stndtot_rqst.do" />';
+		location.href = '<c:url value="/dq/dbstnd/stndtot_rqst.do" />';
     } );
     
 		
  // 결재 Event Bind
 	$("#btnRegRqst").click(function(){
-		//등록가능한지 확인한다.vrfCd = 1
-		var regchk1 = grid_name.FindText("vrfCd", "<s:message code='VRFC.EROR' />");/*등록가능*/
-		var regchk2 = grid_name.FindText("vrfCd", "<s:message code='VRFC.EROR' />");/*등록가능*/
-		var regchk3 = grid_name.FindText("vrfCd", "<s:message code='VRFC.EROR' />");/*등록가능*/
-		
-		if(regchk1 > 0 || regchk2 > 0 || regchk3 > 0){
-	            showMsgBox("INF","<s:message code='ERR.SUBMIT2' />")	
-     			return;
-		}
-		var retapproveWord =  grid_STWD.RowCount();
-		var retapproveDmn  =  grid_DMN.RowCount();
-		var retapproveItem =  grid_SDITM.RowCount();
-		if(retapproveWord >= 0 && retapproveDmn >= 0 && retapproveItem >= 0){
-			   
-//				alert("결재진행 업데이트 가능...");
-			var url = "<c:url value="/dq/stnd/approveStndTot.do"/>";
-			var param = $("#mstFrm").serialize();
-			
-			var itemJson = grid_SDITM.GetSaveJson(1);
-			var dmnJson  = grid_DMN.GetSaveJson(1);
-			var wordJson = grid_STWD.GetSaveJson(1);
-			
-			if (itemJson.Code == "IBS010") return;
-			if (dmnJson.Code == "IBS010") return;
-			if (wordJson.Code == "IBS010") return;
-			
-			var stndInfo = new Object(); 
-			
-			stndInfo.item = itemJson.data;
-			stndInfo.dmn  = dmnJson.data;
-			stndInfo.word = wordJson.data;
-							 								
-			var ibsSaveJson = stndInfo;
-			
-			//alert(JSON.stringify(ibsSaveJson));
-							
-			IBSpostJson2(url, ibsSaveJson, param, ibscallback);		
-		}
-	}).show();
+	
+	}).hide();
  
 			$("#divTabs-rqstvrf").hide();
 	
@@ -172,13 +144,16 @@ $(window).load(function() {
 
 	//프로파일별 그리드명 셋팅
 	var bizDtlCd = $("form[name=mstFrm] #bizDtlCd").val();
-// 	alert(bizDtlCd);
+ 	//alert(bizDtlCd);
+ 	
 	if(bizDtlCd == "SDITM" || bizDtlCd == null){
 		grid_name = grid_SDITM;
 	}else if(bizDtlCd == "DMN"){
 		grid_name = grid_DMN;
 	}else if(bizDtlCd == "STWD"){
 		grid_name = grid_STWD;
+	}else if(bizDtlCd == "STCD"){
+		grid_name = grid_STCD;
 	}
 // 	alert(grid_name);
 	var rqststep = $("#mstFrm #rqstStepCd").val();
@@ -188,11 +163,11 @@ $(window).load(function() {
 	//============================================
 // 	if(rqststep !=  "A" ){
 // 	if($("#mstFrm #aprLvl").val() > 0 ){
-		setDispRqstMainButton(rqststep, grid_name);
+		//setDispRqstMainButton(rqststep, grid_name);
 // 	}
 
 	//검토처리 버튼 보여주기....
-	checkApproveYn($("#mstFrm"));
+// 	checkApproveYn($("#mstFrm"));
 
 // 	setTimeOut
  	doAction("Search");
@@ -212,16 +187,16 @@ $(window).resize(function() {
 //요청정보재조회
 function getMstFrm(){
 	
-	var bizDtlCd = $("form[name=mstFrm] #bizDtlCd").val();
-	if(bizDtlCd == "SDITM"){
-		var urls = '<c:url value="/dq/stnd/getitemrqstlist.do"/>';
-	}else if(bizDtlCd == "DMN"){
-		var urls = '<c:url value="/dq/stnd/getdmnrqstlist.do"/>';
-	}else if(bizDtlCd == "STWD"){
-		var urls = '<c:url value="/dq/stnd/getstwdrqstlist.do"/>';
-	}
+// 	var bizDtlCd = $("form[name=mstFrm] #bizDtlCd").val();
+// 	if(bizDtlCd == "SDITM"){
+// 		var urls = '<c:url value="/dq/dbstnd/getitemrqstlist.do"/>';
+// 	}else if(bizDtlCd == "DMN"){
+// 		var urls = '<c:url value="/dq/dbstnd/getdmnrqstlist.do"/>';
+// 	}else if(bizDtlCd == "STWD"){
+// 		var urls = '<c:url value="/dq/dbstnd/getstwdrqstlist.do"/>';
+// 	}
 	
-	var param = $('form[name=mstFrm]').serialize();
+// 	var param = $('form[name=mstFrm]').serialize();
 // 	ajax2Json(urls, param, setMstFrm);
 }
 
@@ -257,6 +232,8 @@ function doAction(sAction)
 		grid_name = grid_DMN;
 	}else if(bizDtlCd == "STWD"){
 		grid_name = grid_STWD;
+	}else if(bizDtlCd == "STCD"){
+		grid_name = grid_STCD;
 	}
 	
     switch(sAction)
@@ -265,20 +242,7 @@ function doAction(sAction)
     		grid_name.DataInsert(0);
         	break;
 
-		case "AddWam": //기존 표준단어 추가
-			var url = "";
-
-			if(bizDtlCd == "SDITM"){
-				url = '<c:url value="/dq/stnd/popup/stnditem_pop.do"/>';
-			}else if(bizDtlCd == "DMN"){
-				url = '<c:url value="/dq/stnd/popup/stnddmn_pop.do"/>';
-			}else if(bizDtlCd == "STWD"){
-				url = '<c:url value="/dq/stnd/popup/stndword_pop.do"/>';
-			}
-			var param = "?popRqst=Y"
-			var popup = OpenWindow(url+param,"AddWam","1000","600","yes");
-		
-			break;
+	
     	case "LoadExcel":  //엑셀업로드
     		grid_name.LoadExcel({Mode:'HeaderMatch', Append:1});
         	break;
@@ -287,15 +251,17 @@ function doAction(sAction)
 //     		if(grid_name.GetTotalRows() == 0 ){
 //     			grid_name.DataInsert(0);
 //     		}
-    	    var fileName="공통";
+    	    var fileName="DB";
     	    if(bizDtlCd == "SDITM"){
     	    	fileName = fileName+"표준용어.xlsx";
 			}else if(bizDtlCd == "DMN"){
 				fileName = fileName+"표준도메인.xlsx";
 			}else if(bizDtlCd == "STWD"){
 				fileName = fileName+"표준단어.xlsx";
+			}else if(bizDtlCd == "STCD"){
+				fileName = fileName+"표준코드.xlsx";
 			}
-    		grid_name.Down2Excel({HiddenColumn:1, Merge:1,Mode:2,FileName : fileName});
+    		grid_name.Down2Excel({HiddenColumn:1,Merge:1,Mode:2,FileName : fileName});
         	break;
         
 		case "Search":
@@ -303,14 +269,15 @@ function doAction(sAction)
 			//프로파일별 url 셋팅
 			var url = "";
 			if(bizDtlCd == "SDITM"){
-				url = '<c:url value="/dq/stnd/getCommsditmlist.do"/>';
+				url = '<c:url value="/dq/dbstnd/getsditmlist.do"/>';
 			}else if(bizDtlCd == "DMN"){
-				url = '<c:url value="/dq/stnd/getCommDomainlist.do"/>';
+				url = '<c:url value="/dq/dbstnd/getDomainlist.do"/>';
 			}else if(bizDtlCd == "STWD"){
-				url = '<c:url value="/dq/stnd/getCommStndWordlist.do"/>';
+				url = '<c:url value="/dq/dbstnd/getStndWordlist.do"/>';
+			}else if(bizDtlCd == "STCD"){
+				url = '<c:url value="/dq/dbstnd/getStndCodelist.do"/>';
 			}
 			
-// 			var param = $("#mstFrm").serialize();
 			var param = $("#frmSearch").serialize();
 			grid_name.DoSearch(url, param);
 			
@@ -334,9 +301,8 @@ function doAction(sAction)
 			//프로파일별 url 셋팅
 			var url = "";
 			if(bizDtlCd == "SDITM"){
-				var row = grid_name.ColValueDup("orgNm|sditmLnm|sditmPnm");
-				var rows = grid_name.ColValueDupRows("orgNm|sditmLnm|sditmPnm");
-				
+				var row = grid_name.ColValueDup("orgNm|dbNm|sditmLnm|sditmPnm");
+				var rows = grid_name.ColValueDupRows("orgNm|dbNm|sditmLnm|sditmPnm");
 				
 				if(row>0){
 				    showMsgBox("INF","<s:message code="ERR.DUP" />"+"(용어명)"+"</br>"+rows+"행");
@@ -347,12 +313,12 @@ function doAction(sAction)
 				    }
 					return;
 				}
-				url = '<c:url value="/dq/stnd/regCommitemWamlist.do"/>';
+				url = '<c:url value="/dq/dbstnd/regitemWamlist.do"/>';
 				
 			}else if(bizDtlCd == "DMN"){
 				
-				var row = grid_name.ColValueDup("orgNm|infotpLnm");
-				var rows = grid_name.ColValueDupRows("infotpLnm");
+				var row = grid_name.ColValueDup("orgNm|dbNm|infotpLnm");
+				var rows = grid_name.ColValueDupRows("orgNm|dbNm|infotpLnm");
 				if(row>0){
 				    showMsgBox("INF","<s:message code="ERR.DUP" />"+"</br>"+rows+"행");
 				    var rowsArr = rows.split(",");
@@ -362,10 +328,10 @@ function doAction(sAction)
 				    }
 					return;
 				}
-				url = '<c:url value="/dq/stnd/regCommdmnWamlist.do"/>';
+				url = '<c:url value="/dq/dbstnd/regdmnWamlist.do"/>';
 			}else if(bizDtlCd == "STWD"){
-				var row = grid_name.ColValueDup("stwdLnm|stwdPnm");
-				var rows = grid_name.ColValueDupRows("stwdLnm|stwdPnm");
+				var row = grid_name.ColValueDup("dbNm|stwdLnm|stwdPnm");
+				var rows = grid_name.ColValueDupRows("dbNm|stwdLnm|stwdPnm");
 				
 				if(row>0){
 				    showMsgBox("INF","<s:message code="ERR.DUP" />"+"</br>"+rows+"행");
@@ -377,7 +343,22 @@ function doAction(sAction)
 					return;
 				}				
 
-				url = '<c:url value="/dq/stnd/regStnCommdWordWamlist.do"/>';
+				url = '<c:url value="/dq/dbstnd/regStndWordWamlist.do"/>';
+			}else if(bizDtlCd == "STCD"){
+				var row = grid_name.ColValueDup("dbNm|commCdNm|commDtlCdNm");
+				var rows = grid_name.ColValueDupRows("dbNm|commCdNm|commDtlCdNm");
+				
+				if(row>0){
+				    showMsgBox("INF","<s:message code="ERR.DUP" />"+"</br>"+rows+"행");
+				    var rowsArr = rows.split(",");
+				    for(var i=0 ; i< rowsArr.length; i++){
+				        grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
+// 				        grid_name.SetCellValue(rowsArr[i],"vrfRmk","중복데이터");
+				    }
+					return;
+				}				
+
+				url = '<c:url value="/dq/dbstnd/regStndCodeWamlist.do"/>';
 			}
 			
 			
@@ -397,11 +378,13 @@ function doAction(sAction)
         	
 			var url = "";
 			if(bizDtlCd == "SDITM"){
-				url = '<c:url value="/dq/stnd/delCommitemWamlist.do"/>';
+				url = '<c:url value="/dq/dbstnd/delitemWamlist.do"/>';
 			}else if(bizDtlCd == "DMN"){
-				url = '<c:url value="/dq/stnd/delCommdmnWamlist.do"/>';
+				url = '<c:url value="/dq/dbstnd/deldmnWamlist.do"/>';
 			}else if(bizDtlCd == "STWD"){
-				url = '<c:url value="/dq/stnd/delCommstwdwamlist.do"/>';
+				url = '<c:url value="/dq/dbstnd/delstwdwamlist.do"/>';
+			}else if(bizDtlCd == "STCD"){
+				url = '<c:url value="/dq/dbstnd/delstcdwamlist.do"/>';
 			}
 			
 			//삭제로직 김경택
@@ -536,16 +519,7 @@ function postProcessIBS(res) {
 			
 			break;
 				
-		//요청서 결재단계별 승인 완료 후처리
-		case "<%=WiseMetaConfig.RqstAction.APPROVE%>":
-// 			var url = '<c:url value="/dq/stnd/stndtot_rqst.do" />';
-// 			var param = $('form[name=mstFrm]').serialize();
-// 			location.href = url+"?"+param;
-			var url = '<c:url value="/dq/stnd/stnd_lst.do" />';
-// 			var param = $('form[name=mstFrm]').serialize();
-			location.href = url;
-			break;
-		
+	
 		default : 
 			// 아무 작업도 하지 않는다...
 			break;
@@ -579,16 +553,16 @@ function postProcessIBS(res) {
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" summary="<s:message code='BFHD.INTG.INQ' />"> <!-- 사전통합조회 -->
                    <caption><s:message code="BFHD.INTG.INQ.FORM" /></caption> <!-- 사전통합 검색폼 -->
                    <colgroup>
+                   <col style="width:10%;" />
                    <col style="width:20%;" />
-                   <col style="width:30%;" />
+                   <col style="width:10%;" />
                    <col style="width:20%;" />
-                   <col style="width:30%;" />
-<%--                    <col style="width:8%;" /> --%>
-<%--                    <col style="width:35%;" /> --%>
+                   <col style="width:10%;" />
+                   <col style="width:20%;" />
                    </colgroup>
                    
                    <tbody>      
-                            <tr>
+                           <tr>
 					         <th scope="row"><label for="orgNm">기관명</label></th> <!-- 사전유형 -->
                                 <td >
                                 <input type="text" id="orgNm" name="orgNm" class="wd98p" value="${orgNm}" />
@@ -610,7 +584,7 @@ function postProcessIBS(res) {
             <div class="bt03">
 			    <button class="btn_search" id="btnSearch" 	name="btnSearch"><s:message code="BTN.READ" /></button> <!-- 전체조회 -->
 			    
-			    <c:if test="${sessionScope.loginVO.usergId eq '2'}">
+			    <c:if test="${sessionScope.loginVO.usergId eq 'OBJ_00000034587'}">
     				<button class="btn_rqst_new" id="btnRqstNew" name="btnRqstNew"><s:message code="ADDT" /></button> <!-- 추가 -->                                                         
 					  <ul class="add_button_menu" id="addButtonMenu">
 					    <li class="btn_new" id="btnNew"><a><span class="ui-icon ui-icon-pencil"></span><s:message code="NEW.ADDT" /></a></li> <!-- 신규 추가 -->
@@ -626,14 +600,15 @@ function postProcessIBS(res) {
 	          <button class="btn_excel_down"  id="btnExcelDown"  name="btnExcelDown"><s:message code="EXCL.DOWNLOAD" /></button> <!-- 엑셀 내리기 -->                       
 	    	</div>
         </div>	
+        
 <div style="clear:both; height:5px;"><span></span></div>
 
 	<div id="tabs">
-	  
-	  <div id="tabs-SDITM">
-			<div id="detailInfoSDITM"><%@include file="exl/commstnditem_exl.jsp" %></div>
+
+	  <div id="tabs-STCD">
+			<div id="detailInfoDMN"><%@include file="exl/orgstndstcd_exl.jsp" %></div>
 	  </div>
-	  
+	 
 	 </div>
 
 	<div style="clear:both; height:20px;"><span></span></div>

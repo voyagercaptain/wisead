@@ -131,7 +131,7 @@ public class StndTotRqstCtrl {
 	
 
 	/** 표준데이터 엑셀등록  화면이동 - 요청번호가 없을 경우 채번하여 리턴한다. @return insomnia */
-    @RequestMapping("/dq/stnd/{screenGb}//stndtot_rqst.do")
+    @RequestMapping("/dq/stnd/{screenGb}/stndtot_rqst.do")
 	public String goStndwordrqstForm(WaqMstr reqmst, @PathVariable String screenGb, ModelMap model,HttpSession session) throws Exception {
     	logger.debug("WaqMstr:{}", reqmst);
     	
@@ -200,6 +200,9 @@ public class StndTotRqstCtrl {
         }
         else if("SDITM".equals(screenGb)) {
         	strReturn = "/dq/stnd/stnditem_rqst";
+        }
+        else if("STCD".equals(screenGb)) {
+        	strReturn = "/dq/stnd/stndstcd_rqst";
         } 
         //else {
         //	strReturn = "/dq/stnd/stndtot_rqst";

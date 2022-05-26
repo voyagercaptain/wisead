@@ -646,7 +646,8 @@ function postProcessIBS(res) {
 	<div id="tabs">
 	  
 	  <div id="tabs-SDITM">
-			<div id="detailInfoSDITM"><%@include file="exl/stnditem_exl.jsp" %></div>
+	  		<!-- file="exl/stnditem_exl.jsp" -->
+			<div id="detailInfoSDITM"><%@include file="exl/orgstnditem_exl.jsp" %></div>
 	  </div>
 	  
 	 </div>

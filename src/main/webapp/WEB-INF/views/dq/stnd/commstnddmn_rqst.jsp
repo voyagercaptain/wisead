@@ -631,7 +631,7 @@ function postProcessIBS(res) {
 	<div id="tabs">
 	 
 	  <div id="tabs-DMN">
-			<div id="detailInfoDMN"><%@include file="exl/stnddmn_exl.jsp" %></div>
+			<div id="detailInfoDMN"><%@include file="exl/commstnddmn_exl.jsp" %></div>
 	  </div>
 	  
 	 </div>
