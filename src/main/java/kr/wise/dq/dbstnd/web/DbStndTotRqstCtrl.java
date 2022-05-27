@@ -41,7 +41,7 @@ import kr.wise.commons.sysmgmt.basicinfo.service.WaaBscLvl;
 import kr.wise.commons.util.UtilJson;
 import kr.wise.commons.util.UtilString;
 import kr.wise.dq.dbstnd.service.DbStndService;
-
+import kr.wise.dq.dbstnd.service.StndService;
 import kr.wise.dq.dbstnd.service.WamDbSditm;
 import kr.wise.dq.dbstnd.service.WamDbStcd;
 import kr.wise.dq.dbstnd.service.WamDbStwd;
@@ -89,6 +89,8 @@ public class DbStndTotRqstCtrl {
 	@Inject
 	private DbStndService dbStndService;
 	
+	@Inject
+	private StndService stndService;
 	
 	@Inject
 	private RequestMstService requestMstService;
@@ -306,6 +308,26 @@ public class DbStndTotRqstCtrl {
 		return new IBSheetListVO<WamDbStcd>(list, list.size());
 
 	}
+	
+	
+	@RequestMapping("/dq/stnd/getStndCodelist.do")
+	@ResponseBody
+	public IBSheetListVO<WamDbStcd> getOrgStndCodelist(@ModelAttribute WamDbStcd data, Locale locale, HttpSession session) {
+
+		logger.debug("reqvo:{}", data);
+		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
+		
+		List<WamDbStcd> list = null;
+		try {
+			list = stndService.getStndCodelist(data);
+		} catch(Exception e) {
+			logger.error("", e);
+		}
+
+//		ibsJson.MESSAGE = message.getMessage("MSG.SAVE", null, locale);
+		return new IBSheetListVO<WamDbStcd>(list, list.size());
+	}
+	
 
 	@RequestMapping("/dq/dbstnd/getStndWordlist.do")
 	@ResponseBody
@@ -375,8 +397,6 @@ public class DbStndTotRqstCtrl {
 		} catch (Exception e) {
 			logger.error("", e);
 		}
-
-		
 		String resmsg;
 
 		if(result > 0 ){
@@ -395,6 +415,43 @@ public class DbStndTotRqstCtrl {
 		
 		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
 	}
+    
+    
+    
+    @RequestMapping("/dq/stnd/regStndCodeWamlist.do")
+    @ResponseBody
+	public IBSResultVO<WaqMstr> regOrgStndCodeWamlist(@RequestBody WamDbStcds data, WaqMstr reqmst, Locale locale) throws Exception {
+
+		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+		ArrayList<WamDbStcd> list = data.get("data");
+
+		long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
+        
+		int result = 0;
+		try {
+			result = stndService.registerStcdWam(list);
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		String resmsg;
+
+		if(result > 0 ){
+			result = 0;
+			resmsg = message.getMessage("MSG.SAVE", null, locale);
+		} else {
+			result = -1;
+			resmsg = message.getMessage("ERR.SAVE", null, locale);
+		}
+		
+		String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+		
+		long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+		long secDiffTime = (afterTime - beforeTime)/1000; //두 시간에 차 계산
+		logger.debug("시간차이(m): {}", secDiffTime);
+		
+		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+	}
+    
 
     
     /** 삭제 .... @throws Exception insomnia */
@@ -577,8 +634,34 @@ public class DbStndTotRqstCtrl {
 			}
 
 			String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+			return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+		}
+		
+		
+		@RequestMapping("/dq/stnd/delstcdwamlist.do")
+		@ResponseBody
+		public IBSResultVO<WaqMstr> delOrgStcdwamlist(@RequestBody WamDbStcds data, WaqMstr reqmst, HttpSession session, Locale locale) throws Exception {
+			logger.debug("/dq/stnd/delstcdwamlist.do");
+			logger.debug("reqmst:{} \ndata:{}", reqmst, data);
 
+			ArrayList<WamDbStcd> list = data.get("data");
+            
+			for(int i=0;i<list.size();i++) {
+				list.get(i).setIbsStatus("D");
+			}
+			int result = stndService.registerStcdWam(list);
+			
+			String resmsg;
 
+			if(result > 0) {
+				result = 0;
+				resmsg = message.getMessage("MSG.SAVE", null, locale);
+			} else {
+				result = -1;
+				resmsg = message.getMessage("ERR.SAVE", null, locale);
+			}
+
+			String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
 			return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
 		}
 		

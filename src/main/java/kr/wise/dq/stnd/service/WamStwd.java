@@ -92,7 +92,28 @@ public class WamStwd extends CommonVo  {
     
     private String fbdnLnm;
     
+    private String ownrOrg;
     
+    private String spclNt;
+    
+    
+    
+
+    public String getOwnrOrg() {
+		return ownrOrg;
+	}
+
+	public void setOwnrOrg(String ownrOrg) {
+		this.ownrOrg = ownrOrg;
+	}
+
+	public String getSpclNt() {
+		return spclNt;
+	}
+
+	public void setSpclNt(String spclNt) {
+		this.spclNt = spclNt;
+	}
 
     public String getFbdnLnm() {
 		return fbdnLnm;

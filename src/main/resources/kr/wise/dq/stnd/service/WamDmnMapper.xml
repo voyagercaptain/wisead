@@ -46,6 +46,9 @@
     <result column="UNIT"              property="unit"        jdbcType="VARCHAR" />
     <result column="CD_VAL"            property="cdVal"       jdbcType="VARCHAR" />
     <result column="ADMN_STND_CD"      property="admnStndCd"  jdbcType="VARCHAR" />
+    
+    <result column="OWNR_ORG" property="ownrOrg" jdbcType="VARCHAR"/>
+     <result column="SPCL_NT"          property="spclNt"        jdbcType="VARCHAR" />
   </resultMap>
   
   <sql id="Base_Column_List" >
@@ -53,7 +56,7 @@
     LST_ENTY_LNM, CD_VAL_TYP_CD, CD_VAL_IVW_CD, SDITM_AUTO_CRT_YN, DATA_FRM, CRG_USER_ID, 
     DMN_ORG_DS, RQST_NO, RQST_SNO, OBJ_DESCN, OBJ_VERS, REG_TYP_CD, FRS_RQST_DTM, FRS_RQST_USER_ID, 
     RQST_DTM, RQST_USER_ID, APRV_DTM, APRV_USER_ID, LNM_CRI_DS,ENC_YN,DMN_DSCD,DATA_TYPE,DATA_LEN,DATA_SCAL
-    ,SAVE_FRM,EXPRSN_FRM,UNIT,CD_VAL,ADMN_STND_CD
+    ,SAVE_FRM,EXPRSN_FRM,UNIT,CD_VAL,ADMN_STND_CD, OWNR_ORG, SPCL_NT
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select A.* 
@@ -357,7 +360,7 @@
       DMN_ORG_DS, RQST_NO, RQST_SNO, 
       OBJ_DESCN, OBJ_VERS, REG_TYP_CD, 
       FRS_RQST_DTM, FRS_RQST_USER_ID, RQST_DTM, 
-      RQST_USER_ID, APRV_DTM, APRV_USER_ID,ENC_YN,DMN_DSCD
+      RQST_USER_ID, APRV_DTM, APRV_USER_ID,ENC_YN,DMN_DSCD, OWNR_ORG, SPCL_NT
       )
     values (#{dmnId,jdbcType=VARCHAR}, #{dmnLnm,jdbcType=VARCHAR}, #{dmnPnm,jdbcType=VARCHAR}, 
       #{dmngId,jdbcType=VARCHAR}, #{infotpId,jdbcType=VARCHAR}, #{uppDmnId,jdbcType=VARCHAR}, 
@@ -368,7 +371,7 @@
       #{objDescn,jdbcType=VARCHAR}, #{objVers,jdbcType=DECIMAL}, #{regTypCd,jdbcType=VARCHAR}, 
       #{frsRqstDtm,jdbcType=DATE}, #{frsRqstUserId,jdbcType=VARCHAR}, #{rqstDtm,jdbcType=DATE}, 
       #{rqstUserId,jdbcType=VARCHAR}, #{aprvDtm,jdbcType=DATE}, #{aprvUserId,jdbcType=VARCHAR}, #{encYn,jdbcType=VARCHAR},
-      #{dmnDscd,jdbcType=VARCHAR}
+      #{dmnDscd,jdbcType=VARCHAR}, #{ownrOrg,jdbcType=VARCHAR}, #{spclNt,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="kr.wise.dq.stnd.service.WamDmn" >
@@ -494,6 +497,12 @@
       <if test="orgNm != null" >
         ORG_NM,
       </if>
+      <if test="ownrOrg != null" >
+        OWNR_ORG,
+      </if>
+      <if test="spclNt != null" >
+        SPCL_NT,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="dmnId != null" >
@@ -615,6 +624,13 @@
       </if>
        <if test="orgNm != null" >
         #{orgNm,jdbcType=VARCHAR},
+      </if>
+      
+       <if test="ownrOrg != null" >
+         #{ownrOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="spclNt != null" >
+         #{spclNt,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -738,6 +754,13 @@
       <if test="orgNm != null" >
         ORG_NM = #{orgNm,jdbcType=VARCHAR},
       </if>
+      
+       <if test="ownrOrg != null" >
+        OWNR_ORG = #{ownrOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="spclNt != null" >
+        SPCL_NT = #{spclNt,jdbcType=VARCHAR},
+      </if>
     </set>
     where DMN_ID = #{dmnId,jdbcType=VARCHAR}
   </update>
@@ -775,6 +798,8 @@
         ,DATA_LEN = #{dataLen,jdbcType=DECIMAL}
         ,DATA_SCAL = #{dataScal,jdbcType=DECIMAL}
         ,ORG_NM = #{orgNm,jdbcType=VARCHAR}
+        , OWNR_ORG = #{ownrOrg,jdbcType=VARCHAR}
+        , SPCL_NT = #{spclNt,jdbcType=VARCHAR}
     where DMN_ID = #{dmnId,jdbcType=VARCHAR}
   </update>
   <insert id="insertWamDmn" parameterType="java.lang.String" >

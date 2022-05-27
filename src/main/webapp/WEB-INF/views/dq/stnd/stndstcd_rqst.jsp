@@ -251,7 +251,7 @@ function doAction(sAction)
 //     		if(grid_name.GetTotalRows() == 0 ){
 //     			grid_name.DataInsert(0);
 //     		}
-    	    var fileName="DB";
+    	    var fileName="기관";
     	    if(bizDtlCd == "SDITM"){
     	    	fileName = fileName+"표준용어.xlsx";
 			}else if(bizDtlCd == "DMN"){
@@ -269,13 +269,13 @@ function doAction(sAction)
 			//프로파일별 url 셋팅
 			var url = "";
 			if(bizDtlCd == "SDITM"){
-				url = '<c:url value="/dq/dbstnd/getsditmlist.do"/>';
+				url = '<c:url value="/dq/stnd/getsditmlist.do"/>';
 			}else if(bizDtlCd == "DMN"){
-				url = '<c:url value="/dq/dbstnd/getDomainlist.do"/>';
+				url = '<c:url value="/dq/stnd/getDomainlist.do"/>';
 			}else if(bizDtlCd == "STWD"){
-				url = '<c:url value="/dq/dbstnd/getStndWordlist.do"/>';
+				url = '<c:url value="/dq/stnd/getStndWordlist.do"/>';
 			}else if(bizDtlCd == "STCD"){
-				url = '<c:url value="/dq/dbstnd/getStndCodelist.do"/>';
+				url = '<c:url value="/dq/stnd/getStndCodelist.do"/>';
 			}
 			
 			var param = $("#frmSearch").serialize();
@@ -357,8 +357,7 @@ function doAction(sAction)
 				    }
 					return;
 				}				
-
-				url = '<c:url value="/dq/dbstnd/regStndCodeWamlist.do"/>';
+				url = '<c:url value="/dq/stnd/regStndCodeWamlist.do"/>';
 			}
 			
 			
@@ -378,13 +377,13 @@ function doAction(sAction)
         	
 			var url = "";
 			if(bizDtlCd == "SDITM"){
-				url = '<c:url value="/dq/dbstnd/delitemWamlist.do"/>';
+				url = '<c:url value="/dq/stnd/delitemWamlist.do"/>';
 			}else if(bizDtlCd == "DMN"){
-				url = '<c:url value="/dq/dbstnd/deldmnWamlist.do"/>';
+				url = '<c:url value="/dq/stnd/deldmnWamlist.do"/>';
 			}else if(bizDtlCd == "STWD"){
-				url = '<c:url value="/dq/dbstnd/delstwdwamlist.do"/>';
+				url = '<c:url value="/dq/stnd/delstwdwamlist.do"/>';
 			}else if(bizDtlCd == "STCD"){
-				url = '<c:url value="/dq/dbstnd/delstcdwamlist.do"/>';
+				url = '<c:url value="/dq/stnd/delstcdwamlist.do"/>';
 			}
 			
 			//삭제로직 김경택
@@ -553,12 +552,12 @@ function postProcessIBS(res) {
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" summary="<s:message code='BFHD.INTG.INQ' />"> <!-- 사전통합조회 -->
                    <caption><s:message code="BFHD.INTG.INQ.FORM" /></caption> <!-- 사전통합 검색폼 -->
                    <colgroup>
-                   <col style="width:10%;" />
                    <col style="width:20%;" />
-                   <col style="width:10%;" />
+                   <col style="width:30%;" />
                    <col style="width:20%;" />
-                   <col style="width:10%;" />
-                   <col style="width:20%;" />
+                   <col style="width:30%;" />
+<%--                    <col style="width:8%;" /> --%>
+<%--                    <col style="width:35%;" /> --%>
                    </colgroup>
                    
                    <tbody>      
@@ -584,7 +583,7 @@ function postProcessIBS(res) {
             <div class="bt03">
 			    <button class="btn_search" id="btnSearch" 	name="btnSearch"><s:message code="BTN.READ" /></button> <!-- 전체조회 -->
 			    
-			    <c:if test="${sessionScope.loginVO.usergId eq 'OBJ_00000034587'}">
+			    <c:if test="${sessionScope.loginVO.usergId eq 'OBJ_00000034586'}">
     				<button class="btn_rqst_new" id="btnRqstNew" name="btnRqstNew"><s:message code="ADDT" /></button> <!-- 추가 -->                                                         
 					  <ul class="add_button_menu" id="addButtonMenu">
 					    <li class="btn_new" id="btnNew"><a><span class="ui-icon ui-icon-pencil"></span><s:message code="NEW.ADDT" /></a></li> <!-- 신규 추가 -->

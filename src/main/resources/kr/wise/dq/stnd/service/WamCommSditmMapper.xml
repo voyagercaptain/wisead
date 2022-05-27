@@ -46,6 +46,11 @@
     <result column="UNIT"          property="unit"        jdbcType="VARCHAR" />
     <result column="ORG_NM"          property="orgNm"        jdbcType="VARCHAR" />
     <result column="ALW_VAL"          property="alwVal"        jdbcType="VARCHAR" />
+    
+    <result column="STND_CD"          property="stndCd"        jdbcType="VARCHAR" /> 
+    <result column="SPCL_NT"          property="spclNt"        jdbcType="VARCHAR" />
+    <result column="BSNSS_FLD"        property="bsnssFld"      jdbcType="VARCHAR" />
+    <result column="PNM"        property="pnm"      jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     SDITM_ID, SDITM_LNM, SDITM_PNM, LNM_CRI_DS, DMN_ID, DMNG_ID, INFOTP_ID, INFOTP_CHG_YN, 
@@ -54,6 +59,7 @@
     ,INFOTP_LNM,
 <!--     BZWK_FLD -->
     ,ALW_VAL,OWNR_ORG,ADMN_STND_CD,SAVE_FRM,EXPRSN_FRM,UNIT
+    , PNM,  STND_CD, SPCL_NT, BSNSS_FLD 
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
 SELECT * 
@@ -85,14 +91,16 @@ SELECT *
       RQST_NO, RQST_SNO, OBJ_DESCN, 
       OBJ_VERS, REG_TYP_CD, FRS_RQST_DTM, 
       FRS_RQST_USER_ID, RQST_DTM, RQST_USER_ID, 
-      APRV_DTM, APRV_USER_ID, PERS_INFO_YN)
+      APRV_DTM, APRV_USER_ID, PERS_INFO_YN,
+      STND_CD, SPCL_NT, BSNSS_FLD, PNM)
     values (#{sditmId,jdbcType=VARCHAR}, #{sditmLnm,jdbcType=VARCHAR}, #{sditmPnm,jdbcType=VARCHAR}, 
       #{lnmCriDs,jdbcType=VARCHAR}, #{dmnId,jdbcType=VARCHAR}, #{dmngId,jdbcType=VARCHAR}, 
       #{infotpId,jdbcType=VARCHAR}, #{infotpChgYn,jdbcType=VARCHAR}, #{encYn,jdbcType=VARCHAR}, 
       #{rqstNo,jdbcType=VARCHAR}, #{rqstSno,jdbcType=DECIMAL}, #{objDescn,jdbcType=VARCHAR}, 
       #{objVers,jdbcType=DECIMAL}, #{regTypCd,jdbcType=VARCHAR}, #{frsRqstDtm,jdbcType=TIMESTAMP}, 
       #{frsRqstUserId,jdbcType=VARCHAR}, #{rqstDtm,jdbcType=TIMESTAMP}, #{rqstUserId,jdbcType=VARCHAR}, 
-      #{aprvDtm,jdbcType=TIMESTAMP}, #{aprvUserId,jdbcType=VARCHAR}, #{persInfoYn,jdbcType=VARCHAR})
+      #{aprvDtm,jdbcType=TIMESTAMP}, #{aprvUserId,jdbcType=VARCHAR}, #{persInfoYn,jdbcType=VARCHAR},
+      #{stndCd,jdbcType=VARCHAR}, #{spclNt,jdbcType=VARCHAR}, #{bsnssFld,jdbcType=VARCHAR}, #{pnm,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="kr.wise.dq.stnd.service.WamSditm" >
     insert into COMM_SDITM
@@ -196,6 +204,19 @@ SELECT *
       <if test="orgNm != null" >
         ORG_NM ,
       </if>
+      
+      <if test="stndCd != null" >
+      STND_CD,
+      </if>
+      <if test="spclNt != null" >
+      SPCL_NT,
+      </if>
+      <if test="bsnssFld != null" >
+      BSNSS_FLD,
+      </if>
+      <if test="pnm != null" >
+      PNM,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="sditmId != null" >
@@ -297,6 +318,21 @@ SELECT *
       <if test="orgNm != null" >
         #{orgNm,jdbcType=DECIMAL},
       </if>
+      
+      
+       <if test="stndCd != null" >
+      	#{stndCd,jdbcType=VARCHAR},
+      </if>
+      <if test="spclNt != null" >
+      	#{spclNt,jdbcType=VARCHAR},
+      </if>
+      <if test="bsnssFld != null" >
+      	#{bsnssFld,jdbcType=VARCHAR},
+      </if>
+      <if test="pnm != null" >
+      	#{pnm,jdbcType=VARCHAR},
+      </if>
+      
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="kr.wise.dq.stnd.service.WamSditm" >
@@ -395,6 +431,21 @@ SELECT *
       <if test="orgNm != null" >
         ORG_NM = #{orgNm,jdbcType=DECIMAL},
       </if>
+      
+      
+       <if test="stndCd != null" >
+      STND_CD = #{stndCd,jdbcType=VARCHAR},
+      </if>
+      <if test="spclNt != null" >
+      SPCL_NT = #{spclNt,jdbcType=VARCHAR},
+      </if>
+      <if test="bsnssFld != null" >
+      BSNSS_FLD = #{bsnssFld,jdbcType=VARCHAR},
+      </if>
+      <if test="pnm != null" >
+      PNM = #{pnm,jdbcType=VARCHAR}
+      </if>
+      
     </set>
     where SDITM_ID = #{sditmId,jdbcType=VARCHAR}
   </update>
@@ -420,6 +471,11 @@ SELECT *
       APRV_DTM = #{aprvDtm,jdbcType=TIMESTAMP},
       APRV_USER_ID = #{aprvUserId,jdbcType=VARCHAR},
       PERS_INFO_YN = #{persInfoYn,jdbcType=VARCHAR},
+      
+      STND_CD = #{stndCd,jdbcType=VARCHAR},
+      SPCL_NT = #{spclNt,jdbcType=VARCHAR},
+      BSNSS_FLD = #{bsnssFld,jdbcType=VARCHAR},
+      PNM  = #{pnm,jdbcType=VARCHAR}
       
     where SDITM_ID = #{sditmId,jdbcType=VARCHAR}
   </update>
@@ -466,6 +522,12 @@ SELECT *
 			 ,A.SAVE_FRM, A.EXPRSN_FRM, A.UNIT, A.ORG_NM
 			 ,A.VRF_RMK 
 			 , CASE WHEN A.VRF_RMK IS NOT NULL THEN '#FF0000' ELSE NULL END AS FontColor 
+			 
+			 , STND_CD
+      		 , SPCL_NT
+      		 , BSNSS_FLD
+      		 , PNM
+      		 
 		FROM COMM_SDITM A 
 <!-- 	    LEFT OUTER JOIN WAM_DMN B -->
 <!-- 	       ON A.DMN_ID = B.DMN_ID  -->

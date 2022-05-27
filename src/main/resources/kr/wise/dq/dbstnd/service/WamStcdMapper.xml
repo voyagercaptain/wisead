@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.wise.dq.dbstnd.service.WamStcdMapper" >
+  <resultMap id="BaseResultMap" type="kr.wise.dq.dbstnd.service.WamDbStcd" extends="kr.wise.commons.cmm.service.CommonMapper.BaseResultMap">
+    <id column="COMM_CD_ID" property="commCdId" jdbcType="VARCHAR" />
+    <result column="COMM_CD_NM" property="commCdNm" jdbcType="VARCHAR" />
+    <result column="COMM_CD_DESC" property="commCdDesc" jdbcType="VARCHAR" />
+    <result column="COMN_CD_DTTP_NM" property="comnCdDttpNm" jdbcType="VARCHAR" />
+    <result column="COMN_CD_DATA_LEN" property="comnCdDataLen" jdbcType="VARCHAR" />
+    <result column="COMN_CD_ENNM" property="comnCdEnnm" jdbcType="VARCHAR" />
+    <result column="MNG_DEPT_CD" property="mngDeptCd" jdbcType="VARCHAR" />
+    <result column="PCLR_MTR" property="pclrMtr" jdbcType="VARCHAR" />
+    <result column="UPP_COMM_CD_ID" property="uppCommCdId" jdbcType="VARCHAR" />
+    <result column="COMM_DTL_CD_NM" property="commDtlCdNm" jdbcType="VARCHAR" />
+    <result column="COMM_DTL_CD_DESC" property="commDtlCdDesc" jdbcType="VARCHAR" />
+    <result column="USE_YN" property="useYn" jdbcType="VARCHAR" />
+    <result column="ORG_NM" property="orgNm" jdbcType="VARCHAR" />
+   <result column="DB_NM"   property="dbNm"    jdbcType="VARCHAR" />
+   <result column="SPCL_NT" property="spclNt"  jdbcType="VARCHAR" />
+
+  </resultMap>
+  <sql id="Base_Column_List" >
+	COMM_CD_ID
+	, COMM_CD_NM
+	, COMM_CD_DESC
+	, COMN_CD_DTTP_NM
+	, COMN_CD_DATA_LEN
+	, COMN_CD_ENNM
+	, MNG_DEPT_CD
+	, WRIT_DTM
+	, PCLR_MTR
+	, UPP_COMM_CD_ID
+	, COMM_DTL_CD_NM
+	, COMM_DTL_CD_DESC
+	, USE_YN
+	, ORG_NM
+	, DB_NM
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from WAM_COMM_CD
+    where STWD_ID = #{stwdId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectListTop30" resultMap="BaseResultMap" parameterType="kr.wise.dq.dbstnd.service.WamDbStcd">
+	SELECT * FROM WAM_COMM_CD WHERE  REG_TYP_CD IN ('C', 'U')
+	ORDER BY RQST_DTM DESC
+	limit 30;
+  </select>
+  <select id="selectWordDetail" resultMap="BaseResultMap" parameterType="java.lang.String">
+
+  SELECT A.*
+  	  	,(SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.FRS_RQST_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS FRS_RQST_USER_NM
+  	  	,(SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.RQST_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS RQST_USER_NM
+  	  	,(SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.APRV_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS APRV_USER_NM 
+  FROM 
+  	WAM_COMM_CD A
+  WHERE A.COMM_CD_ID =  #{commCdId, jdbcType=VARCHAR}
+    AND A.REG_TYP_CD IN ('C', 'U')
+
+  </select>
+  <select id="selectList" resultMap="BaseResultMap" parameterType="kr.wise.dq.dbstnd.service.WamDbStcd" >
+  	SELECT * FROM 
+  	(SELECT A.*
+   	FROM WAM_COMM_CD A
+   	/* WHERE DB_NM IN (SELECT DB_NAME FROM WAA_USER_DB WHERE USER_ID = userId,jdbcType=VARCHAR ) */
+   	) FSQ -- 임시 Alias
+  	<where>
+		/* AND REG_TYP_CD IN ('C', 'U') */
+     	1 = 1 	
+      <if test="commCdId != null" >
+        AND COMM_CD_ID = #{commCdId,jdbcType=VARCHAR}
+      </if>
+
+	  <if test="orgNm != null" >
+        AND ORG_NM LIKE CONCAT('%',#{orgNm,jdbcType=VARCHAR},'%')
+      </if>
+       <if test="dbNm != null" >
+        AND DB_NM LIKE CONCAT('%',#{dbNm,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="stndNm != null" >
+        AND (COMM_CD_NM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR COMM_CD_DESC LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR COMN_CD_ENNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR COMN_CD_ENNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
+      </if>
+      
+  	</where>
+  	ORDER BY COMM_CD_NM
+  </select>
+ 
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from WAM_COMM_CD
+    where COMM_CD_ID = #{commCdId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="kr.wise.dq.dbstnd.service.WamDbStcd" >
+    insert into WAM_COMM_CD (
+    	COMM_CD_ID
+		, COMM_CD_NM
+		, COMM_CD_DESC
+		, COMN_CD_DTTP_NM
+		, COMN_CD_DATA_LEN
+		, COMN_CD_ENNM
+		, MNG_DEPT_CD
+		, WRIT_DTM
+		, PCLR_MTR
+		, UPP_COMM_CD_ID
+		, COMM_DTL_CD_NM
+		, COMM_DTL_CD_DESC
+		, USE_YN
+		, ORG_NM
+		, DB_NM
+    )
+    values (#{commCdId,jdbcType=VARCHAR}, #{commCdNm,jdbcType=VARCHAR}, #{commCdDesc,jdbcType=VARCHAR}, 
+      #{comnCdDttpNm,jdbcType=VARCHAR},
+      #{comnCdDataLen,jdbcType=DECIMAL}, #{comnCdEnnm,jdbcType=VARCHAR}, 
+      #{mngDeptCd,jdbcType=VARCHAR}, #{writDtm,jdbcType=TIMESTAMP}, 
+      #{pclrMtr,jdbcType=VARCHAR}, #{uppCommCdId,jdbcType=VARCHAR}, 
+      #{commDtlCdNm,jdbcType=VARCHAR}, #{commDtlCdDesc,jdbcType=VARCHAR},
+      #{useYn,jdbcType=VARCHAR}, #{orgNm,jdbcType=VARCHAR}, #{dbNm,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="kr.wise.dq.dbstnd.service.WamDbStcd" >
+    insert into WAM_COMM_CD
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+    	
+    	COMM_CD_ID
+		, COMM_CD_NM
+		, COMM_CD_DESC
+		, COMN_CD_DTTP_NM
+		, COMN_CD_DATA_LEN
+		, COMN_CD_ENNM
+		, MNG_DEPT_CD
+		, WRIT_DTM
+		, PCLR_MTR
+		, UPP_COMM_CD_ID
+		, COMM_DTL_CD_NM
+		, COMM_DTL_CD_DESC
+		, USE_YN
+		, ORG_NM
+		, DB_NM
+      
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+   	#{commCdId,jdbcType=VARCHAR}, #{commCdNm,jdbcType=VARCHAR}, #{commCdDesc,jdbcType=VARCHAR}, 
+      #{comnCdDttpNm,jdbcType=VARCHAR},
+      #{comnCdDataLen,jdbcType=DECIMAL}, #{comnCdEnnm,jdbcType=VARCHAR}, 
+      #{mngDeptCd,jdbcType=VARCHAR}, LOCALTIMESTAMP() /* writDtm,jdbcType=TIMESTAMP */,  
+      #{pclrMtr,jdbcType=VARCHAR}, #{uppCommCdId,jdbcType=VARCHAR}, 
+      #{commDtlCdNm,jdbcType=VARCHAR}, #{commDtlCdDesc,jdbcType=VARCHAR},
+      #{useYn,jdbcType=VARCHAR}, #{orgNm,jdbcType=VARCHAR}, #{dbNm,jdbcType=VARCHAR}
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="kr.wise.dq.dbstnd.service.WamDbStcd" >
+    update WAM_DB_STWD
+    <set >
+      <if test="stwdLnm != null" >
+        STWD_LNM = #{stwdLnm,jdbcType=VARCHAR},
+      </if>
+      <if test="stwdPnm != null" >
+        STWD_PNM = UPPER(#{stwdPnm,jdbcType=VARCHAR}),
+      </if>
+      <if test="engMean != null" >
+        ENG_MEAN = #{engMean,jdbcType=VARCHAR},
+      </if>
+      <if test="rqstNo != null" >
+        RQST_NO = #{rqstNo,jdbcType=VARCHAR},
+      </if>
+      <if test="rqstSno != null" >
+        RQST_SNO = #{rqstSno,jdbcType=DECIMAL},
+      </if>
+      <if test="objDescn != null" >
+        OBJ_DESCN = #{objDescn,jdbcType=VARCHAR},
+      </if>
+      <if test="objVers != null" >
+        OBJ_VERS = #{objVers,jdbcType=DECIMAL},
+      </if>
+      <if test="regTypCd != null" >
+        REG_TYP_CD = #{regTypCd,jdbcType=VARCHAR},
+      </if>
+      <if test="frsRqstDtm != null" >
+        FRS_RQST_DTM = #{frsRqstDtm,jdbcType=DATE},
+      </if>
+      <if test="frsRqstUserId != null" >
+        FRS_RQST_USER_ID = #{frsRqstUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="rqstDtm != null" >
+        RQST_DTM = #{rqstDtm,jdbcType=DATE},
+      </if>
+      <if test="rqstUserId != null" >
+        RQST_USER_ID = #{rqstUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="aprvDtm != null" >
+        APRV_DTM = #{aprvDtm,jdbcType=DATE},
+      </if>
+      <if test="aprvUserId != null" >
+        APRV_USER_ID = #{aprvUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="dmnYn != null" >
+        DMN_YN= #{dmnYn,jdbcType=VARCHAR},
+      </if>
+      <if test="dmnLnm != null" >
+        DMN_LNM = #{dmnLnm,jdbcType=VARCHAR},
+      </if>
+      <if test="orgNm != null" >
+        ORG_NM = #{orgNm,jdbcType=VARCHAR},
+      </if>
+      <if test="symnLnm != null" >
+        SYMN_LNM = #{symnLnm,jdbcType=VARCHAR},
+      </if>
+      <if test="fbdnLnm != null" >
+        FBDN_LNM = #{fbdnLnm,jdbcType=VARCHAR},
+      </if>
+      <if test="dbNm != null" >
+        DB_NM = #{dbNm,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="ownrOrg != null" >
+        OWNR_ORG = #{ownrOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="spclNt != null" >
+        SPCL_NT = #{spclNt,jdbcType=VARCHAR},
+      </if>
+      
+    </set>
+    where STWD_ID = #{stwdId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="kr.wise.dq.dbstnd.service.WamDbStcd" >
+    update WAM_COMM_CD
+    set COMM_CD_NM = #{commCdNm,jdbcType=VARCHAR}
+		, COMM_CD_DESC = #{commCdDesc,jdbcType=VARCHAR}  
+		, COMN_CD_DTTP_NM = #{comnCdDttpNm,jdbcType=VARCHAR}
+		, COMN_CD_DATA_LEN = #{comnCdDataLen,jdbcType=DECIMAL}
+		, COMN_CD_ENNM = #{comnCdEnnm,jdbcType=VARCHAR}
+		, MNG_DEPT_CD = #{mngDeptCd,jdbcType=VARCHAR}
+		/* , WRIT_DTM = writDtm,jdbcType=TIMESTAMP */
+		, WRIT_DTM = LOCALTIMESTAMP()   
+		, PCLR_MTR = #{pclrMtr,jdbcType=VARCHAR} 
+		, UPP_COMM_CD_ID = #{uppCommCdId,jdbcType=VARCHAR}
+		, COMM_DTL_CD_NM =  #{commDtlCdNm,jdbcType=VARCHAR}
+		, COMM_DTL_CD_DESC = #{commDtlCdDesc,jdbcType=VARCHAR} 
+		, USE_YN = #{useYn,jdbcType=VARCHAR}
+		, ORG_NM = #{orgNm,jdbcType=VARCHAR}
+		, DB_NM = #{dbNm,jdbcType=VARCHAR}
+    where COMM_CD_ID = #{commCdId,jdbcType=VARCHAR}
+  </update>
+  <insert id="insertWamDbStcd" parameterType="java.lang.String" >
+	insert into WAM_DB_STWD
+	(<include refid="Base_Column_List" />)
+	select 
+	<include refid="Base_Column_List" />
+	from WAH_STWD
+	where RQST_NO = #{rqstNo,jdbcType=VARCHAR}
+	  and EXP_DTM = DATE_FORMAT( '99991231', '%Y%m%d')
+	  and REG_TYP_CD in ('C','U')
+  </insert>
+  <delete id="deleteWamDbStcd" parameterType="java.lang.String" >
+	delete WAM_DB_STWD
+	where STWD_ID in (select STWD_ID from WAH_STWD
+	                 where RQST_NO = #{rqstNo,jdbcType=VARCHAR}
+	                   and EXP_DTM = DATE_FORMAT( '99991231', '%Y%m%d')
+	                 )
+  </delete>
+  
+  <select id="selectWordChangeList" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT A.*
+         , (SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.RQST_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS RQST_USER_NM
+    	 , CASE WHEN A.EXP_DTM = DATE_FORMAT( '9999-12-31', '%Y-%m-%d') AND A.REG_TYP_CD IN ('C', 'U') THEN '#0000FF'
+    	   ELSE NULL END AS FontColor
+      FROM WAH_STWD A
+     WHERE STWD_ID = #{stwdId,jdbcType=VARCHAR}
+     ORDER BY EXP_DTM DESC, STR_DTM DESC
+  </select>
+  
+  <select id="selectByLnmPnm" resultMap="BaseResultMap" parameterType="map">
+  SELECT *
+  FROM WAM_DB_STWD
+  <where>
+  	(STWD_LNM = #{sbswdLnm}
+  	OR STWD_LNM = UPPER(#{sbswdLnm}))
+  	AND
+  	(STWD_PNM = #{sbswdPnm} 
+  	OR STWD_PNM = UPPER(#{sbswdPnm}))
+  	AND REG_TYP_CD IN ('C', 'U')
+  </where>
+
+  
+  
+  </select>
+  
+  
+  
+</mapper>

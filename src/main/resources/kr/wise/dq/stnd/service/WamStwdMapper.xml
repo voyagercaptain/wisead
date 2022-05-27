@@ -27,7 +27,9 @@
     <result column="DMN_PNM" property="dmnPnm" jdbcType="VARCHAR" />
     <result column="DMN_LNM" property="dmnLnm" jdbcType="VARCHAR" />
     <result column="FBDN_LNM" property="fbdnLnm" jdbcType="VARCHAR" />
-
+	
+	<result column="OWNR_ORG" property="ownrOrg" jdbcType="VARCHAR"/>
+    <result column="SPCL_NT"          property="spclNt"        jdbcType="VARCHAR" />
 
 <!--     <result column="FRS_RQST_USER_NM" property="frsRqstUserNm" jdbcType="VARCHAR" /> -->
 <!--     <result column="RQST_USER_NM" property="rqstUserNm" jdbcType="VARCHAR" /> -->
@@ -36,7 +38,7 @@
   <sql id="Base_Column_List" >
     STWD_ID, STWD_LNM, STWD_PNM, ENG_MEAN, RQST_NO, RQST_SNO, OBJ_DESCN, 
     OBJ_VERS, REG_TYP_CD, FRS_RQST_DTM, FRS_RQST_USER_ID, RQST_DTM, RQST_USER_ID, APRV_DTM, 
-    APRV_USER_ID, DMN_YN, DMN_LNM, SYMN_LNM, FBDN_LNM
+    APRV_USER_ID, DMN_YN, DMN_LNM, SYMN_LNM, FBDN_LNM, OWNR_ORG, SPCL_NT
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -372,13 +374,15 @@
       RQST_NO, RQST_SNO, OBJ_DESCN, 
       OBJ_VERS, REG_TYP_CD, FRS_RQST_DTM, 
       FRS_RQST_USER_ID, RQST_DTM, RQST_USER_ID, 
-      APRV_DTM, APRV_USER_ID)
+      APRV_DTM, APRV_USER_ID, OWNR_ORG, SPCL_NT)
     values (#{stwdId,jdbcType=VARCHAR}, #{stwdLnm,jdbcType=VARCHAR}, #{stwdPnm,jdbcType=VARCHAR}, 
       #{engMean,jdbcType=VARCHAR},
       #{rqstNo,jdbcType=VARCHAR}, #{rqstSno,jdbcType=DECIMAL}, #{objDescn,jdbcType=VARCHAR}, 
       #{objVers,jdbcType=DECIMAL}, #{regTypCd,jdbcType=VARCHAR}, #{frsRqstDtm,jdbcType=DATE}, 
       #{frsRqstUserId,jdbcType=VARCHAR}, #{rqstDtm,jdbcType=DATE}, #{rqstUserId,jdbcType=VARCHAR}, 
-      #{aprvDtm,jdbcType=DATE}, #{aprvUserId,jdbcType=VARCHAR})
+      #{aprvDtm,jdbcType=DATE}, #{aprvUserId,jdbcType=VARCHAR},
+      #{ownrOrg,jdbcType=VARCHAR}, #{spclNt,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="kr.wise.dq.stnd.service.WamStwd" >
     insert into WAM_STWD
@@ -444,6 +448,13 @@
         FBDN_LNM,
       </if>
       
+       <if test="ownrOrg != null" >
+        OWNR_ORG,
+      </if>
+      <if test="spclNt != null" >
+        SPCL_NT,
+      </if>
+      
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="stwdId != null" >
@@ -506,6 +517,14 @@
       <if test="fbdnLnm != null" >
         #{fbdnLnm,jdbcType=VARCHAR},
       </if>
+      
+       <if test="ownrOrg != null" >
+         #{ownrOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="spclNt != null" >
+         #{spclNt,jdbcType=VARCHAR},
+      </if>
+      
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="kr.wise.dq.stnd.service.WamStwd" >
@@ -568,6 +587,13 @@
       <if test="fbdnLnm != null" >
         FBDN_LNM = #{fbdnLnm,jdbcType=VARCHAR},
       </if>
+      
+      <if test="ownrOrg != null" >
+        OWNR_ORG = #{ownrOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="spclNt != null" >
+        SPCL_NT = #{spclNt,jdbcType=VARCHAR},
+      </if>
     </set>
     where STWD_ID = #{stwdId,jdbcType=VARCHAR}
   </update>
@@ -593,7 +619,9 @@
       DMN_LNM = #{dmnLnm,jdbcType=VARCHAR},
       ORG_NM = #{orgNm,jdbcType=VARCHAR},
       FBDN_LNM = #{fbdnLnm,jdbcType=VARCHAR},
-      SYMN_LNM = #{symnLnm,jdbcType=VARCHAR}
+      SYMN_LNM = #{symnLnm,jdbcType=VARCHAR},
+      OWNR_ORG = #{ownrOrg,jdbcType=VARCHAR},
+      SPCL_NT = #{spclNt,jdbcType=VARCHAR}
     where STWD_ID = #{stwdId,jdbcType=VARCHAR}
   </update>
   <insert id="insertWamStwd" parameterType="java.lang.String" >
