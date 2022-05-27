@@ -182,6 +182,7 @@ public class DbStndTotRqstCtrl {
         model.addAttribute("codeMap",getcodeMap());
         
         model.addAttribute("userDbList", dbStndService.selectUserDbList(((LoginVO)session.getAttribute("loginVO")).getId()));
+        model.addAttribute("userOrgList", dbStndService.selectUserOrgList(((LoginVO)session.getAttribute("loginVO")).getId()));
         
         
         String strReturn = "";

@@ -101,6 +101,11 @@ public class DbStndServiceImpl implements DbStndService {
 	public List<WamDbSditm> selectUserDbList(String userId) {
 		return wamDbSditmMapper.selectUserDbList(userId);
 	}
+	
+	@Override
+	public List<WamDbSditm> selectUserOrgList(String userId) {
+		return wamDbSditmMapper.selectUserOrgList(userId);
+	}
 
 	
 	

@@ -39,6 +39,7 @@ import kr.wise.commons.sysmgmt.basicinfo.service.BasicInfoLvlService;
 import kr.wise.commons.sysmgmt.basicinfo.service.WaaBscLvl;
 import kr.wise.commons.util.UtilJson;
 import kr.wise.commons.util.UtilString;
+import kr.wise.dq.dbstnd.service.DbStndService;
 import kr.wise.dq.stnd.service.StndDmnRqstService;
 import kr.wise.dq.stnd.service.StndItemRqstService;
 import kr.wise.dq.stnd.service.StndTotRqstService;
@@ -120,6 +121,9 @@ public class StndTotRqstCtrl {
 
     @Inject
 	private EgovIdGnrService requestIdGnrService;
+    
+    @Inject
+	private DbStndService dbStndService;
 
 
 	static class WaqStwds extends HashMap<String, ArrayList<WaqStwd>> { }
@@ -190,6 +194,7 @@ public class StndTotRqstCtrl {
         
         
         model.addAttribute("codeMap",getcodeMap());
+        model.addAttribute("userOrgList", dbStndService.selectUserOrgList(((LoginVO)session.getAttribute("loginVO")).getId()));
     	
     	String strReturn = "";
         if("STWD".equals(screenGb)) {
@@ -272,8 +277,9 @@ public class StndTotRqstCtrl {
         model.addAttribute("rqstno",reqmst.getRqstNo());
         model.addAttribute("rqstbizdcd",reqmst.getBizDcd());
         
-        
         model.addAttribute("codeMap",getcodeMap());
+        
+        model.addAttribute("userOrgList", dbStndService.selectUserOrgList(((LoginVO)session.getAttribute("loginVO")).getId()));
     	
     	String strReturn = "";
         if("STWD".equals(screenGb)) {

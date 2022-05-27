@@ -578,7 +578,14 @@ function postProcessIBS(res) {
 							</td>
 					         <th scope="row"><label for="orgNm">기관명</label></th> <!-- 사전유형 -->
                                 <td >
-                                <input type="text" id="orgNm" name="orgNm" class="wd98p" value="${orgNm}" />
+                                <select id="orgNm" class="" name="orgNm">
+                                	<option value="">전체</option>
+		 							<c:forEach var="userOrgList" items="${userOrgList}" varStatus="status">
+		 							  <option value="${userOrgList.orgCd}">${userOrgList.orgNm}</option>
+		 							</c:forEach> 
+	 					 		</select>
+                                
+                                
 								</td>
                                 <th scope="row"><label for="stndNm">조회항목</label></th> <!-- 표준사전명 -->
                                 <td><input type="text" id="stndNm" name="stndNm" class="wd98p" value="${stndNm}" /></td>
