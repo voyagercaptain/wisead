@@ -73,6 +73,7 @@
   <insert id="insertSelective" parameterType="kr.wise.commons.user.service.WaaUser" >
   	insert into WAA_USER
     <trim prefix="(" suffix=")" suffixOverrides="," >
+    	VERIFY,
       <if test="userId != null" >
         USER_ID,
       </if>
@@ -136,6 +137,7 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+    	'Y',
       <if test="userId != null" >
         #{userId,jdbcType=VARCHAR},
       </if>
@@ -602,5 +604,22 @@
 		</where>
 	         
 	</select>
-
+	
+	<insert id="regOrgList" parameterType="kr.wise.commons.user.service.WaaOrg" >
+		INSERT INTO WAA_ORG 
+			(
+				ORG_CD,
+				ORG_NM, 
+				RQST_DTM,
+				RQST_USER_ID
+	  		)
+	        VALUES 
+			(
+			   	#{orgCd}, 
+			   	#{orgNm}, 
+			   	now(), 
+			   	#{rqstUserId}
+		    )
+	</insert>
+	
 </mapper>

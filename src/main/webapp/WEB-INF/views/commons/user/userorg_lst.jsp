@@ -110,8 +110,8 @@ function initGrid()
         var cols = [                        
                     {Type:"Seq",      Width:30,   SaveName:"ibsSeq",  Align:"Center", Edit:0},
                     {Type:"CheckBox", Width:30,   SaveName:"ibsCheck", Align:"Center", Edit:1, Hidden:0, Sort:0},                    
-                    {Type:"Text",     Width:100,  SaveName:"orgCd",   Align:"Center", Edit:0, Hidden:0},
-                    {Type:"Text",     Width:100,   SaveName:"orgNm",   Align:"Center", Edit:0, Hidden:0}
+                    {Type:"Text",     Width:100,  SaveName:"orgCd",   Align:"Center", Edit:1, Hidden:0},
+                    {Type:"Text",     Width:100,   SaveName:"orgNm",   Align:"Center", Edit:1, Hidden:0}
                     
                 ];
         

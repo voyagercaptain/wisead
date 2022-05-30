@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService {
 			
 			record.setObjVers(1);
 			record.setRegTypCd("C");
-			record.setLoginAcPwd("6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"); // 암호화된 "1"이 기본 비밀번호
+			record.setLoginAcPwd("8c6976e5b541415bde98bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"); // 암호화된 "admin"이 기본 비밀번호
 			
 //			if(WiseConfig.SECURITY_APPLY.equals("Y")){
 //			    record.setLoginAcPwd(EncryptUtils.getEncData(record.getLoginAcPwd(),record.getLoginAcId()));
@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
 				
 				record.setObjVers(1);
 				record.setRegTypCd("C");
-				record.setLoginAcPwd("6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"); // 암호화된 "1"이 기본 비밀번호
+				record.setLoginAcPwd("8c6976e5b541415bde98bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"); // 암호화된 "admin"이 기본 비밀번호
 			} else {
 				if (UtilObject.isNull(record.getObjVers())) {
 					record.setObjVers(1);
@@ -300,4 +300,13 @@ public class UserServiceImpl implements UserService {
 		return mapper.selectOrgList(waaOrg);
 	}
 	
+	public int regOrgList(ArrayList<WaaOrg> list) throws Exception {
+		int result = 0;
+
+		for (WaaOrg WaaOrg : list) {
+			mapper.regOrgList(WaaOrg);
+		}
+		
+		return result;
+	}
 }

@@ -40,4 +40,6 @@ public interface UserService {
 	// 기관 조회 추가 by thomas 2022.05.30
 	// TODO : 별도의 서비스 패키지 구성 여부 고민
 	public List<WaaOrg> getOrgList(WaaOrg waaOrg) throws Exception;
+	
+	public int regOrgList(ArrayList<WaaOrg> list) throws Exception;
 }
