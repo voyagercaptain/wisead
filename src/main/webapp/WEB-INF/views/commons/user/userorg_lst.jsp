@@ -10,7 +10,7 @@
 
 <html>
 <head>
-<title><s:message code="USER.MNG" /></title> <!-- 사용자관리 -->
+<title><s:message code="USER.ORG" /></title> <!-- 기관관리 -->
 
 <script type="text/javascript">
 
@@ -98,7 +98,7 @@ function initGrid()
         SetConfig(cfg);
         
         var headers = [
-                    {Text:"<s:message code='COMMON.HEADER.USER.LST'/>", Align:"Center"}
+                    {Text:"<s:message code='COMMON.HEADER.ORG.LST'/>", Align:"Center"}
                     /* No.|업무대행|상태|선택|사용자ID|만료일시|시작일시|로그인ID|사용자명|사용자그룹명|부서ID|부서명|직급명|사용자전화번호|사용자휴대폰번호|이메일주소|엑셀다운로드권한여부|ID사용만료일자|비밀번호만료일자|설명|버전|등록유형|요청일시|요청사용자ID|승인구분코드|작성일시|승인사용자ID|비밀번호변경 */
                 ];
         
@@ -108,54 +108,16 @@ function initGrid()
         
 
         var cols = [                        
-                    {Type:"Seq",      Width:60,   SaveName:"ibsSeq",       Align:"Center", Edit:0},
-                    {Type:"Text",     Width:100,  SaveName:"gologin",  Image:containerPath+"/images/login_go.gif" ,ImgAlign:"Left", Align:"Center", Edit:0, Hidden:1},
-                    {Type:"Status",   Width:60,   SaveName:"ibsStatus",    Align:"Center", Edit:0, Hidden:0},
-                    {Type:"CheckBox", Width:80,   SaveName:"ibsCheck",     Align:"Center", Edit:1, Hidden:0, Sort:0},
-                    {Type:"Text",     Width:130,  SaveName:"userId",       Align:"Left", Edit:0, Hidden:1},
-                    {Type:"Date",     Width:130,  SaveName:"expDtm",       Align:"Center", Edit:0, Hidden:1, Format:"yyyy-MM-dd HH:mm:ss"},
-                    {Type:"Date",     Width:130,  SaveName:"strDtm",       Align:"Center", Edit:0, Hidden:1, Format:"yyyy-MM-dd HH:mm:ss"},
-                    {Type:"Text",     Width:130,  SaveName:"loginAcId",    Align:"Left", Edit:1, Hidden:0, KeyField:1},
-                    {Type:"Text",     Width:130,  SaveName:"userNm",       Align:"Left", Edit:1, KeyField:1}, 
-                    {Type:"Combo",    Width:130,  SaveName:"usergId",      Align:"Left", Edit:1, KeyField:1},
-                    {Type:"Popup",    Width:130,  SaveName:"deptId",       Align:"Left", Edit:0, Hidden:1},
-                    {Type:"Popup",    Width:130,  SaveName:"deptNm",       Align:"Left", Edit:1, Hidden:1},          
-                    {Type:"Text",     Width:120,  SaveName:"jgdNm",        Align:"Left", 	 Edit:1},
-                    {Type:"Text",     Width:120,  SaveName:"dbName",        Align:"Left", 	 Edit:1},
-                    {Type:"Combo",     Width:120,  SaveName:"orgCd",        Align:"Left", 	 Edit:1},
-                    {Type:"Text",     Width:130,  SaveName:"userTelno",    Align:"Left",   Edit:1, Hidden:0},
-                    {Type:"Text",     Width:130,  SaveName:"userHtelno",   Align:"Left",   Edit:1, Hidden:0},
-                    {Type:"Text",     Width:130,  SaveName:"emailAddr",      Align:"Left",   Edit:1, Hidden:0},
-                    {Type:"Combo",    Width:130,  SaveName:"exclDwldAuthYn",      Align:"Center",   Edit:1, Hidden:1},
-                    {Type:"Text",     Width:130,  SaveName:"idUseExpDt",      Align:"Center",   Edit:1, Hidden:1},
-                    {Type:"Text",     Width:130,  SaveName:"pwdExpDt",      Align:"Center",   Edit:1, Hidden:1},
-                    {Type:"Text",     Width:230,  SaveName:"objDescn",      Align:"Left",   Edit:1, Hidden:0},
-                    {Type:"Text",     Width:130,  SaveName:"objVers",      Align:"Right",   Edit:0, Hidden:1},
-                    {Type:"Combo",    Width:80,   SaveName:"regTypCd",      Align:"Center",   Edit:0, Hidden:0},
-                    {Type:"Text",     Width:130,  SaveName:"rqstDtm",      Align:"Center",   Edit:0, Hidden:1},
-                    {Type:"Text",     Width:130,  SaveName:"rqstUserId",      Align:"Center",   Edit:0, Hidden:1},
-                    {Type:"Combo",    Width:130,  SaveName:"aprvDcd",      Align:"Center",   Edit:0, Hidden:1},
-                    {Type:"Text",     Width:130,  SaveName:"aprvDtm",      Align:"Center",   Edit:0, Hidden:1},
-                    {Type:"Text",     Width:130,  SaveName:"aprvUserId",      Align:"Center",   Edit:0, Hidden:1},
-                    {Type:"html",     Width:100,  SaveName:"pwChg",  Align:"Center", Edit:0, KeyField:0, Hidden:0},
-
+                    {Type:"Seq",      Width:30,   SaveName:"ibsSeq",  Align:"Center", Edit:0},
+                    {Type:"CheckBox", Width:30,   SaveName:"ibsCheck", Align:"Center", Edit:1, Hidden:0, Sort:0},                    
+                    {Type:"Text",     Width:100,  SaveName:"orgCd",   Align:"Center", Edit:0, Hidden:0},
+                    {Type:"Text",     Width:100,   SaveName:"orgNm",   Align:"Center", Edit:0, Hidden:0}
                     
                 ];
-                    
+        
         InitColumns(cols);
 	     
-        //콤보 목록 설정...
-	   	SetColProperty("usergId", ${codeMap.usergp});
-        SetColProperty("exclDwldAuthYn", 	{ComboCode:"N|Y", ComboText:"<s:message code='COMBO.NO.YES'/>"}); /* 아니요|예 */
-        SetColProperty("regTypCd", ${codeMap.regTypCdibs});
-        SetColProperty("orgCd", ${codeMap.orgCd});
-        //SetColProperty("deptId", 	{ComboCode:"부서1|부서2|부서3|부서4|부서5|부서6", 	ComboText:"부서1|부서2|부서3|부서4|부서5|부서6"});   
-
         InitComboNoMatchText(1, "");
-
-        //히든 컬럼 설정...
-        //SetColHidden("writUserNm",1);
-        //SetColHidden("arrUsrId",1);
       
         FitColWidth();  
         
@@ -176,13 +138,6 @@ function doAction(sAction)
     	case "New":        //추가
         	//첫행에 추가...
         	grid_sheet.DataInsert(0);
-        	//마지막 행에 추가..
-        	//grid_sheet.DataInsert(-1);
-        
-            //var url = "<c:url value="/cmvw/user/user_lst.do" />";
-        
-            //$("#frmInput").attr("action", url).submit();
-                        
             break;
             
         case "Delete" :
@@ -190,7 +145,7 @@ function doAction(sAction)
         	delCheckIBS(grid_sheet);
         	
         	var DelJson = grid_sheet.GetSaveJson(0, "ibsCheck");
-        	var url = '<c:url value="/commons/user/userDellist.do"/>';
+        	var url = '<c:url value="/commons/user/orgDellist.do"/>';
         	var param = "";
         	IBSpostJson2(url, DelJson, param, ibscallback);
         	break;
@@ -202,7 +157,7 @@ function doAction(sAction)
         	//데이터 사이즈 확인...
         	if(SaveJson.data.length == 0) return;
         	
-        	var url = "<c:url value="/commons/user/userReglist.do"/>";
+        	var url = "<c:url value="/commons/user/orgReglist.do"/>";
          	var param = "";
              IBSpostJson2(url, SaveJson, param, ibscallback);
         	break;
@@ -210,7 +165,7 @@ function doAction(sAction)
         case "Search":
         	var param = $('#frmSearch').serialize();
         	//alert(param);
-        	grid_sheet.DoSearch('<c:url value="/commons/user/userSelectlist.do" />', param);
+        	grid_sheet.DoSearch('<c:url value="/commons/user/orgSelectlist.do" />', param);
         	
         	break;
        
@@ -237,33 +192,18 @@ function postProcessIBS(res) {
 	switch(res.action) {
 		//요청서 삭제 후처리...
 		case "<%=WiseMetaConfig.IBSAction.DEL%>" :
-				doAction("Search");
-				//doActionCol("Search");
-		
+			doAction("Search");
 			break;
 		//요청서 단건 등록 후처리...
 		case "<%=WiseMetaConfig.IBSAction.REG%>" :
-			
-
-			
 			break;
 		//요청서 여러건 등록 후처리...
 		case "<%=WiseMetaConfig.IBSAction.REG_LIST%>" : 
 			doAction("Search");
-			//저장완료시 요청서 번호 셋팅...
-	    	/* if(!isBlankStr(res.ETC.rqstNo)) {
-	    		//alert(res.ETC.rqstNo);
-	    		$("form#frmSearch input[name=rqstNo]").val(res.ETC.rqstNo);
-// 	    		$("form#frmSearch input[name=rqstSno]").val(res.ETC.rqstSno);
-				doAction("Search");    		
-	    	} */
-			
 			break;
-		
 		default : 
 			// 아무 작업도 하지 않는다...
 			break;
-			
 	}
 	
 }
@@ -309,21 +249,17 @@ function grid_sheet_OnClick(row, col, value, cellx, celly) {
 
 //주제영역 팝업 리턴값 처리
 function returnSubjPop (ret, row) {
-// 	alert(ret);
 	
 	var retjson = jQuery.parseJSON(ret);
 	
 	grid_sheet.SetCellValue(row, "deptId", retjson.deptId);
 	grid_sheet.SetCellValue(row, "deptNm", retjson.deptNm);
-// 	$("#frmSearch #subjLnm").val(retjson.subjLnm);
-// 	$("#frmSearch #fullPath").val(retjson.fullPath);
 	
 }
 
 function grid_sheet_OnPopupClick(Row,Col) {
 	
 	//Format이 날짜인 경우 달력 팝업을 오픈한다.
-// 	grid_sheet.ShowCalendar();
 	var param = "row=" +Row;
 	//사용자 검색 팝업 오픈
 	if ("deptNm" == grid_sheet.ColSaveName(Col)) {
@@ -392,22 +328,13 @@ function grid_sheet_OnSaveEnd(code, message) {
                   </colgroup>
                    
                    <tbody>                          
-                                              <th scope="row"><label for="userNm"><s:message code="USER.NM" /></label></th> <!-- 사용자명 -->
-                            <td>
-                                <span class="input_file">
-                                <input type="text" name="userNm" id="userNm" />
-                                </span>
-                                </td>  
+						<th scope="row"><label for="orgNm"><s:message code="ORG.NM" /></label></th> <!-- 사용자명 -->
+						<td>
+						    <span class="input_file">
+								<input type="text" name="orgNm" id="orgNm" />
+							</span>
+						</td>  
 
-                           <th scope="row"><label for="usergId"><s:message code="USER.GRP.NM" /></label></th> <!-- 사용자그룹명 -->
-                                <td><select id="usergId" class="usergId" name="usergId">
-                                        <option selected="" value="">---<s:message code="WHL" />----</option> <!-- 전체 -->
-                                        <c:forEach var="code" items="${codeMap.userglist }" varStatus="status" >
-                                        <option value="${code.codeCd }">${code.codeLnm}</option>
-                                        </c:forEach>
-                                    </select>
-                                    </td>   
-                       </tr>
                    </tbody>
                  </table>   
             </div>

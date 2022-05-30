@@ -36,4 +36,8 @@ public interface UserService {
 	int register(WaaUser record) throws Exception;
 	
 	void updateVerify(String userId) throws Exception;
+	
+	// 기관 조회 추가 by thomas 2022.05.30
+	// TODO : 별도의 서비스 패키지 구성 여부 고민
+	public List<WaaOrg> getOrgList(WaaOrg waaOrg) throws Exception;
 }

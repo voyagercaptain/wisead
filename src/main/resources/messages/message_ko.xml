@@ -1458,6 +1458,7 @@
 <entry key="PGM.LST.XLS"><![CDATA[프로그램리스트.xls]]></entry>
 <entry key="PGM.INQ"><![CDATA[프로그램조회]]></entry>
 <entry key="USER.MNG"><![CDATA[사용자관리]]></entry>
+<entry key="USER.ORG"><![CDATA[기관관리]]></entry>
 <entry key="BZWR.PRX"><![CDATA[업무대행]]></entry>
 <entry key="LOIN.ID"><![CDATA[로그인ID]]></entry>
 <entry key="USER.TLNO"><![CDATA[사용자전화번호]]></entry>
@@ -3580,6 +3581,7 @@
 <entry key="CAUS.ANLY.STRN.DTTM.END.DTTM.FRONT.PSTN"><![CDATA[원인 분석 시작일은 종료일 이전에 있어야합니다.]]></entry>
 <entry key="DMN.GRP.SRH"><![CDATA[도메인그룹조회]]></entry>
 <entry key="SUBJ.TRRT.NM.COLN"><![CDATA[주제영역명 :]]></entry>
+<entry key="ORG.NM"><![CDATA[기관명]]></entry>
 
 
 
@@ -4278,6 +4280,7 @@
 <entry key="COMMON.HEADER.COMMDCD.XLS"><![CDATA[No.|상태|삭제|요청구분|공통코드ID|공통코드|공통코드명|공통코드설명|상위공통코드ID|시스템코드여부]]></entry>
 <entry key="COMBO.CUD"><![CDATA[신규|변경|삭제]]></entry>
 <entry key="COMMON.HEADER.DBMAP.LST2"><![CDATA[No.|상태|선택|DB맵ID|DB스키마명|DDL대상|스키마명|DB스키마명|DDL대상|스키마명|DDL이관여부|설명|버전|등록유형|만료일시|시작일시|작성일시|작성자]]></entry>
+<entry key="COMMON.HEADER.ORG.LST"><![CDATA[No.|선택|기관코드|기관명]]></entry>
 
 
 <entry key="META.HEADER.STWDCHANGE.DTL"><![CDATA[No.|표준단어ID|만료일자|시작일자|표준단어논리명|표준단어물리명|영문의미|한자명|출처구분|표준단어구분|도메인여부|요청번호|요청일련번호|설명|버전|등록유형|최초요청일시|최초요청사용자ID|요청일시|요청사용자ID|승인일시|승인사용자ID|비고]]></entry>

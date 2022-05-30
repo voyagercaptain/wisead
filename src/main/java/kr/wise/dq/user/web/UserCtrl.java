@@ -86,10 +86,13 @@ public class UserCtrl {
 		List<CodeListVo> userglist = codelistService.getCodeList(WiseMetaConfig.CodeListAction.usergroup);
 //		String usergroup2 = UtilJson.convertJsonString(codelistService.getCodeList("usergroup"));
 		String usergroup1 = UtilJson.convertJsonString(codelistService.getCodeListIBS(userglist));
+		List<CodeListVo> userOrgList = codelistService.getCodeList(WiseMetaConfig.CodeListAction.orgCd);
+		
 //		codeMap.put("usergroup", usergroup2);
 		codeMap.put("userglist", userglist);
 		codeMap.put("usergp", usergroup1);
-
+		codeMap.put("userorg", userOrgList);
+		
 		//공통코드
 		String regTypCd = UtilJson.convertJsonString(cmcdCodeService.getCodeListIBS("REG_TYP_CD"));
 		codeMap.put("regTypCdibs", regTypCd);

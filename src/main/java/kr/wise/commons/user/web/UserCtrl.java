@@ -42,6 +42,7 @@ import kr.wise.commons.helper.grid.IBSheetListVO;
 import kr.wise.commons.sysmgmt.dept.service.WaaDept;
 import kr.wise.commons.user.service.UserLoginService;
 import kr.wise.commons.user.service.UserService;
+import kr.wise.commons.user.service.WaaOrg;
 import kr.wise.commons.user.service.WaaUser;
 import kr.wise.commons.util.UtilJson;
 import kr.wise.commons.util.UtilString;
@@ -110,6 +111,12 @@ public class UserCtrl {
 	@RequestMapping("user_lst.do")
 	public String formpage() {
 		return "/commons/user/user_lst";
+	}
+	
+	/** 기관명 관리 화면 */
+	@RequestMapping("userorg_lst.do")
+	public String orgPage() {
+		return "/commons/user/userorg_lst";
 	}
 	
 	/** 평가시스템 업무대행용 로그인 by 관리자 
@@ -390,10 +397,13 @@ public class UserCtrl {
 		List<CodeListVo> userglist = codelistService.getCodeList(WiseMetaConfig.CodeListAction.usergroup);
 //		String usergroup2 = UtilJson.convertJsonString(codelistService.getCodeList("usergroup"));
 		String usergroup1 = UtilJson.convertJsonString(codelistService.getCodeListIBS(userglist));
+		List<CodeListVo> userOrgList = codelistService.getCodeList(WiseMetaConfig.CodeListAction.orgCd);
+		String userorg1 = UtilJson.convertJsonString(codelistService.getCodeListIBS(userOrgList));
 //		codeMap.put("usergroup", usergroup2);
 		codeMap.put("userglist", userglist);
 		codeMap.put("usergp", usergroup1);
-
+		codeMap.put("orgCd", userorg1);
+		
 		//공통코드
 		String regTypCd = UtilJson.convertJsonString(cmcdCodeService.getCodeListIBS("REG_TYP_CD"));
 		codeMap.put("regTypCdibs", regTypCd);
@@ -402,6 +412,14 @@ public class UserCtrl {
 		return codeMap;
 	}
 
-
+	
+	/** 사용자 리스트 조회 - IBSheet JSON */
+	@RequestMapping("orgSelectlist.do")
+	@ResponseBody
+	public IBSheetListVO<WaaOrg> selectOrgList(@ModelAttribute WaaOrg search) throws Exception {
+		logger.debug("{}", search);
+		List<WaaOrg> list = userService.getOrgList(search);
+		return new IBSheetListVO<WaaOrg>(list, list.size());
+	}
 
 }

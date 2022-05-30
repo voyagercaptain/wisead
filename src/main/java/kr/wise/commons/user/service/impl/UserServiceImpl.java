@@ -28,6 +28,7 @@ import kr.wise.commons.sysmgmt.basicinfo.service.WaaBscLvl;
 import kr.wise.commons.sysmgmt.dept.service.WaaDept;
 import kr.wise.commons.sysmgmt.dept.service.WaaDeptMapper;
 import kr.wise.commons.user.service.UserService;
+import kr.wise.commons.user.service.WaaOrg;
 import kr.wise.commons.user.service.WaaUser;
 import kr.wise.commons.user.service.WaaUserMapper;
 import kr.wise.commons.util.UtilObject;
@@ -170,6 +171,13 @@ public class UserServiceImpl implements UserService {
 			mapper.registerDbName(dbList);
 		}
 		
+		// 사용자 기관 정보 삭제
+		mapper.deleteOrgCdByUserId(record.getUserId());
+		
+		// 사용자 기관 정보 등록
+		if (!"".equals(record.getOrgCd())) {
+			mapper.registOrgCd(record);
+		}
 		return result;
 	}
 
@@ -198,6 +206,7 @@ public class UserServiceImpl implements UserService {
 				WaaUser.setIbsStatus("D");
 
 				result += mapper.updateExpDtm(WaaUser);
+				mapper.deleteOrgCdByUserId(WaaUser.getUserId());
 			}
 		}
 
@@ -283,4 +292,12 @@ public class UserServiceImpl implements UserService {
 	public void updateVerify(String userId) throws Exception {
 		mapper.updateVerify(userId);
 	}
+	
+	// 기관 조회 추가 by thomas 2022.05.30
+	// TODO : 별도의 서비스 패키지 구성 여부 고민
+	@Override
+	public List<WaaOrg> getOrgList(WaaOrg waaOrg) throws Exception {
+		return mapper.selectOrgList(waaOrg);
+	}
+	
 }

@@ -490,7 +490,9 @@ public class CodeListServiceImpl implements CodeListService {
 		}else if(CodeListAction.codedmnginfotp.getAction().equals(codenm)) { //진단대상, 스키마명 (ID반환) (double_select) 메타관리대상만
 			codeList = codeListMapper.getCodeDmngInfoTpCodeList();
 		}
-		
+		else if(CodeListAction.orgCd.getAction().equals(codenm.name())) { // 기관코드 조회
+			codeList = codeListMapper.getOrgCdList();
+		}
 
 		return codeList;
 	}

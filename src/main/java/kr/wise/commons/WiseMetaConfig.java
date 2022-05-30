@@ -258,7 +258,9 @@ public class WiseMetaConfig {
 		
 		infoTpCodeListIBS("infoTpCodeListIBS"),
 				
-		codedmnginfotp("codedmnginfotp")
+		codedmnginfotp("codedmnginfotp"),
+		
+		orgCd("orgCd")
 		;
 		
 		

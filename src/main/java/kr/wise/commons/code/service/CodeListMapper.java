@@ -145,4 +145,6 @@ public interface CodeListMapper {
 	
 	List<CodeListVo> getVrfcIds();
 	
+	List<CodeListVo> getOrgCdList();
+	
 }
