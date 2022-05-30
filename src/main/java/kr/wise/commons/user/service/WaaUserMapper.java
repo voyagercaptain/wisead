@@ -56,4 +56,12 @@ public interface WaaUserMapper {
 
     int deleteDbNameByUserId(String userId);
     
+    // 기관 정보 추가 by voyager 2022.05.30
+    void registOrgCd(WaaUser orgInfo);
+
+    int deleteOrgCdByUserId(String userId);
+    
+    public List<WaaOrg> selectOrgList(WaaOrg waaOrg);
+    
+    
 }

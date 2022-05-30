@@ -1097,5 +1097,12 @@ SELECT A.CD_VAL AS CODE_CD
 	       , A.VRFC_ID
   </select>
   
+  <select id="getOrgCdList" resultMap="BaseResultMap" parameterType="String">
+     SELECT ORG_CD AS CODE_CD, 
+     		ORG_NM AS CODE_LNM 
+       FROM waa_org 
+      ORDER BY ORG_CD
+  </select>
+  
 </mapper>
 
