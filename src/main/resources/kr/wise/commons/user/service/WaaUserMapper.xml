@@ -541,7 +541,7 @@
 			                , 'admin'
 			                , now()
 			                , 'admin'
-			                , 'N'
+			                , 'Y'
 			               , #{comCd} )
 	</insert>
 

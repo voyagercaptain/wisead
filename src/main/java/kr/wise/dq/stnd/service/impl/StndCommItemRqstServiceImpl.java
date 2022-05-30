@@ -1133,14 +1133,14 @@ public class StndCommItemRqstServiceImpl implements StndCommItemRqstService {
 
 			}
 			
-			wammapper.updateVrfRmkNull();
+			//wammapper.updateVrfRmkNull();
 			//영문약어명 체크  올바르게 들어간 약어인지 체크
 //			wammapper.checkStwdAbr();
 			//형식단어로 끝나는지 체크
-			wammapper.checkDmnYnExsits();
+			//wammapper.checkDmnYnExsits();
 
 			//형식단어로 끝나는지 체크(한글명)
-			wammapper.checkDmnYnExsitsLnm();
+			//wammapper.checkDmnYnExsitsLnm();
 
 			
 			
