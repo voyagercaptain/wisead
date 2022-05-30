@@ -589,12 +589,12 @@ function postProcessIBS(res) {
                    
                    <tbody>      
                             <tr>
-					         <th scope="row"><label for="orgNm">기관명</label></th> <!-- 사전유형 -->
+					         <th scope="row"><label for="sditmLnm">공통표준도메인명</label></th> <!-- 사전유형 -->
                                 <td >
-                                <input type="text" id="orgNm" name="orgNm" class="wd98p" value="${orgNm}" />
+                                <input type="text" id="dmnLnm" name="dmnLnm" class="wd98p" value="${dmnLnm}" />
 								</td>
-                                <th scope="row"><label for="stndNm">조회항목</label></th> <!-- 표준사전명 -->
-                                <td><input type="text" id="stndNm" name="stndNm" class="wd98p" value="${stndNm}" /></td>
+                                <th scope="row"><label for="objDescn">도메인설명</label></th> <!-- 표준사전명 -->
+                                <td><input type="text" id="objDescn" name="objDescn" class="wd98p" value="${objDescn}" /></td>
 <%--                                 <th scope="row"><label for="objDescn"><s:message code="CONTENT.TXT" /></label></th> <!-- 설명 --> --%>
 <!--                                 <td><input type="text" id="objDescn" name="objDescn" class="wd98p"/></td> -->
                             </tr>
