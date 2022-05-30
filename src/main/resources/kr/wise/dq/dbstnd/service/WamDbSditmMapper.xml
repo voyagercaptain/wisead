@@ -519,7 +519,8 @@ SELECT *
 			 ,A.INFOTP_LNM, A.ALW_VAL, A.OWNR_ORG, A.ADMN_STND_CD
 			 ,A.SAVE_FRM, A.EXPRSN_FRM, A.UNIT, A.ORG_NM
 			 ,A.VRF_RMK
-			 ,CASE WHEN A.VRF_RMK IS NOT NULL THEN '#FF0000' ELSE NULL END AS FontColor
+			 /* , CASE WHEN A.VRF_RMK IS NOT NULL THEN '#FF0000' ELSE NULL END AS FontColor */
+			 , null as FontColor
 			 , A.DB_NM
 			 
 			 , STND_CD
@@ -528,7 +529,8 @@ SELECT *
       		 , PNM
       
 		FROM WAM_DB_SDITM A
-		WHERE DB_NM IN (SELECT DB_NAME FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})            
+		WHERE DB_NM IN (SELECT DB_NAME FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})     
+		 AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))       
            ) FSQ -- 임시 Alias
   <where>
   <trim prefix="" suffix="" suffixOverrides="," >
