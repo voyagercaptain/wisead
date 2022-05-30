@@ -84,6 +84,7 @@ public class UserCtrl {
 //	IBSResult ibsres = new IBSResult();
 
 	static class WaaUsers extends HashMap<String, ArrayList<WaaUser>> { }
+	static class WaaOrgParam extends HashMap<String, ArrayList<WaaOrg>> { }
 
 	private Map<String, Object> codeMap;
 
@@ -421,5 +422,30 @@ public class UserCtrl {
 		List<WaaOrg> list = userService.getOrgList(search);
 		return new IBSheetListVO<WaaOrg>(list, list.size());
 	}
+	
+	/** 사용자 리스트 등록 - IBSheet JSON */
+	@RequestMapping("orgReglist.do")
+	@ResponseBody
+	public IBSResultVO<WaaOrg> regOrgList(@RequestBody WaaOrgParam data, Locale locale) throws Exception {
+
+		logger.debug("{}", data);
+		ArrayList<WaaOrg> list = data.get("data");
+		
+		int result = userService.regOrgList(list);
+		String resmsg;
+
+		if(result > 0) {
+			result = 0;
+			resmsg = message.getMessage("MSG.SAVE", null, locale);
+		} else {
+			result = -1;
+			resmsg = message.getMessage("ERR.SAVE", null, locale);
+		}
+
+		String action = WiseMetaConfig.IBSAction.REG_LIST.getAction();
+
+		return new IBSResultVO<WaaOrg>(result, resmsg, action);
+	}
+	
 
 }
