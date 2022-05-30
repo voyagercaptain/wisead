@@ -560,7 +560,7 @@ function postProcessIBS(res) {
 	 					 		</select>
 	 					 		
 								</td>
-                                <th scope="row"><label for="stndNm">조회항목</label></th> <!-- 표준사전명 -->
+                                <th scope="row"><label for="stndNm">표준도메인명</label></th> <!-- 표준사전명 -->
                                 <td><input type="text" id="stndNm" name="stndNm" class="wd98p" value="${stndNm}" /></td>
 <%--                                 <th scope="row"><label for="objDescn"><s:message code="CONTENT.TXT" /></label></th> <!-- 설명 --> --%>
 <!--                                 <td><input type="text" id="objDescn" name="objDescn" class="wd98p"/></td> -->
