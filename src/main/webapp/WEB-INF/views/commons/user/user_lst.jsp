@@ -131,7 +131,7 @@ function initGrid()
                     {Type:"Text",     Width:130,  SaveName:"pwdExpDt",      Align:"Center",   Edit:1, Hidden:1},
                     {Type:"Text",     Width:230,  SaveName:"objDescn",      Align:"Left",   Edit:1, Hidden:0},
                     {Type:"Text",     Width:130,  SaveName:"objVers",      Align:"Right",   Edit:0, Hidden:1},
-                    {Type:"Combo",    Width:80,   SaveName:"regTypCd",      Align:"Center",   Edit:0, Hidden:0},
+                    {Type:"Combo",    Width:80,   SaveName:"regTypCd",      Align:"Center",   Edit:0, Hidden:1},
                     {Type:"Text",     Width:130,  SaveName:"rqstDtm",      Align:"Center",   Edit:0, Hidden:1},
                     {Type:"Text",     Width:130,  SaveName:"rqstUserId",      Align:"Center",   Edit:0, Hidden:1},
                     {Type:"Combo",    Width:130,  SaveName:"aprvDcd",      Align:"Center",   Edit:0, Hidden:1},
@@ -284,7 +284,7 @@ function grid_sheet_OnDblClick(row, col, value, cellx, celly) {
 }
 
 function grid_sheet_OnClick(row, col, value, cellx, celly) {
-    
+debugger
     $("#hdnRow").val(row);
     
 	if ("gologin" == grid_sheet.ColSaveName(col)) {
@@ -295,11 +295,17 @@ function grid_sheet_OnClick(row, col, value, cellx, celly) {
 	}
 	
 	if ("pwChg" == grid_sheet.ColSaveName(col)) {
-		var url = '<c:url value="/commons/user/gousrInfoChngPop.do"/>';
+		/* var url = '<c:url value="/commons/user/gousrInfoChngPop.do"/>';
 		var param = grid_sheet.GetRowJson(row);
-		param = param+"&"+"loginAcId="+param.loginAcId;
+		var payloadString = Object.entries(param).map(e => e.join('=')).join('&');
+		payloadString = payloadString+"&"+"loginAcId="+payloadString.loginAcId; */
 		
-		openLayerPop(url, 700,  300, param);
+		var param = grid_sheet.GetRowJson(row);
+		var payloadString = "loginAcId=" + param.loginAcId;
+		
+		openLayerPop("<c:url value='/commons/user/gousrInfoChngPop.do' />", 550, 290, payloadString);
+		
+		//openLayerPop(url, 700,  300, payloadString);
 		//OpenWindow(url+'?'+param,'passwordChange','925','550','yes');
 		return false;
 		}

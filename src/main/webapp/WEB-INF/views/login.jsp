@@ -159,6 +159,19 @@ function doLogin(){
         return false;
     }
     
+    var emailVal = $("#loginId").val();
+	
+    if (emailVal != 'admin' && emailVal != 'meta' && emailVal != 'dquser') {
+    	
+    	var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+        // 검증에 사용할 정규식 변수 regExp에 저장
+    	
+        if (emailVal.match(regExp) == null) {
+        	alert("<s:message code="MSG.ID.EMAIL" />"); /* 아이디를 입력하세요 */
+            return false;
+        }
+    }
+    
     var rsaPublicKeyModulus = $("#rsaPublicKeyModulus").val();
     var rsaPublicKeyExponent = $("#rsaPublicKeyExponent").val();
     

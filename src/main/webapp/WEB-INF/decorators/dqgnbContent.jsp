@@ -56,7 +56,7 @@ $(window).load(function(){
 	});
 	
 	//시스템 관리 페이지 (관리자만 보이도록)
-	<c:if test="${sessionScope.loginVO.isAdminYn == 'Y' }">
+	<c:if test="${sessionScope.loginVO.isAdminYn == 'Y' && (sessionScope.loginVO.usergId == '2' || sessionScope.loginVO.usergId == 'OBJ_00000034586')}">
 	$("#top_menu_01_05").click(function(){
 		//관리자 페이지로 이동...
 // 		alert("관리자 페이지로 이동합니다.");
@@ -378,7 +378,7 @@ function setlocationmenu(topmenuid, uppmenuid) {
 	</c:if>
 
 	<ul class="n4info_list">
-		<li style="display: none;"><a href="#" class="user">${sessionScope.loginVO.name}<span><s:message
+		<li style="display"><a href="#" class="user">${sessionScope.loginVO.name}<span><s:message
 						code='MSG.HELLO' /></span></a></li>
 		<!--님 안녕하세요 -->
 		<li id="btnLogout"><a class="logout"><s:message
