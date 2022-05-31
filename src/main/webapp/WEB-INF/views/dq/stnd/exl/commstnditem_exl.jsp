@@ -46,7 +46,7 @@ function grid_SDITM_init() {
  		//<entry key="META.HEADER.STNDITEM.RQST.IFM.4"><![CDATA[|용어ID|기관명|DB명|표준용어명|용어설명|영문약어명|표준도메인명|데이터타입|데이터길이|소수점길이|허용값|저장형식|표현형식|단위|표준코드명|소관기관명]]></entry>
  		//<entry key="META.HEADER.STNDITEM.RQST.IFM.3"><![CDATA[|검증결과|등록일자|요청자ID|요청자명|요청번호|요청일련번호]]></entry>
 
- 		var headtext  = "No.|상태|차수|선택|검토상태|검토내용|요청구분|등록유형|검증결과|";
+ 		var headtext  = "No.|상태|선택|차수|검토상태|검토내용|요청구분|등록유형|검증결과|";
  		headtext += "용어ID|공통표준용어명|공통표준용어설명|공통표준용어영문약어명|공통표준도메인명|데이터타입|데이터길이|소수점길이|영문명|허용값|표준코드명|저장형식|표현형식|단위|업무분야|표현형식|행정표준코드명";
  		headtext += "|검증결과|제정일자|요청자ID|요청자명|요청번호|요청일련번호|소관기관명";
 		
@@ -61,8 +61,9 @@ function grid_SDITM_init() {
 		var cols = [						
 					{Type:"Seq",	Width:50,   SaveName:"ibsSeq",	  Align:"Center", Edit:0},
 					{Type:"Status", Width:40,   SaveName:"ibsStatus", Align:"Center", Edit:0, Hidden:1},
-					{Type:"Text",   Width:100,  SaveName:"lnmCriDs",  Align:"Left", Edit:1, Hidden:0, KeyField:1}, 
+					 
 					{Type:"CheckBox", Width:45, SaveName:"ibsCheck",  Align:"Center", Edit:1, Hidden:0, Sort:0},
+					{Type:"Text",   Width:100,  SaveName:"lnmCriDs",  Align:"Left", Edit:1, Hidden:0, KeyField:1},
 					{Type:"Combo",  Width:80,  SaveName:"rvwStsCd",	  Align:"Center", Edit:0, Hidden:1},						
 					{Type:"Text",   Width:80,  SaveName:"rvwConts",	  Align:"Left", Edit:0, Hidden:1},						
 					{Type:"Combo",  Width:80,  SaveName:"rqstDcd",	  Align:"Center", Edit:1, KeyField:0, ColMerge:0,Hidden:1},						
