@@ -70,6 +70,9 @@ public class LoginVO implements Serializable{
 	/** 로그인 사용자 권한 구분 */
 	private String userRole;
 	
+	private String orgCd;
+	
+	
 	/**
 	 * id attribute 를 리턴한다.
 	 * @return String
@@ -333,6 +336,12 @@ public class LoginVO implements Serializable{
 	}
 	public void setUserRole(String userRole) {
 		this.userRole = userRole;
+	}
+	public String getOrgCd() {
+		return orgCd;
+	}
+	public void setOrgCd(String orgCd) {
+		this.orgCd = orgCd;
 	}
 
 }

@@ -309,11 +309,11 @@ function setlocationmenu(topmenuid, uppmenuid) {
 			<!-- <li><a href="<c:url value="/main.do"/>" target="_blank"><img src="<c:url value="/images/nball_quick_meta.png"/>" alt=""><s:message code="META.DATA.SYS" /></a></a></li>  -->
 			<!--  <li><a href="<c:url value="/dqmain.do"/>" target="_blank"><img src="<c:url value="/images/nball_quick_dq.png"/>" alt=""><s:message code="DATA.QLTY.SYS" /></a></a></li> -->
 
-			<c:if test="${sessionScope.loginVO.isAdminYn == 'Y' }">
+			<%-- <c:if test="${sessionScope.loginVO.isAdminYn == 'Y' }">
 				<li id="top_menu_01_05" style="display: block;">
 					<a class="ic_set"><s:message code="MGR"/></a> <!-- 시스템관리 -->
 				</li>
-			</c:if>
+			</c:if> --%>
 		</ul>
 	</div>
 
@@ -347,8 +347,21 @@ function setlocationmenu(topmenuid, uppmenuid) {
 			</c:otherwise>
 		</c:choose>
 		<ul class="n4gnb_menu">
-				
 			<c:forEach var="topmenu" items="${TOP_MENU}" varStatus="status">
+			
+				<c:if test="${topmenu.menuId eq 'OBJ_00000013101' or topmenu.uppMenuId eq 'OBJ_00000013101'}">
+					<c:choose>
+						<c:when test="${sessionScope.loginVO.isAdminYn != 'Y' }">
+							<<<continue>>>
+						</c:when>
+						<c:otherwise>
+							<c:if test="${topmenu.menuId eq 'OBJ_00000013140' and sessionScope.loginVO.usergId ne '2'}">
+								<<<continue>>>
+							</c:if>
+						</c:otherwise>
+					</c:choose>
+    			</c:if>
+    
 				<li id="topmenu_${topmenu.menuId}" class="topmenu" style="">
 					<c:choose>
 						<c:when
@@ -361,6 +374,7 @@ function setlocationmenu(topmenuid, uppmenuid) {
 					</c:choose> ${topmenu.menuNm}</a>
 				</li>
 			</c:forEach>
+			
 		</ul>
 
 		<div class="n4gnb_line">

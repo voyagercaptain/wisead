@@ -122,7 +122,7 @@ function initGrid()
                     {Type:"Popup",    Width:130,  SaveName:"deptNm",       Align:"Left", Edit:1, Hidden:1},          
                     {Type:"Text",     Width:120,  SaveName:"jgdNm",        Align:"Left", 	 Edit:1},
                     {Type:"Text",     Width:120,  SaveName:"dbName",        Align:"Left", 	 Edit:1},
-                    {Type:"Combo",     Width:120,  SaveName:"orgCd",        Align:"Left", 	 Edit:1},
+                    {Type:"Combo",     Width:120,  SaveName:"orgCd",        Align:"Left", 	 Edit:1, KeyField:1},
                     {Type:"Text",     Width:130,  SaveName:"userTelno",    Align:"Left",   Edit:1, Hidden:0},
                     {Type:"Text",     Width:130,  SaveName:"userHtelno",   Align:"Left",   Edit:1, Hidden:0},
                     {Type:"Text",     Width:130,  SaveName:"emailAddr",      Align:"Left",   Edit:1, Hidden:0},
@@ -284,7 +284,7 @@ function grid_sheet_OnDblClick(row, col, value, cellx, celly) {
 }
 
 function grid_sheet_OnClick(row, col, value, cellx, celly) {
-debugger
+
     $("#hdnRow").val(row);
     
 	if ("gologin" == grid_sheet.ColSaveName(col)) {
@@ -308,11 +308,61 @@ debugger
 		//openLayerPop(url, 700,  300, payloadString);
 		//OpenWindow(url+'?'+param,'passwordChange','925','550','yes');
 		return false;
-		}
-
-    
+	}
+	
 }
 
+function grid_sheet_OnChange(Row, Col, Value, OldValue, RaiseFlag) { 
+
+debugger
+	var usergId = "${sessionScope.loginVO.usergId}";
+	var orgCd = "${sessionScope.loginVO.orgCd}";
+	
+	// 관리자 체크
+	// 기관 담당자가 관리자의 권한 그룹을 를 변경할 경우
+	if (usergId == 'OBJ_00000034586') {
+		
+		if ("2" == OldValue) {
+			grid_sheet.SetCellValue(Row, Col, OldValue);
+			alert("관리자의 정보를 변경할 수 없습니다.");
+			return;
+		}
+	}
+	
+	if ("usergId" == grid_sheet.ColSaveName(Col)) {
+		var usergVal = grid_sheet.GetCellValue(Row, "usergId");
+		
+		if ("2" == usergVal) {
+			grid_sheet.SetCellValue(Row, "orgCd", "관리자");
+		}
+	}
+	
+	if ("orgCd" == grid_sheet.ColSaveName(Col)) {
+		var orgText = grid_sheet.GetCellText(Row, "orgCd");
+		
+		if (usergId == 'OBJ_00000034586') {
+			if (orgCd != orgText) {
+				grid_sheet.SetCellValue(Row, "orgCd", OldValue);
+				alert("다른 기관으로 변경할 수 없습니다.");
+			}
+		}
+	}
+	
+	if ("orgCd" == grid_sheet.ColSaveName(Col)) {
+		
+		var orgVal = grid_sheet.GetCellValue(Row, "orgCd");
+		var usergVal = grid_sheet.GetCellValue(Row, "usergId");
+		
+		if ("ORG_00000" == orgVal) {
+			if ("2" != usergVal) {
+				grid_sheet.SetCellValue(Row, "orgCd", OldValue);
+				alert("관리자가 아니면 관리자 기관명을 선택할 수 없습니다.");
+			}
+		}
+	}
+	
+}
+		
 //주제영역 팝업 리턴값 처리
 function returnSubjPop (ret, row) {
 // 	alert(ret);
@@ -420,7 +470,11 @@ function grid_sheet_OnSaveEnd(code, message) {
             </fieldset>
             
             <input type="hidden" name="saveCls" id="saveCls"  />   
-            <input type="hidden" name="usrId"   id="usrId" />   
+            <input type="hidden" name="usrId"   id="usrId" />
+            <%-- <input type="hidden" name="hidUsergId" id="hidUsergId"  value="<c:out value='${sessionScope.loginVO.usergId}' escapeXml="true" />" />
+            <input type="hidden" name="hidOrgCd" id="hidOrgCd"  value="<c:out value='${sessionScope.loginVO.orgCd}' escapeXml="true" />" /> --%>
+            
+            
         <div class="tb_comment">- <s:message code="MSG.DTL.INQ.WIT.ATA.COPY.CLMN.CHC" /> <span style="font-weight:bold; color:#444444;">Ctrl + C</span><s:message code="MSG.CHC.USE" /></div> 
         <!-- 클릭을 하시면 상세조회를 하실 수 있습니다. 데이터를 복사하시려면 복사할 컬럼을 선택하시고 --> <!-- 를 사용하시면 됩니다. -->
         </form>

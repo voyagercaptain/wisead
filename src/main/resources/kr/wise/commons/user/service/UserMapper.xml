@@ -16,6 +16,7 @@
 		<result property="isAdminYn" column="IS_ADMIN_YN" />
 		<result property="isPwdExpYn" column="IS_PWD_EXP_YN" />
 		<result property="userRole" column="USER_ROLE" />
+		<result property="orgCd" column="ORG_CD" />
 		<result column="USER_GROUP_ID" property="usergId" jdbcType="VARCHAR" />
 		
 		
@@ -151,6 +152,7 @@
         	, B.USERG_TYP_CD  -- 사용자 그룹 타입
             , (CASE WHEN B.USERG_TYP_CD = 'AD' THEN 'Y' ELSE 'N' END) AS  IS_ADMIN_YN -- 사용자 그룹 타입이 'AD'(관리자)인 경우 셋팅
             , A.USER_ROLE  AS USER_ROLE
+            ,(select group_concat(wo.org_nm separator ',') as orgName from waa_org wo, waa_user_org wuo where wuo.user_id = A.USER_ID  and wo.org_cd  = wuo.org_cd) ORG_CD
         FROM WAA_USER A
 		    LEFT OUTER JOIN WAA_USERG B
               ON A.USERG_ID = B.USERG_ID
