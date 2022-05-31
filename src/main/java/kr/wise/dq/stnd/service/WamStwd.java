@@ -21,6 +21,11 @@ public class WamStwd extends CommonVo  {
 
     /** 출처구분 */
     private String orgDs;
+    
+    private String ord;
+    
+    
+    
 
     /** 요청번호 */
 //    private String rqstNo;
@@ -101,7 +106,15 @@ public class WamStwd extends CommonVo  {
     
     
 
-    public String getUserId() {
+    public String getOrd() {
+		return ord;
+	}
+
+	public void setOrd(String ord) {
+		this.ord = ord;
+	}
+
+	public String getUserId() {
 		return userId;
 	}
 

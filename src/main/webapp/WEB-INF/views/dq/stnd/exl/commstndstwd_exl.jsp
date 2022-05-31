@@ -55,7 +55,7 @@ function grid_STWD_init() {
 		var cols = [						
 					{Type:"Seq",	Width:50,   SaveName:"ibsSeq",	    Align:"Center", Edit:0},
 					{Type:"Status", Width:60,   SaveName:"ibsStatus",   Align:"Center", Edit:0, Hidden:1},
-					{Type:"Text",   Width:100,  SaveName:"lnmCriDs",  Align:"Left", Edit:1, Hidden:0, KeyField:1},
+					{Type:"Text",   Width:100,  SaveName:"ord",  Align:"Left", Edit:1, Hidden:0, KeyField:1},
 					{Type:"CheckBox", Width:50, SaveName:"ibsCheck",    Align:"Center", Edit:1, Hidden:0, Sort:0},
 					{Type:"Combo",  Width:100,  SaveName:"rvwStsCd",	Align:"Center", Edit:0, Hidden:1},						
 					{Type:"Text",   Width:100,  SaveName:"rvwConts",	Align:"Left",   Edit:0, Hidden:1},						

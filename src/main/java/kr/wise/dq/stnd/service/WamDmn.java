@@ -92,7 +92,18 @@ public class WamDmn extends CommonVo{
     
     private String userId;
     
-    public String getUserId() {
+    private String ord;
+    
+        
+    public String getOrd() {
+		return ord;
+	}
+
+	public void setOrd(String ord) {
+		this.ord = ord;
+	}
+
+	public String getUserId() {
 		return userId;
 	}
 

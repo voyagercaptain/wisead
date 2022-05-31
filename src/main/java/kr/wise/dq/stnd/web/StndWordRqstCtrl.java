@@ -534,8 +534,12 @@ public class StndWordRqstCtrl {
 		logger.debug("reqmst:{} \ndata:{}", reqmst, data);
 
 		ArrayList<WamStwd> list = data.get("data");
-
-		int result = stndCommWordRqstService.registerWam(list);
+		int result = 0;
+		try {
+			result = stndCommWordRqstService.registerWam(list);
+		} catch(Exception e) {
+			logger.error("", e);
+		}
 		
 //		String stwdDcd = UtilString.null2Blank(session.getAttribute("stwdDcd"));
 		

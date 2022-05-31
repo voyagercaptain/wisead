@@ -38,7 +38,7 @@
   <sql id="Base_Column_List" >
     STWD_ID, STWD_LNM, STWD_PNM, ENG_MEAN, RQST_NO, RQST_SNO, OBJ_DESCN, 
     OBJ_VERS, REG_TYP_CD, FRS_RQST_DTM, FRS_RQST_USER_ID, RQST_DTM, RQST_USER_ID, APRV_DTM, 
-    APRV_USER_ID, DMN_YN, DMN_LNM, SYMN_LNM, FBDN_LNM, OWNR_ORG, SPCL_NT
+    APRV_USER_ID, DMN_YN, DMN_LNM, SYMN_LNM, FBDN_LNM, OWNR_ORG, SPCL_NT, ORD 
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -105,7 +105,7 @@
         AND OBJ_DESCN LIKE CONCAT('%' , #{objDescn,jdbcType=VARCHAR} , '%')
       </if>
       <if test="objVers != null" >
-        AND OBJ_VERS = #{objVers,jdbcType=DECIMAL}
+        AND OBJ_VERS = #{objVers,jdbcType=VARCHAR}
       </if>
       <if test="regTypCd != null" >
         AND REG_TYP_CD = #{regTypCd,jdbcType=VARCHAR}
@@ -375,13 +375,13 @@
       RQST_NO, RQST_SNO, OBJ_DESCN, 
       OBJ_VERS, REG_TYP_CD, FRS_RQST_DTM, 
       FRS_RQST_USER_ID, RQST_DTM, RQST_USER_ID, 
-      APRV_DTM, APRV_USER_ID)
+      APRV_DTM, APRV_USER_ID, ORD)
     values (#{stwdId,jdbcType=VARCHAR}, #{stwdLnm,jdbcType=VARCHAR}, #{stwdPnm,jdbcType=VARCHAR}, 
       #{engMean,jdbcType=VARCHAR},
       #{rqstNo,jdbcType=VARCHAR}, #{rqstSno,jdbcType=DECIMAL}, #{objDescn,jdbcType=VARCHAR}, 
-      #{objVers,jdbcType=DECIMAL}, #{regTypCd,jdbcType=VARCHAR}, #{frsRqstDtm,jdbcType=DATE}, 
+      #{objVers,jdbcType=VARCHAR}, #{regTypCd,jdbcType=VARCHAR}, #{frsRqstDtm,jdbcType=DATE}, 
       #{frsRqstUserId,jdbcType=VARCHAR}, #{rqstDtm,jdbcType=DATE}, #{rqstUserId,jdbcType=VARCHAR}, 
-      #{aprvDtm,jdbcType=DATE}, #{aprvUserId,jdbcType=VARCHAR})
+      #{aprvDtm,jdbcType=DATE}, #{aprvUserId,jdbcType=VARCHAR}, #{ord,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="kr.wise.dq.stnd.service.WamStwd" >
     insert into COMM_STWD
@@ -453,7 +453,9 @@
       <if test="spclNt != null" >
         SPCL_NT,
       </if>
-      
+      <if test="ord != null" >
+        ORD,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="stwdId != null" >
@@ -478,7 +480,7 @@
         #{objDescn,jdbcType=VARCHAR},
       </if>
       <if test="objVers != null" >
-        #{objVers,jdbcType=DECIMAL},
+        #{objVers,jdbcType=VARCHAR},
       </if>
       <if test="regTypCd != null" >
         #{regTypCd,jdbcType=VARCHAR},
@@ -523,11 +525,18 @@
       <if test="spclNt != null" >
          #{spclNt,jdbcType=VARCHAR},
       </if>
+      <if test="ord != null" >
+        #{ord,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="kr.wise.dq.stnd.service.WamStwd" >
     update COMM_STWD
     <set >
+      <if test="ord != null" >
+        ORD = #{ord,jdbcType=VARCHAR},
+      </if>
+      	
       <if test="stwdLnm != null" >
         STWD_LNM = #{stwdLnm,jdbcType=VARCHAR},
       </if>
@@ -547,7 +556,7 @@
         OBJ_DESCN = #{objDescn,jdbcType=VARCHAR},
       </if>
       <if test="objVers != null" >
-        OBJ_VERS = #{objVers,jdbcType=DECIMAL},
+        OBJ_VERS = #{objVers, jdbcType=VARCHAR},
       </if>
       <if test="regTypCd != null" >
         REG_TYP_CD = #{regTypCd,jdbcType=VARCHAR},
@@ -605,7 +614,7 @@
       RQST_NO = #{rqstNo,jdbcType=VARCHAR},
       RQST_SNO = #{rqstSno,jdbcType=DECIMAL},
       OBJ_DESCN = #{objDescn,jdbcType=VARCHAR},
-      OBJ_VERS = #{objVers,jdbcType=DECIMAL},
+      OBJ_VERS = #{objVers,jdbcType=VARCHAR},
       REG_TYP_CD = #{regTypCd,jdbcType=VARCHAR},
       FRS_RQST_DTM = #{frsRqstDtm,jdbcType=DATE},
       FRS_RQST_USER_ID = #{frsRqstUserId,jdbcType=VARCHAR},
@@ -619,7 +628,8 @@
       FBDN_LNM = #{fbdnLnm,jdbcType=VARCHAR},
       SYMN_LNM = #{symnLnm,jdbcType=VARCHAR},
       OWNR_ORG = #{ownrOrg,jdbcType=VARCHAR},
-      SPCL_NT = #{spclNt,jdbcType=VARCHAR}
+      SPCL_NT = #{spclNt,jdbcType=VARCHAR},
+      ORD = #{ord,jdbcType=VARCHAR}
     where STWD_ID = #{stwdId,jdbcType=VARCHAR}
   </update>
   <insert id="insertWamStwd" parameterType="java.lang.String" >

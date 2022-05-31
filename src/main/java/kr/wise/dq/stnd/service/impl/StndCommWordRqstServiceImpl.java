@@ -556,9 +556,13 @@ public class StndCommWordRqstServiceImpl implements StndCommWordRqstService {
 				saveVo.setFrsRqstUserId(userid);
 				saveVo.setRqstUserId(userid);
 				saveVo.setRqstNo("REQ_01");
-
-				//단건 저장...
-				result += saveWamStndWord(saveVo);
+				
+				try {
+					//단건 저장...
+					result += saveWamStndWord(saveVo);
+				} catch(Exception e) {
+					logger.error("",e);
+				}
 			}
 		}
 
