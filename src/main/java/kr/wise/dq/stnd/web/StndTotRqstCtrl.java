@@ -195,7 +195,8 @@ public class StndTotRqstCtrl {
         
         model.addAttribute("codeMap",getcodeMap());
         model.addAttribute("userOrgList", dbStndService.selectUserOrgList(((LoginVO)session.getAttribute("loginVO")).getId()));
-    	
+        model.addAttribute("userOrg", dbStndService.selectUserOrg(((LoginVO)session.getAttribute("loginVO")).getId()));
+        
     	String strReturn = "";
         if("STWD".equals(screenGb)) {
         	strReturn = "/dq/stnd/stndstwd_rqst";

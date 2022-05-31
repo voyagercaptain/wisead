@@ -69,10 +69,10 @@ function grid_DMN_init() {
 				{Type:"Text",       Width:100,  SaveName:"infotpLnm",	 	Align:"Left", Edit:1, Hidden:0, KeyField:1}, //도메인명
 				{Type:"Text",       Width:150,  SaveName:"objDescn",	    Align:"Left", Edit:1, KeyField:1},
 				{Type:"Text",       Width:120,  SaveName:"dataType",	 	Align:"Left", Edit:1, Hidden:0, KeyField:1},
-				{Type:"Int",       Width:100,  SaveName:"dataLen",	 	    Align:"Left", Edit:1, Hidden:0},
+				{Type:"Int",       Width:100,  SaveName:"dataLen",	 	    Align:"Left", Edit:1, Hidden:0, KeyField:1},
 				
-				{Type:"Text",       Width:100,  SaveName:"dmngLnm",	 	    Align:"Left", Edit:1, Hidden:0, KeyField:1}, //도메인그룹명
-				{Type:"Text",       Width:150,  SaveName:"dmnLnm",   	    Align:"Left", Edit:1, KeyField:1}, //도메인분류명
+				{Type:"Text",       Width:100,  SaveName:"dmngLnm",	 	    Align:"Left", Edit:1, Hidden:0, KeyField:0}, //도메인그룹명
+				{Type:"Text",       Width:150,  SaveName:"dmnLnm",   	    Align:"Left", Edit:1, KeyField:0}, //도메인분류명
 // 				{Type:"Text",       Width:180,  SaveName:"dmnPnm",   	    Align:"Left", Edit:1, KeyField:1, Hidden:0}, 
 				
 				
@@ -81,7 +81,7 @@ function grid_DMN_init() {
 				{Type:"Text",       Width:100,  SaveName:"exprsnFrm",	 	Align:"Left", Edit:1, Hidden:0},
 				{Type:"Text",       Width:100,  SaveName:"unit",    	 	Align:"Left", Edit:1, Hidden:0},
 				{Type:"Text",       Width:100,  SaveName:"cdVal",   	 	Align:"Left", Edit:1, Hidden:0},
-				{Type:"Text",   	Width:100,  SaveName:"ownrOrg",      Align:"Left", Edit:1, Hidden:0},  // 소관기관명
+				{Type:"Text",   	Width:100,  SaveName:"ownrOrg",      Align:"Left", Edit:1, Hidden:0, KeyField:1},  // 소관기관명
 				
 				{Type:"Text",       Width:100,  SaveName:"admnStndCd",	 	Align:"Left", Edit:1, Hidden:1},
 				                    

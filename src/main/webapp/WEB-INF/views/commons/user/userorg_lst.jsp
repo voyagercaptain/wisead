@@ -32,7 +32,6 @@ $(document).ready(function() {
         // 저장 Event Bind
         $("#btnSave").click(function(){
         	//var rows = grid_sheet.FindStatusRow("I|U|D");
-        	/*
         	var rows = grid_sheet.IsDataModified();
         	if(!rows) {
 //         		alert("저장할 대상이 없습니다...");
@@ -43,10 +42,7 @@ $(document).ready(function() {
         	//저장할래요? 확인창...
     		var message = "<s:message code="CNF.SAVE" />";
     		showMsgBox("CNF", message, 'Save');	
-        	*/
-        	
-    		doAction("Save");
-        	
+        	//doAction("Save"); 	
 		}).show();
 
         // 삭제 Event Bind
@@ -101,16 +97,16 @@ function initGrid()
     	var cfg = {SearchMode:2,Page:100};
         SetConfig(cfg);
         
-        var headtext  = "No.|선택|orgCdId|기관코드|기관명";
         var headers = [
-                    {Text:headtext, Align:"Center"}
+                    {Text:"<s:message code='COMMON.HEADER.ORG.LST'/>", Align:"Center"}
                     /* No.|업무대행|상태|선택|사용자ID|만료일시|시작일시|로그인ID|사용자명|사용자그룹명|부서ID|부서명|직급명|사용자전화번호|사용자휴대폰번호|이메일주소|엑셀다운로드권한여부|ID사용만료일자|비밀번호만료일자|설명|버전|등록유형|요청일시|요청사용자ID|승인구분코드|작성일시|승인사용자ID|비밀번호변경 */
                 ];
         
-        var headerInfo = {Sort:1, ColMove:1, ColResize:1, HeaderCheck:1};
+        var headerInfo = {Sort:0, ColMove:0, ColResize:1, HeaderCheck:1};
         
         InitHeaders(headers, headerInfo); 
         
+
         var cols = [                        
                     {Type:"Seq",      Width:30,   SaveName:"ibsSeq",  Align:"Center", Edit:0},
                     {Type:"CheckBox", Width:30,   SaveName:"ibsCheck", Align:"Center", Edit:1, Hidden:0, Sort:0},                    
@@ -159,22 +155,11 @@ function doAction(sAction)
         	var SaveJson = grid_sheet.GetSaveJson(0); //트랜젝션이 있는 경우만 가져옴 : doSave와 동일
 //         	ibsSaveJson = grid_sheet.GetSaveJson(1); //doAllSave와 동일한 대상을 가져옴...
         	//데이터 사이즈 확인...
-        	//if(SaveJson.data.length == 0) return;
-        	
-        	alert(SaveJson.Code);
-        	//2. 필수입력 누락인 경우
-			if (SaveJson.Code == "IBS010") return;
-        	
-        	/*
-			if(SaveJson.data.length == 0){
-				showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
-				return;
-			}
-        	*/
+        	if(SaveJson.data.length == 0) return;
         	
         	var url = "<c:url value="/commons/user/orgReglist.do"/>";
-         	var param = $('form[name=frmSearch]').serialize();
-            IBSpostJson2(url, SaveJson, param, ibscallback);
+         	var param = "";
+             IBSpostJson2(url, SaveJson, param, ibscallback);
         	break;
             
         case "Search":

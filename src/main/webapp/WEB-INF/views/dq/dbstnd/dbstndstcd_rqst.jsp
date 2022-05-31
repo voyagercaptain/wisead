@@ -261,6 +261,12 @@ function doAction(sAction)
 			}else if(bizDtlCd == "STCD"){
 				fileName = fileName+"표준코드.xlsx";
 			}
+    	    
+    	    var SaveJson = grid_name.GetSaveJson(1); //doAllSave와 동일한 대상을 가져옴...
+    	    if(SaveJson.data.length == 0) {
+    	    	grid_name.DataInsert(0);
+    	    	grid_name.SetCellValue(1,"orgNm", "${userOrg.orgNm}");
+    	    }
     		grid_name.Down2Excel({HiddenColumn:1,Merge:1,Mode:2,FileName : fileName});
         	break;
         

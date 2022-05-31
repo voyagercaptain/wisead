@@ -886,7 +886,14 @@ SELECT *
 	  FROM WAA_ORG A, WAA_USER_ORG B
 	 WHERE B.USER_ID = #{userId,jdbcType=VARCHAR}
 	   AND A.ORG_CD  = B.ORG_CD 
-  </select>	
+  </select>
+  
+   <select id="selectUserOrg" resultMap="BaseResultMap" parameterType="java.lang.String" >
+     SELECT A.ORG_CD, A.ORG_NM
+	  FROM WAA_ORG A, WAA_USER_ORG B
+	 WHERE B.USER_ID = #{userId,jdbcType=VARCHAR}
+	   AND A.ORG_CD  = B.ORG_CD 
+  </select>		
   
   
 </mapper>

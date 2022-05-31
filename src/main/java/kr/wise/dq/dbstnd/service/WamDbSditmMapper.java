@@ -34,6 +34,8 @@ public interface WamDbSditmMapper {
 	
 	List<WamDbSditm> selectUserOrgList(String userId);
 	
+	WamDbSditm selectUserOrg(String userId);
+	
 	int checkStwdAbr();
 	
 	int checkDmnYnExsits();

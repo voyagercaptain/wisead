@@ -183,6 +183,7 @@ public class DbStndTotRqstCtrl {
         
         model.addAttribute("userDbList", dbStndService.selectUserDbList(((LoginVO)session.getAttribute("loginVO")).getId()));
         model.addAttribute("userOrgList", dbStndService.selectUserOrgList(((LoginVO)session.getAttribute("loginVO")).getId()));
+        model.addAttribute("userOrg", dbStndService.selectUserOrg(((LoginVO)session.getAttribute("loginVO")).getId()));
         
         
         String strReturn = "";
