@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
+import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.code.service.CmcdCodeService;
 import kr.wise.commons.code.service.CodeListService;
 import kr.wise.commons.code.service.CodeListVo;
@@ -96,9 +97,11 @@ public class StndDomainCtrl {
 	/** 도메인 리스트 조회 */
 	@RequestMapping("/dq/stnd/getDomainlist.do")
 	@ResponseBody
-	public IBSheetListVO<WamDmn> getDomainList(@ModelAttribute WamDmn data, Locale locale) {
+	public IBSheetListVO<WamDmn> getDomainList(@ModelAttribute WamDmn data, Locale locale, HttpSession session) {
 
 		logger.debug("reqvo:{}", data);
+		
+		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
 
 		List<WamDmn> list = stndDomainService.getDomainList(data);
 
@@ -112,9 +115,11 @@ public class StndDomainCtrl {
 	/** 도메인 리스트 조회 */
 	@RequestMapping("/dq/stnd/getCommDomainlist.do")
 	@ResponseBody
-	public IBSheetListVO<WamDmn> getCommDomainList(@ModelAttribute WamDmn data, Locale locale) {
+	public IBSheetListVO<WamDmn> getCommDomainList(@ModelAttribute WamDmn data, Locale locale, HttpSession session) {
 
 		logger.debug("reqvo:{}", data);
+		
+		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
 
 		List<WamDmn> list = stndCommDomainService.getDomainList(data);
 

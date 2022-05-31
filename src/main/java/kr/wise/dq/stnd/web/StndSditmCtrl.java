@@ -6,7 +6,9 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
+import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.code.service.CmcdCodeService;
 import kr.wise.commons.code.service.CodeListService;
 import kr.wise.commons.helper.grid.IBSheetListVO;
@@ -68,9 +70,11 @@ public class StndSditmCtrl {
 
 	@RequestMapping("/dq/stnd/getsditmlist.do")
 	@ResponseBody
-	public IBSheetListVO<WamSditm> getStndItemList(@ModelAttribute WamSditm data, Locale locale) {
+	public IBSheetListVO<WamSditm> getStndItemList(@ModelAttribute WamSditm data, Locale locale, HttpSession session) {
 
 		logger.debug("req vo:{}", data);
+		
+		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
 
 		List<WamSditm> list = stndSditmService.getStndItemList(data);
 
@@ -83,9 +87,11 @@ public class StndSditmCtrl {
 	
 	@RequestMapping("/dq/stnd/getCommsditmlist.do")
 	@ResponseBody
-	public IBSheetListVO<WamSditm> getStndCommItemList(@ModelAttribute WamSditm data, Locale locale) {
+	public IBSheetListVO<WamSditm> getStndCommItemList(@ModelAttribute WamSditm data, Locale locale, HttpSession session) {
 
 		logger.debug("req vo:{}", data);
+		
+		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
 
 		List<WamSditm> list = stndCommSditmService.getStndItemList(data);
 

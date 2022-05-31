@@ -79,9 +79,19 @@ public class WamSditm extends CommonVo {
     private String bsnssFld;
     private String pnm;
     
+    private String userId;
     
     
-    public String getPnm() {
+    
+    public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getPnm() {
 		return pnm;
 	}
 

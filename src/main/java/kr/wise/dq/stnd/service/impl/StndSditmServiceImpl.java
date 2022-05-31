@@ -45,9 +45,14 @@ public class StndSditmServiceImpl implements StndSditmService {
 	@Override
 	public List<WamSditm> getStndItemList(WamSditm data) {
 		
-		return mapper.selectSditmList(data);
-		//SLC 전용입니다.
-//		return mapper.selectSditmListSLC(data);
+		List<WamSditm> result = null;
+		try {
+			result = mapper.selectSditmList(data);
+		} catch(Exception e) {
+			logger.error("", e);
+		}
+		
+		return result;
 	}
 
 	@Override

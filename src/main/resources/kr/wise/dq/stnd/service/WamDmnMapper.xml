@@ -102,6 +102,7 @@
   	    ON A.INFOTP_ID = B.INFOTP_ID
   	   AND B.EXP_DTM = DATE_FORMAT( '99991231', '%Y%m%d') -->
   	<where>
+  	   AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))	
        AND A.REG_TYP_CD IN ('C', 'U')
       <if test="dmnLnm != null" >
        AND (DMN_LNM LIKE CONCAT('%' , #{dmnLnm,jdbcType=VARCHAR} , '%')
