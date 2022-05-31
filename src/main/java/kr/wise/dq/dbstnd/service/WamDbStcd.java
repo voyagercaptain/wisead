@@ -16,6 +16,7 @@ public class WamDbStcd extends CommonVo  {
 	private String pclrMtr;
 	private String uppCommCdId;
 	private String commDtlCdNm;
+	private String commDtlCdMn;
 	private String commDtlCdDesc;
 	private String useYn;
 	private String orgNm;
@@ -25,7 +26,14 @@ public class WamDbStcd extends CommonVo  {
     
     private String stndNm;
     
-    	
+       
+    
+	public String getCommDtlCdMn() {
+		return commDtlCdMn;
+	}
+	public void setCommDtlCdMn(String commDtlCdMn) {
+		this.commDtlCdMn = commDtlCdMn;
+	}
 	public String getStndNm() {
 		return stndNm;
 	}
