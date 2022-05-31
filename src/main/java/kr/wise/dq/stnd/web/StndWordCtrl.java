@@ -101,9 +101,11 @@ public class StndWordCtrl {
 
 	@RequestMapping("/dq/stnd/getStndWordlist.do")
 	@ResponseBody
-	public IBSheetListVO<WamStwd> getStndWordList(@ModelAttribute WamStwd data, Locale locale) {
+	public IBSheetListVO<WamStwd> getStndWordList(@ModelAttribute WamStwd data, Locale locale, HttpSession session) {
 
 		logger.debug("reqvo:{}", data);
+		
+		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
 
 		List<WamStwd> list = stndWordService.getStndWordList(data);
 
@@ -117,9 +119,11 @@ public class StndWordCtrl {
 	
 	@RequestMapping("/dq/stnd/getStndCommWordlist.do")
 	@ResponseBody
-	public IBSheetListVO<WamStwd> getStndCommWordList(@ModelAttribute WamStwd data, Locale locale) {
+	public IBSheetListVO<WamStwd> getStndCommWordList(@ModelAttribute WamStwd data, Locale locale, HttpSession session) {
 
 		logger.debug("reqvo:{}", data);
+		
+		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
 
 		List<WamStwd> list = stndCommWordService.getStndWordList(data);
 

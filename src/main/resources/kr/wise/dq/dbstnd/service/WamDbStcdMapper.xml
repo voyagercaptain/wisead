@@ -31,6 +31,7 @@
 	, PCLR_MTR
 	, UPP_COMM_CD_ID
 	, COMM_DTL_CD_NM
+	, COMM_DTL_CD_MN
 	, COMM_DTL_CD_DESC
 	, USE_YN
 	, ORG_NM
@@ -109,6 +110,7 @@
 		, PCLR_MTR
 		, UPP_COMM_CD_ID
 		, COMM_DTL_CD_NM
+		, COMM_DTL_CD_MN
 		, COMM_DTL_CD_DESC
 		, USE_YN
 		, ORG_NM
@@ -119,7 +121,7 @@
       #{comnCdDataLen,jdbcType=DECIMAL}, #{comnCdEnnm,jdbcType=VARCHAR}, 
       #{mngDeptCd,jdbcType=VARCHAR}, #{writDtm,jdbcType=TIMESTAMP}, 
       #{pclrMtr,jdbcType=VARCHAR}, #{uppCommCdId,jdbcType=VARCHAR}, 
-      #{commDtlCdNm,jdbcType=VARCHAR}, #{commDtlCdDesc,jdbcType=VARCHAR},
+      #{commDtlCdNm,jdbcType=VARCHAR}, #{commDtlCdMn,jdbcType=VARCHAR}, #{commDtlCdDesc,jdbcType=VARCHAR},
       #{useYn,jdbcType=VARCHAR}, #{orgNm,jdbcType=VARCHAR}, #{dbNm,jdbcType=VARCHAR}
       )
   </insert>
@@ -138,6 +140,7 @@
 		, PCLR_MTR
 		, UPP_COMM_CD_ID
 		, COMM_DTL_CD_NM
+		, COMM_DTL_CD_MN
 		, COMM_DTL_CD_DESC
 		, USE_YN
 		, ORG_NM
@@ -150,7 +153,7 @@
       #{comnCdDataLen,jdbcType=DECIMAL}, #{comnCdEnnm,jdbcType=VARCHAR}, 
       #{mngDeptCd,jdbcType=VARCHAR}, LOCALTIMESTAMP() /* writDtm,jdbcType=TIMESTAMP */,  
       #{pclrMtr,jdbcType=VARCHAR}, #{uppCommCdId,jdbcType=VARCHAR}, 
-      #{commDtlCdNm,jdbcType=VARCHAR}, #{commDtlCdDesc,jdbcType=VARCHAR},
+      #{commDtlCdNm,jdbcType=VARCHAR}, #{commDtlCdMn,jdbcType=VARCHAR}, #{commDtlCdDesc,jdbcType=VARCHAR},
       #{useYn,jdbcType=VARCHAR}, #{orgNm,jdbcType=VARCHAR}, #{dbNm,jdbcType=VARCHAR}
     </trim>
   </insert>
@@ -241,6 +244,7 @@
 		, PCLR_MTR = #{pclrMtr,jdbcType=VARCHAR} 
 		, UPP_COMM_CD_ID = #{uppCommCdId,jdbcType=VARCHAR}
 		, COMM_DTL_CD_NM =  #{commDtlCdNm,jdbcType=VARCHAR}
+		, COMM_DTL_CD_MN =  #{commDtlCdMn,jdbcType=VARCHAR}
 		, COMM_DTL_CD_DESC = #{commDtlCdDesc,jdbcType=VARCHAR} 
 		, USE_YN = #{useYn,jdbcType=VARCHAR}
 		, ORG_NM = #{orgNm,jdbcType=VARCHAR}

@@ -76,8 +76,8 @@ function grid_SDITM_init() {
 					{Type:"Text",   Width:150,  SaveName:"sditmPnm",     Align:"Left", Edit:1, KeyField:1},
 					{Type:"Text",   Width:100,  SaveName:"infotpLnm",	 Align:"Left", Edit:1, Hidden:0, KeyField:1}, //도메인명
 					
-					{Type:"Text",       Width:120,  SaveName:"dataType",	 	Align:"Left", Edit:1, Hidden:0, KeyField:0},
-					{Type:"Int",       Width:80,  SaveName:"dataLen",	 	    Align:"Left", Edit:1, Hidden:0, KeyField:0},
+					{Type:"Text",       Width:120,  SaveName:"dataType",	 	Align:"Left", Edit:1, Hidden:0, KeyField:1},
+					{Type:"Int",       Width:80,  SaveName:"dataLen",	 	    Align:"Left", Edit:1, Hidden:0, KeyField:1},
 					{Type:"Int",       Width:100,  SaveName:"dataScal",	 	Align:"Left", Edit:1, Hidden:1},
 					
 					{Type:"Text",   Width:150,  SaveName:"pnm",     Align:"Left", Edit:1}, //영문명
@@ -89,14 +89,14 @@ function grid_SDITM_init() {
 				    {Type:"Text",   Width:100,  SaveName:"exprsnFrm",	 	Align:"Left", Edit:1, Hidden:1},
 				    {Type:"Text",   Width:100,  SaveName:"unit",    	 	Align:"Left", Edit:1, Hidden:1},
 					
-				    {Type:"Text",   Width:100,  SaveName:"ownrOrg",      Align:"Left", Edit:1, Hidden:0},  // 소관기관명
+				    {Type:"Text",   Width:100,  SaveName:"ownrOrg",      Align:"Left", Edit:1, Hidden:0, KeyField:1},  // 소관기관명
 				    {Type:"Text",   Width:100,  SaveName:"bsnssFld",      Align:"Left", Edit:1, Hidden:0}, //업무분야
 				    
 					{Type:"Text",   Width:100,  SaveName:"admnStndCd", 	      Align:"Left", Edit:1, Hidden:0, ColMerge:0},  //행정표준코드명
 					
 					{Type:"Text",   Width:100,  SaveName:"vrfRmk",      Align:"Left", Edit:0, Hidden:1},  // 검증결과
 					
-					{Type:"Text",   Width:130,  SaveName:"rqstDtm",  	  Align:"Center", Edit:0, Format:"yyyy-MM-dd HH:mm:ss"},
+					{Type:"Text",   Width:130,  SaveName:"rqstDtm",  	  Align:"Center", Edit:1, Format:"yyyyMMdd", KeyField:1},
 					{Type:"Text",   Width:150,  SaveName:"rqstUserId",    Align:"Center", Edit:0, Hidden:1, ColMerge:0},
 					{Type:"Text",   Width:150,  SaveName:"rqstUserNm",    Align:"Center", Edit:0, ColMerge:0, Hidden:1},
 					{Type:"Text",   Width:60,   SaveName:"rqstNo",        Align:"Center", Edit:0, Hidden:1, ColMerge:0}, 

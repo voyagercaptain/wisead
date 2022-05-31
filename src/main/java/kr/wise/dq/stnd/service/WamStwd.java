@@ -96,10 +96,20 @@ public class WamStwd extends CommonVo  {
     
     private String spclNt;
     
+    private String userId;
+    
     
     
 
-    public String getOwnrOrg() {
+    public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getOwnrOrg() {
 		return ownrOrg;
 	}
 
