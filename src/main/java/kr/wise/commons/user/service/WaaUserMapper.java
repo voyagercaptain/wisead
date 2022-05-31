@@ -63,5 +63,5 @@ public interface WaaUserMapper {
     
     public List<WaaOrg> selectOrgList(WaaOrg waaOrg);
     
-    
+    int regOrgList(WaaOrg record);
 }
