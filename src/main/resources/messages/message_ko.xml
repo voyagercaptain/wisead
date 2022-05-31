@@ -965,6 +965,7 @@
 <entry key="MSG.LOIN.INFO.EXIS"><![CDATA[로그인 정보가 존재하지 않습니다.]]></entry>
 <entry key="MSG.ID.PWD.CNFR"><![CDATA[아이디와 비밀번호를 확인해 주세요.]]></entry>
 <entry key="MSG.ID.INPT"><![CDATA[아이디를 입력하세요]]></entry>
+<entry key="MSG.ID.EMAIL"><![CDATA[이메일 형식으로 아이디를 입력하세요]]></entry>
 <entry key="MSG.PWD.INPT"><![CDATA[비밀번호를 입력하세요]]></entry>
 <entry key="MSG.USER.ID.PWD.NOTICE"><![CDATA[사용자 아이디와 비밀번호가 타인에게 노출되지 않도록 유의하시기 바랍니다.]]></entry>
 <entry key="MEAL"><![CDATA[식사]]></entry>
