@@ -343,10 +343,9 @@ function doAction(sAction)
 			//프로파일별 url 셋팅
 			var url = "";
 			if(bizDtlCd == "SDITM"){
+				/*
 				var row = grid_name.ColValueDup("orgNm|sditmLnm|sditmPnm");
 				var rows = grid_name.ColValueDupRows("orgNm|sditmLnm|sditmPnm");
-				
-				
 				if(row>0){
 				    showMsgBox("INF","<s:message code="ERR.DUP" />"+"(용어명)"+"</br>"+rows+"행");
 				    var rowsArr = rows.split(",");
@@ -356,6 +355,7 @@ function doAction(sAction)
 				    }
 					return;
 				}
+				*/
 				url = '<c:url value="/dq/stnd/regitemWamlist.do"/>';
 				
 			}else if(bizDtlCd == "DMN"){

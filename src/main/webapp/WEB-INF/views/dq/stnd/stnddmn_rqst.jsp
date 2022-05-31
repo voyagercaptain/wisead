@@ -359,7 +359,7 @@ function doAction(sAction)
 				url = '<c:url value="/dq/stnd/regitemWamlist.do"/>';
 				
 			}else if(bizDtlCd == "DMN"){
-				
+				/*
 				var row = grid_name.ColValueDup("orgNm|infotpLnm");
 				var rows = grid_name.ColValueDupRows("infotpLnm");
 				if(row>0){
@@ -371,6 +371,7 @@ function doAction(sAction)
 				    }
 					return;
 				}
+				*/
 				url = '<c:url value="/dq/stnd/regdmnWamlist.do"/>';
 			}else if(bizDtlCd == "STWD"){
 				var row = grid_name.ColValueDup("stwdLnm|stwdPnm");
