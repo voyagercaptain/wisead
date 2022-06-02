@@ -412,7 +412,7 @@ public class CodeListServiceImpl implements CodeListService {
 	@Override
 	public List<CodeListVo> getCodeList(CodeListAction codenm) {
 		List<CodeListVo> codeList = null;
-
+		
 		if(CodeListAction.CODE_LIST_PRJ.equals(codenm)) {
 			codeList = codeListMapper.getProjectCodeList();
 		} else if (CodeListAction.CL_CODE.equals(codenm)) {
@@ -556,8 +556,17 @@ public class CodeListServiceImpl implements CodeListService {
 	
 		return map;
 	}
-
-
+	
+	public List<CodeListVo> getUserGroupList(Map userId) {
+		List<CodeListVo> codeList = codeListMapper.getClSystmTyCode();;
+		return codeList;
+	}
+	
+	public List<CodeListVo> getOrgList(String userId) {
+		List<CodeListVo> codeList = codeListMapper.getOrgList(userId);
+		return codeList;
+	}
+	
 	/**
 	 * <PRE>
 	 * 1. MethodName : getComboIBSJson

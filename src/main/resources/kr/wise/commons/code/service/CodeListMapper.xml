@@ -1104,5 +1104,21 @@ SELECT A.CD_VAL AS CODE_CD
       ORDER BY ORG_CD
   </select>
   
+  <select id="getUserGroupList" resultMap="BaseResultMap" parameterType="java.lang.String">
+     SELECT ORG_CD AS CODE_CD, 
+     		ORG_NM AS CODE_LNM 
+       FROM waa_org 
+      ORDER BY ORG_CD
+  </select>
+  
+  <select id="getOrgList" resultMap="BaseResultMap" parameterType="java.lang.String">
+     SELECT A.ORG_CD AS CODE_CD, 
+ 			A.ORG_NM AS CODE_LNM 
+	   FROM waa_org A, waa_user_org B
+	   where A.org_cd = B.org_cd 
+	   and B.user_id = #{userId}
+	  ORDER BY A.ORG_CD
+  </select>
+  
 </mapper>
 

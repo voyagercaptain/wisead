@@ -147,4 +147,6 @@ public interface CodeListMapper {
 	
 	List<CodeListVo> getOrgCdList();
 	
+	List<CodeListVo> getOrgList(String userId);
+	
 }

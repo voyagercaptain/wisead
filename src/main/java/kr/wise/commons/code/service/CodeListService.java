@@ -36,5 +36,7 @@ public interface CodeListService {
 	
 //	Map<String, ComboIBSVo> getDmngByStndAsrtIBS(List<CodeListVo> list);
 
-
+	public List<CodeListVo> getUserGroupList(Map userInfo) ;
+	
+	public List<CodeListVo> getOrgList(String userId) ;
 }
