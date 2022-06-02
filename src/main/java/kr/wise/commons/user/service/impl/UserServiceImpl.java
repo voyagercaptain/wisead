@@ -66,6 +66,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<WaaUser> getList(WaaUser search) {
+		
+		LoginVO user = (LoginVO)UserDetailHelper.getAuthenticatedUser();
+		// 2 : 총괄 관리자는 전체 조회
+		if (!"2".equals(user.getUsergId())) {
+			search.setUsergId(user.getUsergId());
+			search.setOrgCd(user.getOrgCd());
+		}
 
 		List<WaaUser> list = mapper.selectList(search);
 //		for(int i=0; i< list.size(); i++){
