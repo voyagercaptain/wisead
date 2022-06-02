@@ -27,6 +27,7 @@ import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.cmm.service.EgovIdGnrService;
 import kr.wise.commons.code.service.CmcdCodeService;
 import kr.wise.commons.code.service.CodeListService;
+import kr.wise.commons.code.service.CodeListVo;
 import kr.wise.commons.damgmt.approve.service.ApproveLineServie;
 import kr.wise.commons.damgmt.approve.service.MstrAprPrcVO;
 import kr.wise.commons.damgmt.approve.service.RequestApproveService;
@@ -81,7 +82,8 @@ public class DbStndTotRqstCtrl {
 	@Inject
 	private CmcdCodeService cmcdCodeService;
 
-
+	@Inject
+	private CodeListService codeListService;
 	
 	private Map<String, Object> codeMap;
 
@@ -182,9 +184,22 @@ public class DbStndTotRqstCtrl {
         model.addAttribute("codeMap",getcodeMap());
         
         model.addAttribute("userDbList", dbStndService.selectUserDbList(((LoginVO)session.getAttribute("loginVO")).getId()));
-        model.addAttribute("userOrgList", dbStndService.selectUserOrgList(((LoginVO)session.getAttribute("loginVO")).getId()));
+        //model.addAttribute("userOrgList", dbStndService.selectUserOrgList(((LoginVO)session.getAttribute("loginVO")).getId()));
         model.addAttribute("userOrg", dbStndService.selectUserOrg(((LoginVO)session.getAttribute("loginVO")).getId()));
         
+        
+        String usergId = ((LoginVO)session.getAttribute("loginVO")).getUsergId();
+        
+        List<CodeListVo> userOrgList = null;
+        
+        if ("2".equals(usergId)) {
+			 userOrgList = codeListService.getCodeList(WiseMetaConfig.CodeListAction.orgCd); 
+		 } 
+		 else {
+			 userOrgList = codeListService.getOrgList(((LoginVO)session.getAttribute("loginVO")).getId()); 
+		} 
+        
+        model.addAttribute("userOrgList", userOrgList);
         
         String strReturn = "";
         if("STWD".equals(screenGb)) {

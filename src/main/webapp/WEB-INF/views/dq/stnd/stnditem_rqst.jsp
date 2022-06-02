@@ -615,7 +615,7 @@ function postProcessIBS(res) {
                                 <select id="orgNm" class="" name="orgNm">
                                 	<option value="">전체</option>
 		 							<c:forEach var="userOrgList" items="${userOrgList}" varStatus="status">
-		 							  <option value="${userOrgList.orgCd}">${userOrgList.orgNm}</option>
+		 							  <option value="${userOrgList.codeCd}">${userOrgList.codeLnm}</option>
 		 							</c:forEach> 
 	 					 		</select>
 	 					 		
