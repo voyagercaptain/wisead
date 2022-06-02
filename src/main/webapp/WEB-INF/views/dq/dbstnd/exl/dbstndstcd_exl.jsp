@@ -90,8 +90,6 @@ function grid_STCD_init() {
 			{Type:"Text",   Width:150,  SaveName:"commCdDesc", 	Align:"Left", Edit:1, Hidden:0, KeyField:1},
 			{Type:"Text",   Width:100,  SaveName:"comnCdDttpNm",   	Align:"Left", Edit:1, KeyField:1}, 
 			{Type:"Int",   Width:80,  SaveName:"comnCdDataLen",	Align:"Left", Edit:1, KeyField:1},
-								
-			
 			
 			{Type:"Text",   Width:100,  SaveName:"commDtlCdNm",	    Align:"Left", Edit:1, Hidden:0, KeyField:1},
 			{Type:"Text",   Width:100,  SaveName:"commDtlCdMn",	    Align:"Left", Edit:1, Hidden:0, KeyField:1},
