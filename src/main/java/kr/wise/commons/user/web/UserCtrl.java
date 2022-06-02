@@ -398,8 +398,21 @@ public class UserCtrl {
 		List<CodeListVo> userglist = codelistService.getCodeList(WiseMetaConfig.CodeListAction.usergroup);
 //		String usergroup2 = UtilJson.convertJsonString(codelistService.getCodeList("usergroup"));
 		String usergroup1 = UtilJson.convertJsonString(codelistService.getCodeListIBS(userglist));
-		List<CodeListVo> userOrgList = codelistService.getCodeList(WiseMetaConfig.CodeListAction.orgCd);
+		
+		
+		
+		 LoginVO loginUserVO = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+		 List<CodeListVo> userOrgList = null;
+		  
+		 if ("2".equals(loginUserVO.getUsergId())) {
+			 userOrgList = codelistService.getCodeList(WiseMetaConfig.CodeListAction.orgCd); 
+		 } 
+		 else {
+			 userOrgList = codelistService.getOrgList(loginUserVO.getId()); 
+		} 
+		//List<CodeListVo> userOrgList = codelistService.getCodeList(WiseMetaConfig.CodeListAction.orgCd);
 		String userorg1 = UtilJson.convertJsonString(codelistService.getCodeListIBS(userOrgList));
+		
 //		codeMap.put("usergroup", usergroup2);
 		codeMap.put("userglist", userglist);
 		codeMap.put("usergp", usergroup1);

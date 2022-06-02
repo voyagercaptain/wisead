@@ -312,16 +312,44 @@ function grid_sheet_OnClick(row, col, value, cellx, celly) {
 	
 }
 
+// 그리드 콤보 변경 이벤트
 function grid_sheet_OnChange(Row, Col, Value, OldValue, RaiseFlag) { 
 
-debugger
 	var usergId = "${sessionScope.loginVO.usergId}";
 	var orgCd = "${sessionScope.loginVO.orgCd}";
 	
+	if (RaiseFlag == 1)
+		return;
+	
+	if ("usergId" == grid_sheet.ColSaveName(Col)) {
+		
+		if ("I" == grid_sheet.GetCellValue(1,"ibsStatus")) {
+			if (usergId == "OBJ_00000034586") {
+				if ("2" == Value) {
+					grid_sheet.SetCellValue(Row, Col, OldValue);
+					alert("사용자 그룹 정보를 변경할 수 없습니다.");
+					return;
+				}
+			}
+		}
+		else {
+			if (usergId == "OBJ_00000034586") {
+				if ("2" == Value || "OBJ_00000034586" == Value) {
+					grid_sheet.SetCellValue(Row, Col, OldValue);
+					alert("사용자 그룹 정보를 변경할 수 없습니다.");
+					return;
+				}
+			}
+		}
+	}
+	
 	// 관리자 체크
 	// 기관 담당자가 관리자의 권한 그룹을 를 변경할 경우
-	if (usergId == 'OBJ_00000034586') {
-		
+	// 2 : 관리자(총괄)
+	// OBJ_00000034586 : 기관담당자
+	// OBJ_00000034587 : DB담당자
+	if (usergId == 'OBJ_00000034586' || usergId == 'OBJ_00000034587') {
+		// 총괄 관리자를 변경하려 하면
 		if ("2" == OldValue) {
 			grid_sheet.SetCellValue(Row, Col, OldValue);
 			alert("관리자의 정보를 변경할 수 없습니다.");
@@ -332,22 +360,26 @@ debugger
 	if ("usergId" == grid_sheet.ColSaveName(Col)) {
 		var usergVal = grid_sheet.GetCellValue(Row, "usergId");
 		
+		// 관리자로 변경하면 관리자 항목이 바로 설정
 		if ("2" == usergVal) {
 			grid_sheet.SetCellValue(Row, "orgCd", "관리자");
 		}
 	}
 	
+	// 로그인 관리자가 권한이 없는데 변경할 경우 알림
 	if ("orgCd" == grid_sheet.ColSaveName(Col)) {
 		var orgText = grid_sheet.GetCellText(Row, "orgCd");
 		
-		if (usergId == 'OBJ_00000034586') {
+		if (usergId == 'OBJ_00000034586' || usergId == 'OBJ_00000034587') {
 			if (orgCd != orgText) {
 				grid_sheet.SetCellValue(Row, "orgCd", OldValue);
 				alert("다른 기관으로 변경할 수 없습니다.");
+				return;
 			}
 		}
 	}
 	
+	// 기관명 관리자는 관리자만 변경 가능
 	if ("orgCd" == grid_sheet.ColSaveName(Col)) {
 		
 		var orgVal = grid_sheet.GetCellValue(Row, "orgCd");
@@ -357,6 +389,7 @@ debugger
 			if ("2" != usergVal) {
 				grid_sheet.SetCellValue(Row, "orgCd", OldValue);
 				alert("관리자가 아니면 관리자 기관명을 선택할 수 없습니다.");
+				return;
 			}
 		}
 	}
