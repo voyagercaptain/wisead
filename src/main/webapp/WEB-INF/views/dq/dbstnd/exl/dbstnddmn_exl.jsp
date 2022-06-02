@@ -41,10 +41,15 @@ function grid_DMN_init() {
 		headtext += "|<s:message code='META.HEADER.STNDDMN.RQST.IFM.5'/>";
 		headtext += "|<s:message code='META.HEADER.STNDDMN.RQST.IFM.4'/>";
 		*/
+		/*
 		var headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과";
 		headtext += "|도메인ID|기관명|DB명|표준도메인명|도메인설명|데이터타입|데이터길이|표준도메인그룹명|도메인분류명|소수점길이|저장형식|표현형식|단위|허용값|관리부서명|행정표준코드명";
 		headtext += "|담당자ID|담당자명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항";
+		*/
 		
+		var headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과";
+		headtext += "|도메인ID|표준도메인그룹명|도메인분류명|도메인명|도메인설명|데이터타입|데이터길이|소수점길이|저장형식|표현형식|단위|허용값|기관명|DB명|관리부서명|행정표준코드명";
+		headtext += "|담당자ID|담당자명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항";
 
 	var headers = [
 				{Text:headtext, Align:"Center"}
@@ -53,7 +58,8 @@ function grid_DMN_init() {
 	var headerInfo = {Sort:1, ColMove:1, ColResize:1, HeaderCheck:1};
 	
 	InitHeaders(headers, headerInfo); 
-
+	
+	/*
 	var cols = [						
 				{Type:"Seq",		Width:50,   SaveName:"ibsSeq",	    Align:"Center", Edit:0},
 				{Type:"Status", 	Width:40,   SaveName:"ibsStatus",   Align:"Center", Edit:0, Hidden:1},
@@ -95,6 +101,57 @@ function grid_DMN_init() {
 				{Type:"Int",        Width:60,   SaveName:"rqstSno",     Align:"Center", Edit:1, Hidden:1},
 				{Type:"Text",   	Width:150,  SaveName:"spclNt",    Align:"Center", Edit:1, Hidden:0}
 			];
+	*/
+	
+	var cols = [						
+		{Type:"Seq",		Width:50,   SaveName:"ibsSeq",	    Align:"Center", Edit:0},
+		{Type:"Status", 	Width:40,   SaveName:"ibsStatus",   Align:"Center", Edit:0, Hidden:1},
+		{Type:"CheckBox", 	Width:45,   SaveName:"ibsCheck",    Align:"Center", Edit:1, Hidden:0, Sort:0},
+		{Type:"Combo",      Width:80,   SaveName:"rvwStsCd",	Align:"Center", Edit:0, Hidden:1},						
+		{Type:"Text",       Width:80,   SaveName:"rvwConts",	Align:"Left", Edit:0, Hidden:1},						
+		{Type:"Combo",      Width:80,   SaveName:"rqstDcd",	    Align:"Center", Edit:0, KeyField:0,Hidden:1},						
+		{Type:"Combo",      Width:80,   SaveName:"regTypCd",	Align:"Center", Edit:0,Hidden:1},						
+		{Type:"Combo",      Width:100,  SaveName:"vrfCd",		Align:"Center", Edit:0,Hidden:1},							
+		
+		{Type:"Text",       Width:10,  SaveName:"dmnId",	 	    Align:"Left", Edit:1, Hidden:1, KeyField:0},
+		
+		{Type:"Text",       Width:100,  SaveName:"dmngLnm",	 	    Align:"Left", Edit:1, Hidden:0, KeyField:1}, //도메인그룹명
+		{Type:"Text",       Width:150,  SaveName:"dmnLnm",   	    Align:"Left", Edit:1, KeyField:1}, //도메인분류명
+		
+		{Type:"Text",       Width:100,  SaveName:"infotpLnm",	 	Align:"Left", Edit:1, Hidden:0, KeyField:1}, //도메인명
+		{Type:"Text",       Width:150,  SaveName:"objDescn",	    Align:"Left", Edit:1, KeyField:1},
+		
+		{Type:"Text",       Width:120,  SaveName:"dataType",	 	Align:"Left", Edit:1, Hidden:0, KeyField:1},
+		{Type:"Int",       Width:100,  SaveName:"dataLen",	 	    Align:"Left", Edit:1, Hidden:0, KeyField:0},
+		
+		
+		
+		
+//			{Type:"Text",       Width:180,  SaveName:"dmnPnm",   	    Align:"Left", Edit:1, KeyField:1, Hidden:0}, 
+		
+		
+		{Type:"Int",       Width:100,  SaveName:"dataScal",	 	Align:"Left", Edit:1, Hidden:0},
+		{Type:"Text",       Width:100,  SaveName:"saveFrm", 	 	Align:"Left", Edit:1, Hidden:0, KeyField:0},
+		{Type:"Text",       Width:100,  SaveName:"exprsnFrm",	 	Align:"Left", Edit:1, Hidden:0},
+		{Type:"Text",       Width:100,  SaveName:"unit",    	 	Align:"Left", Edit:1, Hidden:0},
+		{Type:"Text",       Width:100,  SaveName:"cdVal",   	 	Align:"Left", Edit:1, Hidden:0},
+		
+		{Type:"Text",       Width:100,  SaveName:"orgNm",	 	 Align:"Left", Edit:1, Hidden:0, KeyField:1}, //기관명
+		{Type:"Text",  		Width:100,  SaveName:"dbNm",     		Align:"Left", Edit:1, KeyField:0},
+		{Type:"Text",   	Width:100,  SaveName:"ownrOrg",      Align:"Left", Edit:1, Hidden:0, KeyField:0},  // 소관기관명
+		
+		{Type:"Text",       Width:100,  SaveName:"admnStndCd",	 	Align:"Left", Edit:1, Hidden:1},
+		                    
+		{Type:"Text",       Width:60,   SaveName:"crgUserId",	Align:"Left",   Edit:1, Hidden:1},
+		{Type:"Text",       Width:60,   SaveName:"crgUserNm",	Align:"Left",   Edit:1, Hidden:1},
+		{Type:"Text",       Width:60,   SaveName:"rqstDtm",  	Align:"Center", Edit:1, Format:"yyyyMMdd", KeyField:0},
+		{Type:"Text",       Width:60,   SaveName:"rqstUserId",  Align:"Center", Edit:1, Hidden:1},
+		{Type:"Text",       Width:60,   SaveName:"rqstUserNm",  Align:"Center", Edit:1, Hidden:1}, 
+		{Type:"Text",       Width:60,   SaveName:"rqstNo",      Align:"Center", Edit:1, Hidden:1}, 
+		{Type:"Int",        Width:60,   SaveName:"rqstSno",     Align:"Center", Edit:1, Hidden:1},
+		{Type:"Text",   	Width:150,  SaveName:"spclNt",    Align:"Center", Edit:1, Hidden:0}
+	];
+	
 				
 	InitColumns(cols);
 	

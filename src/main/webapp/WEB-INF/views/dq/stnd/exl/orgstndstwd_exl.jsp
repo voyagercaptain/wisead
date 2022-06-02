@@ -42,7 +42,7 @@ function grid_STWD_init() {
  		*/
 		//No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|STWDID|기관명|DB명|표준단어명|영문약어명|단어영문명|단어설명|형식단어여부|도메인분류명|이음동의어목록|금칙어목록|등록일자|요청자ID|요청자명|요청번호|요청일련번호
 		
- 		var headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|STWDID|기관명|표준단어명|영문명|영문약어명|단어설명|형식단어여부|도메인분류명|이음동의어목록|금칙어목록|관리부서명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항";
+ 		var headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|STWDID|표준단어명|단어영문명|단어영문약어명|단어설명|형식단어여부|도메인분류명|이음동의어목록|금칙어목록|기관명|관리부서명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항";
 		
 		var headers = [
 					{Text:headtext, Align:"Center"}
@@ -63,7 +63,7 @@ function grid_STWD_init() {
 					{Type:"Combo",  Width:120,  SaveName:"vrfCd",		Align:"Center", Edit:0, Hidden:1},
 					
 					{Type:"Text",   Width:150,  SaveName:"stwdId",   	Align:"Left", Edit:0, KeyField:0, Hidden:1},
-					{Type:"Text",   Width:100,  SaveName:"orgNm",   	Align:"Left", Edit:1, KeyField:1},
+					
 					{Type:"Text",   Width:100,  SaveName:"stwdLnm",   	Align:"Left", Edit:1, KeyField:1},
 					{Type:"Text",   Width:150,  SaveName:"engMean", 	Align:"Left", Edit:1, Hidden:0, KeyField:1},
 					{Type:"Text",   Width:100,  SaveName:"stwdPnm",   	Align:"Left", Edit:1, KeyField:1}, 
@@ -72,9 +72,10 @@ function grid_STWD_init() {
 					{Type:"Text",   Width:100,  SaveName:"dmnLnm",	 	Align:"Left", Edit:1, Hidden:0},
 					{Type:"Text",   Width:100,  SaveName:"symnLnm",	    Align:"Left", Edit:1, Hidden:0},
 					{Type:"Text",   Width:100,  SaveName:"fbdnLnm",	    Align:"Left", Edit:1, Hidden:0},
+					{Type:"Text",   Width:100,  SaveName:"orgNm",   	Align:"Left", Edit:1, KeyField:1},
 					
-					{Type:"Text",   Width:100,  SaveName:"ownrOrg",      Align:"Left", Edit:1, Hidden:0, KeyField:1},  // 소관기관명
-					{Type:"Text",   Width:80,  SaveName:"rqstDtm",  	Align:"Center", Edit:1, Format:"yyyyMMdd", KeyField:1},
+					{Type:"Text",   Width:100,  SaveName:"ownrOrg",      Align:"Left", Edit:1, Hidden:0, KeyField:0},  // 소관기관명
+					{Type:"Text",   Width:80,  SaveName:"rqstDtm",  	Align:"Center", Edit:1, Format:"yyyyMMdd", KeyField:0},
 					{Type:"Text",   Width:60,  SaveName:"rqstUserId",   Align:"Center", Edit:0, Hidden:0},
 					{Type:"Text",   Width:60,  SaveName:"rqstUserNm",   Align:"Center", Edit:0, Hidden:1},
 					{Type:"Text",   Width:60,  SaveName:"rqstNo",       Align:"Center", Edit:0, Hidden:1}, 
