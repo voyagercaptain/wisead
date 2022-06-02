@@ -104,7 +104,7 @@
   	<where>
        AND A.REG_TYP_CD IN ('C', 'U')
       <if test='!"2".equals(usergId)' >
-  	   AND DB_NM IN (SELECT DB_NAME FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})	
+  	   AND REPLACE(DB_NM, ' ', '') IN (SELECT REPLACE(DB_NAME, ' ', '') AS DB_NAME FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})	
   	   AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
   	  </if> 
       <if test="dmnLnm != null" >
@@ -224,7 +224,7 @@
         	 )
       </if>
      <if test="dbNm != null" >
-        AND DB_NM LIKE CONCAT('%',#{dbNm,jdbcType=VARCHAR},'%')
+        AND REPLACE(DB_NM, ' ', '') LIKE CONCAT('%',REPLACE(#{dbNm,jdbcType=VARCHAR}, ' ', ''),'%')
       </if>
   	</where>
   	ORDER BY DMN_LNM

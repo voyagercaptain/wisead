@@ -531,7 +531,7 @@ SELECT *
 		FROM WAM_DB_SDITM A
 		WHERE  1 = 1 
 		 <if test='!"2".equals(usergId)' >
-		 AND DB_NM IN (SELECT DB_NAME FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})     
+		 AND replace(DB_NM, ' ','') IN (SELECT replace(DB_NAME, ' ','') AS DB_NAME FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})     
 		 AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
 		 </if>       
            ) FSQ -- 임시 Alias
@@ -628,7 +628,8 @@ SELECT *
         	 )
       </if>
        <if test="dbNm != null" >
-        AND DB_NM LIKE CONCAT('%',#{dbNm,jdbcType=VARCHAR},'%')
+        AND replace(DB_NM, ' ','') LIKE CONCAT('%',replace(#{dbNm,jdbcType=VARCHAR}, ' ',''),'%') 
+        
       </if>
     </trim>
   </where>
