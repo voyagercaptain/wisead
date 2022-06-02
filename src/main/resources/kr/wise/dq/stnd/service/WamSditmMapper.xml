@@ -530,7 +530,10 @@ SELECT *
       		 , PNM
       		 
 		FROM WAM_SDITM A 
-		WHERE ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
+		WHERE 1 = 1
+		  <if test='!"2".equals(usergId)' >	 
+		  	AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
+		  </if>
 		
 <!-- 	    LEFT OUTER JOIN WAM_DMN B -->
 <!-- 	       ON A.DMN_ID = B.DMN_ID  -->

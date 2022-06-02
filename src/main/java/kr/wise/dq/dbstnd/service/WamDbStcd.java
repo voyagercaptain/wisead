@@ -26,8 +26,14 @@ public class WamDbStcd extends CommonVo  {
     
     private String stndNm;
     
-       
+    private String usergId;
     
+	public String getUsergId() {
+		return usergId;
+	}
+	public void setUsergId(String usergId) {
+		this.usergId = usergId;
+	}
 	public String getCommDtlCdMn() {
 		return commDtlCdMn;
 	}

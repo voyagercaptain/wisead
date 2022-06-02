@@ -84,9 +84,18 @@ public class WamDbSditm extends CommonVo {
     private String orgCd;
     private String orgNm;
     
+    private String usergId;
     
-    
-    public String getOrgCd() {
+        
+    public String getUsergId() {
+		return usergId;
+	}
+
+	public void setUsergId(String usergId) {
+		this.usergId = usergId;
+	}
+
+	public String getOrgCd() {
 		return orgCd;
 	}
 

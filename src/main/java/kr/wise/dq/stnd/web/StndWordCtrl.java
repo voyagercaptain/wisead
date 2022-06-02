@@ -106,6 +106,7 @@ public class StndWordCtrl {
 		logger.debug("reqvo:{}", data);
 		
 		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
+		data.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
 
 		List<WamStwd> list = stndWordService.getStndWordList(data);
 
@@ -124,6 +125,7 @@ public class StndWordCtrl {
 		logger.debug("reqvo:{}", data);
 		
 		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
+		data.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
 
 		List<WamStwd> list = stndCommWordService.getStndWordList(data);
 

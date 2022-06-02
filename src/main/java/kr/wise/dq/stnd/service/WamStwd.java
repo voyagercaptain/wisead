@@ -103,10 +103,19 @@ public class WamStwd extends CommonVo  {
     
     private String userId;
     
+    private String usergId;
     
     
 
-    public String getOrd() {
+    public String getUsergId() {
+		return usergId;
+	}
+
+	public void setUsergId(String usergId) {
+		this.usergId = usergId;
+	}
+
+	public String getOrd() {
 		return ord;
 	}
 

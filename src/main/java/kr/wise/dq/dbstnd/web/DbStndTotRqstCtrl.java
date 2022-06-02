@@ -262,6 +262,7 @@ public class DbStndTotRqstCtrl {
 		logger.debug("req vo:{}", data);
 		
 		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
+		data.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
 
 		List<WamDbSditm> list = dbStndService.getStndItemList(data);
 
@@ -280,7 +281,8 @@ public class DbStndTotRqstCtrl {
 		logger.debug("reqvo:{}", data);
 		
 		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
-
+		data.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
+		
 		List<WamDbDmn> list = dbStndService.getDomainList(data);
 
 //		ibsJson.MESSAGE = message.getMessage("MSG.SAVE", null, locale);
@@ -297,6 +299,7 @@ public class DbStndTotRqstCtrl {
 		logger.debug("reqvo:{}", data);
 		
 		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
+		data.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
 		
 		List<WamDbStcd> list = null;
 		try {
@@ -318,6 +321,7 @@ public class DbStndTotRqstCtrl {
 
 		logger.debug("reqvo:{}", data);
 		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
+		data.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
 		
 		List<WamDbStcd> list = null;
 		try {
@@ -338,6 +342,7 @@ public class DbStndTotRqstCtrl {
 		logger.debug("reqvo:{}", data);
 		
 		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
+		data.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
 
 		List<WamDbStwd> list = dbStndService.getStndWordList(data);
 

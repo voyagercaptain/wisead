@@ -102,6 +102,9 @@ public class StndDomainCtrl {
 		logger.debug("reqvo:{}", data);
 		
 		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
+		data.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
+		
+		logger.debug("data:{}", data);
 
 		List<WamDmn> list = stndDomainService.getDomainList(data);
 

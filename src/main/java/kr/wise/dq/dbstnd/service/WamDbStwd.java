@@ -98,10 +98,18 @@ public class WamDbStwd extends CommonVo  {
     
     private String spclNt;
     
-    
+    private String usergId;
     
 
-    public String getOwnrOrg() {
+    public String getUsergId() {
+		return usergId;
+	}
+
+	public void setUsergId(String usergId) {
+		this.usergId = usergId;
+	}
+
+	public String getOwnrOrg() {
 		return ownrOrg;
 	}
 

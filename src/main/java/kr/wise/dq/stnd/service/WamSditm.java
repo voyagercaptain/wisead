@@ -80,10 +80,18 @@ public class WamSditm extends CommonVo {
     private String pnm;
     
     private String userId;
+    private String usergId;
+       
     
-    
-    
-    public String getUserId() {
+    public String getUsergId() {
+		return usergId;
+	}
+
+	public void setUsergId(String usergId) {
+		this.usergId = usergId;
+	}
+
+	public String getUserId() {
 		return userId;
 	}
 

@@ -75,6 +75,7 @@ public class StndSditmCtrl {
 		logger.debug("req vo:{}", data);
 		
 		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
+		data.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
 
 		List<WamSditm> list = stndSditmService.getStndItemList(data);
 
@@ -92,6 +93,7 @@ public class StndSditmCtrl {
 		logger.debug("req vo:{}", data);
 		
 		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
+		data.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
 
 		List<WamSditm> list = stndCommSditmService.getStndItemList(data);
 
