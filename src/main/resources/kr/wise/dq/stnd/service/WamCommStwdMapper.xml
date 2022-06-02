@@ -78,7 +78,9 @@
         AND (STWD_LNM LIKE CONCAT('%' , #{stwdLnm,jdbcType=VARCHAR} , '%')
         	 OR STWD_PNM LIKE CONCAT('%' , #{stwdLnm,jdbcType=VARCHAR} , '%')
         	 OR STWD_LNM LIKE CONCAT('%' , UPPER(#{stwdLnm,jdbcType=VARCHAR}) , '%')
-        	 OR STWD_PNM LIKE CONCAT('%' , UPPER(#{stwdLnm,jdbcType=VARCHAR}) , '%'))
+        	 OR STWD_PNM LIKE CONCAT('%' , UPPER(#{stwdLnm,jdbcType=VARCHAR}) , '%')
+        	 OR ENG_MEAN LIKE CONCAT('%' , #{stwdLnm,jdbcType=VARCHAR} , '%')
+        	 OR ENG_MEAN LIKE CONCAT('%' , UPPER(#{stwdLnm,jdbcType=VARCHAR}) , '%'))
       </if>
       <if test="stwdId != null" >
         AND STWD_ID = #{stwdId,jdbcType=VARCHAR}
