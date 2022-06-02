@@ -51,6 +51,7 @@
     <result column="SPCL_NT"          property="spclNt"        jdbcType="VARCHAR" />
     <result column="BSNSS_FLD"        property="bsnssFld"      jdbcType="VARCHAR" />
     <result column="PNM"        property="pnm"      jdbcType="VARCHAR" />
+    <result column="SEQ"        property="seq"      jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     SDITM_ID, SDITM_LNM, SDITM_PNM, LNM_CRI_DS, DMN_ID, DMNG_ID, INFOTP_ID, INFOTP_CHG_YN, 
@@ -59,7 +60,7 @@
     ,INFOTP_LNM,
 <!--     BZWK_FLD -->
     ,ALW_VAL,OWNR_ORG,ADMN_STND_CD,SAVE_FRM,EXPRSN_FRM,UNIT
-    , PNM,  STND_CD, SPCL_NT, BSNSS_FLD 
+    , PNM,  STND_CD, SPCL_NT, BSNSS_FLD, SEQ  
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
 SELECT * 
@@ -92,7 +93,7 @@ SELECT *
       OBJ_VERS, REG_TYP_CD, FRS_RQST_DTM, 
       FRS_RQST_USER_ID, RQST_DTM, RQST_USER_ID, 
       APRV_DTM, APRV_USER_ID, PERS_INFO_YN,
-      STND_CD, SPCL_NT, BSNSS_FLD, PNM)
+      STND_CD, SPCL_NT, BSNSS_FLD, PNM, SEQ)
     values (#{sditmId,jdbcType=VARCHAR}, #{sditmLnm,jdbcType=VARCHAR}, #{sditmPnm,jdbcType=VARCHAR}, 
       #{lnmCriDs,jdbcType=VARCHAR}, #{dmnId,jdbcType=VARCHAR}, #{dmngId,jdbcType=VARCHAR}, 
       #{infotpId,jdbcType=VARCHAR}, #{infotpChgYn,jdbcType=VARCHAR}, #{encYn,jdbcType=VARCHAR}, 
@@ -100,7 +101,7 @@ SELECT *
       #{objVers,jdbcType=DECIMAL}, #{regTypCd,jdbcType=VARCHAR}, #{frsRqstDtm,jdbcType=TIMESTAMP}, 
       #{frsRqstUserId,jdbcType=VARCHAR}, #{rqstDtm,jdbcType=TIMESTAMP}, #{rqstUserId,jdbcType=VARCHAR}, 
       #{aprvDtm,jdbcType=TIMESTAMP}, #{aprvUserId,jdbcType=VARCHAR}, #{persInfoYn,jdbcType=VARCHAR},
-      #{stndCd,jdbcType=VARCHAR}, #{spclNt,jdbcType=VARCHAR}, #{bsnssFld,jdbcType=VARCHAR}, #{pnm,jdbcType=VARCHAR})
+      #{stndCd,jdbcType=VARCHAR}, #{spclNt,jdbcType=VARCHAR}, #{bsnssFld,jdbcType=VARCHAR}, #{pnm,jdbcType=VARCHAR},  #{seq,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="kr.wise.dq.stnd.service.WamSditm" >
     insert into COMM_SDITM
@@ -217,6 +218,9 @@ SELECT *
       <if test="pnm != null" >
       PNM,
       </if>
+       <if test="seq != null" >
+       SEQ,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="sditmId != null" >
@@ -332,6 +336,9 @@ SELECT *
       <if test="pnm != null" >
       	#{pnm,jdbcType=VARCHAR},
       </if>
+       <if test="seq != null" >
+        #{seq,jdbcType=DECIMAL},
+      </if>
       
     </trim>
   </insert>
@@ -432,7 +439,6 @@ SELECT *
         ORG_NM = #{orgNm,jdbcType=DECIMAL},
       </if>
       
-      
        <if test="stndCd != null" >
       STND_CD = #{stndCd,jdbcType=VARCHAR},
       </if>
@@ -443,7 +449,10 @@ SELECT *
       BSNSS_FLD = #{bsnssFld,jdbcType=VARCHAR},
       </if>
       <if test="pnm != null" >
-      PNM = #{pnm,jdbcType=VARCHAR}
+      PNM = #{pnm,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+      SEQ = #{seq,jdbcType=DECIMAL},
       </if>
       
     </set>
@@ -475,7 +484,8 @@ SELECT *
       STND_CD = #{stndCd,jdbcType=VARCHAR},
       SPCL_NT = #{spclNt,jdbcType=VARCHAR},
       BSNSS_FLD = #{bsnssFld,jdbcType=VARCHAR},
-      PNM  = #{pnm,jdbcType=VARCHAR}
+      PNM  = #{pnm,jdbcType=VARCHAR},
+      SEQ = #{seq,jdbcType=DECIMAL}
       
     where SDITM_ID = #{sditmId,jdbcType=VARCHAR}
   </update>
@@ -527,7 +537,7 @@ SELECT *
       		 , SPCL_NT
       		 , BSNSS_FLD
       		 , PNM
-      		 
+      		 , SEQ 
 		FROM COMM_SDITM A 
 <!-- 	    LEFT OUTER JOIN WAM_DMN B -->
 <!-- 	       ON A.DMN_ID = B.DMN_ID  -->

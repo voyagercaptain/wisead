@@ -528,7 +528,7 @@ SELECT *
       		 , SPCL_NT
       		 , BSNSS_FLD
       		 , PNM
-      		 
+      		  
 		FROM WAM_SDITM A 
 		WHERE 1 = 1
 		  <if test='!"2".equals(usergId)' >	 

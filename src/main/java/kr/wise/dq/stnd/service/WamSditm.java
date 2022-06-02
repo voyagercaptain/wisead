@@ -81,9 +81,19 @@ public class WamSditm extends CommonVo {
     
     private String userId;
     private String usergId;
-       
     
-    public String getUsergId() {
+    private Integer seq;
+      
+    
+    public Integer getSeq() {
+		return seq;
+	}
+
+	public void setSeq(Integer seq) {
+		this.seq = seq;
+	}
+
+	public String getUsergId() {
 		return usergId;
 	}
 

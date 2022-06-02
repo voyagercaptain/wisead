@@ -12,6 +12,7 @@
     <result column="PCLR_MTR" property="pclrMtr" jdbcType="VARCHAR" />
     <result column="UPP_COMM_CD_ID" property="uppCommCdId" jdbcType="VARCHAR" />
     <result column="COMM_DTL_CD_NM" property="commDtlCdNm" jdbcType="VARCHAR" />
+    <result column="COMM_DTL_CD_MN" property="commDtlCdMn" jdbcType="VARCHAR" />
     <result column="COMM_DTL_CD_DESC" property="commDtlCdDesc" jdbcType="VARCHAR" />
     <result column="USE_YN" property="useYn" jdbcType="VARCHAR" />
     <result column="ORG_NM" property="orgNm" jdbcType="VARCHAR" />
