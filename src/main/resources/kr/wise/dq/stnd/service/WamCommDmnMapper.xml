@@ -224,7 +224,7 @@
       </if>
       
   	</where>
-  	ORDER BY DMN_LNM
+  	ORDER BY SEQ
   </select>
   <select id="selectListSLC" resultMap="BaseResultMap" parameterType="kr.wise.dq.stnd.service.WamDmn" >
   	SELECT A.*
@@ -349,7 +349,7 @@
         AND A.DMN_DSCD = #{dmnDscd,jdbcType=VARCHAR}
       </if>
   	</where>
-  	ORDER BY DMN_LNM
+  	ORDER BY SEQ
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from COMM_DMN

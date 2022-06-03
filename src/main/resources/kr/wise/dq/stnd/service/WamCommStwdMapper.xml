@@ -147,7 +147,7 @@
         	 OR STWD_PNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
       </if>
   	</where>
-  	ORDER BY STWD_LNM
+  	ORDER BY SEQ 
   </select>
   <select id="selectStndList" resultMap="BaseResultMap" parameterType="kr.wise.dq.stnd.service.WamStwd" >
   	SELECT 1 AS NO
