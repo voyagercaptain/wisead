@@ -192,7 +192,7 @@ public class DbStndTotRqstCtrl {
         
         List<CodeListVo> userOrgList = null;
         
-        if ("2".equals(usergId) || "OBJ_00000186517".equals(usergId)) {
+        if ("2".equals(usergId) || "3".equals(usergId)) {
 			 userOrgList = codeListService.getCodeList(WiseMetaConfig.CodeListAction.orgCd); 
 		 } 
 		 else {
