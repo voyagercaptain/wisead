@@ -200,7 +200,7 @@ public class StndTotRqstCtrl {
         
         List<CodeListVo> userOrgList = null;
         
-        if ("2".equals(usergId)) {
+        if ("2".equals(usergId) || "OBJ_00000186517".equals(usergId)) {
 			 userOrgList = codeListService.getCodeList(WiseMetaConfig.CodeListAction.orgCd); 
 		 } 
 		 else {

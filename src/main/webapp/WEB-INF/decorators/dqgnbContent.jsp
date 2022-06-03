@@ -398,7 +398,7 @@ function setlocationmenu(topmenuid, uppmenuid) {
 		<li id="btnLogout"><a class="logout"><s:message
 					code="LOG.OUT" /></a></li>
 		<!-- 로그아웃 -->
-		<li style="display: none;" id="btnInfoChg"><a class="pass"><s:message
+		<li style="display;" id="btnInfoChg"><a class="pass"><s:message
 					code="PWD.CHG" /></a></li>
 		<!-- 비밀번호변경 -->
 		<c:if test="${rqstcntYn == 'Y' }">
