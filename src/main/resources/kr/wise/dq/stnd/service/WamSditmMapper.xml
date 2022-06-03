@@ -531,7 +531,7 @@ SELECT *
       		  
 		FROM WAM_SDITM A 
 		WHERE 1 = 1
-		  <if test='!"2".equals(usergId)' >	 
+		  <if test='!"2".equals(usergId) and !"3".equals(usergId)' >	 
 		  	AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
 		  </if>
 		

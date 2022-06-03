@@ -72,7 +72,7 @@
     	   (SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.APRV_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS APRV_USER_NM 
    	FROM WAM_STWD A
    	WHERE 1 = 1
-   	 <if test='!"2".equals(usergId)' >
+   	 <if test='!"2".equals(usergId) and !"3".equals(usergId)' >
    	 	AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
    	 </if>
    	) FSQ -- 임시 Alias
