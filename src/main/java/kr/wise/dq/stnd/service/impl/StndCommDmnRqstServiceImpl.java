@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -1184,7 +1185,7 @@ public class StndCommDmnRqstServiceImpl implements StndCommDmnRqstService {
 //		String rqstNo = mstVo.getRqstNo();
 
 		int result = 0;
-
+		
 		if(reglist != null) {
 			for (WamDmn saveVo : (ArrayList<WamDmn>)reglist) {
 				
@@ -1192,9 +1193,44 @@ public class StndCommDmnRqstServiceImpl implements StndCommDmnRqstService {
 				saveVo.setFrsRqstUserId(userid);
 				saveVo.setRqstUserId(userid);
 				saveVo.setRqstNo("REQ_01");
+				
+				String tmpstatus = saveVo.getIbsStatus();
+				
+				if ("I".equals(tmpstatus)) {
+					//신규 등록 : 나중에 적재를 위해 미리 오브젝트 ID를 셋팅한다...
+					String objid = objectIdGnrService.getNextStringId();
+					saveVo.setDmnId(objid);
+					saveVo.setRegTypCd("C");
+					//result = wammapper.insertSelective(saveVo);
+
+				} else if ("U".equals(tmpstatus)){
+					//업데이트
+					saveVo.setRegTypCd("U");
+					//result = wammapper.updateByPrimaryKeySelective(saveVo);
+				} else if ("D".equals(tmpstatus)) {
+					//요청내용 삭제...
+					//result = wammapper.deleteByPrimaryKey(saveVo.getDmnId());
+
+				}
+				
 				//단건 저장...
-				result += saveWamStndDmn(saveVo);
+				//result += saveWamStndDmn(saveVo);
 			}
+			
+			List<WamDmn> insertList = reglist.stream()
+										.filter(e -> e.getIbsStatus().equals("I"))
+										.collect(Collectors.toList());
+			
+			wammapper.insertSelective(insertList);
+			
+			List<WamDmn> updateList = reglist.stream()
+										.filter(e -> e.getIbsStatus().equals("U"))
+										.collect(Collectors.toList());
+			
+			List<WamDmn> deleteList = reglist.stream()
+										.filter(e -> e.getIbsStatus().equals("D"))
+										.collect(Collectors.toList());
+			
 		}
 
 //		mstVo.setRqstStepCd("S"); //임시저장 상태로 변경....
@@ -1219,7 +1255,7 @@ public class StndCommDmnRqstServiceImpl implements StndCommDmnRqstService {
 			String objid = objectIdGnrService.getNextStringId();
 			saveVo.setDmnId(objid);
 			saveVo.setRegTypCd("C");
-			result = wammapper.insertSelective(saveVo);
+			//result = wammapper.insertSelective(saveVo);
 
 		} else if ("U".equals(tmpstatus)){
 			//업데이트
@@ -1227,10 +1263,10 @@ public class StndCommDmnRqstServiceImpl implements StndCommDmnRqstService {
 			String userid = user.getUniqId();
 			saveVo.setRqstUserId(userid);
 			saveVo.setRegTypCd("U");
-			result = wammapper.updateByPrimaryKeySelective(saveVo);
+			//result = wammapper.updateByPrimaryKeySelective(saveVo);
 		} else if ("D".equals(tmpstatus)) {
 			//요청내용 삭제...
-			result = wammapper.deleteByPrimaryKey(saveVo.getDmnId());
+			//result = wammapper.deleteByPrimaryKey(saveVo.getDmnId());
 
 		}
 

@@ -377,271 +377,103 @@
       #{dmnDscd,jdbcType=VARCHAR}, #{ownrOrg,jdbcType=VARCHAR}, #{spclNt,jdbcType=VARCHAR}, #{ord,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="kr.wise.dq.stnd.service.WamDmn" >
+  
+   <insert id="insertSelective" parameterType="java.util.List">
     insert into COMM_DMN
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="dmnId != null" >
+	(
         DMN_ID,
-      </if>
-      <if test="dmnLnm != null" >
         DMN_LNM,
-      </if>
-      <if test="dmnPnm != null" >
         DMN_PNM,
-      </if>
-      <if test="dmngId != null" >
         DMNG_ID,
-      </if>
-      <if test="infotpId != null" >
         INFOTP_ID,
-      </if>
-      <if test="uppDmnId != null" >
         UPP_DMN_ID,
-      </if>
-      <if test="subjId != null" >
         SUBJ_ID,
-      </if>
-      <if test="lstEntyId != null" >
         LST_ENTY_ID,
-      </if>
-      <if test="lstEntyPnm != null" >
         LST_ENTY_PNM,
-      </if>
-      <if test="lstEntyLnm != null" >
         LST_ENTY_LNM,
-      </if>
-      <if test="cdValTypCd != null" >
         CD_VAL_TYP_CD,
-      </if>
-      <if test="cdValIvwCd != null" >
         CD_VAL_IVW_CD,
-      </if>
-      <if test="sditmAutoCrtYn != null" >
         SDITM_AUTO_CRT_YN,
-      </if>
-      <if test="dataFrm != null" >
         DATA_FRM,
-      </if>
-      <if test="crgUserId != null" >
         CRG_USER_ID,
-      </if>
-      <if test="dmnOrgDs != null" >
         DMN_ORG_DS,
-      </if>
-      <if test="rqstNo != null" >
         RQST_NO,
-      </if>
-      <if test="rqstSno != null" >
         RQST_SNO,
-      </if>
-      <if test="objDescn != null" >
         OBJ_DESCN,
-      </if>
-      <if test="objVers != null" >
         OBJ_VERS,
-      </if>
-      <if test="regTypCd != null" >
         REG_TYP_CD,
-      </if>
-      <if test="frsRqstDtm != null" >
         FRS_RQST_DTM,
-      </if>
-      <if test="frsRqstUserId != null" >
         FRS_RQST_USER_ID,
-      </if>
-      <if test="rqstDtm != null" >
         RQST_DTM,
-      </if>
-      <if test="rqstUserId != null" >
         RQST_USER_ID,
-      </if>
-      <if test="aprvDtm != null" >
         APRV_DTM,
-      </if>
-      <if test="aprvUserId != null" >
         APRV_USER_ID,
-      </if>
-      <if test="encYn != null" >
         ENC_YN,
-      </if>
-         <if test="dmnDscd != null" >
         DMN_DSCD,
-      </if>
-      <if test="saveFrm != null" >
         SAVE_FRM,
-      </if>
-      <if test="exprsnFrm != null" >
         EXPRSN_FRM,
-      </if>
-      <if test="unit != null" >
         UNIT,
-      </if>
-      <if test="cdVal != null" >
         CD_VAL,
-      </if>
-      <if test="admnStndCd != null" >
         ADMN_STND_CD,
-      </if>
-      <if test="dmngLnm != null" >
         DMNG_LNM,
-      </if>
-      <if test="infotpLnm != null" >
         INFOTP_LNM,
-      </if>
-      <if test="dataType != null" >
         DATA_TYPE,
-      </if>
-      <if test="dataLen != null" >
         DATA_LEN,
-      </if>
-      <if test="dataScal != null" >
         DATA_SCAL,
-      </if>
-      <if test="orgNm != null" >
         ORG_NM,
-      </if>
-       <if test="ownrOrg != null" >
         OWNR_ORG,
-      </if>
-      <if test="spclNt != null" >
         SPCL_NT,
-      </if>
-      <if test="ord != null" >
-        ORD,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="dmnId != null" >
-        #{dmnId,jdbcType=VARCHAR},
-      </if>
-      <if test="dmnLnm != null" >
-        #{dmnLnm,jdbcType=VARCHAR},
-      </if>
-      <if test="dmnPnm != null" >
-        #{dmnPnm,jdbcType=VARCHAR},
-      </if>
-      <if test="dmngId != null" >
-        #{dmngId,jdbcType=VARCHAR},
-      </if>
-      <if test="infotpId != null" >
-        #{infotpId,jdbcType=VARCHAR},
-      </if>
-      <if test="uppDmnId != null" >
-        #{uppDmnId,jdbcType=VARCHAR},
-      </if>
-      <if test="subjId != null" >
-        #{subjId,jdbcType=VARCHAR},
-      </if>
-      <if test="lstEntyId != null" >
-        #{lstEntyId,jdbcType=VARCHAR},
-      </if>
-      <if test="lstEntyPnm != null" >
-        #{lstEntyPnm,jdbcType=VARCHAR},
-      </if>
-      <if test="lstEntyLnm != null" >
-        #{lstEntyLnm,jdbcType=VARCHAR},
-      </if>
-      <if test="cdValTypCd != null" >
-        #{cdValTypCd,jdbcType=VARCHAR},
-      </if>
-      <if test="cdValIvwCd != null" >
-        #{cdValIvwCd,jdbcType=VARCHAR},
-      </if>
-      <if test="sditmAutoCrtYn != null" >
-        #{sditmAutoCrtYn,jdbcType=VARCHAR},
-      </if>
-      <if test="dataFrm != null" >
-        #{dataFrm,jdbcType=VARCHAR},
-      </if>
-      <if test="crgUserId != null" >
-        #{crgUserId,jdbcType=VARCHAR},
-      </if>
-      <if test="dmnOrgDs != null" >
-        #{dmnOrgDs,jdbcType=VARCHAR},
-      </if>
-      <if test="rqstNo != null" >
-        #{rqstNo,jdbcType=VARCHAR},
-      </if>
-      <if test="rqstSno != null" >
-        #{rqstSno,jdbcType=DECIMAL},
-      </if>
-      <if test="objDescn != null" >
-        #{objDescn,jdbcType=VARCHAR},
-      </if>
-      <if test="objVers != null" >
-        #{objVers,jdbcType=DECIMAL},
-      </if>
-      <if test="regTypCd != null" >
-        #{regTypCd,jdbcType=VARCHAR},
-      </if>
-      <if test="frsRqstDtm != null" >
-        #{frsRqstDtm,jdbcType=DATE},
-      </if>
-      <if test="frsRqstUserId != null" >
-        #{frsRqstUserId,jdbcType=VARCHAR},
-      </if>
-      <if test="rqstDtm != null" >
-        #{rqstDtm,jdbcType=DATE},
-      </if>
-      <if test="rqstUserId != null" >
-        #{rqstUserId,jdbcType=VARCHAR},
-      </if>
-      <if test="aprvDtm != null" >
-        #{aprvDtm,jdbcType=DATE},
-      </if>
-      <if test="aprvUserId != null" >
-        #{aprvUserId,jdbcType=VARCHAR},
-      </if>
-        <if test="encYn != null" >
-        #{encYn,jdbcType=VARCHAR},
-      </if>
-         <if test="dmnDscd != null" >
-         #{dmnDscd,jdbcType=VARCHAR},
-      </if>
-      <if test="saveFrm != null" >
-        #{saveFrm,jdbcType=VARCHAR},
-      </if>
-      <if test="exprsnFrm != null" >
-        #{exprsnFrm,jdbcType=VARCHAR},
-      </if>
-      <if test="unit != null" >
-        #{unit,jdbcType=VARCHAR},
-      </if>
-      <if test="cdVal != null" >
-        #{cdVal,jdbcType=VARCHAR},
-      </if>
-      <if test="admnStndCd != null" >
-        #{admnStndCd,jdbcType=VARCHAR},
-      </if>
-      <if test="dmngLnm != null" >
-          #{dmngLnm,jdbcType=VARCHAR},
-      </if>
-      <if test="infotpLnm != null" >
-         #{infotpLnm,jdbcType=VARCHAR},
-      </if>
-       <if test="dataType != null" >
-        UPPER(#{dataType,jdbcType=VARCHAR}),
-      </if>
-      <if test="dataLen != null" >
-        #{dataLen,jdbcType=DECIMAL},
-      </if>
-      <if test="dataScal != null" >
-        #{dataScal,jdbcType=DECIMAL},
-      </if>
-       <if test="orgNm != null" >
-        #{orgNm,jdbcType=VARCHAR},
-      </if>
-       <if test="ownrOrg != null" >
-         #{ownrOrg,jdbcType=VARCHAR},
-      </if>
-      <if test="spclNt != null" >
-         #{spclNt,jdbcType=VARCHAR},
-      </if>
-       <if test="ord != null" >
-         #{ord,jdbcType=VARCHAR},
-      </if>
-    </trim>
+        ORD
+	)
+	<foreach item="item" collection="list"  separator=",">
+	(
+        #{item.dmnId,jdbcType=VARCHAR},
+        #{item.dmnLnm,jdbcType=VARCHAR},
+        #{item.dmnPnm,jdbcType=VARCHAR},
+        #{item.dmngId,jdbcType=VARCHAR},
+        #{item.infotpId,jdbcType=VARCHAR},
+        #{item.uppDmnId,jdbcType=VARCHAR},
+        #{item.subjId,jdbcType=VARCHAR},
+        #{item.lstEntyId,jdbcType=VARCHAR},
+        #{item.lstEntyPnm,jdbcType=VARCHAR},
+        #{item.lstEntyLnm,jdbcType=VARCHAR},
+        #{item.cdValTypCd,jdbcType=VARCHAR},
+        #{item.cdValIvwCd,jdbcType=VARCHAR},
+        #{item.sditmAutoCrtYn,jdbcType=VARCHAR},
+        #{item.dataFrm,jdbcType=VARCHAR},
+        #{item.crgUserId,jdbcType=VARCHAR},
+        #{item.dmnOrgDs,jdbcType=VARCHAR},
+        #{item.rqstNo,jdbcType=VARCHAR},
+        #{item.rqstSno,jdbcType=DECIMAL},
+        #{item.objDescn,jdbcType=VARCHAR},
+        #{item.objVers,jdbcType=DECIMAL},
+        #{item.regTypCd,jdbcType=VARCHAR},
+        #{item.frsRqstDtm,jdbcType=DATE},
+        #{item.frsRqstUserId,jdbcType=VARCHAR},
+        #{item.rqstDtm,jdbcType=DATE},
+        #{item.rqstUserId,jdbcType=VARCHAR},
+        #{item.aprvDtm,jdbcType=DATE},
+        #{item.aprvUserId,jdbcType=VARCHAR},
+        #{item.encYn,jdbcType=VARCHAR},
+        #{item.dmnDscd,jdbcType=VARCHAR},
+        #{item.saveFrm,jdbcType=VARCHAR},
+        #{item.exprsnFrm,jdbcType=VARCHAR},
+        #{item.unit,jdbcType=VARCHAR},
+        #{item.cdVal,jdbcType=VARCHAR},
+        #{item.admnStndCd,jdbcType=VARCHAR},
+        #{item.dmngLnm,jdbcType=VARCHAR},
+        #{item.infotpLnm,jdbcType=VARCHAR},
+        UPPER(#{item.dataType,jdbcType=VARCHAR}),
+        #{item.dataLen,jdbcType=DECIMAL},
+        #{item.dataScal,jdbcType=DECIMAL},
+        #{item.orgNm,jdbcType=VARCHAR},
+        #{item.ownrOrg,jdbcType=VARCHAR},
+        #{item.spclNt,jdbcType=VARCHAR},
+        #{item.ord,jdbcType=VARCHAR}
+     )
+	</foreach>
   </insert>
+  
   <update id="updateByPrimaryKeySelective" parameterType="kr.wise.dq.stnd.service.WamDmn" >
     update COMM_DMN
     <set >

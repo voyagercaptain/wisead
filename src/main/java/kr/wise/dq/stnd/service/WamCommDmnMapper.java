@@ -12,7 +12,7 @@ public interface WamCommDmnMapper {
 
     int insert(WamDmn record);
 
-    int insertSelective(WamDmn record);
+    int insertSelective(List<WamDmn> record);
 
     WamDmn selectByPrimaryKey(String dmnId);
 
