@@ -387,7 +387,7 @@ function setlocationmenu(topmenuid, uppmenuid) {
 
 <div class="n4info shadow">
 	<c:if test="${REQ_MENU.fullPath != 'DQMS메인'}">
-		<div class="n4info_loca">${(REQ_MENU.fullPath.replaceAll("<br>"," ")).replaceAll(">"," > ") }
+		<div class="n4info_loca"><font size=3>${(REQ_MENU.fullPath.replaceAll("<br>"," ")).replaceAll(">"," > ") }</font>
 		</div>
 	</c:if>
 
