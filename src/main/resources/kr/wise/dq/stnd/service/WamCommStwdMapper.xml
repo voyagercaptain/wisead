@@ -29,7 +29,8 @@
     <result column="FBDN_LNM" property="fbdnLnm" jdbcType="VARCHAR" />
 	
 	<result column="OWNR_ORG" property="ownrOrg" jdbcType="VARCHAR"/>
-   <result column="SPCL_NT"          property="spclNt"        jdbcType="VARCHAR" />
+    <result column="SPCL_NT"          property="spclNt"        jdbcType="VARCHAR" />
+    <result column="SEQ"          property="seq"        jdbcType="VARCHAR" />
 
 <!--     <result column="FRS_RQST_USER_NM" property="frsRqstUserNm" jdbcType="VARCHAR" /> -->
 <!--     <result column="RQST_USER_NM" property="rqstUserNm" jdbcType="VARCHAR" /> -->
@@ -38,7 +39,7 @@
   <sql id="Base_Column_List" >
     STWD_ID, STWD_LNM, STWD_PNM, ENG_MEAN, RQST_NO, RQST_SNO, OBJ_DESCN, 
     OBJ_VERS, REG_TYP_CD, FRS_RQST_DTM, FRS_RQST_USER_ID, RQST_DTM, RQST_USER_ID, APRV_DTM, 
-    APRV_USER_ID, DMN_YN, DMN_LNM, SYMN_LNM, FBDN_LNM, OWNR_ORG, SPCL_NT, ORD 
+    APRV_USER_ID, DMN_YN, DMN_LNM, SYMN_LNM, FBDN_LNM, OWNR_ORG, SPCL_NT, ORD, SEQ 
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -377,13 +378,14 @@
       RQST_NO, RQST_SNO, OBJ_DESCN, 
       OBJ_VERS, REG_TYP_CD, FRS_RQST_DTM, 
       FRS_RQST_USER_ID, RQST_DTM, RQST_USER_ID, 
-      APRV_DTM, APRV_USER_ID, ORD)
+      APRV_DTM, APRV_USER_ID, ORD, SEQ)
     values (#{stwdId,jdbcType=VARCHAR}, #{stwdLnm,jdbcType=VARCHAR}, #{stwdPnm,jdbcType=VARCHAR}, 
       #{engMean,jdbcType=VARCHAR},
       #{rqstNo,jdbcType=VARCHAR}, #{rqstSno,jdbcType=DECIMAL}, #{objDescn,jdbcType=VARCHAR}, 
       #{objVers,jdbcType=VARCHAR}, #{regTypCd,jdbcType=VARCHAR}, #{frsRqstDtm,jdbcType=DATE}, 
       #{frsRqstUserId,jdbcType=VARCHAR}, #{rqstDtm,jdbcType=DATE}, #{rqstUserId,jdbcType=VARCHAR}, 
-      #{aprvDtm,jdbcType=DATE}, #{aprvUserId,jdbcType=VARCHAR}, #{ord,jdbcType=VARCHAR})
+      #{aprvDtm,jdbcType=DATE}, #{aprvUserId,jdbcType=VARCHAR}, #{ord,jdbcType=VARCHAR}, #{seq,jdbcType=DECIMAL}
+      )
   </insert>
   <insert id="insertSelective" parameterType="kr.wise.dq.stnd.service.WamStwd" >
     insert into COMM_STWD
@@ -458,6 +460,9 @@
       <if test="ord != null" >
         ORD,
       </if>
+       <if test="seq != null" >
+        SEQ,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="stwdId != null" >
@@ -529,6 +534,9 @@
       </if>
       <if test="ord != null" >
         #{ord,jdbcType=VARCHAR},
+      </if>
+       <if test="seq != null" >
+        #{seq,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -603,6 +611,7 @@
       <if test="spclNt != null" >
         SPCL_NT = #{spclNt,jdbcType=VARCHAR},
       </if>
+        SEQ = #{seq,jdbcType=DECIMAL},
     </set>
     where STWD_ID = #{stwdId,jdbcType=VARCHAR}
   </update>
@@ -631,7 +640,8 @@
       SYMN_LNM = #{symnLnm,jdbcType=VARCHAR},
       OWNR_ORG = #{ownrOrg,jdbcType=VARCHAR},
       SPCL_NT = #{spclNt,jdbcType=VARCHAR},
-      ORD = #{ord,jdbcType=VARCHAR}
+      ORD = #{ord,jdbcType=VARCHAR},
+      SEQ = #{seq,jdbcType=DECIMAL}
     where STWD_ID = #{stwdId,jdbcType=VARCHAR}
   </update>
   <insert id="insertWamStwd" parameterType="java.lang.String" >

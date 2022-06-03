@@ -540,19 +540,7 @@ function postProcessIBS(res) {
                    
                    <tbody>      
                             <tr>
-                             <th scope="row"><label for="dbNm">DB명</label></th> <!-- 사전유형 -->
-                                <td >
-                                <!-- 
-                                <input type="text" id="dbNm" name="dbNm" class="wd98p" value="${dbNm}" />
-                                 -->
-                                 <select id="dbNm" class="" name="dbNm">
-                                	<option value="">전체</option>
-	 							<c:forEach var="userDbList" items="${userDbList}" varStatus="status">
-	 							  <option value="${userDbList.dbNm}">${userDbList.dbNm}</option>
-	 							</c:forEach> 
-	 					 		</select> 
-	 					 		
-							</td>
+                            
 					         <th scope="row"><label for="orgNm">기관명</label></th> <!-- 사전유형 -->
                                 <td >
                                 <!-- 
@@ -566,6 +554,21 @@ function postProcessIBS(res) {
 	 					 		</select>
 	 					 		
 								</td>
+								
+								 <th scope="row"><label for="dbNm">DB명</label></th> <!-- 사전유형 -->
+                                <td >
+                                <!-- 
+                                <input type="text" id="dbNm" name="dbNm" class="wd98p" value="${dbNm}" />
+                                 -->
+                                 <select id="dbNm" class="" name="dbNm">
+                                	<option value="">전체</option>
+	 							<c:forEach var="userDbList" items="${userDbList}" varStatus="status">
+	 							  <option value="${userDbList.dbNm}">${userDbList.dbNm}</option>
+	 							</c:forEach> 
+	 					 		</select> 
+	 					 		
+								</td>
+							
                                 <th scope="row"><label for="stndNm">표준도메인명</label></th> <!-- 표준사전명 -->
                                 <td><input type="text" id="stndNm" name="stndNm" class="wd98p" value="${stndNm}" /></td>
 <%--                                 <th scope="row"><label for="objDescn"><s:message code="CONTENT.TXT" /></label></th> <!-- 설명 --> --%>

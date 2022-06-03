@@ -42,7 +42,7 @@ function grid_STWD_init() {
  		*/
 		//No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|STWDID|기관명|DB명|표준단어명|영문약어명|단어영문명|단어설명|형식단어여부|도메인분류명|이음동의어목록|금칙어목록|등록일자|요청자ID|요청자명|요청번호|요청일련번호
 		
- 		var headtext  = "No.|상태|선택|제정차수|검토상태|검토내용|요청구분|등록유형|검증결과|STWDID|공통표준단어명|공통표준단어영문약어명|공통표준단어영문명|공통표준단어설명|형식단어여부|공통표준도메인분류명|이음동의어 목록|금칙어 목록|관리부서명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항";
+ 		var headtext  = "No.|상태|선택|번호|제정차수|검토상태|검토내용|요청구분|등록유형|검증결과|STWDID|공통표준단어명|공통표준단어영문약어명|공통표준단어영문명|공통표준단어설명|형식단어여부|공통표준도메인분류명|이음동의어 목록|금칙어 목록|관리부서명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항";
 		
 		var headers = [
 					{Text:headtext, Align:"Center"}
@@ -53,9 +53,10 @@ function grid_STWD_init() {
 		InitHeaders(headers, headerInfo); 
 
 		var cols = [						
-					{Type:"Seq",	Width:50,   SaveName:"ibsSeq",	    Align:"Center", Edit:0},
+					{Type:"Seq",	Width:50,   SaveName:"ibsSeq",	    Align:"Center", Edit:0, Hidden:1},
 					{Type:"Status", Width:60,   SaveName:"ibsStatus",   Align:"Center", Edit:0, Hidden:1},
 					{Type:"CheckBox", Width:50, SaveName:"ibsCheck",    Align:"Center", Edit:1, Hidden:0, Sort:0},
+					{Type:"Int",	Width:80,   SaveName:"seq",	      Align:"Center", Edit:1, Hidden:0},
 					{Type:"Text",   Width:100,  SaveName:"ord",  Align:"Left", Edit:1, Hidden:0, KeyField:1},
 					{Type:"Combo",  Width:100,  SaveName:"rvwStsCd",	Align:"Center", Edit:0, Hidden:1},						
 					{Type:"Text",   Width:100,  SaveName:"rvwConts",	Align:"Left",   Edit:0, Hidden:1},						

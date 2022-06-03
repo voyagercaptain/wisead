@@ -351,6 +351,7 @@ function doAction(sAction)
 
 				url = '<c:url value="/dq/dbstnd/regStndWordWamlist.do"/>';
 			}else if(bizDtlCd == "STCD"){
+				/*
 				var row = grid_name.ColValueDup("dbNm|commCdNm|commDtlCdNm");
 				var rows = grid_name.ColValueDupRows("dbNm|commCdNm|commDtlCdNm");
 				
@@ -362,7 +363,8 @@ function doAction(sAction)
 // 				        grid_name.SetCellValue(rowsArr[i],"vrfRmk","중복데이터");
 				    }
 					return;
-				}				
+				}
+				*/
 				url = '<c:url value="/dq/stnd/regStndCodeWamlist.do"/>';
 			}
 			

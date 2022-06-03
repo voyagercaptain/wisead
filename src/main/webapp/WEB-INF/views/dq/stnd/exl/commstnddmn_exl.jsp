@@ -41,7 +41,7 @@ function grid_DMN_init() {
 		headtext += "|<s:message code='META.HEADER.STNDDMN.RQST.IFM.5'/>";
 		headtext += "|<s:message code='META.HEADER.STNDDMN.RQST.IFM.4'/>";
 		*/
-		var headtext  = "No.|상태|선택|제정차수|검토상태|검토내용|요청구분|등록유형|검증결과";
+		var headtext  = "No.|상태|선택|번호|제정차수|검토상태|검토내용|요청구분|등록유형|검증결과";
 		headtext += "|도메인ID|공통표준도메인그룹명|공통표준도메인분류명|공통표준도메인명|공통표준도메인설명|데이터타입|데이터길이|데이터소수점길이|저장형식|표현형식|단위|허용값|관리부서명|행정표준코드명";
 		headtext += "|담당자ID|담당자명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항";
 		
@@ -55,10 +55,11 @@ function grid_DMN_init() {
 	InitHeaders(headers, headerInfo); 
 
 	var cols = [						
-				{Type:"Seq",		Width:50,   SaveName:"ibsSeq",	    Align:"Center", Edit:0},
+				{Type:"Seq",		Width:50,   SaveName:"ibsSeq",	    Align:"Center", Edit:0, Hidden:1},
 				{Type:"Status", 	Width:40,   SaveName:"ibsStatus",   Align:"Center", Edit:0, Hidden:1},
 				
 				{Type:"CheckBox", 	Width:45,   SaveName:"ibsCheck",    Align:"Center", Edit:1, Hidden:0, Sort:0},
+				{Type:"Int",	Width:80,   SaveName:"seq",	      Align:"Center", Edit:1, Hidden:0},
 				{Type:"Text",   	Width:100,  SaveName:"ord",  Align:"Left", Edit:1, Hidden:0, KeyField:1},
 				{Type:"Combo",      Width:80,   SaveName:"rvwStsCd",	Align:"Center", Edit:0, Hidden:1},						
 				{Type:"Text",       Width:80,   SaveName:"rvwConts",	Align:"Left", Edit:0, Hidden:1},						

@@ -451,9 +451,9 @@ SELECT *
       <if test="pnm != null" >
       PNM = #{pnm,jdbcType=VARCHAR},
       </if>
-      <if test="seq != null" >
+      
       SEQ = #{seq,jdbcType=DECIMAL},
-      </if>
+      
       
     </set>
     where SDITM_ID = #{sditmId,jdbcType=VARCHAR}

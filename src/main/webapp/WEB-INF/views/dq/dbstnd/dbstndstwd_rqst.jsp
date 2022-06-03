@@ -540,8 +540,20 @@ function postProcessIBS(res) {
                    
                    <tbody>      
                             <tr>
-                             <th scope="row"><label for="dbNm">DB명</label></th> <!-- 사전유형 -->
+                             
+					         <th scope="row"><label for="orgNm">기관명</label></th> <!-- 사전유형 -->
                                 <td >
+                                <select id="orgNm" class="" name="orgNm">
+                                	<option value="">전체</option>
+		 							<c:forEach var="userOrgList" items="${userOrgList}" varStatus="status">
+		 							  <option value="${userOrgList.codeLnm}">${userOrgList.codeLnm}</option>
+		 							</c:forEach> 
+	 					 		</select>
+                                
+								</td>
+								
+							<th scope="row"><label for="dbNm">DB명</label></th> <!-- 사전유형 -->
+                            <td >
                                 <!-- 
                                 <input type="text" id="dbNm" name="dbNm" class="wd98p" value="${dbNm}" />
                                  -->
@@ -553,16 +565,8 @@ function postProcessIBS(res) {
 	 					 		</select> 
 	 					 		
 							</td>
-					         <th scope="row"><label for="orgNm">기관명</label></th> <!-- 사전유형 -->
-                                <td >
-                                <select id="orgNm" class="" name="orgNm">
-                                	<option value="">전체</option>
-		 							<c:forEach var="userOrgList" items="${userOrgList}" varStatus="status">
-		 							  <option value="${userOrgList.codeLnm}">${userOrgList.codeLnm}</option>
-		 							</c:forEach> 
-	 					 		</select>
-                                
-								</td>
+							
+							
                                 <th scope="row"><label for="stndNm">표준단어명</label></th> <!-- 표준사전명 -->
                                 <td><input type="text" id="stndNm" name="stndNm" class="wd98p" value="${stndNm}" /></td>
 <%--                                 <th scope="row"><label for="objDescn"><s:message code="CONTENT.TXT" /></label></th> <!-- 설명 --> --%>

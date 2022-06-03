@@ -96,10 +96,18 @@ public class WamDmn extends CommonVo{
     
     private String usergId;
     
-    
-    
+    private Integer seq;
+       
         
-    public String getUsergId() {
+    public Integer getSeq() {
+		return seq;
+	}
+
+	public void setSeq(Integer seq) {
+		this.seq = seq;
+	}
+
+	public String getUsergId() {
 		return usergId;
 	}
 
