@@ -72,6 +72,7 @@ public class LoginVO implements Serializable{
 	
 	private String orgCd;
 	
+	private String loginAcId;
 	
 	/**
 	 * id attribute 를 리턴한다.
@@ -342,6 +343,12 @@ public class LoginVO implements Serializable{
 	}
 	public void setOrgCd(String orgCd) {
 		this.orgCd = orgCd;
+	}
+	public String getLoginAcId() {
+		return loginAcId;
+	}
+	public void setLoginAcId(String loginAcId) {
+		this.loginAcId = loginAcId;
 	}
 
 }

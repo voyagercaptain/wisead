@@ -316,7 +316,11 @@ public class UserCtrl {
 				res = "/commons/user/popup/userInfoChngPop";
 			}
 		}
-
+		
+		if (!"".equals(uservo.getLoginAcId())) {
+			resultVO.setLoginAcId(uservo.getLoginAcId());
+		}
+		
 		model.addAttribute("loginVO", resultVO);
 
 		return res;

@@ -310,7 +310,14 @@ function grid_sheet_OnSaveEnd(code, message) {
 			</form>       
          <!-- 조회버튼영역  -->
          <div style="clear:both; height:20px;"><span></span></div>
-         <tiles:insertTemplate template="/WEB-INF/decorators/buttonRqstInput.jsp" />
+         <%-- <tiles:insertTemplate template="/WEB-INF/decorators/buttonRqstInput.jsp" /> --%>
+         <div id="divInputBtn" style="text-align: center; display: none;">
+           <button class="btn_frm_save" type="button" id="btnGridSave" name="btnGridSave"><s:message code="STRG" /></button> <!-- 저장 --> 
+           <%-- <c:out value="${loginVO}" /> --%>
+           	<c:if test="${loginVO.loginAcId ne null}"> 
+           		<button class="btn_frm_reset" type="button" id="btnReset" name="btnReset"><s:message code="INON" /></button> <!-- 초기화 -->
+			</c:if>
+        </div>
 
 </div>
 </body>
