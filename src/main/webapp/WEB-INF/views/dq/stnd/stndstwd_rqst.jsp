@@ -284,9 +284,7 @@ function doAction(sAction)
         	break;
         
     	case "Down2Excel":  //엑셀다운로드
-//     		if(grid_name.GetTotalRows() == 0 ){
-//     			grid_name.DataInsert(0);
-//     		}
+
     	    var fileName="기관";
     	    if(bizDtlCd == "SDITM"){
     	    	fileName = fileName+"표준용어.xlsx";
@@ -296,8 +294,9 @@ function doAction(sAction)
 				fileName = fileName+"표준단어.xlsx";
 			}
     	    
-    	    var SaveJson = grid_name.GetSaveJson(1); //doAllSave와 동일한 대상을 가져옴...
-    	    if(SaveJson.data.length == 0) {
+    	    //var SaveJson = grid_name.GetSaveJson(0); //doAllSave와 동일한 대상을 가져옴...
+    	    //if(SaveJson.data.length == 0) {
+    	    if(grid_name.GetTotalRows() == 0 ){
     	    	grid_name.DataInsert(0);
     	    	grid_name.SetCellValue(1,"orgNm", "${userOrg.orgNm}");
     	    }
