@@ -48,7 +48,7 @@ function grid_SDITM_init() {
 
  		var headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|";
  		headtext += "용어ID|기관명|표준용어명|영문명|영문약어명|용어설명|표준도메인명|허용값|관리부서명|표준코드명|업무분야|데이터타입|데이터길이|소수점길이|저장형식|표현형식|단위|행정표준코드명";
- 		headtext += "|검증결과|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항";
+ 		headtext += "|검증결과|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항|필수항목";
 		
 		var headers = [
 					{Text:headtext, Align:"Center"}
@@ -107,7 +107,8 @@ function grid_SDITM_init() {
 					{Type:"Text",   Width:150,  SaveName:"rqstUserNm",    Align:"Center", Edit:0, ColMerge:0, Hidden:1},
 					{Type:"Text",   Width:60,   SaveName:"rqstNo",        Align:"Center", Edit:0, Hidden:1, ColMerge:0}, 
 					{Type:"Int",    Width:60,   SaveName:"rqstSno",       Align:"Center", Edit:0, Hidden:1, ColMerge:0},
-					{Type:"Text",   Width:150,  SaveName:"spclNt",    Align:"Center", Edit:1, Hidden:0}
+					{Type:"Text",   Width:150,  SaveName:"spclNt",    Align:"Center", Edit:1, Hidden:0},
+					{Type:"Text",   Width:250,  SaveName:"errChk",    Align:"Center", Edit:0, Hidden:0}
 				];
 					
 		InitColumns(cols);
@@ -139,8 +140,17 @@ function grid_SDITM_init() {
 }
 
 
-function grid_SDITM_OnLoadExcel() {
+function grid_SDITM_OnLoadExcel(result) {
+	if(result) {
+		var len = grid_SDITM.RowCount();
+		for(var i=0; i < len; i++) {
+			grid_SDITM.SetCellValue(i+1,"orgNm", "${userOrg.orgNm}");
+		}
+	} else {
+		alert("엑셀 로딩중 오류가 발생하였습니다.");
+	}
 }
+
 
 function grid_SDITM_OnDblClick(row, col, value, cellx, celly) {
 	if(row < 1) return;

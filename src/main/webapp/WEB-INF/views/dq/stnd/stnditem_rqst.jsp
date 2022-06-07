@@ -246,6 +246,9 @@ function mstFrmReset(bizDtlCd){
 }
 
 
+
+
+	
 function doAction(sAction)
 {
 	//프로파일별 그리드명 셋팅
@@ -281,6 +284,8 @@ function doAction(sAction)
 			break;
     	case "LoadExcel":  //엑셀업로드
     		grid_name.LoadExcel({Mode:'HeaderMatch', Append:1});
+    		
+    		
         	break;
         
     	case "Down2Excel":  //엑셀다운로드
@@ -329,6 +334,43 @@ function doAction(sAction)
 			break;
 			
     	case "Save":  //검증
+    		
+    		//KeyField 1 인 것 가져오기 orgNm sditmLnm  pnm sditmPnm  objDescn 
+    		var len = grid_SDITM.RowCount();
+			for(var i=0; i < len; i++) {
+				var orgNm = grid_SDITM.GetCellValue(i+1,"orgNm");
+				var sditmLnm = grid_SDITM.GetCellValue(i+1,"sditmLnm");
+				var pnm = grid_SDITM.GetCellValue(i+1,"pnm");
+				var sditmPnm = grid_SDITM.GetCellValue(i+1,"sditmPnm");
+				var objDescn = grid_SDITM.GetCellValue(i+1,"objDescn");
+				var str = orgNm == "" ? "기관명":"";
+				if(str == "") {
+					str += sditmLnm == "" ? "용어명":"";
+				} else {
+					str += sditmLnm == "" ? ", 용어명":"";	
+				}
+				if(str == "") {
+					str += pnm == "" ? "영문명":"";
+				} else {
+					str += pnm == "" ? ", 영문명":"";	
+				}
+				if(str == "") {
+					str += sditmPnm == "" ? "영문약어명":"";
+				} else {
+					str += sditmPnm == "" ? ", 영문약어명":"";	
+				}
+				if(str == "") {
+					str += objDescn == "" ? "용어설명":"";
+				} else {
+					str += objDescn == "" ? ", 용어설명":"";	
+				}
+				if(str != "") {
+					str += " 누락";
+					grid_SDITM.SetCellValue(i+1,"errChk", str);
+					grid_SDITM.SetRowFontColor(i+1,"#FF0000");
+				}
+			}
+    	
     		//저장 대상의 데이터를 Json 객체로 반환한다.
 			ibsSaveJson = grid_name.GetSaveJson(0);
     	

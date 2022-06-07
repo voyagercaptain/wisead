@@ -293,6 +293,67 @@ function doAction(sAction)
 			break;
 			
     	case "Save":  //검증
+    		
+    		//KeyField 1 인 것 가져오기 orgNm commCdNm comnCdEnnm  commCdDesc comnCdDttpNm  comnCdDataLen commDtlCdNm commDtlCdMn commDtlCdDesc
+    		var len = grid_name.RowCount();
+			for(var i=0; i < len; i++) {
+				var orgNm = grid_name.GetCellValue(i+1,"orgNm");
+				var commCdNm = grid_name.GetCellValue(i+1,"commCdNm");
+				var comnCdEnnm = grid_name.GetCellValue(i+1,"comnCdEnnm");
+				var commCdDesc = grid_name.GetCellValue(i+1,"commCdDesc");
+				var comnCdDttpNm = grid_name.GetCellValue(i+1,"comnCdDttpNm");
+				var comnCdDataLen = grid_name.GetCellValue(i+1,"comnCdDataLen");
+				var commDtlCdNm = grid_name.GetCellValue(i+1,"commDtlCdNm");
+				var commDtlCdMn = grid_name.GetCellValue(i+1,"commDtlCdMn");
+				var commDtlCdDesc = grid_name.GetCellValue(i+1,"commDtlCdDesc");
+				var str = orgNm == "" ? "기관명":"";
+				if(str == "") {
+					str += commCdNm == "" ? "코드명(한글)":"";
+				} else {
+					str += commCdNm == "" ? ", 코드명(한글)":"";	
+				}
+				if(str == "") {
+					str += comnCdEnnm == "" ? "코드명(영문)":"";
+				} else {
+					str += comnCdEnnm == "" ? ", 코드명(영문)":"";	
+				}
+				if(str == "") {
+					str += commCdDesc == "" ? "코드설명":"";
+				} else {
+					str += commCdDesc == "" ? ", 코드설명":"";	
+				}
+				if(str == "") {
+					str += comnCdDttpNm == "" ? "데이터타입":"";
+				} else {
+					str += comnCdDttpNm == "" ? ", 데이터타입":"";	
+				}
+				if(str == "") {
+					str += comnCdDataLen == "" ? "데이터길이":"";
+				} else {
+					str += comnCdDataLen == "" ? ", 데이터길이":"";	
+				}
+				if(str == "") {
+					str += commDtlCdNm == "" ? "코드값":"";
+				} else {
+					str += commDtlCdNm == "" ? ", 코드값":"";	
+				}
+				if(str == "") {
+					str += commDtlCdMn == "" ? "코드값의미":"";
+				} else {
+					str += commDtlCdMn == "" ? ", 코드값의미":"";	
+				}
+				if(str == "") {
+					str += commDtlCdDesc == "" ? "코드값설명":"";
+				} else {
+					str += commDtlCdDesc == "" ? ", 코드값설명":"";	
+				}
+				if(str != "") {
+					str += " 누락";
+					grid_name.SetCellValue(i+1,"errChk", str);
+					grid_name.SetRowFontColor(i+1,"#FF0000");
+				}
+			}
+			
     		//저장 대상의 데이터를 Json 객체로 반환한다.
 			ibsSaveJson = grid_name.GetSaveJson(0);
     	

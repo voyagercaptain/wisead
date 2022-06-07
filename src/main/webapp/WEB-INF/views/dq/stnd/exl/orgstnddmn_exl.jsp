@@ -43,7 +43,7 @@ function grid_DMN_init() {
 		*/
 		var headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과";
 		headtext += "|도메인ID|기관명|표준도메인그룹명|도메인분류명|도메인명|도메인설명|데이터타입|데이터길이|소수점길이|저장형식|표현형식|단위|허용값|관리부서명|행정표준코드명";
-		headtext += "|담당자ID|담당자명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항";
+		headtext += "|담당자ID|담당자명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항|필수항목";
 		
 
 	var headers = [
@@ -98,7 +98,9 @@ function grid_DMN_init() {
 				{Type:"Text",       Width:60,   SaveName:"rqstUserNm",  Align:"Center", Edit:1, Hidden:1}, 
 				{Type:"Text",       Width:60,   SaveName:"rqstNo",      Align:"Center", Edit:1, Hidden:1}, 
 				{Type:"Int",        Width:60,   SaveName:"rqstSno",     Align:"Center", Edit:1, Hidden:1},
-				{Type:"Text",   	Width:150,  SaveName:"spclNt",    Align:"Center", Edit:1, Hidden:0}
+				{Type:"Text",   	Width:150,  SaveName:"spclNt",    Align:"Center", Edit:1, Hidden:0},
+				{Type:"Text",   	Width:250,  SaveName:"errChk",    Align:"Center", Edit:0, Hidden:0}
+				
 			];
 				
 	InitColumns(cols);
@@ -146,7 +148,15 @@ function grid_DMN_init() {
 }
 
 
-function grid_DMN_OnLoadExcel() {
+function grid_DMN_OnLoadExcel(result) {
+	if(result) {
+		var len = grid_DMN.RowCount();
+		for(var i=0; i < len; i++) {
+			grid_DMN.SetCellValue(i+1,"orgNm", "${userOrg.orgNm}");
+		}
+	} else {
+		alert("엑셀 로딩중 오류가 발생하였습니다.");
+	}
 }
 
 function grid_DMN_OnDblClick(row, col, value, cellx, celly) {

@@ -329,6 +329,36 @@ function doAction(sAction)
 			break;
 			
     	case "Save":  //검증
+    		//KeyField 1 인 것 가져오기 orgNm infotpLnm  objDescn dataType 
+    		var len = grid_name.RowCount();
+			for(var i=0; i < len; i++) {
+				var orgNm = grid_name.GetCellValue(i+1,"orgNm");
+				var infotpLnm = grid_name.GetCellValue(i+1,"infotpLnm");
+				var dataType = grid_name.GetCellValue(i+1,"dataType");
+				var objDescn = grid_name.GetCellValue(i+1,"objDescn");
+				var str = orgNm == "" ? "기관명":"";
+				if(str == "") {
+					str += infotpLnm == "" ? "도메인명":"";
+				} else {
+					str += infotpLnm == "" ? ", 도메인명":"";	
+				}
+				if(str == "") {
+					str += objDescn == "" ? "도메인설명":"";
+				} else {
+					str += objDescn == "" ? ", 도메인설명":"";	
+				}
+				if(str == "") {
+					str += dataType == "" ? "데이터타입":"";
+				} else {
+					str += dataType == "" ? ", 데이터타입":"";	
+				}
+				if(str != "") {
+					str += " 누락";
+					grid_name.SetCellValue(i+1,"errChk", str);
+					grid_name.SetRowFontColor(i+1,"#FF0000");
+				}
+			}
+			
     		//저장 대상의 데이터를 Json 객체로 반환한다.
 			ibsSaveJson = grid_name.GetSaveJson(0);
     	

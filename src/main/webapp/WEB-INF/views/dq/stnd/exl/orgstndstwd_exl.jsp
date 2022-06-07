@@ -42,7 +42,7 @@ function grid_STWD_init() {
  		*/
 		//No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|STWDID|기관명|DB명|표준단어명|영문약어명|단어영문명|단어설명|형식단어여부|도메인분류명|이음동의어목록|금칙어목록|등록일자|요청자ID|요청자명|요청번호|요청일련번호
 		
- 		var headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|STWDID|기관명|표준단어명|단어영문명|단어영문약어명|단어설명|형식단어여부|도메인분류명|이음동의어목록|금칙어목록|관리부서명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항";
+ 		var headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|STWDID|기관명|표준단어명|단어영문명|단어영문약어명|단어설명|형식단어여부|도메인분류명|이음동의어목록|금칙어목록|관리부서명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항|필수항목";
 		
 		var headers = [
 					{Text:headtext, Align:"Center"}
@@ -80,7 +80,8 @@ function grid_STWD_init() {
 					{Type:"Text",   Width:60,  SaveName:"rqstUserNm",   Align:"Center", Edit:0, Hidden:1},
 					{Type:"Text",   Width:60,  SaveName:"rqstNo",       Align:"Center", Edit:0, Hidden:1}, 
 					{Type:"Int",   Width:60,   SaveName:"rqstSno",      Align:"Center", Edit:0, Hidden:1},
-					{Type:"Text",   Width:150,  SaveName:"spclNt",    Align:"Center", Edit:1, Hidden:0}
+					{Type:"Text",   Width:150,  SaveName:"spclNt",    Align:"Center", Edit:1, Hidden:0},
+					{Type:"Text",   Width:250,  SaveName:"errChk",    Align:"Center", Edit:1, Hidden:0},
 				];
 					
 		InitColumns(cols);
@@ -111,7 +112,15 @@ function grid_STWD_init() {
 }
 
 
-function grid_STWD_OnLoadExcel() {
+function grid_STWD_OnLoadExcel(result) {
+	if(result) {
+		var len = grid_STWD.RowCount();
+		for(var i=0; i < len; i++) {
+			grid_STWD.SetCellValue(i+1,"orgNm", "${userOrg.orgNm}");
+		}
+	} else {
+		alert("엑셀 로딩중 오류가 발생하였습니다.");
+	}
 }
 
 function grid_STWD_OnDblClick(row, col, value, cellx, celly) {
