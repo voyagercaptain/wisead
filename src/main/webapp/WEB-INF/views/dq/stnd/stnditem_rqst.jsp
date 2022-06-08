@@ -340,7 +340,7 @@ function doAction(sAction)
 			for(var i=0; i < len; i++) {
 				var orgNm = grid_SDITM.GetCellValue(i+1,"orgNm");
 				var sditmLnm = grid_SDITM.GetCellValue(i+1,"sditmLnm");
-				var pnm = grid_SDITM.GetCellValue(i+1,"pnm");
+				/* var pnm = grid_SDITM.GetCellValue(i+1,"pnm"); */
 				var sditmPnm = grid_SDITM.GetCellValue(i+1,"sditmPnm");
 				var objDescn = grid_SDITM.GetCellValue(i+1,"objDescn");
 				var str = orgNm == "" ? "기관명":"";
@@ -349,11 +349,13 @@ function doAction(sAction)
 				} else {
 					str += sditmLnm == "" ? ", 용어명":"";	
 				}
+				/*
 				if(str == "") {
 					str += pnm == "" ? "영문명":"";
 				} else {
 					str += pnm == "" ? ", 영문명":"";	
 				}
+				*/
 				if(str == "") {
 					str += sditmPnm == "" ? "영문약어명":"";
 				} else {

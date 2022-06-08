@@ -65,7 +65,7 @@ function grid_STWD_init() {
 					{Type:"Text",   Width:150,  SaveName:"stwdId",   	Align:"Left", Edit:0, KeyField:0, Hidden:1},
 					{Type:"Text",   Width:100,  SaveName:"orgNm",   	Align:"Left", Edit:1, KeyField:1},
 					{Type:"Text",   Width:100,  SaveName:"stwdLnm",   	Align:"Left", Edit:1, KeyField:1},
-					{Type:"Text",   Width:150,  SaveName:"engMean", 	Align:"Left", Edit:1, Hidden:0, KeyField:1},
+					{Type:"Text",   Width:150,  SaveName:"engMean", 	Align:"Left", Edit:1, Hidden:0, KeyField:0},
 					{Type:"Text",   Width:100,  SaveName:"stwdPnm",   	Align:"Left", Edit:1, KeyField:1}, 
 					{Type:"Text",   Width:500,  SaveName:"objDescn",	Align:"Left", Edit:1, KeyField:1},
 					{Type:"Combo",  Width:80,   SaveName:"dmnYn",	 	Align:"Center", Edit:1, Hidden:0, KeyField:1},

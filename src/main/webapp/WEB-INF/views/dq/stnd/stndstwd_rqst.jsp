@@ -334,7 +334,7 @@ function doAction(sAction)
 			for(var i=0; i < len; i++) {
 				var orgNm = grid_name.GetCellValue(i+1,"orgNm");
 				var stwdLnm = grid_name.GetCellValue(i+1,"stwdLnm");
-				var engMean = grid_name.GetCellValue(i+1,"engMean");
+				/* var engMean = grid_name.GetCellValue(i+1,"engMean"); */
 				var stwdPnm = grid_name.GetCellValue(i+1,"stwdPnm");
 				var objDescn = grid_name.GetCellValue(i+1,"objDescn");
 				var dmnYn = grid_name.GetCellValue(i+1,"dmnYn");
@@ -344,11 +344,13 @@ function doAction(sAction)
 				} else {
 					str += stwdLnm == "" ? ", 표준단어명":"";	
 				}
+				/*
 				if(str == "") {
 					str += engMean == "" ? "단어영문명":"";
 				} else {
 					str += engMean == "" ? ", 단어영문명":"";	
 				}
+				*/
 				if(str == "") {
 					str += stwdPnm == "" ? "단어영문약어명":"";
 				} else {

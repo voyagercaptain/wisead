@@ -73,7 +73,7 @@ function grid_SDITM_init() {
 					{Type:"Text",   Width:100,  SaveName:"orgNm",     Align:"Left", Edit:1, KeyField:1},
 					
 					{Type:"Text",   Width:130,  SaveName:"sditmLnm",     Align:"Left", Edit:1, KeyField:1},
-					{Type:"Text",   Width:150,  SaveName:"pnm",     Align:"Left", Edit:1, KeyField:1}, //영문명
+					{Type:"Text",   Width:150,  SaveName:"pnm",     Align:"Left", Edit:1, KeyField:0}, //영문명
 					{Type:"Text",   Width:150,  SaveName:"sditmPnm",     Align:"Left", Edit:1, KeyField:1},
 					
 					{Type:"Text",   Width:120,  SaveName:"objDescn",	 Align:"Left", 	 Edit:1, KeyField:1, ColMerge:0},
