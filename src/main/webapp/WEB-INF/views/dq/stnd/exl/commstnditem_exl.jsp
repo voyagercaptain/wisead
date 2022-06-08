@@ -89,12 +89,12 @@ function grid_SDITM_init() {
 					{Type:"Text",   Width:100,  SaveName:"stndCd", 	      Align:"Left", Edit:1, Hidden:1, ColMerge:0},  //표준코드명
 					
                     {Type:"Text",   Width:100,  SaveName:"saveFrm", 	 	Align:"Left", Edit:1, Hidden:0, KeyField:0}, //저장형식
-				    {Type:"Text",   Width:100,  SaveName:"exprsnFrm",	 	Align:"Left", Edit:1, Hidden:1},
+				    {Type:"Text",   Width:100,  SaveName:"exprsnFrm",	 	Align:"Left", Edit:1, Hidden:0}, // 표현형식
 				    {Type:"Text",   Width:100,  SaveName:"unit",    	 	Align:"Left", Edit:1, Hidden:1},
 					
 				    
 				    {Type:"Text",   Width:100,  SaveName:"bsnssFld",      Align:"Left", Edit:1, Hidden:1}, //업무분야
-				    {Type:"Text",   Width:150,  SaveName:"spclNt",    Align:"Center", Edit:1, Hidden:0}, // 표현형식
+				    {Type:"Text",   Width:150,  SaveName:"spclNt",    Align:"Center", Edit:1, Hidden:1}, 
 					{Type:"Text",   Width:100,  SaveName:"admnStndCd", 	      Align:"Left", Edit:1, Hidden:0, ColMerge:0},  //행정표준코드명
 					
 					{Type:"Text",   Width:100,  SaveName:"vrfRmk",      Align:"Left", Edit:0, Hidden:1},  // 검증결과
