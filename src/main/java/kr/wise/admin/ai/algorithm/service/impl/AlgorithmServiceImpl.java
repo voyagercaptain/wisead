@@ -45,140 +45,142 @@ public class AlgorithmServiceImpl implements AlgorithmService {
 	
 	private final  Logger logger = LoggerFactory.getLogger(getClass());
 	
-	@Inject
-	private WaaAlgMapper mapper;
-	
-	@Inject
-	private WaaAlgArgMapper argmapper;
-	
-	@Inject
-	private EgovIdGnrService objectIdGnrService;
-
-	/** insomnia */
-	public List<WaaAlg> getAlgorithmList(WaaAlg search) {
-		logger.debug("알고리즘 목록 조회:{}", search);
-		
-		return mapper.selectAlgorithmList(search);
-	}
-
-	/** insomnia 
-	 * @throws Exception */
-	public int regAlgorithm(List<WaaAlg> list) throws Exception {
-		logger.debug("알고리즘 저장");
-		int result = 0;
-		LoginVO uservo = (LoginVO) UserDetailHelper.getAuthenticatedUser();
-		String userid = uservo.getUniqId();
-		
-		//알고리즘 목록을 저장정한다.
-		for (WaaAlg savevo : list) {
-			savevo.setWritUserId(userid);
-			
-			String tmpsts = savevo.getIbsStatus();
-			if ("I".equals(tmpsts)) {
-				//알고리즘 ID 채번한다...
-				String objid = objectIdGnrService.getNextStringId();
-				savevo.setAlgId(objid);
-				savevo.setRegTypCd("C");
-				
-				result =+ mapper.insert(savevo);
-				
-			} else if ("U".equals(tmpsts)) {
-				savevo.setRegTypCd("U");
-				result =+ mapper.updateByPrimaryKey(savevo);
-				
-			} else if ("D".equals(tmpsts)) {
-				//삭제시 알고리즘에 포함된 변수목록도 삭제한다.
-				argmapper.deleteByalgId(savevo.getAlgId());
-				
-				savevo.setRegTypCd("D");
-				result =+ mapper.deleteByPrimaryKey(savevo.getAlgId());
-			}
-					
-		}
-		
-		
-		return result;
-	}
-
-	/** insomnia */
-	public int delAlgorithm(List<WaaAlg> list) {
-		logger.debug("알고리즘 삭제");
-		int result = 0;
-		
-		LoginVO uservo = (LoginVO) UserDetailHelper.getAuthenticatedUser();
-		String userid = uservo.getUniqId();
-		
-		for (WaaAlg savevo : list) {
-			savevo.setWritUserId(userid);
-			//삭제시 알고리즘에 포함된 변수목록도 삭제한다.
-			argmapper.deleteByalgId(savevo.getAlgId());
-			
-			savevo.setRegTypCd("D");
-			result =+ mapper.deleteByPrimaryKey(savevo.getAlgId());
-		}
-		
-		return result;
-	}
-
-	/** insomnia */
-	public List<WaaAlgArg> getAlgorithmParam(WaaAlg search) {
-		logger.debug("알고리즘 파라미터 조회 by 알고리즘ID:{}", search.getAlgId());
-		return argmapper.selectArgListbyId(search);
-	}
-
-	/** insomnia 
-	 * @throws Exception */
-	public int regAlgorithmParam(WaaAlg algvo, List<WaaAlgArg> list) throws Exception {
-		logger.debug("알고리즘 파라미터 저장 by 알고리즘ID:{}", algvo.getAlgId());
-		int result = 0 ;
-		
-		String algid = algvo.getAlgId();
-		LoginVO uservo = (LoginVO) UserDetailHelper.getAuthenticatedUser();
-		String userid = uservo.getUniqId();
-		
-		for (WaaAlgArg savevo : list) {
-			savevo.setWritUserId(userid);
-			savevo.setAlgId(algid);
-			String tmpsts = savevo.getIbsStatus();
-			if ("I".equals(tmpsts)) {
-				//파라미터 ID 채번한다...
-				String objid = objectIdGnrService.getNextStringId();
-				savevo.setAlgArgId(objid);
-				savevo.setRegTypCd("C");
-				
-				result =+ argmapper.insert(savevo);
-				
-			} else if ("U".equals(tmpsts)) {
-				savevo.setRegTypCd("U");
-				result =+ argmapper.updateByPrimaryKey(savevo);
-				
-			} else if ("D".equals(tmpsts)) {
-				
-				result =+ argmapper.deleteByPrimaryKey(savevo.getAlgId(), savevo.getAlgArgId());
-				
-			}
-			
-		}
-		
-		return result;
-	}
-
-	/** insomnia */
-	public int delAlgorithmParam(WaaAlg algvo, List<WaaAlgArg> list) {
-		
-		int result = 0;
-				
-		LoginVO uservo = (LoginVO) UserDetailHelper.getAuthenticatedUser();
-		String userid = uservo.getUniqId();
-		
-		for (WaaAlgArg savevo : list) {
-			savevo.setWritUserId(userid); 			
-			savevo.setRegTypCd("D");	
-			
-			result =+ argmapper.deleteByPrimaryKey(savevo.getAlgId(), savevo.getAlgArgId());
-		}
-		
-		return result;
-	}
+//	/*
+//	@Inject
+//	private WaaAlgMapper mapper;
+//	
+//	@Inject
+//	private WaaAlgArgMapper argmapper;
+//	
+//	@Inject
+//	private EgovIdGnrService objectIdGnrService;
+//	*/
+//	
+//	/** insomnia */
+//	public List<WaaAlg> getAlgorithmList(WaaAlg search) {
+//		logger.debug("알고리즘 목록 조회:{}", search);
+//		
+//		return mapper.selectAlgorithmList(search);
+//	}
+//
+//	/** insomnia 
+//	 * @throws Exception */
+//	public int regAlgorithm(List<WaaAlg> list) throws Exception {
+//		logger.debug("알고리즘 저장");
+//		int result = 0;
+//		LoginVO uservo = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+//		String userid = uservo.getUniqId();
+//		
+//		//알고리즘 목록을 저장정한다.
+//		for (WaaAlg savevo : list) {
+//			savevo.setWritUserId(userid);
+//			
+//			String tmpsts = savevo.getIbsStatus();
+//			if ("I".equals(tmpsts)) {
+//				//알고리즘 ID 채번한다...
+//				String objid = objectIdGnrService.getNextStringId();
+//				savevo.setAlgId(objid);
+//				savevo.setRegTypCd("C");
+//				
+//				result =+ mapper.insert(savevo);
+//				
+//			} else if ("U".equals(tmpsts)) {
+//				savevo.setRegTypCd("U");
+//				result =+ mapper.updateByPrimaryKey(savevo);
+//				
+//			} else if ("D".equals(tmpsts)) {
+//				//삭제시 알고리즘에 포함된 변수목록도 삭제한다.
+//				argmapper.deleteByalgId(savevo.getAlgId());
+//				
+//				savevo.setRegTypCd("D");
+//				result =+ mapper.deleteByPrimaryKey(savevo.getAlgId());
+//			}
+//					
+//		}
+//		
+//		
+//		return result;
+//	}
+//
+//	/** insomnia */
+//	public int delAlgorithm(List<WaaAlg> list) {
+//		logger.debug("알고리즘 삭제");
+//		int result = 0;
+//		
+//		LoginVO uservo = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+//		String userid = uservo.getUniqId();
+//		
+//		for (WaaAlg savevo : list) {
+//			savevo.setWritUserId(userid);
+//			//삭제시 알고리즘에 포함된 변수목록도 삭제한다.
+//			argmapper.deleteByalgId(savevo.getAlgId());
+//			
+//			savevo.setRegTypCd("D");
+//			result =+ mapper.deleteByPrimaryKey(savevo.getAlgId());
+//		}
+//		
+//		return result;
+//	}
+//
+//	/** insomnia */
+//	public List<WaaAlgArg> getAlgorithmParam(WaaAlg search) {
+//		logger.debug("알고리즘 파라미터 조회 by 알고리즘ID:{}", search.getAlgId());
+//		return argmapper.selectArgListbyId(search);
+//	}
+//
+//	/** insomnia 
+//	 * @throws Exception */
+//	public int regAlgorithmParam(WaaAlg algvo, List<WaaAlgArg> list) throws Exception {
+//		logger.debug("알고리즘 파라미터 저장 by 알고리즘ID:{}", algvo.getAlgId());
+//		int result = 0 ;
+//		
+//		String algid = algvo.getAlgId();
+//		LoginVO uservo = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+//		String userid = uservo.getUniqId();
+//		
+//		for (WaaAlgArg savevo : list) {
+//			savevo.setWritUserId(userid);
+//			savevo.setAlgId(algid);
+//			String tmpsts = savevo.getIbsStatus();
+//			if ("I".equals(tmpsts)) {
+//				//파라미터 ID 채번한다...
+//				String objid = objectIdGnrService.getNextStringId();
+//				savevo.setAlgArgId(objid);
+//				savevo.setRegTypCd("C");
+//				
+//				result =+ argmapper.insert(savevo);
+//				
+//			} else if ("U".equals(tmpsts)) {
+//				savevo.setRegTypCd("U");
+//				result =+ argmapper.updateByPrimaryKey(savevo);
+//				
+//			} else if ("D".equals(tmpsts)) {
+//				
+//				result =+ argmapper.deleteByPrimaryKey(savevo.getAlgId(), savevo.getAlgArgId());
+//				
+//			}
+//			
+//		}
+//		
+//		return result;
+//	}
+//
+//	/** insomnia */
+//	public int delAlgorithmParam(WaaAlg algvo, List<WaaAlgArg> list) {
+//		
+//		int result = 0;
+//				
+//		LoginVO uservo = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+//		String userid = uservo.getUniqId();
+//		
+//		for (WaaAlgArg savevo : list) {
+//			savevo.setWritUserId(userid); 			
+//			savevo.setRegTypCd("D");	
+//			
+//			result =+ argmapper.deleteByPrimaryKey(savevo.getAlgId(), savevo.getAlgArgId());
+//		}
+//		
+//		return result;
+//	}
 
 }

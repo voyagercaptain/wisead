@@ -54,43 +54,43 @@ public class AlgorithmView {
 	
 	private Map<String, Object> codeMap;
 	
-	@Inject
-	private MessageSource message;
-
-	@Inject
-	private CodeListService codelistService;
-
-	@Inject
-	private CmcdCodeService cmcdCodeService;
-	
-	
-	/** request로 넘어오는 변수값을 바인딩시 처리로직을 공통으로 적용... */
-	@InitBinder
-	public void initBinder(WebDataBinder binder) {
-	    binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-	}
-	
-	
-	/** 공통코드 및 목록성 코드리스트를 가져온다. */
-	@ModelAttribute("codeMap")
-	public Map<String, Object> getcodeMap() {
-
-		codeMap = new HashMap<String, Object>();
-		
-		codeMap.put("algTypCd", cmcdCodeService.getCodeList("ALG_TYP_CD"));
-		codeMap.put("algTypCdibs", UtilJson.convertJsonString(cmcdCodeService.getCodeListIBS("ALG_TYP_CD")));
-		codeMap.put("varTypCdibs", UtilJson.convertJsonString(cmcdCodeService.getCodeListIBS("VAR_TYP_CD")));
-		codeMap.put("regTypCdibs", UtilJson.convertJsonString(cmcdCodeService.getCodeListIBS("REG_TYP_CD")));
-
-		return codeMap;
-	}
-	
-	@RequestMapping("/admin/ai/algorithm/algorithm_lst.do")
-	public String goAlgorithmMgmt(@ModelAttribute SearchVO search) {
-		logger.debug("알고리즘 관리화면으로 이동");
-		
-		
-		return "/admin/ai/algorithm/algorithm_lst";
-	}
+//	@Inject
+//	private MessageSource message;
+//
+//	@Inject
+//	private CodeListService codelistService;
+//
+//	@Inject
+//	private CmcdCodeService cmcdCodeService;
+//	
+//	
+//	/** request로 넘어오는 변수값을 바인딩시 처리로직을 공통으로 적용... */
+//	@InitBinder
+//	public void initBinder(WebDataBinder binder) {
+//	    binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+//	}
+//	
+//	
+//	/** 공통코드 및 목록성 코드리스트를 가져온다. */
+//	@ModelAttribute("codeMap")
+//	public Map<String, Object> getcodeMap() {
+//
+//		codeMap = new HashMap<String, Object>();
+//		
+//		codeMap.put("algTypCd", cmcdCodeService.getCodeList("ALG_TYP_CD"));
+//		codeMap.put("algTypCdibs", UtilJson.convertJsonString(cmcdCodeService.getCodeListIBS("ALG_TYP_CD")));
+//		codeMap.put("varTypCdibs", UtilJson.convertJsonString(cmcdCodeService.getCodeListIBS("VAR_TYP_CD")));
+//		codeMap.put("regTypCdibs", UtilJson.convertJsonString(cmcdCodeService.getCodeListIBS("REG_TYP_CD")));
+//
+//		return codeMap;
+//	}
+//	
+//	@RequestMapping("/admin/ai/algorithm/algorithm_lst.do")
+//	public String goAlgorithmMgmt(@ModelAttribute SearchVO search) {
+//		logger.debug("알고리즘 관리화면으로 이동");
+//		
+//		
+//		return "/admin/ai/algorithm/algorithm_lst";
+//	}
 
 }

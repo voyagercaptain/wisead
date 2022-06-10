@@ -1,6 +1,5 @@
 package kr.wise.advisor.prepare.outlier.service;
 
-import kr.wise.advisor.prepare.outlier.service.WadOtlDtc;
 import kr.wise.commons.cmm.annotation.Mapper;
 
 @Mapper

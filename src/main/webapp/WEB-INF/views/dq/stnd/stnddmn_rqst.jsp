@@ -332,25 +332,20 @@ function doAction(sAction)
     		//KeyField 1 인 것 가져오기 orgNm infotpLnm  objDescn dataType 
     		var len = grid_name.RowCount();
 			for(var i=0; i < len; i++) {
-				var orgNm = grid_name.GetCellValue(i+1,"orgNm");
-				var infotpLnm = grid_name.GetCellValue(i+1,"infotpLnm");
-				var dataType = grid_name.GetCellValue(i+1,"dataType");
-				var objDescn = grid_name.GetCellValue(i+1,"objDescn");
-				var str = orgNm == "" ? "기관명":"";
-				if(str == "") {
-					str += infotpLnm == "" ? "도메인명":"";
-				} else {
-					str += infotpLnm == "" ? ", 도메인명":"";	
-				}
-				if(str == "") {
-					str += objDescn == "" ? "도메인설명":"";
-				} else {
-					str += objDescn == "" ? ", 도메인설명":"";	
-				}
-				if(str == "") {
-					str += dataType == "" ? "데이터타입":"";
-				} else {
-					str += dataType == "" ? ", 데이터타입":"";	
+				var str = ""; 
+				for(var j=0; j < colsCount; j++) {
+				
+					var KeyField = grid_name.GetCellProperty(i+1, j+1, "KeyField");
+					var SaveName = grid_name.GetCellProperty(i+1, j+1, "SaveName");
+					
+					if(KeyField == "1") {
+						var SaveNameValue = grid_name.GetCellValue(i+1, SaveName);
+						if(str == "") {
+							str += SaveNameValue == "" ? headerText[j+1]:"";
+						} else {
+							str += SaveNameValue == "" ? ", " + headerText[j+1]:"";
+						}
+					}
 				}
 				if(str != "") {
 					str += " 누락";

@@ -334,42 +334,28 @@ function doAction(sAction)
 			break;
 			
     	case "Save":  //검증
-    		
     		//KeyField 1 인 것 가져오기 orgNm sditmLnm  pnm sditmPnm  objDescn 
-    		var len = grid_SDITM.RowCount();
+    		var len = grid_name.RowCount();
 			for(var i=0; i < len; i++) {
-				var orgNm = grid_SDITM.GetCellValue(i+1,"orgNm");
-				var sditmLnm = grid_SDITM.GetCellValue(i+1,"sditmLnm");
-				/* var pnm = grid_SDITM.GetCellValue(i+1,"pnm"); */
-				var sditmPnm = grid_SDITM.GetCellValue(i+1,"sditmPnm");
-				var objDescn = grid_SDITM.GetCellValue(i+1,"objDescn");
-				var str = orgNm == "" ? "기관명":"";
-				if(str == "") {
-					str += sditmLnm == "" ? "용어명":"";
-				} else {
-					str += sditmLnm == "" ? ", 용어명":"";	
-				}
-				/*
-				if(str == "") {
-					str += pnm == "" ? "영문명":"";
-				} else {
-					str += pnm == "" ? ", 영문명":"";	
-				}
-				*/
-				if(str == "") {
-					str += sditmPnm == "" ? "영문약어명":"";
-				} else {
-					str += sditmPnm == "" ? ", 영문약어명":"";	
-				}
-				if(str == "") {
-					str += objDescn == "" ? "용어설명":"";
-				} else {
-					str += objDescn == "" ? ", 용어설명":"";	
+				var str = ""; 
+				for(var j=0; j < colsCount; j++) {
+				
+					var KeyField = grid_name.GetCellProperty(i+1, j+1, "KeyField");
+					var SaveName = grid_name.GetCellProperty(i+1, j+1, "SaveName");
+					
+					if(KeyField == "1") {
+						var SaveNameValue = grid_name.GetCellValue(i+1, SaveName);
+						if(str == "") {
+							str += SaveNameValue == "" ? headerText[j+1]:"";
+						} else {
+							str += SaveNameValue == "" ? ", " + headerText[j+1]:"";
+						}
+					}
 				}
 				if(str != "") {
 					str += " 누락";
-					grid_SDITM.SetCellValue(i+1,"errChk", str);
-					grid_SDITM.SetRowFontColor(i+1,"#FF0000");
+					grid_name.SetCellValue(i+1,"errChk", str);
+					grid_name.SetRowFontColor(i+1,"#FF0000");
 				}
 			}
     	
