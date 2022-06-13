@@ -37,8 +37,7 @@ $(document).ready(function() {
 //         		alert("저장할 대상이 없습니다...");
         		showMsgBox("ERR", "<s:message code="ERR.CHKSAVE" />");
         		return;
-        	}
-	debugger		
+        	}		
         	var dbNames = '';
         	
         	for(var i = 1; i <= grid_sub.RowCount(); i++) {
@@ -215,6 +214,10 @@ function doAction(sAction)
 //         	ibsSaveJson = grid_sheet.GetSaveJson(1); //doAllSave와 동일한 대상을 가져옴...
         	//데이터 사이즈 확인...
         	if(SaveJson.data.length == 0) return;
+        	
+        	// main grid선택시 설정된 hidden orgCd 값 초기화
+        	// 저장 후 조회시 전체 조회하기 위해서 초기화 필요
+        	$("#frmSearch #orgCd").val('');
         	
         	var url = "<c:url value="/commons/user/userReglist.do"/>";
          	var param = "";
