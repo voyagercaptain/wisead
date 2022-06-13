@@ -80,6 +80,15 @@
 <!-- 		  	 AND B.EXP_DTM = DATE_FORMAT( '99991231', '%Y%m%d') -->
     where A.DMN_ID = #{dmnId,jdbcType=VARCHAR}
   </select>
+  
+  <select id="selectDomainDataType" resultType="java.util.Map" parameterType="java.util.Map">
+    select DATA_TYPE, DATA_LEN
+    from WAM_DB_DMN  
+    where INFOTP_LNM = #{domainNm,jdbcType=VARCHAR}
+    LIMIT 1
+  </select>
+  
+  
   <select id="selectTop30" resultMap="BaseResultMap" parameterType="kr.wise.dq.dbstnd.service.WamDbDmn">
   SELECT A.*<!-- , B.DATA_TYPE, B.DATA_LEN, B.DATA_SCAL  -->
 		 FROM WAM_DB_DMN A

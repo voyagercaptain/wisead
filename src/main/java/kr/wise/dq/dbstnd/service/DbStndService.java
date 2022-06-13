@@ -34,4 +34,6 @@ public interface DbStndService {
 	WamDbSditm selectUserOrg(String userId);
 	
 	List getDbList(WamDbSditm data);
+	
+	Map<String, String> selectDomainDataType(Map<String, String> param);
 }

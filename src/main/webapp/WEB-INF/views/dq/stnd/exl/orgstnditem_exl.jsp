@@ -88,19 +88,13 @@ function grid_SDITM_init() {
 					{Type:"Text",   Width:100,  SaveName:"stndCd", 	      Align:"Left", Edit:1, Hidden:0, ColMerge:0},  //표준코드명
 					{Type:"Text",   Width:100,  SaveName:"bsnssFld",      Align:"Left", Edit:1, Hidden:0}, //업무분야
 										
-					{Type:"Text",       Width:120,  SaveName:"dataType",	 	Align:"Left", Edit:1, Hidden:0, KeyField:1},
-					{Type:"Int",       Width:80,  SaveName:"dataLen",	 	    Align:"Left", Edit:1, Hidden:0, KeyField:1},
-					{Type:"Int",       Width:100,  SaveName:"dataScal",	 	Align:"Left", Edit:1, Hidden:1},
-					
-					
-					
-					
+					{Type:"Text",   Width:120,  SaveName:"dataType",	 	Align:"Left", Edit:1, Hidden:0, KeyField:1},
+					{Type:"Int",    Width:80,  SaveName:"dataLen",	 	    Align:"Left", Edit:1, Hidden:0, KeyField:1},
+					{Type:"Int",    Width:100,  SaveName:"dataScal",	 	Align:"Left", Edit:1, Hidden:1},
+
                     {Type:"Text",   Width:100,  SaveName:"saveFrm", 	 	Align:"Left", Edit:1, Hidden:1, KeyField:0},
 				    {Type:"Text",   Width:100,  SaveName:"exprsnFrm",	 	Align:"Left", Edit:1, Hidden:1},
 				    {Type:"Text",   Width:100,  SaveName:"unit",    	 	Align:"Left", Edit:1, Hidden:1},
-					
-				    
-				    
 				    
 					{Type:"Text",   Width:100,  SaveName:"admnStndCd", 	      Align:"Left", Edit:1, Hidden:0, ColMerge:0},  //행정표준코드명
 					

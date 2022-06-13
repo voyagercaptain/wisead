@@ -74,7 +74,10 @@ public class DbStndServiceImpl implements DbStndService {
     @Inject
 	private EgovIdGnrService requestIdGnrService;
 
-    
+    @Override
+    public Map<String, String> selectDomainDataType(Map<String, String> param) {
+    	return wamDbDmnMapper.selectDomainDataType(param);
+    }
     
 	@Override
 	public List<WamDbSditm> getStndItemList(WamDbSditm data) {
