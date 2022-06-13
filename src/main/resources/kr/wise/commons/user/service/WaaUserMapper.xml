@@ -424,9 +424,7 @@
       	<if test="userHtelno != null" >
       		AND	A.USER_HTELNO = #{userHtelno,jdbcType=VARCHAR}
       		</if>
-      	<if test="orgCd != null" >
-      		AND	D.ORG_CD = #{orgCd,jdbcType=VARCHAR}
-      		</if>
+      	
       </where>
       		ORDER BY USER_NM
     </select>   
