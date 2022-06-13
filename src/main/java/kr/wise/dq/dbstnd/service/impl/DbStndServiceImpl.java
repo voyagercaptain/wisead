@@ -11,6 +11,8 @@ import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.cmm.service.EgovIdGnrService;
 import kr.wise.commons.helper.UserDetailHelper;
 import kr.wise.commons.rqstmst.service.WaqMstr;
+import kr.wise.commons.user.service.WaaOrg;
+import kr.wise.commons.user.service.WaaUserMapper;
 import kr.wise.commons.util.UtilString;
 import kr.wise.dq.dbstnd.service.DbStndService;
 import kr.wise.dq.dbstnd.service.WamDbDmn;
@@ -62,6 +64,9 @@ public class DbStndServiceImpl implements DbStndService {
 	
 	@Inject
 	WapDbDvCanDicMapper wapDbDvCanDicMapper;
+	
+	@Inject
+	WaaUserMapper waaUserMapper;
 	
     @Inject
     private EgovIdGnrService objectIdGnrService;
@@ -480,5 +485,27 @@ public class DbStndServiceImpl implements DbStndService {
 		
 		return resultMap;
 		
+	}
+
+
+	@Override
+	public List getDbList(WamDbSditm data) {
+		
+		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+		String userid = user.getUniqId();
+		List dbList = new ArrayList();
+		
+		// TODO : 권한그룹을 코드로 관리해야할지 고민 필요
+		if ("2".equals(user.getUsergId()) || "3".equals(user.getUsergId()) || "OBJ_00000034586".equals(user.getUsergId())) {
+			WaaOrg waaOrg = new WaaOrg();
+			waaOrg.setOrgCd(data.getOrgCd());
+			waaOrg.setOrgNm(data.getOrgNm());
+
+			dbList = wamDbSditmMapper.selectOrgDbList(waaOrg);
+		} 
+		else {
+			dbList = wamDbSditmMapper.selectUserDbList(user.getId());
+		}
+		return dbList;
 	}
 }

@@ -32,4 +32,6 @@ public interface DbStndService {
 	List<WamDbSditm> selectUserDbList(String userId);
 	List<WamDbSditm> selectUserOrgList(String userId);
 	WamDbSditm selectUserOrg(String userId);
+	
+	List getDbList(WamDbSditm data);
 }

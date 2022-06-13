@@ -756,4 +756,15 @@ public class DbStndTotRqstCtrl {
 	    	
 	    	return new IBSResultVO<WapDbDvCanAsm>(resultMap, result, resmsg, action);
 	    }
+	    
+	    @RequestMapping("/dq/dbstnd/getDbList.do")
+	    @ResponseBody
+	    public List getUserDbList(@ModelAttribute WamDbSditm data, Locale locale, HttpSession session) throws Exception {
+	    	
+	    	List dbList = new ArrayList();
+	    	dbList = dbStndService.getDbList(data);
+	    	
+	    	return dbList;
+	    }
+	    
 }
