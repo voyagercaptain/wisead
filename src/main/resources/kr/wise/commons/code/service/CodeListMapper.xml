@@ -1101,14 +1101,14 @@ SELECT A.CD_VAL AS CODE_CD
      SELECT ORG_CD AS CODE_CD, 
      		ORG_NM AS CODE_LNM 
        FROM waa_org 
-      ORDER BY ORG_CD
+      ORDER BY ORG_NM
   </select>
   
   <select id="getUserGroupList" resultMap="BaseResultMap" parameterType="java.lang.String">
      SELECT ORG_CD AS CODE_CD, 
      		ORG_NM AS CODE_LNM 
        FROM waa_org 
-      ORDER BY ORG_CD
+      ORDER BY ORG_NM
   </select>
   
   <select id="getOrgList" resultMap="BaseResultMap" parameterType="java.lang.String">
@@ -1117,7 +1117,7 @@ SELECT A.CD_VAL AS CODE_CD
 	   FROM waa_org A, waa_user_org B
 	   where A.org_cd = B.org_cd 
 	   and B.user_id = #{userId}
-	  ORDER BY A.ORG_CD
+	  ORDER BY A.ORG_NM
   </select>
   
 </mapper>
