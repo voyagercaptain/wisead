@@ -799,4 +799,34 @@ public class DbStndTotRqstCtrl {
 			
 	    	return body;
 	    }
+	    
+	    
+	    @ResponseBody
+		@RequestMapping(value = "/dq/stnd/getDbDomainDataType.do", method = { RequestMethod.GET, RequestMethod.POST}, produces = "application/text; charset=utf8")
+		public String getDbDomainDataType(@RequestBody Map<String, String> params) throws Exception {
+	    	
+	    	logger.info("params params : " + params.toString());
+	    	ObjectMapper mapper = new ObjectMapper();
+	    	
+	    	String dataType = params.get("dataType");
+	    	String dataLen = params.get("dataLen");
+	    	String orgNm = params.get("orgNm");
+	    	String domainNm = params.get("domainNm");
+	    	
+	    	if(!"".equals(dataType) && !"".equals(dataLen)) {
+	    		return mapper.writeValueAsString(null);
+	    	}
+	    	if("".equals(domainNm)) {
+	    		return mapper.writeValueAsString(null);
+	    	}
+	    	
+	    	
+	    	Map result = dbStndService.selectDbDomainDataType(params);
+	    	
+			String body = mapper.writeValueAsString(result);
+	    	
+			logger.info("body body : " + body);
+			
+	    	return body;
+	    }
 }

@@ -34,5 +34,7 @@ public interface WamDbDmnMapper {
 	List<WamDbDmn> selectDmnChangeList(@Param("dmnId") String dmnId);
 	
 	Map<String, String> selectDomainDataType(Map<String, String> param);
+	
+	Map<String, String> selectDbDomainDataType(Map<String, String> param);
 
 }

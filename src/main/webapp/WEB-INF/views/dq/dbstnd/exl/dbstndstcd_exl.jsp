@@ -30,6 +30,8 @@ $(window).resize( function(){
     }
 );
 
+var colsCount = 0;
+var headerText = [];
 function grid_STCD_init() {
 
     with(grid_STCD){
@@ -43,7 +45,9 @@ function grid_STCD_init() {
 		//No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|STWDID|기관명|DB명|표준단어명|영문약어명|단어영문명|단어설명|형식단어여부|도메인분류명|이음동의어목록|금칙어목록|등록일자|요청자ID|요청자명|요청번호|요청일련번호
 		
  		//var headtext  = "No.|상태|선택|commCdId|기관명|DB명|한글코드명|코드설명|데이터타입|데이터길이|영문코드명|관리부서명|제정일자|특이사항|코드값|코드값의미|코드값설명|상위코드값|사용여부";
- 		var headtext  = "No.|상태|선택|기관명|DB명|관리부서명|commCdId|코드명(한글)|코드명(영문)|코드설명|데이터타입|데이터길이|코드값|코드값의미|코드값설명|제정일자|특이사항|상위코드값|사용여부";
+ 		var headtext  = "No.|상태|선택|기관명|DB명|관리부서명|commCdId|코드명(한글)|코드명(영문)|코드설명|데이터타입|데이터길이|코드값|코드값의미|코드값설명|제정일자|특이사항|상위코드값|사용여부|필수항목";
+ 		headerText = headtext.split("|");
+ 		
 		var headers = [
 					{Text:headtext, Align:"Center"}
 				];
@@ -58,7 +62,7 @@ function grid_STCD_init() {
 			{Type:"CheckBox", Width:50, SaveName:"ibsCheck",    Align:"Center", Edit:1, Hidden:0, Sort:0},
 			
 			{Type:"Text",   Width:100,  SaveName:"orgNm",   	Align:"Left", Edit:1, KeyField:1},
-			{Type:"Text",   Width:100,  SaveName:"dbNm",     Align:"Left", Edit:1, KeyField:0},
+			{Type:"Text",   Width:100,  SaveName:"dbNm",     Align:"Left", Edit:1, KeyField:1},
 			
 			{Type:"Text",   Width:100,  SaveName:"mngDeptCd",	 	Align:"Left", Edit:1, Hidden:0},
 			
@@ -67,19 +71,22 @@ function grid_STCD_init() {
 			{Type:"Text",   Width:100,  SaveName:"commCdNm",   	Align:"Left", Edit:1, KeyField:1},
 			{Type:"Text",  Width:150,   SaveName:"comnCdEnnm",	 	Align:"Center", Edit:1, Hidden:0, KeyField:1},
 			
-			{Type:"Text",   Width:150,  SaveName:"commCdDesc", 	Align:"Left", Edit:1, Hidden:0, KeyField:1},
-			{Type:"Text",   Width:100,  SaveName:"comnCdDttpNm",   	Align:"Left", Edit:1, KeyField:1}, 
-			{Type:"Int",   Width:80,  SaveName:"comnCdDataLen",	Align:"Left", Edit:1, KeyField:1},
+			{Type:"Text",   Width:150,  SaveName:"commCdDesc", 	Align:"Left", Edit:1, Hidden:0, KeyField:0},
+			{Type:"Text",   Width:100,  SaveName:"comnCdDttpNm",   	Align:"Left", Edit:1, KeyField:0}, 
+			{Type:"Int",   Width:80,  SaveName:"comnCdDataLen",	Align:"Left", Edit:1, KeyField:0},
 			
 			{Type:"Text",   Width:100,  SaveName:"commDtlCdNm",	    Align:"Left", Edit:1, Hidden:0, KeyField:1},
 			{Type:"Text",   Width:100,  SaveName:"commDtlCdMn",	    Align:"Left", Edit:1, Hidden:0, KeyField:1},
-			{Type:"Text",   Width:100,  SaveName:"commDtlCdDesc",	    Align:"Left", Edit:1, Hidden:0, KeyField:1},
+			{Type:"Text",   Width:100,  SaveName:"commDtlCdDesc",	    Align:"Left", Edit:1, Hidden:0, KeyField:0},
 			
-			{Type:"Text",   Width:80,  SaveName:"writDtm",  	Align:"Center", Edit:0, Format:"yyyy-MM-dd HH:mm:ss"},
+			{Type:"Text",   Width:80,  SaveName:"writDtm",  	Align:"Center", Edit:0, Format:"yyyyMMdd", KeyField:1},
 			{Type:"Text",   Width:150,  SaveName:"pclrMtr",	    Align:"Left", Edit:1, Hidden:0},
 			{Type:"Text",   Width:100,  SaveName:"uppCommCdId",	    Align:"Left", Edit:1, Hidden:0, KeyField:0},
 			{Type:"Combo",   Width:80,  SaveName:"useYn",	    Align:"Left", Edit:1, Hidden:0},
+			{Type:"Text",   Width:150,  SaveName:"errChk",	    Align:"Left", Edit:1, Hidden:0}
 		];
+		
+		colsCount = cols.length;
 		
 		InitColumns(cols);
 		

@@ -323,6 +323,37 @@ function doAction(sAction)
 			break;
 			
     	case "Save":  //검증
+    	
+    		//KeyField 1 인 것 가져오기 orgNm sditmLnm  pnm sditmPnm  objDescn 
+    		var len = grid_name.RowCount();
+    		for(var i=0; i < len; i++) {
+    			var str = "";
+    			for(var j=0; j < colsCount; j++) {
+    				var KeyField = grid_name.GetCellProperty(i+1, j+1, "KeyField");
+    				var SaveName = grid_name.GetCellProperty(i+1, j+1, "SaveName");
+    				
+    				if(KeyField == "1") {
+    					var SaveNameValue = grid_name.GetCellValue(i+1, SaveName);
+    					if(str == "") {
+    						str += SaveNameValue == "" ? headerText[j+1]:"";
+    					} else {
+    						str += SaveNameValue == "" ? ", " + headerText[j+1]:"";
+    					}
+    				}
+    			}
+    			
+    			var errChk = grid_name.GetCellValue(i+1, "errChk");
+    			if(str != "") {
+    				if(errChk != "") {
+    					str = errChk + ", " + str +  " 누락";
+    				} else {
+    					str += " 누락";	
+    				}
+    				grid_name.SetCellValue(i+1,"errChk", str);
+    				grid_name.SetRowFontColor(i+1,"#FF0000");
+    			}
+    		}
+    	
     		//저장 대상의 데이터를 Json 객체로 반환한다.
 			ibsSaveJson = grid_name.GetSaveJson(0);
     	
@@ -366,6 +397,8 @@ function doAction(sAction)
 				}
 				url = '<c:url value="/dq/dbstnd/regdmnWamlist.do"/>';
 			}else if(bizDtlCd == "STWD"){
+				
+				/*
 				var row = grid_name.ColValueDup("dbNm|stwdLnm|stwdPnm");
 				var rows = grid_name.ColValueDupRows("dbNm|stwdLnm|stwdPnm");
 				
@@ -378,7 +411,7 @@ function doAction(sAction)
 				    }
 					return;
 				}				
-
+				*/
 				url = '<c:url value="/dq/dbstnd/regStndWordWamlist.do"/>';
 			}
 			

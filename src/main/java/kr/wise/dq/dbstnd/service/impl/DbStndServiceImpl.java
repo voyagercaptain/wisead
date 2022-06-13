@@ -79,6 +79,11 @@ public class DbStndServiceImpl implements DbStndService {
     	return wamDbDmnMapper.selectDomainDataType(param);
     }
     
+    @Override
+    public Map<String, String> selectDbDomainDataType(Map<String, String> param) {
+    	return wamDbDmnMapper.selectDbDomainDataType(param);
+    }
+    
 	@Override
 	public List<WamDbSditm> getStndItemList(WamDbSditm data) {
 		
@@ -511,4 +516,5 @@ public class DbStndServiceImpl implements DbStndService {
 		}
 		return dbList;
 	}
+
 }

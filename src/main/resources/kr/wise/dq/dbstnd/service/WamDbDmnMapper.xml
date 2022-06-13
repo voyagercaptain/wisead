@@ -83,8 +83,17 @@
   
   <select id="selectDomainDataType" resultType="java.util.Map" parameterType="java.util.Map">
     select DATA_TYPE, DATA_LEN
+    from WAM_DMN  
+    where INFOTP_LNM = #{domainNm,jdbcType=VARCHAR}
+      AND ORG_NM = #{orgNm,jdbcType=VARCHAR}
+    LIMIT 1
+  </select>
+  
+   <select id="selectDbDomainDataType" resultType="java.util.Map" parameterType="java.util.Map">
+    select DATA_TYPE, DATA_LEN
     from WAM_DB_DMN  
     where INFOTP_LNM = #{domainNm,jdbcType=VARCHAR}
+      AND ORG_NM = #{orgNm,jdbcType=VARCHAR}
     LIMIT 1
   </select>
   
