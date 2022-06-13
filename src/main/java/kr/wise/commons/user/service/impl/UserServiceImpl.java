@@ -32,6 +32,7 @@ import kr.wise.commons.user.service.WaaOrg;
 import kr.wise.commons.user.service.WaaUser;
 import kr.wise.commons.user.service.WaaUserMapper;
 import kr.wise.commons.util.UtilObject;
+import kr.wise.dq.dbstnd.service.WamDbSditmMapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +61,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Inject
 	private WaaDeptMapper deptMapper;
+	
+	@Inject
+	private WamDbSditmMapper wamDbSditmMapper;
 	
 	@Inject
 	private BasicInfoLvlService basicInfoLvlService;
@@ -315,5 +319,10 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public List<WaaOrg> getOrgDbList(WaaOrg waaOrg) throws Exception {
+		return wamDbSditmMapper.selectOrgDbList(waaOrg);
 	}
 }

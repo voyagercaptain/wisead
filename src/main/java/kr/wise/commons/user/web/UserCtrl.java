@@ -200,7 +200,17 @@ public class UserCtrl {
 		List<WaaUser> list = userService.getList(search);
 		return new IBSheetListVO<WaaUser>(list, list.size());
 	}
+	
+	/** 사용자 DB 목록 조회 - IBSheet JSON */
+	@RequestMapping("dbSelectList.do")
+	@ResponseBody
+	public IBSheetListVO<WaaOrg> dbSelectList(@ModelAttribute WaaOrg search) throws Exception {
+		logger.debug("{}", search);
+		List<WaaOrg> list = userService.getOrgDbList(search);
+		return new IBSheetListVO<WaaOrg>(list, list.size());
+	}
 
+	
 
 	/** 사용자 리스트 조회 - IBSheet JSON 
 	 * @throws Exception */

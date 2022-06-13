@@ -42,4 +42,6 @@ public interface UserService {
 	public List<WaaOrg> getOrgList(WaaOrg waaOrg) throws Exception;
 	
 	public int regOrgList(ArrayList<WaaOrg> list) throws Exception;
+	
+	public List<WaaOrg> getOrgDbList(WaaOrg waaOrg) throws Exception;
 }

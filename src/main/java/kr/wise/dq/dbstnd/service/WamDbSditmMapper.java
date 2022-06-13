@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import kr.wise.commons.cmm.annotation.Mapper;
+import kr.wise.commons.user.service.WaaOrg;
 
 @Mapper
 public interface WamDbSditmMapper {
@@ -34,6 +35,8 @@ public interface WamDbSditmMapper {
 	
 	List<WamDbSditm> selectUserOrgList(String userId);
 	
+	List selectOrgDbList(WaaOrg waaOrg);
+	
 	WamDbSditm selectUserOrg(String userId);
 	
 	int checkStwdAbr();
@@ -43,5 +46,8 @@ public interface WamDbSditmMapper {
 	int checkDmnYnExsitsLnm();
 	
 	int updateVrfRmkNull();
+	
+	
+    
 	
 }

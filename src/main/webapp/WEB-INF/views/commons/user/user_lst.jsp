@@ -38,6 +38,19 @@ $(document).ready(function() {
         		showMsgBox("ERR", "<s:message code="ERR.CHKSAVE" />");
         		return;
         	}
+	debugger		
+        	var dbNames = '';
+        	
+        	for(var i = 1; i <= grid_sub.RowCount(); i++) {
+        		 
+        		var status =  grid_sub.GetCellValue(i,"ibsStatus");
+        		 
+        		if(status == 'U') {
+        			dbNames = dbNames + grid_sub.GetCellValue(i,"dbNm") + ","; 
+        		}
+        	}
+        	
+        	grid_sheet.SetCellValue(grid_sheet.GetSelectRow(), "dbName", dbNames);
         	
         	//저장할래요? 확인창...
     		var message = "<s:message code="CNF.SAVE" />";
@@ -84,7 +97,7 @@ $(window).resize(
     
     function(){
                 
-    	setibsheight($("#grid_01"));
+    	//setibsheight($("#grid_01"));
     }
 );
 
@@ -123,6 +136,7 @@ function initGrid()
                     {Type:"Text",     Width:120,  SaveName:"jgdNm",        Align:"Left", 	 Edit:1},
                     {Type:"Text",     Width:120,  SaveName:"dbName",        Align:"Left", 	 Edit:1},
                     {Type:"Combo",     Width:120,  SaveName:"orgCd",        Align:"Left", 	 Edit:1, KeyField:1},
+                    {Type:"Combo",     Width:120,  SaveName:"orgNm",        Align:"Left", 	 Hidden:1},
                     {Type:"Text",     Width:130,  SaveName:"userTelno",    Align:"Left",   Edit:1, Hidden:0},
                     {Type:"Text",     Width:130,  SaveName:"userHtelno",   Align:"Left",   Edit:1, Hidden:0},
                     {Type:"Text",     Width:130,  SaveName:"emailAddr",      Align:"Left",   Edit:1, Hidden:0},
@@ -214,6 +228,16 @@ function doAction(sAction)
         	
         	break;
        
+        case "SearchDB":
+            if ($('#frmSearch #orgCd').val() == null || $('#frmSearch #orgCd').val() == '') {
+            	showMsgBox("ERR", "<s:message code='MSG.INQ.USER.GRP.CHC' />"); /* 조회할 사용자그룹을 먼저 선택하세요. */
+            	return;
+            }
+            var param = $('#frmSearch').serialize();
+            	
+           	grid_sub.DoSearch('<c:url value="/commons/user/dbSelectList.do" />', param);
+            	
+           	break;
         case "Down2Excel":  //엑셀내려받기
         
           
@@ -280,7 +304,24 @@ function postProcessIBS(res) {
 function grid_sheet_OnDblClick(row, col, value, cellx, celly) {
     
 	if(row < 1) return;
-
+	
+	//선택한 셀이 Edit 가능한 경우는 리턴...
+	if(grid_sheet.GetColEditable(col)) return;
+	
+	//선택한 상세정보를 가져온다...
+	var param =  grid_sheet.GetRowJson(row);
+	
+	//선택한 그리드의 row 내용을 보여준다.....
+	// TODO: 메시지 추가
+	// var tmphtml = '<s:message code="USER.GRP.NM" /> : ' + param.usergLnm; /* 사용자기관명 */
+	var tmphtml = '사용자기관명 : ' + grid_sheet.GetCellText(row, "orgCd"); /* 사용자기관명 */
+	$('#userg_sel_title').html(tmphtml);
+	
+	$("#frmSearch #orgCd").val(param.orgCd);
+	
+	//메뉴ID를 토대로 조회한다....
+	doAction("SearchDB");
+	
 }
 
 function grid_sheet_OnClick(row, col, value, cellx, celly) {
@@ -504,6 +545,7 @@ function grid_sheet_OnSaveEnd(code, message) {
             
             <input type="hidden" name="saveCls" id="saveCls"  />   
             <input type="hidden" name="usrId"   id="usrId" />
+            <input type="hidden" name="orgCd"   id="orgCd" />
             <%-- <input type="hidden" name="hidUsergId" id="hidUsergId"  value="<c:out value='${sessionScope.loginVO.usergId}' escapeXml="true" />" />
             <input type="hidden" name="hidOrgCd" id="hidOrgCd"  value="<c:out value='${sessionScope.loginVO.orgCd}' escapeXml="true" />" /> --%>
             
@@ -514,18 +556,37 @@ function grid_sheet_OnSaveEnd(code, message) {
 		<div style="clear:both; height:10px;"><span></span></div>
    
         <!-- 조회버튼영역  -->         
-		<tiles:insertTemplate template="/WEB-INF/decorators/buttonMain.jsp" /> 
-</div>        
-
+		<tiles:insertTemplate template="/WEB-INF/decorators/buttonMain.jsp" />   
 	<div style="clear:both; height:5px;"><span></span></div>
         
 	<!-- 그리드 입력 입력 -->
 	<div id="grid_01" class="grid_01">
-	     <script type="text/javascript">createIBSheet("grid_sheet", "100%", "300px");</script>            
+	     <script type="text/javascript">createIBSheet("grid_sheet", "100%", "250px");</script>            
 
 	</div>
 	<!-- 그리드 입력 입력 -->
 
+	<div style="clear:both; height:5px;"><span></span></div>
+<!-- 그리드 하단 영역 : 레코드 선택시 내용 표시 및 수정 가능하도록 -->
+	<div class="selected_title_area">
+		    <div class="selected_title" id="userg_sel_title"> <span></span></div>
+	</div>
+	<!-- 그리드 하단 영역 : 레코드 선택시 내용 표시 및 수정 가능하도록 End-->
+	<div style="clear:both; height:5px;"><span></span></div>
 
+	<!-- 선택 레코드의 내용을 탭처리... -->
+	<div id="tabs">
+	  <ul>
+	    <li><a href="#tabs-1">접근 DB 권한</a></li> <!-- 메뉴권한 정보 -->
+	  </ul>
+	  <div id="tabs-1">
+			<!-- 	상세정보 ajax 로드시 이용 -->
+			<%@include file="user_dtl.jsp" %>
+<!-- 			<div id="detailInfo"></div> -->
+			<!-- 	상세정보 ajax 로드시 이용 END -->
+	  </div>
+	 </div>
+	<!-- 선택 레코드의 내용을 탭처리 END -->
+	
 </body>
 </html>
