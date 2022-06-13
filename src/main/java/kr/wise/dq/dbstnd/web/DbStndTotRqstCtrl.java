@@ -67,7 +67,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class DbStndTotRqstCtrl {
@@ -767,4 +770,33 @@ public class DbStndTotRqstCtrl {
 	    	return dbList;
 	    }
 	    
+	    
+	    @ResponseBody
+		@RequestMapping(value = "/dq/stnd/getDomainDataType.do", method = { RequestMethod.GET, RequestMethod.POST}, produces = "application/text; charset=utf8")
+		public String getDomainDataType(@RequestBody Map<String, String> params) throws Exception {
+	    	
+	    	logger.info("params params : " + params.toString());
+	    	ObjectMapper mapper = new ObjectMapper();
+	    	
+	    	String dataType = params.get("dataType");
+	    	String dataLen = params.get("dataLen");
+	    	String orgNm = params.get("orgNm");
+	    	String domainNm = params.get("domainNm");
+	    	
+	    	if(!"".equals(dataType) && !"".equals(dataLen)) {
+	    		return mapper.writeValueAsString(null);
+	    	}
+	    	if("".equals(domainNm)) {
+	    		return mapper.writeValueAsString(null);
+	    	}
+	    	
+	    	
+	    	Map result = dbStndService.selectDomainDataType(params);
+	    	
+			String body = mapper.writeValueAsString(result);
+	    	
+			logger.info("body body : " + body);
+			
+	    	return body;
+	    }
 }

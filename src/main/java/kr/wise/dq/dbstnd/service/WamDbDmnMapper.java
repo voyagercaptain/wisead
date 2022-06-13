@@ -2,6 +2,7 @@ package kr.wise.dq.dbstnd.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import kr.wise.commons.cmm.annotation.Mapper;
@@ -31,5 +32,7 @@ public interface WamDbDmnMapper {
 	List<WamDbDmn> selectTop30(WamDbDmn record);
 	
 	List<WamDbDmn> selectDmnChangeList(@Param("dmnId") String dmnId);
+	
+	Map<String, String> selectDomainDataType(Map<String, String> param);
 
 }
