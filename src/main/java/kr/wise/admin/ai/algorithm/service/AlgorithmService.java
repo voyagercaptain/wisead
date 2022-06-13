@@ -29,30 +29,30 @@ public interface AlgorithmService {
 
 	/** @param search
 	/** @return insomnia */
-	List<WaaAlg> getAlgorithmList(WaaAlg search);
-
-	/** @param list
-	/** @return insomnia 
-	 * @throws Exception */
-	int regAlgorithm(List<WaaAlg> list) throws Exception;
-
-	/** @param list
-	/** @return insomnia */
-	int delAlgorithm(List<WaaAlg> list);
-
-	/** @param search
-	/** @return insomnia */
-	List<WaaAlgArg> getAlgorithmParam(WaaAlg search);
-
-	/** @param algvo
-	/** @param list
-	/** @return insomnia 
-	 * @throws Exception */
-	int regAlgorithmParam(WaaAlg algvo, List<WaaAlgArg> list) throws Exception;
-
-	/** @param algvo
-	/** @param list
-	/** @return insomnia */
-	int delAlgorithmParam(WaaAlg algvo, List<WaaAlgArg> list);
+//	List<WaaAlg> getAlgorithmList(WaaAlg search);
+//
+//	/** @param list
+//	/** @return insomnia 
+//	 * @throws Exception */
+//	int regAlgorithm(List<WaaAlg> list) throws Exception;
+//
+//	/** @param list
+//	/** @return insomnia */
+//	int delAlgorithm(List<WaaAlg> list);
+//
+//	/** @param search
+//	/** @return insomnia */
+//	List<WaaAlgArg> getAlgorithmParam(WaaAlg search);
+//
+//	/** @param algvo
+//	/** @param list
+//	/** @return insomnia 
+//	 * @throws Exception */
+//	int regAlgorithmParam(WaaAlg algvo, List<WaaAlgArg> list) throws Exception;
+//
+//	/** @param algvo
+//	/** @param list
+//	/** @return insomnia */
+//	int delAlgorithmParam(WaaAlg algvo, List<WaaAlgArg> list);
 
 }

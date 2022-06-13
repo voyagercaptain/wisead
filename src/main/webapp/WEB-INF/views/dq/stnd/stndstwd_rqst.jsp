@@ -328,43 +328,23 @@ function doAction(sAction)
 			break;
 			
     	case "Save":  //검증
-    	
     		//KeyField 1 인 것 가져오기 orgNm stwdLnm engMean  stwdPnm objDescn  dmnYn
     		var len = grid_name.RowCount();
 			for(var i=0; i < len; i++) {
-				var orgNm = grid_name.GetCellValue(i+1,"orgNm");
-				var stwdLnm = grid_name.GetCellValue(i+1,"stwdLnm");
-				/* var engMean = grid_name.GetCellValue(i+1,"engMean"); */
-				var stwdPnm = grid_name.GetCellValue(i+1,"stwdPnm");
-				var objDescn = grid_name.GetCellValue(i+1,"objDescn");
-				var dmnYn = grid_name.GetCellValue(i+1,"dmnYn");
-				var str = orgNm == "" ? "기관명":"";
-				if(str == "") {
-					str += stwdLnm == "" ? "표준단어명":"";
-				} else {
-					str += stwdLnm == "" ? ", 표준단어명":"";	
-				}
-				/*
-				if(str == "") {
-					str += engMean == "" ? "단어영문명":"";
-				} else {
-					str += engMean == "" ? ", 단어영문명":"";	
-				}
-				*/
-				if(str == "") {
-					str += stwdPnm == "" ? "단어영문약어명":"";
-				} else {
-					str += stwdPnm == "" ? ", 단어영문약어명":"";	
-				}
-				if(str == "") {
-					str += objDescn == "" ? "단어설명":"";
-				} else {
-					str += objDescn == "" ? ", 단어설명":"";	
-				}
-				if(str == "") {
-					str += dmnYn == "" ? "형식단어여부":"";
-				} else {
-					str += dmnYn == "" ? ", 형식단어여부":"";	
+				var str = ""; 
+				for(var j=0; j < colsCount; j++) {
+				
+					var KeyField = grid_name.GetCellProperty(i+1, j+1, "KeyField");
+					var SaveName = grid_name.GetCellProperty(i+1, j+1, "SaveName");
+					
+					if(KeyField == "1") {
+						var SaveNameValue = grid_name.GetCellValue(i+1, SaveName);
+						if(str == "") {
+							str += SaveNameValue == "" ? headerText[j+1]:"";
+						} else {
+							str += SaveNameValue == "" ? ", " + headerText[j+1]:"";
+						}
+					}
 				}
 				if(str != "") {
 					str += " 누락";
