@@ -346,6 +346,7 @@ function doAction(sAction)
     {
     	case "New":  //그리드추가
     		grid_name.DataInsert(0);
+    		grid_name.SetCellValue(1,"orgNm", "${userOrg.orgNm}");
         	break;
 
 		case "AddWam": //기존 표준단어 추가
@@ -419,7 +420,7 @@ function doAction(sAction)
     		for(var i = 0; i < len; i++) {
     			var dataType = grid_name.GetCellValue(i+1,"dataType");
         		var dataLen = grid_name.GetCellValue(i+1,"dataLen");
-        		var orgNm = grid_name.GetCellValue(i+1,"orgNm");
+        		var orgNm = "${userOrg.orgNm}";
         		var sditmLnm = grid_name.GetCellValue(i+1,"sditmLnm"); //표준용어명
         		var infotpLnm = grid_name.GetCellValue(i+1,"infotpLnm"); //표준도메인명
 
