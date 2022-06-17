@@ -473,6 +473,12 @@ public class UserCtrl {
 
 		return new IBSResultVO<WaaOrg>(result, resmsg, action);
 	}
-	
 
+	@RequestMapping("initPwd.do")
+	@ResponseBody
+	public String initPwd(@ModelAttribute WaaUser waaUser, HttpServletResponse response) throws Exception {
+		logger.debug("{}", waaUser);
+		userService.initPwd(waaUser);
+		return null;
+	}
 }

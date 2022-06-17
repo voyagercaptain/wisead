@@ -73,7 +73,17 @@ public class LoginVO implements Serializable{
 	private String orgCd;
 	
 	private String loginAcId;
-	
+
+	public String getChgPwd() {
+		return chgPwd;
+	}
+
+	public void setChgPwd(String chgPwd) {
+		this.chgPwd = chgPwd;
+	}
+
+	private String chgPwd;
+
 	/**
 	 * id attribute 를 리턴한다.
 	 * @return String

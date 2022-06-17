@@ -23,9 +23,15 @@ $(document).ready(function() {
 	
 	//탭 초기화....
 	//$( "#tabs" ).tabs();
-	
+
 	$( "#divTabs-rqstvrf" ).tabs();
-	
+
+	//정보변경 처리...
+	var	flag = '${sessionScope.loginVO.chgPwd}';
+	if (flag === 'N') {
+		openLayerPop("<c:url value='/commons/user/gousrInfoChngPop.do' />", 550, 290);
+	};
+
 	//업무구분상세 초기화...
 	//$("#mstFrm #bizDtlCd").val("${waqMstr.bizDtlCd}");
 	$("#mstFrm #bizDtlCd").val("SDITM");
@@ -678,6 +684,7 @@ function postProcessIBS(res) {
                  </table>   
             </div>
             </fieldset>
+<%--			<input type="hidden" id="chgPwd" value="<%=sessionScope.loginVO.chgPwd%>" />--%>
         </form>
 		<div style="clear:both; height:10px;"><span></span></div>
 </div>

@@ -3,9 +3,11 @@ package kr.wise.commons.user.service;
 import java.util.List;
 import java.util.Map;
 
+import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.user.WaaUserg;
 
 import kr.wise.commons.cmm.annotation.Mapper;
+import org.apache.commons.logging.Log;
 
 
 @Mapper
@@ -64,4 +66,6 @@ public interface WaaUserMapper {
     public List<WaaOrg> selectOrgList(WaaOrg waaOrg);
     
     int regOrgList(WaaOrg record);
+
+    int initPwd(WaaUser waaUser);
 }

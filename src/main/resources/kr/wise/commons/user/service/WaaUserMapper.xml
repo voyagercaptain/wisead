@@ -74,6 +74,7 @@
   	insert into WAA_USER
     <trim prefix="(" suffix=")" suffixOverrides="," >
     	VERIFY,
+        CHG_PWD,
       <if test="userId != null" >
         USER_ID,
       </if>
@@ -138,6 +139,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
     	'Y',
+  	    'N',
       <if test="userId != null" >
         #{userId,jdbcType=VARCHAR},
       </if>
@@ -500,7 +502,8 @@
   <update id="updateUserInfo" parameterType="kr.wise.commons.user.service.WaaUser" >
     UPDATE WAA_USER
     SET  LOGIN_AC_PWD = #{loginAcPwd,jdbcType=VARCHAR},
-    	 PWD_EXP_DT = NULL
+    	 PWD_EXP_DT = NULL,
+         CHG_PWD = 'Y'
     WHERE  EXP_DTM = DATE_FORMAT( '9999-12-31', '%Y-%m-%d')
     AND    REG_TYP_CD IN ('C', 'U')
     AND    USER_ID = #{userId,jdbcType=VARCHAR}
@@ -531,6 +534,7 @@
 							, APRV_USER_ID
 							, VERIFY
 							, COM_CD
+                            , CHG_PWD
 			  )
 			          VALUES (#{userId}
 			                , '4500000002'
@@ -549,7 +553,8 @@
 			                , now()
 			                , 'admin'
 			                , 'Y'
-			               , #{comCd} )
+			               , #{comCd}
+			               , 'N')
 	</insert>
 
 	<update id ="updateVerify">
@@ -626,5 +631,11 @@
 			   	#{rqstUserId}
 		    )
 	</insert>
-	
+
+    <update id="initPwd" parameterType="kr.wise.commons.user.WaaUserg">
+        update waa_user
+           set login_ac_pwd = '8c6976e5b541415bde98bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918',
+               chg_pwd = 'N'
+         where user_id = #{userId}
+    </update>
 </mapper>

@@ -486,14 +486,14 @@
 		$("body").append(layerhtml);
 		
 		$("div#excel_pop").dialog({
-					modal: false,
-					draggable: true,
+					modal: true,
+					draggable: false,
 					resizable: false,
 					width: wd,
 					position: { my: "center", at: "center", of: "body" },
 					height: eval(ht)+60,
 					istitle: false,
-//	                closeOnEscape: false,
+	                closeOnEscape: false,
 					open: function(event, ui) {						
 						$(".ui-dialog-titlebar-close", $(this).parent()).hide();
 						$(".ui-dialog-titlebar", $(this).parent()).hide();
@@ -508,8 +508,8 @@
 						$(this).remove();
 					}
 				}
-		); 
-		
+		);
+
 		$('div#excel_pop iframe').attr({
 			src: url,
 			width: wd,

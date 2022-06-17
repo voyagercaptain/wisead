@@ -1,5 +1,7 @@
 package kr.wise.commons.user.service;
 
+import kr.wise.commons.cmm.LoginVO;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,4 +46,6 @@ public interface UserService {
 	public int regOrgList(ArrayList<WaaOrg> list) throws Exception;
 	
 	public List<WaaOrg> getOrgDbList(WaaOrg waaOrg) throws Exception;
+
+	public int initPwd(WaaUser waaUser) throws Exception;
 }

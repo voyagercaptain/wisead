@@ -325,4 +325,9 @@ public class UserServiceImpl implements UserService {
 	public List<WaaOrg> getOrgDbList(WaaOrg waaOrg) throws Exception {
 		return wamDbSditmMapper.selectOrgDbList(waaOrg);
 	}
+
+	@Override
+	public int initPwd(WaaUser loginVO) throws Exception {
+		return mapper.initPwd(loginVO);
+	}
 }

@@ -146,10 +146,9 @@ $(document).ready(function() {
     	//폼 초기화 버튼 초기화...
     	$('#btnReset').click(function(event){
     		event.preventDefault();  //브라우저 기본 이벤트 제거...
-
-    		$("#frmSearch #bfPassword").val('');
-    		$("#frmSearch #afPassword").val('');
-    		
+            var url  = "<c:url value='/commons/user/initPwd.do'/>";
+            var param =  $("#frmSearch").serialize();
+            ajax2Json(url, param, callback);
     	}); 
        
     }
@@ -157,8 +156,17 @@ $(document).ready(function() {
 
 
 function callback(){
-	alert("<s:message code='MSG.REVS' />"); /* 수정되었습니다. */
-    parent.closeLayerPop();
+
+    var	flag = '${sessionScope.loginVO.chgPwd}';
+    if (flag === 'N') {
+        alert("비밀번호가 변경되었습니다.\n로그인 화면으로 이동합니다. 다시 로그인해주세요."); /* 수정되었습니다. */
+        parent.location.href="<c:url value="/logout" />";
+    }
+    else {
+        alert("<s:message code='MSG.REVS' />"); /* 수정되었습니다. */
+        parent.closeLayerPop();
+    }
+
 }
 
 function doAction(sAction)
@@ -239,7 +247,10 @@ function grid_sheet_OnSaveEnd(code, message) {
 	<!-- 팝업 타이틀 시작 -->
 	<div class="pop_tit_icon"></div>
     <div class="pop_tit_txt"><s:message code="PWD.CHG" /></div> <!-- 비밀번호 변경 -->
-    <div class="pop_tit_close"><a href="#"><s:message code="CLOSE" /></a></div> <!-- 창닫기 -->
+    <c:if test="${sessionScope.loginVO.chgPwd eq 'Y'}">
+        <div class="pop_tit_close"><a href="#"><s:message code="CLOSE" /></a></div> <!-- 창닫기 -->
+    </c:if>
+
 	  <div class="pop_content">
 
 
@@ -312,7 +323,7 @@ function grid_sheet_OnSaveEnd(code, message) {
          <div style="clear:both; height:20px;"><span></span></div>
          <%-- <tiles:insertTemplate template="/WEB-INF/decorators/buttonRqstInput.jsp" /> --%>
          <div id="divInputBtn" style="text-align: center; display: none;">
-           <button class="btn_frm_save" type="button" id="btnGridSave" name="btnGridSave"><s:message code="STRG" /></button> <!-- 저장 --> 
+           <button class="btn_frm_save" type="button" id="btnGridSave" name="btnGridSave"><s:message code="STRG" /></button> <!-- 저장 -->
            <%-- <c:out value="${loginVO}" /> --%>
            	<c:if test="${loginVO.loginAcId ne null}"> 
            		<button class="btn_frm_reset" type="button" id="btnReset" name="btnReset"><s:message code="INON" /></button> <!-- 초기화 -->
