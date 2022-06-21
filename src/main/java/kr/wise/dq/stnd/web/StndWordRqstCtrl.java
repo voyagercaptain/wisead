@@ -296,70 +296,9 @@ public class StndWordRqstCtrl {
 	}
 
 
-	/** 표준단어 변경대상 추가..(팝업에서 호출함) @throws Exception insomnia */
-	@RequestMapping("/dq/stnd/regWam2WaqStndword.do")
-	@ResponseBody
-	public IBSResultVO<WaqMstr> regWam2Waqlist(@RequestBody WaqStwds data, WaqMstr reqmst, Locale locale) throws Exception {
 
-		logger.debug("reqmst:{} \ndata:{}", reqmst, data);
 
-		ArrayList<WaqStwd> list = data.get("data");
 
-		int result = stndWordRqstService.regWam2Waq(reqmst, list);
-
-		result += stndWordRqstService.check(reqmst);
-
-//		int result = stndWordRqstService.regStndWordRqstlist(list);
-		String resmsg;
-
-		if(result > 0) {
-			result = 0;
-			resmsg = message.getMessage("MSG.SAVE", null, locale);
-		} else {
-			result = -1;
-			resmsg = message.getMessage("ERR.SAVE", null, locale);
-		}
-
-		String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
-
-		//마지막에 최종 업데이트 된 요청마스터 정보를 가져온다.
-		reqmst = requestMstService.getrequestMst(reqmst);
-
-		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
-
-	}
-
-	/** 표준단어 요청 삭제 - IBSheet 용...
-	 * @throws Exception */
-	@RequestMapping("/dq/stnd/delstwdrqstlist.do")
-	@ResponseBody
-	public IBSResultVO<WaqMstr> delStndWordRqstList(@RequestBody WaqStwds data, WaqMstr reqmst, Locale locale) throws Exception {
-
-		logger.debug("reqmst:{} \ndata:{}", reqmst, data);
-
-		ArrayList<WaqStwd> list = data.get("data");
-
-		int result = stndWordRqstService.delStndWordRqstList(reqmst, list);
-		result += stndWordRqstService.check(reqmst);
-
-		String resmsg ;
-
-		if(result > 0) {
-			result = 0;
-			resmsg = message.getMessage("MSG.DEL", null, locale);
-		}
-		else {
-			result = -1;
-			resmsg = message.getMessage("ERR.DEL", null, locale);
-		}
-
-		String action = WiseMetaConfig.IBSAction.DEL.getAction();
-
-		//마지막에 최종 업데이트 된 요청마스터 정보를 가져온다.
-		reqmst = requestMstService.getrequestMst(reqmst);
-
-		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
-	}
 
 	/** 표준단어 요청 삭제 - IBSheet 용...
      * @throws Exception */

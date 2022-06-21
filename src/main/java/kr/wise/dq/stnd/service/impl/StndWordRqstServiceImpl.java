@@ -28,17 +28,17 @@ import kr.wise.commons.damgmt.approve.service.RequestApproveService;
 import kr.wise.commons.helper.UserDetailHelper;
 import kr.wise.commons.rqstmst.service.RequestMstService;
 import kr.wise.commons.rqstmst.service.WaqMstr;
-import kr.wise.commons.rqstmst.service.WaqRqstVrfDtls;
-import kr.wise.commons.rqstmst.service.WaqRqstVrfDtlsMapper;
+//import kr.wise.commons.rqstmst.service.WaqRqstVrfDtls;
+//import kr.wise.commons.rqstmst.service.WaqRqstVrfDtlsMapper;
 import kr.wise.commons.util.UtilString;
-import kr.wise.dq.app.service.WaqAppStwdMapper;
+//import kr.wise.dq.app.service.WaqAppStwdMapper;
 import kr.wise.dq.stnd.service.StndDmnRqstService;
 import kr.wise.dq.stnd.service.StndItemRqstService;
 import kr.wise.dq.stnd.service.StndWordRqstService;
 import kr.wise.dq.stnd.service.WamStwd;
 import kr.wise.dq.stnd.service.WamStwdMapper;
 import kr.wise.dq.stnd.service.WaqStwd;
-import kr.wise.dq.stnd.service.WaqStwdMapper;
+//import kr.wise.dq.stnd.service.WaqStwdMapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,8 +65,8 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
     @Inject
 	private CmcdCodeService cmcdCodeService;
 
-	@Inject
-	private WaqStwdMapper waqmapper;
+	//@Inject
+	//private WaqStwdMapper waqmapper;
 	
 	@Inject
 	private WamStwdMapper wammapper;
@@ -74,8 +74,8 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
 //	@Inject
 //	private WaqAppStwdMapper waqappmapper;
 
-	@Inject
-	private WaqRqstVrfDtlsMapper waqRqstVrfDtlsMapper;
+	//@Inject
+	//private WaqRqstVrfDtlsMapper waqRqstVrfDtlsMapper;
 
 	@Inject
 	private RequestApproveService requestApproveService;
@@ -90,8 +90,13 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
 	private StndItemRqstService stndItemRqstService;
 
 
+	@Override
+	public int check(WaqMstr mstVo) throws Exception {
+		return 0;
+	}
 	/** insomnia 여기
-	 * @throws Exception */ 
+	 * @throws Exception */
+	/*
 	@Override
 	public int check(WaqMstr mstVo) throws Exception {
 
@@ -215,6 +220,7 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
 
 		return result;
 	}
+	*/
 
 	/** 삭제예정 insomnia */
 	public int submit(WaqMstr mstVo) {
@@ -226,7 +232,8 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
 	/** 표준단어 요청 리스트 조회 insomnia */
 	public List<WaqStwd> getStndWordRqstist(WaqMstr search) {
 
-		return waqmapper.selectrqstStndWordListbyMst(search);
+		//return waqmapper.selectrqstStndWordListbyMst(search);
+		return null;
 	}
 
 	/** insomnia */
@@ -247,7 +254,8 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
 
 	/**표준단어 요청 상세조회 insomnia */
 	public WaqStwd getStndWordRqstDetail(WaqStwd searchVO) {
-		return waqmapper.selectRqstStndWord(searchVO);
+		//return waqmapper.selectRqstStndWord(searchVO);
+		return null;
 	}
 
 	/** 표준단어 리스트 등록 insomnia */
@@ -309,13 +317,13 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
 			//신규 등록 : 나중에 적재를 위해 미리 오브젝트 ID를 셋팅한다...
 //			String objid = objectIdGnrService.getNextStringId();
 //			saveVo.setStwdId(objid);
-			result = waqmapper.insertSelective(saveVo);
+			//result = waqmapper.insertSelective(saveVo);
 		} else if ("U".equals(tmpstatus)){
 			//업데이트
-			result = waqmapper.updateByPrimaryKey(saveVo);
+			//result = waqmapper.updateByPrimaryKey(saveVo);
 		} else if ("D".equals(tmpstatus)) {
 			//요청내용 삭제...
-			result = waqmapper.deleteByrqstSno(saveVo);
+			//result = waqmapper.deleteByrqstSno(saveVo);
 		}
 
 		return result;
@@ -339,7 +347,8 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
 
 		logger.debug("ids:{}", ids);
 
-		return waqmapper.deletebyRqstSno(ids, reqmst.getRqstNo());
+		//return waqmapper.deletebyRqstSno(ids, reqmst.getRqstNo());
+		return 1;
 	}
 
 	/** 결재 승인 처리 업데이트.... insomnia
@@ -359,7 +368,7 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
 			savevo.setRqstNo(rqstNo);
 			savevo.setAprvUserId(userid);
 
-			result  += waqmapper.updatervwStsCd(savevo);
+			//result  += waqmapper.updatervwStsCd(savevo);
 
 		}
 
@@ -380,7 +389,7 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
 			logger.debug("waq to wam and wah");
 
 			result = 0;
-			result = regWaq2Wam(mstVo);
+			//result = regWaq2Wam(mstVo);
 
 			//업데이트 내용이 없으면 오류 리턴한다.
 			if (result <= 0 ) {
@@ -393,118 +402,17 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
 		return result;
 	}
 
-	/** @param mstVo insomnia
-	 * @throws Exception */
-	public int regWaq2Wam(WaqMstr mstVo) throws Exception {
-		int result = 0;
 
-		String rqstno = mstVo.getRqstNo();
 
-		//신규 대상인 경우 ID 채번한다.
-		List<WaqStwd> waqclist =  waqmapper.selectWaqC(rqstno);
 
-		for (WaqStwd savevo : waqclist) {
-			String id = objectIdGnrService.getNextStringId();
-			savevo.setStwdId(id);
-//			savevo.setIbsStatus("U");
-
-			//신규 등록건에 대해 id 업데이트 처리한다....
-			result += waqmapper.updateidByKey(savevo);
-		}
-
-		result += waqmapper.updateWaqCUD(rqstno);
-
-		result += waqmapper.deleteWAM(rqstno);
-
-		result += waqmapper.insertWAM(rqstno);
-
-		result += waqmapper.updateWAH(rqstno);
-
-		result += waqmapper.insertWAH(rqstno);
-		
-//		waqappmapper.updateWAM(mstVo);
-
-		return result;
-
-	}
-
-	/** WAM에 있는 표준단어를 변경 요청 등록한다. insomnia
-	 * @throws Exception */
-	public int regWam2Waq(WaqMstr reqmst, ArrayList<WaqStwd> list) throws Exception {
-
-		int result = 0;
-
-		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
-		String userid = user.getUniqId();
-		reqmst.setRqstUserId(userid);
-		
-		result = waqmapper.insertwam2waq(reqmst, list);
-
-		register(reqmst, null);
-
-		/*for (WaqStwd saveVo : list) {
-			saveVo.setIbsStatus("I");
-			saveVo.setRqstDcd("CU");
-		}
-		return register(reqmst, list);*/
-
-		return result;
-
-	}
-
-	/** insomnia
-	 * @throws Exception */
-	public int delStndWordRqstList(WaqMstr reqmst, ArrayList<WaqStwd> list) throws Exception {
-		int result = 0;
-
-		for (WaqStwd savevo : list) {
-			savevo.setIbsStatus("D");
-		}
-
-		result = register(reqmst, list);
-
-		return result;
-	}
-
-	/** insomnia */
-	public int regapprove(WaqMstr mstVo, List<WaqStwd> reglist) {
-		int result = 0;
-
-		String rqstNo = mstVo.getRqstNo();
-		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
-		String userid = user.getUniqId();
-		logger.debug("결재 승인 처리 시작-결재자:{},요청번호:{}",userid, rqstNo );
-
-		// 1.요청 테이블의 내용을 업데이트 한다. (검토상태와 검토내용 업데이트)
-		//ArrayList<WaqStwd>
-		for (WaqStwd savevo : (ArrayList<WaqStwd>)reglist) {
-			savevo.setRqstNo(rqstNo);
-			savevo.setAprvUserId(userid);
-
-			result  += waqmapper.updatervwStsCd(savevo);
-
-		}
-
-		//업데이트 내용이 없으면 오류 리턴한다.
-		if (result < 0 ) {
-			logger.debug("결재 승인 실패 : 요청내용중 업데이트 대상이 없음...결재자:{},요청번호:{}",userid, rqstNo);
-			throw new WiseBizException("ERR.APPROVE", "결재 승인 실패 : 요청내용중 업데이트 대상이 없음...");
-		}
-
-		return result;
-	}
 	
 	//신청목록에 표준단어가 존재할 경우 리턴(표준신청 탭체크용)
 	public int checkExistsWaqWord(WaqMstr mstr){
 	
-		List<WaqStwd> list = waqmapper.selectExistsWordCheck(mstr);
 
-		if(list.isEmpty()){
-			return 0;
-		}else{
 			
 		    return 3;
-		}
+
 	   
 	}
 	
@@ -520,7 +428,7 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
 		
 		
 		//waq의 반려내용을 waq로 다시 입력
-		result = waqmapper.insertWaqRejected(reqmst, oldRqstNo);
+		//result = waqmapper.insertWaqRejected(reqmst, oldRqstNo);
 
 		//마스터 등록
 		register(reqmst, null);

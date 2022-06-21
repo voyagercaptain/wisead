@@ -3,9 +3,10 @@ package kr.wise.dq.profile.anares.service;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import kr.wise.dq.profile.mstr.service.WamPrfMstrVO;
+//import kr.wise.dq.profile.mstr.service.WamPrfMstrVO;
 
-public class WamPrfResultVO extends WamPrfMstrVO {
+//public class WamPrfResultVO extends WamPrfMstrVO {
+public class WamPrfResultVO  {
 
     private Date anaStrDtm;
 

@@ -33,49 +33,49 @@ public interface StndCommWordRqstService extends CommonRqstService {
 
 	/** @param search
 	/** @return insomnia */
-	List<WaqStwd> getStndWordRqstist(WaqMstr search);
+	//List<WaqStwd> getStndWordRqstist(WaqMstr search);
 
 	/** @param list
 	/** @return insomnia */
-	int regStndWordRqstlist(ArrayList<WaqStwd> list);
+	//int regStndWordRqstlist(ArrayList<WaqStwd> list);
 
 	/** @param searchVO
 	/** @return insomnia */
-	WaqStwd getStndWordRqstDetail(WaqStwd searchVO);
+	//WaqStwd getStndWordRqstDetail(WaqStwd searchVO);
 
 	/** @param reqmst
 	/** @param delkey
 	/** @return insomnia */
-	int delStndWordRqst(WaqMstr reqmst, String delkey);
+	//int delStndWordRqst(WaqMstr reqmst, String delkey);
 
 	/** @param reqmst
 	/** @param list
 	/** @return insomnia
 	 * @throws Exception */
-	int regWam2Waq(WaqMstr reqmst, ArrayList<WaqStwd> list) throws Exception;
+	//int regWam2Waq(WaqMstr reqmst, ArrayList<WaqStwd> list) throws Exception;
 
 	/** @param reqmst
 	/** @param list
 	/** @return insomnia
 	 * @throws Exception */
-	int delStndWordRqstList(WaqMstr reqmst, ArrayList<WaqStwd> list) throws Exception;
+	//int delStndWordRqstList(WaqMstr reqmst, ArrayList<WaqStwd> list) throws Exception;
 
 	/** @param reqmst
 	/** @param list
 	/** @return insomnia */
-	int regapprove(WaqMstr reqmst, List<WaqStwd> list); 
+	//int regapprove(WaqMstr reqmst, List<WaqStwd> list);
 
 	/** @param mstVo
 	/** @return insomnia
 	 * @throws Exception */
-	int regWaq2Wam(WaqMstr mstVo) throws Exception;
+	//int regWaq2Wam(WaqMstr mstVo) throws Exception;
 	
-	int checkExistsWaqWord(WaqMstr mstr);
+	//int checkExistsWaqWord(WaqMstr mstr);
 	
 	//재상신 등록용
-    int regWaqRejected(WaqMstr reqmst, String oldRqstNo) throws Exception; 
+    //int regWaqRejected(WaqMstr reqmst, String oldRqstNo) throws Exception;
     
-    int check(WaqMstr mstVo) throws Exception;
+    //int check(WaqMstr mstVo) throws Exception;
 
     int registerWam(List<WamStwd> list) throws Exception;
 }

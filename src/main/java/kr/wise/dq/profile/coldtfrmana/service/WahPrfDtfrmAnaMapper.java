@@ -1,7 +1,7 @@
 package kr.wise.dq.profile.coldtfrmana.service;
 
 import java.util.Date;
-import kr.wise.dq.profile.coldtfrmana.service.WahPrfDtfrmAnaVO;
+//import kr.wise.dq.profile.coldtfrmana.service.WahPrfDtfrmAnaVO;
 import kr.wise.dq.profile.mstr.service.WamPrfMstrVO;
 
 import org.apache.ibatis.annotations.Param;

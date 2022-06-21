@@ -16,7 +16,7 @@ package kr.wise.dq.profile.anares.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import kr.wise.dq.profile.mstr.service.WamPrfMstrVO;
+//import kr.wise.dq.profile.mstr.service.WamPrfMstrVO;
 
 
 

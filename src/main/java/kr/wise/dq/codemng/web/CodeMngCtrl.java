@@ -11,8 +11,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import kr.wise.advisor.prepare.dataset.service.WadDataSet;
-import kr.wise.advisor.prepare.dataset.service.WadDataSetMapper;
+//import kr.wise.advisor.prepare.dataset.service.WadDataSet;
+//import kr.wise.advisor.prepare.dataset.service.WadDataSetMapper;
 import kr.wise.commons.WiseMetaConfig;
 import kr.wise.commons.WiseMetaConfig.CodeListAction;
 import kr.wise.commons.cmm.service.EgovIdGnrService;
@@ -25,7 +25,7 @@ import kr.wise.commons.helper.grid.IBSheetListVO;
 import kr.wise.commons.rqstmst.service.RequestMstService;
 import kr.wise.commons.util.ConnectionHelper;
 import kr.wise.commons.util.UtilJson;
-import kr.wise.dq.bizrule.service.WamBrMstr;
+
 import kr.wise.dq.codemng.service.CodeMngService;
 import kr.wise.dq.codemng.service.WaaCdRule;
 
@@ -76,8 +76,8 @@ public class CodeMngCtrl {
 	@Inject
 	private MessageSource message;
 	
-	@Inject
-	private WadDataSetMapper targetDbms;
+	//@Inject
+	//private WadDataSetMapper targetDbms;
 	
 	
 	/** 공통코드 및 목록성 코드리스트를 가져온다. */
@@ -146,6 +146,7 @@ public class CodeMngCtrl {
     * 
     * @throws Exception 
     **/
+  	/*
     @RequestMapping("/dq/codemng/regCode.do")
     @ResponseBody
     public IBSResultVO<WaaCdRule> regCode(WaaCdRule saveVO, String saction, Locale locale) throws Exception {
@@ -178,7 +179,7 @@ public class CodeMngCtrl {
 
     	return new IBSResultVO<WaaCdRule>(saveVO, result, resultMsg, action);
     }
-	
+	*/
     
     /** 코드 요청 리스트 조회 - IBSheet JSON @return meta */
     @RequestMapping("/dq/codemng/getcodelist.do")
@@ -186,7 +187,8 @@ public class CodeMngCtrl {
 	public IBSheetListVO<WaaCdRule> getCodelist(@ModelAttribute WaaCdRule search) {
 		logger.debug("searchVO:{}", search);
 
-		List<WaaCdRule> list = codeMngService.getCodeMngList(search);
+		//List<WaaCdRule> list = codeMngService.getCodeMngList(search);
+		List<WaaCdRule> list = null;
 
 		return new IBSheetListVO<WaaCdRule>(list, list.size());
 	}
@@ -199,7 +201,8 @@ public class CodeMngCtrl {
 	public IBSResultVO<WaaCdRules> delCodeList(@RequestBody WaaCdRules delVOs, @ModelAttribute WaaCdRule mstr, Locale locale) throws Exception {
 		
 		logger.debug("data : {}\nsearch : {}", delVOs);
-		Map<String, String> resultMap = codeMngService.delCodeList(delVOs.get("data"), mstr);
+		//Map<String, String> resultMap = codeMngService.delCodeList(delVOs.get("data"), mstr);
+		Map<String, String> resultMap = null;
 		int result = Integer.parseInt(resultMap.get("result"));
 		
 		//result "0" 이 아닌 경우 실패 메세지 전송...
@@ -219,18 +222,21 @@ public class CodeMngCtrl {
 	
 	/** 코드관리 엑셀업로드 팝업 호출 */
     /** meta */
+	/*
 	@RequestMapping("/dq/codemng/popup/code_xls.do")
     public String goBizruleXls(@ModelAttribute("search") WamBrMstr search) {
 		logger.debug("{}", search);
     	return "/dq/codemng/popup/code_xls";
     }
-	
+	*/
+
 	/** 코드 관리  
     * 
     * 메뉴 저장 단건 -  결과는 IBSResult Json 리턴 
     * 
     * @throws Exception 
     **/
+	/*
     @RequestMapping("/dq/codemng/checkSQL.do")
     @ResponseBody
     public IBSResultVO<WaaCdRule> checkSQL(WaaCdRule saveVO, Locale locale) throws Exception {
@@ -252,8 +258,9 @@ public class CodeMngCtrl {
 
     	return new IBSResultVO<WaaCdRule>(saveVO, result, resultMsg, action);
     }
-	
+	*/
 	//쿼리 검증 메소드
+	/*
 	private int sqlVrfc(String trgId, String sql) {
 		int result = 0;
 		
@@ -287,5 +294,5 @@ public class CodeMngCtrl {
 		
 		return result;
 	}
-	
+	*/
 }

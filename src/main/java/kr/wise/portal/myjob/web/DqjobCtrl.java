@@ -8,8 +8,8 @@ import javax.inject.Inject;
 import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.helper.UserDetailHelper;
 import kr.wise.commons.helper.grid.IBSheetListVO;
-import kr.wise.dq.measure.bizrule.service.DqJobService;
-import kr.wise.dq.measure.bizrule.service.DqJobVO;
+//import kr.wise.dq.measure.bizrule.service.DqJobService;
+//import kr.wise.dq.measure.bizrule.service.DqJobVO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,9 +26,10 @@ public class DqjobCtrl {
 	
     private final Logger log = LoggerFactory.getLogger(getClass());
 	
-	@Inject
-	private DqJobService dqjobService;
+	//@Inject
+	//private DqJobService dqjobService;
 
+	/*
 	@RequestMapping("/DqJobCtrl.do")
 	public ModelAndView dqjobView(@RequestParam Map<String, Object> param) throws Exception{
 		
@@ -58,9 +59,10 @@ public class DqjobCtrl {
         
 		return mv;
 	}
-	
+	*/
 	
 	/** 프로그램 본수-ajaxgrid */
+	/*
 	@RequestMapping("/ajaxgrid/dqJobList.do")
 	@ResponseBody
 	public IBSheetListVO<DqJobVO> selectProgramBonList(@ModelAttribute DqJobVO search) throws Exception {
@@ -74,4 +76,6 @@ public class DqjobCtrl {
 
 		return new IBSheetListVO<DqJobVO>(result, result.size());
 	}
+	*/
+
 }

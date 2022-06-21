@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.cmm.service.EgovIdGnrService;
 import kr.wise.commons.helper.UserDetailHelper;
-import kr.wise.dq.bizrule.service.WamBrMstr;
+//import kr.wise.dq.bizrule.service.WamBrMstr;
 import kr.wise.dq.codemng.service.CodeMngService;
 import kr.wise.dq.codemng.service.WaaCdRule;
 import kr.wise.dq.codemng.service.WaaCdRuleMapper;
@@ -30,9 +30,9 @@ public class CodeMngServiceImpl implements CodeMngService{
 	
 	@Inject
 	private EgovIdGnrService objectIdGnrService;
-	@Inject
-	private WaaCdRuleMapper waaCdRuleMapper;
-
+	//@Inject
+	//private WaaCdRuleMapper waaCdRuleMapper;
+	/*
 	@Override
 	public int regCode(WaaCdRule saveVO, String saction) throws Exception {
 		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
@@ -59,9 +59,9 @@ public class CodeMngServiceImpl implements CodeMngService{
 		
 		return result;
 	}
+	*/
 	
-	
-	
+	/*
 	public int saveWaaCdRule(WaaCdRule record) throws Exception	{
 		int result = 0;
 		String tmpststus = record.getIbsStatus();
@@ -79,14 +79,17 @@ public class CodeMngServiceImpl implements CodeMngService{
 		
 		return result;
 	}
-	@Override
-	public List<WaaCdRule> getCodeMngList(WaaCdRule search) {
-		return waaCdRuleMapper.selectCodeMngList(search);
-	}
+	 */
+
+	//@Override
+//	public List<WaaCdRule> getCodeMngList(WaaCdRule search) {
+//		return waaCdRuleMapper.selectCodeMngList(search);
+//	}
 	
 	
 	/** 코드 삭제 */
-	@Override
+	//@Override
+	/*
 	public Map<String, String> delCodeList(ArrayList<WaaCdRule> list, WaaCdRule mstVo) throws Exception {
 		Map<String, String> resultMap =  new HashMap<String, String>();
 		int res = 0;
@@ -101,4 +104,6 @@ public class CodeMngServiceImpl implements CodeMngService{
     	
 		return resultMap;
 	}
+
+	 */
 }

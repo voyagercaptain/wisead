@@ -23,7 +23,7 @@ import kr.wise.commons.util.SchedulerUtils;
 import kr.wise.commons.util.UtilDate;
 import kr.wise.commons.util.UtilJson;
 import kr.wise.commons.util.UtilString;
-import kr.wise.dq.criinfo.anatrg.service.AnaTrgTblVO;
+//import kr.wise.dq.criinfo.anatrg.service.AnaTrgTblVO;
 import kr.wise.dq.scheduler.service.DqliteSchService;
 
 import org.slf4j.Logger;
@@ -50,8 +50,8 @@ public class DqliteSchMngCtrl {
 	@Inject
 	ScheduleManagerService scheduleManagerService;
 	
-	@Inject
-	DqliteSchService dqliteSchService; 
+	//@Inject
+	//DqliteSchService dqliteSchService;
 
 	@Inject
 	private CodeListService codelistService;
@@ -139,15 +139,18 @@ public class DqliteSchMngCtrl {
 	}
 	
 	//작업정보 팝업 조회
+	/*
 	@RequestMapping("/dq/schedule/getJobPopList.do")
 	@ResponseBody
 	public IBSheetListVO<WamShdJob> selectJobPopList(@ModelAttribute WamShdJob search) {
 		logger.debug("작업정보팝업조회:{}", search);
 		
-		List<WamShdJob> list = dqliteSchService.getDqliteJobPopList(search); 
+		//List<WamShdJob> list = dqliteSchService.getDqliteJobPopList(search);
 
 		return new IBSheetListVO<WamShdJob>(list, list.size());
 	}
+	*/
+
 	
 	//스케줄 관리 상세조회
 	@RequestMapping("/dq/schedule/ajaxgrid/dqlite_sch_dtl.do")

@@ -51,10 +51,10 @@ import kr.wise.commons.user.service.UserService;
 import kr.wise.commons.user.service.WaaUser;
 import kr.wise.commons.util.UtilJson;
 import kr.wise.commons.util.UtilString;
-import kr.wise.dq.dashboard.service.DqDashService;
-import kr.wise.portal.dashboard.service.DqMainChartVO;
-import kr.wise.portal.dashboard.service.TotalCountVO;
-import kr.wise.portal.dashboard.service.TotalDashService;
+//import kr.wise.dq.dashboard.service.DqDashService;
+//import kr.wise.portal.dashboard.service.DqMainChartVO;
+//import kr.wise.portal.dashboard.service.TotalCountVO;
+//import kr.wise.portal.dashboard.service.TotalDashService;
 import kr.wise.portal.myjob.service.ApprReqService;
 import kr.wise.portal.myjob.service.RequestJobService;
 
@@ -104,8 +104,8 @@ public class IndexController {
     private RequestMstService requestMstService;
 
 
-    @Inject
-    private DqDashService dqdashService;
+    //@Inject
+    //private DqDashService dqdashService;
 
 
     @Inject
@@ -128,8 +128,8 @@ public class IndexController {
      * @Inject private JavaMailSender mailSender;
      */
 
-    @Inject
-    private TotalDashService totalDashService;
+    //@Inject
+    //private TotalDashService totalDashService;
 
     @Inject
     private CodeListService codelistService;
@@ -752,6 +752,7 @@ public class IndexController {
 
         mv.setViewName("/dqmain");
 
+        /*
         //보유현황
         List<TotalCountVO> mtaTotalCnt = totalDashService.selectDbmsCnt();
         mv.addObject("mtaTotalCntList", mtaTotalCnt);
@@ -767,7 +768,7 @@ public class IndexController {
 
         List<TotalCountVO> chartData = totalDashService.selectChartCnt();
         mv.addObject("chartCnt", chartData);
-
+        */
         return mv;
 
     }

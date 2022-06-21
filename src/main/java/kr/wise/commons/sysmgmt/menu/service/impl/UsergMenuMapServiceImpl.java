@@ -193,9 +193,9 @@ public class UsergMenuMapServiceImpl implements UsergMenuMapService {
 	public void init() {
 		logger.debug("menu init start");
 		// confing file 셋팅 언어코드
-		init_menulist();
+		//init_menulist();
 
-		init_menumap();
+		//init_menumap();
 
 	}
 	

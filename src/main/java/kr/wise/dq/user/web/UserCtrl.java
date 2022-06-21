@@ -22,8 +22,6 @@ import kr.wise.commons.sysmgmt.basicinfo.service.WaaBscLvl;
 import kr.wise.commons.sysmgmt.menu.service.MenuStatVO;
 import kr.wise.commons.util.UtilJson;
 import kr.wise.commons.util.UtilObject;
-import kr.wise.dq.vrfcrule.service.VrfcruleService;
-import kr.wise.dq.vrfcrule.service.VrfcruleVO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,8 +61,8 @@ public class UserCtrl {
 	@Inject
 	private CodeListService codelistService;
 	
-	@Inject
-	private VrfcruleService vrfcruleService;
+	//@Inject
+	//private VrfcruleService vrfcruleService;
 	
 	@Inject
 	private MessageSource message;

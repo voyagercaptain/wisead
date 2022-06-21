@@ -21,11 +21,11 @@ import kr.wise.commons.helper.UserDetailHelper;
 import kr.wise.commons.helper.grid.IBSheetListVO;
 import kr.wise.commons.util.UtilJson;
 import kr.wise.commons.util.UtilString;
-import kr.wise.dq.criinfo.anatrg.service.AnaTrgService;
-import kr.wise.dq.criinfo.anatrg.service.WaaExpTbl;
+//import kr.wise.dq.criinfo.anatrg.service.AnaTrgService;
+//import kr.wise.dq.criinfo.anatrg.service.WaaExpTbl;
 import kr.wise.dq.result.service.ResultService;
 import kr.wise.dq.result.service.ResultVO;
-import kr.wise.portal.dashboard.service.TotalDashService;
+//import kr.wise.portal.dashboard.service.TotalDashService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,8 +60,8 @@ public class ResultCtrl {
 	@Inject
 	private CodeListService codeListService;
 	
-	@Inject
-	private TotalDashService totalDashService;
+	//@Inject
+	//private TotalDashService totalDashService;
 	
 	@Inject
 	private MessageSource message;
@@ -69,8 +69,8 @@ public class ResultCtrl {
 	@Inject
 	private ResultService resultService;
 	
-	@Inject
-	private AnaTrgService anaTrgService;	
+	//@Inject
+	//private AnaTrgService anaTrgService;
 	
 	@Value("#{configure['wiseda.user.div.yn']}")     
 	String userDivYn;
@@ -136,7 +136,7 @@ public class ResultCtrl {
     	}
     	
     }
-	
+
 	private void resultDown(HttpServletResponse response, String dbmsId, String schId
 	           , String dbmsLnm, String schLnm) throws Exception {
 		//list를 추출하기 위한 vo
@@ -211,17 +211,17 @@ public class ResultCtrl {
     	exeSchColSucessCnt = execPreExecCntVo.getColCnt();		//검증 성공 컬럼수
     	
     	
-    	WaaExpTbl waaExpTbl = new WaaExpTbl();
+    	//WaaExpTbl waaExpTbl = new WaaExpTbl();
     	if(!UtilString.null2Blank(search.getDbConnTrgId()).equals("")){
-    		waaExpTbl.setDbConnTrgId(search.getDbConnTrgId());
+    		//waaExpTbl.setDbConnTrgId(search.getDbConnTrgId());
     	}
     	
     	if(!UtilString.null2Blank(search.getDbSchId()).equals("")){
-    		waaExpTbl.setDbSchId(search.getDbSchId());
+    		//waaExpTbl.setDbSchId(search.getDbSchId());
     	}    	
-    	totTrgTblCnt = anaTrgService.selectTrgTblCnt(waaExpTbl);
-    	waaExpTbl.setExpYn("N"); //제외테이블로 설정
-    	expTrgTblCnt = anaTrgService.selectTrgTblCnt(waaExpTbl);
+    	//totTrgTblCnt = anaTrgService.selectTrgTblCnt(waaExpTbl);
+    	//waaExpTbl.setExpYn("N"); //제외테이블로 설정
+    	//expTrgTblCnt = anaTrgService.selectTrgTblCnt(waaExpTbl);
     	
     	List<ResultVO> dqiErrList = null;
 
@@ -288,7 +288,7 @@ public class ResultCtrl {
 		poiHandler.createExcelResult(dataList, totTrgTblCnt, expTrgTblCnt, term ,exeSchColSucessCnt,exeSchColTotCnt, tblList, dmnRule, execList, errList, dqiErrList, "result");
 		poiHandler.downExcel("진단종합현황", response);
 	}
-	
+
 	
 	private void resultErrDown(HttpServletResponse response, String dbmsId, String schId
 	           , String dbmsLnm, String schLnm) throws Exception {

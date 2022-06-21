@@ -18,7 +18,7 @@ import java.util.List;
 
 import kr.wise.commons.damgmt.db.service.WaaDbConnTrgVO;
 import kr.wise.commons.damgmt.schedule.service.WamShdJob;
-import kr.wise.dq.profile.mstr.service.WamPrfMstrVO;
+//import kr.wise.dq.profile.mstr.service.WamPrfMstrVO;
 
 
 /**

@@ -14,7 +14,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import kr.wise.dq.profile.mstr.service.WamPrfMstrCommonVO;
+//import kr.wise.dq.profile.mstr.service.WamPrfMstrCommonVO;
 import kr.wise.dq.result.service.ResultDataVO;
 import kr.wise.dq.result.service.ResultVO;
 
@@ -1604,6 +1604,7 @@ public class PoiHandler {
 
 	//기타 필요한 함수
 	//기간출력함수
+	/*
 	public String findStartEndDate(List<WamPrfMstrCommonVO> dataList){
 		int max=00000000;
 		int min=99999999;
@@ -1626,7 +1627,7 @@ public class PoiHandler {
 		return minStr.substring(0,4)+"/"+minStr.substring(4,6)+"/"+minStr.substring(6,8)
 				+" ~ "+ maxStr.substring(0,4)+"/"+maxStr.substring(4,6)+"/"+maxStr.substring(6,8);
 	}
-
+	*/
 	//오늘 날짜 출력함수
 	public String getTodayTime(){
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -1658,6 +1659,7 @@ public class PoiHandler {
 	}
 
 	//sum함수
+	/*
 	public String sumOf(List<WamPrfMstrCommonVO> dataList, String key){
 		
 		BigInteger sum =BigInteger.ZERO;
@@ -1705,9 +1707,10 @@ public class PoiHandler {
 
 		return sum+"";
 	}
-
+	*/
 
 	//avg함수
+	/*
 	public String avgOf(List<WamPrfMstrCommonVO> dataList, String key){
 		double sum=0;
 		int countNull=0;
@@ -1746,7 +1749,7 @@ public class PoiHandler {
 
 		return String.format("%.2f", sum/(dataList.size()-countNull));
 	}
-
+	*/
 	//소수점 문자열 검사함수
 	public String checkPointNum(String value){
 		String temp=value;

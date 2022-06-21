@@ -2,7 +2,7 @@ package kr.wise.commons.damgmt.schedule.service;
 
 import java.util.List;
 
-import kr.wise.dq.impv.service.WaqImActMstr;
+//import kr.wise.dq.impv.service.WaqImActMstr;
 
 import org.apache.ibatis.annotations.Param;
 import kr.wise.commons.cmm.annotation.Mapper;

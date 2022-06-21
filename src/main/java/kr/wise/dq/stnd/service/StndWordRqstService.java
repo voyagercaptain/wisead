@@ -52,28 +52,28 @@ public interface StndWordRqstService extends CommonRqstService {
 	/** @param list
 	/** @return insomnia
 	 * @throws Exception */
-	int regWam2Waq(WaqMstr reqmst, ArrayList<WaqStwd> list) throws Exception;
+	//int regWam2Waq(WaqMstr reqmst, ArrayList<WaqStwd> list) throws Exception;
 
 	/** @param reqmst
 	/** @param list
 	/** @return insomnia
 	 * @throws Exception */
-	int delStndWordRqstList(WaqMstr reqmst, ArrayList<WaqStwd> list) throws Exception;
+	//int delStndWordRqstList(WaqMstr reqmst, ArrayList<WaqStwd> list) throws Exception;
 
 	/** @param reqmst
 	/** @param list
 	/** @return insomnia */
-	int regapprove(WaqMstr reqmst, List<WaqStwd> list); 
+	//int regapprove(WaqMstr reqmst, List<WaqStwd> list);
 
-	/** @param mstVo
+	/** @param
 	/** @return insomnia
 	 * @throws Exception */
-	int regWaq2Wam(WaqMstr mstVo) throws Exception;
+	//int regWaq2Wam(WaqMstr mstVo) throws Exception;
 	
 	int checkExistsWaqWord(WaqMstr mstr);
 	
 	//재상신 등록용
-    int regWaqRejected(WaqMstr reqmst, String oldRqstNo) throws Exception; 
+    //int regWaqRejected(WaqMstr reqmst, String oldRqstNo) throws Exception;
     
     int check(WaqMstr mstVo) throws Exception;
 

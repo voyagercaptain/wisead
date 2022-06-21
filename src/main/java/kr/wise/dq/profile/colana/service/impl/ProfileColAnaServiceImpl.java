@@ -13,24 +13,14 @@
  */
 package kr.wise.dq.profile.colana.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
-import kr.wise.commons.cmm.service.EgovIdGnrService;
-import kr.wise.commons.rqstmst.service.WaqMstr;
-import kr.wise.commons.util.UtilString;
 import kr.wise.dq.profile.colana.service.ProfileColAnaService;
-import kr.wise.dq.profile.colana.service.WahPrfColAnaMapper;
 import kr.wise.dq.profile.colana.service.WamPrfColAnaMapper;
 import kr.wise.dq.profile.colana.service.WamPrfColAnaVO;
-import kr.wise.dq.profile.mstr.service.ProfileMstrService;
-import kr.wise.dq.profile.mstr.service.WahPrfMstrMapper;
 import kr.wise.dq.profile.mstr.service.WamPrfMstrCommonVO;
-import kr.wise.dq.profile.mstr.service.WamPrfMstrMapper;
-import kr.wise.dq.profile.mstr.service.WamPrfMstrVO;
 
 
 import org.slf4j.Logger;

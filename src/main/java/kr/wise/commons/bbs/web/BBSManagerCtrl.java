@@ -56,8 +56,8 @@ public class BBSManagerCtrl {
 	@Inject
 	private FileManagerService  fileMngService;
 
-	@Inject
-	private UsergMenuMapService usergMenuMapService;
+	//@Inject
+	//private UsergMenuMapService usergMenuMapService;
 
 
 	@Inject
@@ -101,8 +101,8 @@ public class BBSManagerCtrl {
 			servletPath += "?bbsId=" + bbsid;
 		}
 //		Map<String, Object> menumap = usergMenuMapService.getMenuMap(servletPath);
-		Map<String, Object> menumap = usergMenuMapService.getMenuMap2(servletPath);
-
+		//Map<String, Object> menumap = usergMenuMapService.getMenuMap2(servletPath);
+		Map<String, Object> menumap = null;
 		if (menumap.containsKey("REQ_MENU")) {
 			model.addAttribute("REQ_MENU", menumap.get("REQ_MENU"));
 		}

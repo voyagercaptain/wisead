@@ -7,7 +7,6 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import kr.wise.commons.helper.grid.IBSheetListVO;
-import kr.wise.dq.profile.colptrana.service.WamPrfPtrAnaVO;
 import kr.wise.dq.stnd.service.StndDicService;
 import kr.wise.dq.stnd.service.WamStwd;
 

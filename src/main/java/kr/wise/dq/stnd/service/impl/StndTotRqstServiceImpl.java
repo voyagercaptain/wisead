@@ -67,11 +67,11 @@ public class StndTotRqstServiceImpl implements StndTotRqstService {
 	@Inject
 	private StndItemRqstService stndItemRqstService;
 	
-	@Inject
-	private WaqDmnMapper waqDmnMapper;
+	//@Inject
+	//private WaqDmnMapper waqDmnMapper;
 	
-	@Inject
-	private WaqSditmMapper waqSditmMapper;
+	//@Inject
+	//private WaqSditmMapper waqSditmMapper;
 	
 
 	/** insomnia */
@@ -112,10 +112,10 @@ public class StndTotRqstServiceImpl implements StndTotRqstService {
 			logger.debug("표준데이터 전체 waq to wam and wah");
 
 			result = 0;
-			result += stndWordRqstService.regWaq2Wam(mstVo); 
-			result += stndDmnRqstService.regWaq2Wam(mstVo);
-			result += stndDmnRqstService.regWaq2WamCdval(mstVo);
-			result += stndItemRqstService.regWaq2Wam(mstVo);
+			//result += stndWordRqstService.regWaq2Wam(mstVo);
+			//result += stndDmnRqstService.regWaq2Wam(mstVo);
+			//result += stndDmnRqstService.regWaq2WamCdval(mstVo);
+			//result += stndItemRqstService.regWaq2Wam(mstVo);
 
 			
 			//업데이트 내용이 없으면 오류 리턴한다.
@@ -150,7 +150,7 @@ public class StndTotRqstServiceImpl implements StndTotRqstService {
 		
 		//=============검토처리여부 업데이트================
 		//표준단어 승인여부 업데이트
-		result = stndWordRqstService.regapprove(mstVo, lstCnvWord);    
+		//result = stndWordRqstService.regapprove(mstVo, lstCnvWord);
 		
 		//도메인 승인여부 업데이트
 		result = stndDmnRqstService.regapprove(mstVo, lstCnvDmn); 
@@ -161,13 +161,13 @@ public class StndTotRqstServiceImpl implements StndTotRqstService {
 		
 		//==============반려시 처리=====================
 		//단어반려시 도메인 반려
-		result = waqDmnMapper.updateRejDmnByWrd(mstVo);
+		//result = waqDmnMapper.updateRejDmnByWrd(mstVo);
 		
 		//단어반려시 용어 반려
-		result = waqSditmMapper.updateRejSditmByWrd(mstVo);
+		//result = waqSditmMapper.updateRejSditmByWrd(mstVo);
 		
 		//도메인반려시 표준용어 반려
-		result = waqDmnMapper.updateRejItemByDmn(mstVo); 				
+		//result = waqDmnMapper.updateRejItemByDmn(mstVo);
 		//=============================================	
 				
 		//2. 결재 진행 테이블을 업데이트 한다. 최초의 결재라인을 업데이트 처리한다. (세션 유저정보와 결재진행의 userid가 동일해야 한다.
@@ -182,10 +182,10 @@ public class StndTotRqstServiceImpl implements StndTotRqstService {
 			logger.debug("표준데이터 전체 waq to wam and wah");
 
 			result = 0;
-			result += stndWordRqstService.regWaq2Wam(mstVo);  
-			result += stndDmnRqstService.regWaq2Wam(mstVo);
-			result += stndDmnRqstService.regWaq2WamCdval(mstVo);
-			result += stndItemRqstService.regWaq2Wam(mstVo);
+			//result += stndWordRqstService.regWaq2Wam(mstVo);
+			//result += stndDmnRqstService.regWaq2Wam(mstVo);
+			//result += stndDmnRqstService.regWaq2WamCdval(mstVo);
+			//result += stndItemRqstService.regWaq2Wam(mstVo);
 
 			
 			//업데이트 내용이 없으면 오류 리턴한다.

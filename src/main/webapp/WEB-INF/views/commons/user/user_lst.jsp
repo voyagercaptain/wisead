@@ -86,8 +86,15 @@ $(document).ready(function() {
     }
 );
 
+/*
 $(window).load(function() {
 // 	alert('window.load');
+	initGrid();
+});
+*/
+
+$(document).ready(function(){
+	//그리드 초기화
 	initGrid();
 });
 
@@ -95,7 +102,7 @@ $(window).load(function() {
 $(window).resize(
     
     function(){
-                
+    	grid_sheet.FitColWidth();   		     
     	//setibsheight($("#grid_01"));
     }
 );
@@ -106,7 +113,7 @@ function initGrid()
     
     with(grid_sheet){
     	
-    	var cfg = {SearchMode:2,Page:100};
+    	var cfg = {SearchMode:2,Page:100,UseHeaderSortCancel:1};
         SetConfig(cfg);
         
         var headers = [
@@ -114,7 +121,7 @@ function initGrid()
                     /* No.|업무대행|상태|선택|사용자ID|만료일시|시작일시|로그인ID|사용자명|사용자그룹명|부서ID|부서명|직급명|사용자전화번호|사용자휴대폰번호|이메일주소|엑셀다운로드권한여부|ID사용만료일자|비밀번호만료일자|설명|버전|등록유형|요청일시|요청사용자ID|승인구분코드|작성일시|승인사용자ID|비밀번호변경 */
                 ];
         
-        var headerInfo = {Sort:0, ColMove:0, ColResize:1, HeaderCheck:1};
+        var headerInfo = {Sort:1, ColMove:1, ColResize:1, HeaderCheck:1};
         
         InitHeaders(headers, headerInfo); 
         
@@ -150,9 +157,8 @@ function initGrid()
                     {Type:"Combo",    Width:130,  SaveName:"aprvDcd",      Align:"Center",   Edit:0, Hidden:1},
                     {Type:"Text",     Width:130,  SaveName:"aprvDtm",      Align:"Center",   Edit:0, Hidden:1},
                     {Type:"Text",     Width:130,  SaveName:"aprvUserId",      Align:"Center",   Edit:0, Hidden:1},
-                    {Type:"html",     Width:100,  SaveName:"pwChg",  Align:"Center", Edit:0, KeyField:0, Hidden:0},
-
-                    
+                    {Type:"html",     Width:100,  SaveName:"pwChg",  Align:"Center", Edit:0, KeyField:0, Hidden:0}
+                   
                 ];
                     
         InitColumns(cols);
@@ -191,9 +197,9 @@ function doAction(sAction)
         	grid_sheet.DataInsert(0);
         	//마지막 행에 추가..
         	//grid_sheet.DataInsert(-1);
-        
+
             //var url = "<c:url value="/cmvw/user/user_lst.do" />";
-        
+
             //$("#frmInput").attr("action", url).submit();
                         
             break;
@@ -212,6 +218,9 @@ function doAction(sAction)
         	//TODO 공통으로 처리...
         	var SaveJson = grid_sheet.GetSaveJson(0); //트랜젝션이 있는 경우만 가져옴 : doSave와 동일
 //         	ibsSaveJson = grid_sheet.GetSaveJson(1); //doAllSave와 동일한 대상을 가져옴...
+			
+			//alert("SaveJson.data.length:" + SaveJson.data.length);
+
         	//데이터 사이즈 확인...
         	if(SaveJson.data.length == 0) return;
         	
@@ -221,13 +230,20 @@ function doAction(sAction)
         	
         	var url = "<c:url value="/commons/user/userReglist.do"/>";
          	var param = "";
-             IBSpostJson2(url, SaveJson, param, ibscallback);
+            IBSpostJson2(url, SaveJson, param, ibscallback);
         	break;
             
         case "Search":
         	var param = $('#frmSearch').serialize();
         	//alert(param);
         	grid_sheet.DoSearch('<c:url value="/commons/user/userSelectlist.do" />', param);
+        	
+        	//var len = grid_sheet.RowCount();
+            //alert("grid_sheet.RowCount():" + len);
+    		//for(var i = 0; i < len; i++) {
+    		//	grid_sheet.SetCellValue(i+1,"ibsStatus", "I");
+            //    alert(grid_sheet.GetCellValue(i+1,"ibsStatus"));
+    		//}
         	
         	break;
        

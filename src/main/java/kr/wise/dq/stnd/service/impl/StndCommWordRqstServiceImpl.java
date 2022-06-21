@@ -28,10 +28,10 @@ import kr.wise.commons.damgmt.approve.service.RequestApproveService;
 import kr.wise.commons.helper.UserDetailHelper;
 import kr.wise.commons.rqstmst.service.RequestMstService;
 import kr.wise.commons.rqstmst.service.WaqMstr;
-import kr.wise.commons.rqstmst.service.WaqRqstVrfDtls;
-import kr.wise.commons.rqstmst.service.WaqRqstVrfDtlsMapper;
+//import kr.wise.commons.rqstmst.service.WaqRqstVrfDtls;
+//import kr.wise.commons.rqstmst.service.WaqRqstVrfDtlsMapper;
 import kr.wise.commons.util.UtilString;
-import kr.wise.dq.app.service.WaqAppStwdMapper;
+//import kr.wise.dq.app.service.WaqAppStwdMapper;
 import kr.wise.dq.stnd.service.StndCommWordRqstService;
 import kr.wise.dq.stnd.service.StndDmnRqstService;
 import kr.wise.dq.stnd.service.StndItemRqstService;
@@ -67,8 +67,8 @@ public class StndCommWordRqstServiceImpl implements StndCommWordRqstService {
     @Inject
 	private CmcdCodeService cmcdCodeService;
 
-	@Inject
-	private WaqStwdMapper waqmapper;
+	//@Inject
+	//private WaqStwdMapper waqmapper;
 	
 	@Inject
 	private WamCommStwdMapper wammapper;
@@ -76,8 +76,8 @@ public class StndCommWordRqstServiceImpl implements StndCommWordRqstService {
 //	@Inject
 //	private WaqAppStwdMapper waqappmapper;
 
-	@Inject
-	private WaqRqstVrfDtlsMapper waqRqstVrfDtlsMapper;
+	//@Inject
+	//private WaqRqstVrfDtlsMapper waqRqstVrfDtlsMapper;
 
 	@Inject
 	private RequestApproveService requestApproveService;
@@ -85,9 +85,14 @@ public class StndCommWordRqstServiceImpl implements StndCommWordRqstService {
     @Inject
     private EgovIdGnrService objectIdGnrService;
 
+	@Override
+	public int check(WaqMstr mstVo) throws Exception {
+		return 0;
+	}
 
 	/** insomnia 여기
-	 * @throws Exception */ 
+	 * @throws Exception */
+	/*
 	@Override
 	public int check(WaqMstr mstVo) throws Exception {
 
@@ -211,6 +216,7 @@ public class StndCommWordRqstServiceImpl implements StndCommWordRqstService {
 
 		return result;
 	}
+	*/
 
 	/** 삭제예정 insomnia */
 	public int submit(WaqMstr mstVo) {
@@ -222,7 +228,8 @@ public class StndCommWordRqstServiceImpl implements StndCommWordRqstService {
 	/** 표준단어 요청 리스트 조회 insomnia */
 	public List<WaqStwd> getStndWordRqstist(WaqMstr search) {
 
-		return waqmapper.selectrqstStndWordListbyMst(search);
+		//return waqmapper.selectrqstStndWordListbyMst(search);
+		return null;
 	}
 
 	/** insomnia */
@@ -235,7 +242,7 @@ public class StndCommWordRqstServiceImpl implements StndCommWordRqstService {
 		for (WaqStwd saveVo : list) {
 			saveVo.setWritUserId(userid);
 
-//			result += saveStndWordRqst(saveVo);
+			//result += saveStndWordRqst(saveVo);
 		}
 
 		return result;
@@ -243,7 +250,8 @@ public class StndCommWordRqstServiceImpl implements StndCommWordRqstService {
 
 	/**표준단어 요청 상세조회 insomnia */
 	public WaqStwd getStndWordRqstDetail(WaqStwd searchVO) {
-		return waqmapper.selectRqstStndWord(searchVO);
+		//return waqmapper.selectRqstStndWord(searchVO);
+		return null;
 	}
 
 	/** 표준단어 리스트 등록 insomnia */
@@ -305,13 +313,13 @@ public class StndCommWordRqstServiceImpl implements StndCommWordRqstService {
 			//신규 등록 : 나중에 적재를 위해 미리 오브젝트 ID를 셋팅한다...
 //			String objid = objectIdGnrService.getNextStringId();
 //			saveVo.setStwdId(objid);
-			result = waqmapper.insertSelective(saveVo);
+			//result = waqmapper.insertSelective(saveVo);
 		} else if ("U".equals(tmpstatus)){
 			//업데이트
-			result = waqmapper.updateByPrimaryKey(saveVo);
+			//result = waqmapper.updateByPrimaryKey(saveVo);
 		} else if ("D".equals(tmpstatus)) {
 			//요청내용 삭제...
-			result = waqmapper.deleteByrqstSno(saveVo);
+			//result = waqmapper.deleteByrqstSno(saveVo);
 		}
 
 		return result;
@@ -335,7 +343,8 @@ public class StndCommWordRqstServiceImpl implements StndCommWordRqstService {
 
 		logger.debug("ids:{}", ids);
 
-		return waqmapper.deletebyRqstSno(ids, reqmst.getRqstNo());
+		//return waqmapper.deletebyRqstSno(ids, reqmst.getRqstNo());
+		return 0;
 	}
 
 	/** 결재 승인 처리 업데이트.... insomnia
@@ -355,7 +364,7 @@ public class StndCommWordRqstServiceImpl implements StndCommWordRqstService {
 			savevo.setRqstNo(rqstNo);
 			savevo.setAprvUserId(userid);
 
-			result  += waqmapper.updatervwStsCd(savevo);
+			//result  += waqmapper.updatervwStsCd(savevo);
 
 		}
 
@@ -397,7 +406,8 @@ public class StndCommWordRqstServiceImpl implements StndCommWordRqstService {
 		String rqstno = mstVo.getRqstNo();
 
 		//신규 대상인 경우 ID 채번한다.
-		List<WaqStwd> waqclist =  waqmapper.selectWaqC(rqstno);
+		//List<WaqStwd> waqclist =  waqmapper.selectWaqC(rqstno);
+		List<WaqStwd> waqclist =  null;
 
 		for (WaqStwd savevo : waqclist) {
 			String id = objectIdGnrService.getNextStringId();
@@ -405,18 +415,18 @@ public class StndCommWordRqstServiceImpl implements StndCommWordRqstService {
 //			savevo.setIbsStatus("U");
 
 			//신규 등록건에 대해 id 업데이트 처리한다....
-			result += waqmapper.updateidByKey(savevo);
+			//result += waqmapper.updateidByKey(savevo);
 		}
 
-		result += waqmapper.updateWaqCUD(rqstno);
+		//result += waqmapper.updateWaqCUD(rqstno);
 
-		result += waqmapper.deleteWAM(rqstno);
+		//result += waqmapper.deleteWAM(rqstno);
 
-		result += waqmapper.insertWAM(rqstno);
+		//result += waqmapper.insertWAM(rqstno);
 
-		result += waqmapper.updateWAH(rqstno);
+		//result += waqmapper.updateWAH(rqstno);
 
-		result += waqmapper.insertWAH(rqstno);
+		//result += waqmapper.insertWAH(rqstno);
 		
 //		waqappmapper.updateWAM(mstVo);
 
@@ -434,7 +444,7 @@ public class StndCommWordRqstServiceImpl implements StndCommWordRqstService {
 		String userid = user.getUniqId();
 		reqmst.setRqstUserId(userid);
 		
-		result = waqmapper.insertwam2waq(reqmst, list);
+		//result = waqmapper.insertwam2waq(reqmst, list);
 
 		register(reqmst, null);
 
@@ -477,7 +487,7 @@ public class StndCommWordRqstServiceImpl implements StndCommWordRqstService {
 			savevo.setRqstNo(rqstNo);
 			savevo.setAprvUserId(userid);
 
-			result  += waqmapper.updatervwStsCd(savevo);
+			//result  += waqmapper.updatervwStsCd(savevo);
 
 		}
 
@@ -493,14 +503,14 @@ public class StndCommWordRqstServiceImpl implements StndCommWordRqstService {
 	//신청목록에 표준단어가 존재할 경우 리턴(표준신청 탭체크용)
 	public int checkExistsWaqWord(WaqMstr mstr){
 	
-		List<WaqStwd> list = waqmapper.selectExistsWordCheck(mstr);
+		//List<WaqStwd> list = waqmapper.selectExistsWordCheck(mstr);
 
-		if(list.isEmpty()){
+		//if(list.isEmpty()){
 			return 0;
-		}else{
+		//}else{
 			
-		    return 3;
-		}
+		 //   return 3;
+		//}
 	   
 	}
 	
@@ -516,7 +526,7 @@ public class StndCommWordRqstServiceImpl implements StndCommWordRqstService {
 		
 		
 		//waq의 반려내용을 waq로 다시 입력
-		result = waqmapper.insertWaqRejected(reqmst, oldRqstNo);
+		//result = waqmapper.insertWaqRejected(reqmst, oldRqstNo);
 
 		//마스터 등록
 		register(reqmst, null);

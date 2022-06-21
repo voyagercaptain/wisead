@@ -7,8 +7,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
+//import junit.framework.Assert;
+//import junit.framework.TestCase;
+
 
 /**
  * 
@@ -493,6 +494,7 @@ public class HTMLInputFilter
 	}
 	
 	// ============================================ START-UNIT-TEST =========================================
+	/*
 	public static class Test extends TestCase
 	{	
 		protected HTMLInputFilter vFilter;
@@ -617,5 +619,6 @@ public class HTMLInputFilter
 		}
 
 	}
+	*/
 	// ============================================ END-UNIT-TEST ===========================================
 }

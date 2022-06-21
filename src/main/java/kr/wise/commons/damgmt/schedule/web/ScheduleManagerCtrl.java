@@ -37,7 +37,7 @@ import kr.wise.commons.util.SchedulerUtils;
 import kr.wise.commons.util.UtilDate;
 import kr.wise.commons.util.UtilJson;
 import kr.wise.commons.util.UtilString;
-import kr.wise.dq.criinfo.anatrg.service.AnaTrgTblVO;
+//import kr.wise.dq.criinfo.anatrg.service.AnaTrgTblVO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

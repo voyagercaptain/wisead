@@ -15,7 +15,6 @@ package kr.wise.commons.schedule.task;
 
 import javax.inject.Inject;
 
-import kr.wise.portal.totalsearch.service.TotalSearchService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +33,8 @@ public class TotalSearchTask {
 
 	Logger logger = LoggerFactory.getLogger(getClass());
 
-	@Inject
-	private TotalSearchService  totalSearchService;
+	//@Inject
+	//private TotalSearchService  totalSearchService;
 
 	public void sayHello() {
 		System.out.println("Task Hello !!!");
@@ -43,8 +42,7 @@ public class TotalSearchTask {
 
 	public void totSearchexecute() throws Exception {
 		logger.debug("start totSearchexecute()");
-//		totalSearchService.selectTotalSearchWord();
-		totalSearchService.regTotalSearchIndex();
+
 		logger.debug("end totSearchexecute()");
 	}
 
