@@ -1,21 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
  <Context docBase="" path="" reloadable="false" >
-
-  <Resource    auth="Container" 
-                 name="ds_wiseda" 
+	
+   <Resource    auth="Container" 
+                 name="ds_wiseda"
   				type="javax.sql.DataSource" 
   				driverClassName="cubrid.jdbc.driver.CUBRIDDriver" 
   				username="dba" 
-  				password="wise12#"
-  				url="jdbc:cubrid:192.168.0.41:33000:wise:::?charset=utf8" 
+  				password="Dba123#"
+  				url="jdbc:cubrid:10.175.157.9:30000:nia_dqe:::?althosts=10.175.157.10:30000&amp;rcTime=600&amp;charSet=utf-8" 
   				maxIdle="10" 
   				maxWait="20000" 
   				maxActive="10"
-  				validationQuery="select 1 from dual" />
+  				validationQuery="select 1 " />
   				
 
   <Resource    auth="Container" 
-                 name="ds_mart" 
+                 name="ds_mart"
+  				type="javax.sql.DataSource" 
+  				driverClassName="cubrid.jdbc.driver.CUBRIDDriver" 
+  				username="dba" 
+  				password="Dba123#"
+  				url="jdbc:cubrid:10.175.157.9:30000:nia_dqe:::?althosts=10.175.157.10:30000&amp;rcTime=600&amp;charSet=utf-8" 
+  				maxIdle="10" 
+  				maxWait="20000" 
+  				maxActive="10"
+  				validationQuery="select 1 " />
+  
+    <Resource    auth="Container" 
+                 name="ds_wiseda_local"
   				type="javax.sql.DataSource" 
   				driverClassName="cubrid.jdbc.driver.CUBRIDDriver" 
   				username="dba" 
@@ -24,7 +36,49 @@
   				maxIdle="10" 
   				maxWait="20000" 
   				maxActive="10"
-  				validationQuery="select 1 from dual" /> 
+  				validationQuery="select 1 " />
+  				
+  				
+
+  <Resource    auth="Container" 
+                 name="ds_mart_local"
+  				type="javax.sql.DataSource" 
+  				driverClassName="cubrid.jdbc.driver.CUBRIDDriver" 
+  				username="dba" 
+  				password="wise12#"
+  				url="jdbc:cubrid:192.168.0.41:33000:wise:::?charset=utf8" 
+  				maxIdle="10" 
+  				maxWait="20000" 
+  				maxActive="10"
+  				validationQuery="select 1 " />
+  				
+  								
+  					
+  <Resource    auth="Container" 
+                 name="ds_wiseda_dev" 
+  				type="javax.sql.DataSource" 
+  				driverClassName="cubrid.jdbc.driver.CUBRIDDriver" 
+  				username="dba" 
+  				password="wise12#"
+  				url="jdbc:cubrid:220.72.22.220:33000:wise:::?charset=utf8" 
+  				maxIdle="10" 
+  				maxWait="20000" 
+  				maxActive="10"
+  				validationQuery="select 1 " />
+  				
+  				
+
+  <Resource    auth="Container" 
+                 name="ds_mart_dev" 
+  				type="javax.sql.DataSource" 
+  				driverClassName="cubrid.jdbc.driver.CUBRIDDriver" 
+  				username="dba" 
+  				password="wise12#"
+  				url="jdbc:cubrid:220.72.22.220:33000:wise:::?charset=utf8" 
+  				maxIdle="10" 
+  				maxWait="20000" 
+  				maxActive="10"
+  				validationQuery="select 1 " />
   				  				 
   					                 
   <Resource    auth="Container" 
@@ -54,29 +108,7 @@
   				validationQuery="select 1 from dual" /> 
   				
   				
-<!--   	   <Resource    auth="Container"  -->
-<!--                  name="ds_wiseda2"  -->
-<!--   				type="javax.sql.DataSource"  -->
-<!--   				driverClassName="org.mariadb.jdbc.Driver"  -->
-<!--   				username="WISEDA"  -->
-<!--   				password="wise1012" -->
-<!--   				url="jdbc:mariadb://169.56.81.9:3306/DQLITE"  -->
-<!--   				maxIdle="10"  -->
-<!--   				maxWait="20000"  -->
-<!--   				maxActive="10" -->
-<!--   				validationQuery="select 1 from dual" />  -->
-                 
-<!--   <Resource    auth="Container"  -->
-<!--                  name="ds_mart2"  -->
-<!--   				type="javax.sql.DataSource"  -->
-<!--   				driverClassName="org.mariadb.jdbc.Driver"  -->
-<!--   				username="WISEDA"  -->
-<!--   				password="wise1012" -->
-<!--   				url="jdbc:mariadb://169.56.81.9:3306/DQLITE"  -->
-<!--   				maxIdle="10"  -->
-<!--   				maxWait="20000"  -->
-<!--   				maxActive="10" -->
-<!--   				validationQuery="select 1 from dual" />   	 -->
+
   				
   
   </Context>
