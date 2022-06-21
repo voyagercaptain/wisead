@@ -508,7 +508,6 @@ function grid_sheet_OnSaveEnd(code, message) {
 }
 
 
-
 </script>
 </head>
 
@@ -575,7 +574,7 @@ function grid_sheet_OnSaveEnd(code, message) {
 		<div style="clear:both; height:10px;"><span></span></div>
    
         <!-- 조회버튼영역  -->         
-		<tiles:insertTemplate template="/WEB-INF/decorators/buttonMain.jsp" />   
+		<tiles:insertTemplate template="/WEB-INF/decorators/buttonMainUserLst.jsp" />
 	<div style="clear:both; height:5px;"><span></span></div>
         
 	<!-- 그리드 입력 입력 -->
