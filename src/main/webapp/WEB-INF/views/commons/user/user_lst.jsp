@@ -237,13 +237,7 @@ function doAction(sAction)
         	var param = $('#frmSearch').serialize();
         	//alert(param);
         	grid_sheet.DoSearch('<c:url value="/commons/user/userSelectlist.do" />', param);
-        	
-        	//var len = grid_sheet.RowCount();
-            //alert("grid_sheet.RowCount():" + len);
-    		//for(var i = 0; i < len; i++) {
-    		//	grid_sheet.SetCellValue(i+1,"ibsStatus", "I");
-            //    alert(grid_sheet.GetCellValue(i+1,"ibsStatus"));
-    		//}
+
         	
         	break;
        
@@ -494,6 +488,11 @@ function grid_sheet_OnSearchEnd(code, message, stCode, stMsg) {
 	} else {
 		setGridCellAll(grid_sheet,"pwChg", "<a class='BK_btn_grid2' ><s:message code='PWD.CHG' /></a>" ); /* 비밀번호변경 */
 	}
+
+    var len = grid_sheet.RowCount();
+    for(var i = 0; i < len; i++) {
+        grid_sheet.SetCellValue(i+1,"ibsStatus", "");
+    }
 
 }
 
