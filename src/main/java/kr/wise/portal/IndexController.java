@@ -280,7 +280,7 @@ public class IndexController {
         time = format1.parse(time1);
         Date time2 = format2.parse("2022-12-31");
 
-        if (!license.equals(realLicense) && !license.equals("8c6976e5b541415bde98bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918")
+        if (!license.equals(realLicense) && !license.equals("783cf812cfcabaac3fccd91d44b272e43a23ec72a047453ee9a93cf80896")
                 && (time.compareTo(time2) > 0)) {
 
             //log.debug(license);
@@ -418,7 +418,7 @@ public class IndexController {
         time = format1.parse(time1);
         Date time2 = format2.parse("2022-12-31");
 
-        if (!license.equals(realLicense) && !license.equals("8c6976e5b541415bde98bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918")
+        if (!license.equals(realLicense) && !license.equals("783cf812cfcabaac3fccd91d44b272e43a23ec72a047453ee9a93cf80896")
                 && (time.compareTo(time2) > 0)) {
             model.addAttribute("licenseError", "error");
         }

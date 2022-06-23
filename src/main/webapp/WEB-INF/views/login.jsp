@@ -161,8 +161,8 @@ function doLogin(){
     
     var emailVal = $("#loginId").val();
 	
-    if (emailVal != 'admin' && emailVal != 'meta' && emailVal != 'dquser') {
-    	
+    if (emailVal != 'systemMaster' && emailVal != 'meta' && emailVal != 'dquser') {
+
     	var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
         // 검증에 사용할 정규식 변수 regExp에 저장
     	
@@ -240,7 +240,7 @@ function doChangeLicense(){
 	</c:when>
 	<c:otherwise>
 <%--     	<div class="lg_logo"><img src='<c:url value="/images/logo/logo_dq.png" />' alt="WISE DA LOGIN"></div> --%>
-    	<div class="lg_tit">DB 표준화 도구</div>
+    	<div class="lg_tit">기관표준관리시스템</div>
 	</c:otherwise>
 </c:choose>    	
     	
@@ -292,13 +292,11 @@ function doChangeLicense(){
         
         
 	<div class="lg_foot">
-		<div class="lg_foot_tit">DB 표준화 도구 이용관련 안내</div> <!-- 메타관리시스템  이용관련 안내 -->
+		<div class="lg_foot_tit">기관표준관리시스템 이용관련 안내</div> <!-- 메타관리시스템  이용관련 안내 -->
 	    <div class="lg_foot_cont">
 	    	<ul>
-	        	<li>인터넷에 연결된 환경에서 이용하여 주시기 바랍니다. (인터넷에 연결 되어있지 않을 경우 정상적인 이용이 불가능합니다.)</li> <!-- 최초로 로그인시 비밀번호를 초기화 및 변경해야 합니다. -->
-<!-- 	            <li>평가단계 변경 시 관련 직원에게 시스템이 자동적으로 지식관리시스템 메일을 발송하여 평가단계를 안내합니다.</li> -->
-<!-- 	            <li>직원평가시스템 이용 및 평가절차와 관련한 사항 등은 오진하 과장(0000), 정혜림 조사역(0000)에게 전화 또는 메일로 문의해주시기 바랍니다.</li> -->
-<!-- 				<li>발급 받은 라이센스 키를 입력해주세요. &nbsp;&nbsp;&nbsp;<a style="color:blue;" onClick="doChangeLicense()">라이센스 등록</a></li>  -->
+	        	<li>크롬, 엣지 브라우저를 사용해서 접속하셔야 정상적인 기능 사용이 가능합니다. MS 익스플로러 브라우저(Explorer Browser)는 정상적인 사용이 불가능할 수 있습니다.</li>
+                <li>기관표준관리시스템 사용 시 불편사항이나 문의사항은 대표전화 1600-2187로 문의해 주시기 바랍니다.</li>
 	        </ul>
 	    </div>
 	</div>

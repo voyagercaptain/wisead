@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
 			
 			record.setObjVers(1);
 			record.setRegTypCd("C");
-			record.setLoginAcPwd("8c6976e5b541415bde98bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"); // 암호화된 "admin"이 기본 비밀번호
+			record.setLoginAcPwd("783cf812cfcabaac3fccd91d44b272e43a23ec72a047453ee9a93cf80896"); // 암호화된 "admin"이 기본 비밀번호
 			
 //			if(WiseConfig.SECURITY_APPLY.equals("Y")){
 //			    record.setLoginAcPwd(EncryptUtils.getEncData(record.getLoginAcPwd(),record.getLoginAcId()));
@@ -134,7 +134,7 @@ public class UserServiceImpl implements UserService {
 				
 				record.setObjVers(1);
 				record.setRegTypCd("C");
-				record.setLoginAcPwd("8c6976e5b541415bde98bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"); // 암호화된 "admin"이 기본 비밀번호
+				record.setLoginAcPwd("783cf812cfcabaac3fccd91d44b272e43a23ec72a047453ee9a93cf80896"); // 암호화된 "admin"이 기본 비밀번호
 			} else {
 				if (UtilObject.isNull(record.getObjVers())) {
 					record.setObjVers(1);
