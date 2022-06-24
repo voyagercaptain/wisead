@@ -2,7 +2,7 @@
  <Context docBase="" path="" reloadable="false" >
 	
    <Resource    auth="Container" 
-                 name="ds_wiseda"
+                 name="ds_wiseda_prod"
   				type="javax.sql.DataSource" 
   				driverClassName="cubrid.jdbc.driver.CUBRIDDriver" 
   				username="dba" 
@@ -15,7 +15,7 @@
   				
 
   <Resource    auth="Container" 
-                 name="ds_mart"
+                 name="ds_mart_prod"
   				type="javax.sql.DataSource" 
   				driverClassName="cubrid.jdbc.driver.CUBRIDDriver" 
   				username="dba" 
@@ -27,7 +27,7 @@
   				validationQuery="select 1 " />
   
     <Resource    auth="Container" 
-                 name="ds_wiseda_local"
+                 name="ds_wiseda"
   				type="javax.sql.DataSource" 
   				driverClassName="cubrid.jdbc.driver.CUBRIDDriver" 
   				username="dba" 
@@ -41,7 +41,7 @@
   				
 
   <Resource    auth="Container" 
-                 name="ds_mart_local"
+                 name="ds_mart"
   				type="javax.sql.DataSource" 
   				driverClassName="cubrid.jdbc.driver.CUBRIDDriver" 
   				username="dba" 

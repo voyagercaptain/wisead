@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-	<logger name="jdbc.sqlonly" level="info" />
-	<logger name="jdbc.sqltiming" level="info" />
-	<logger name="jdbc.audit" level="info" />
+	<logger name="jdbc.sqlonly" level="debug" />
+	<logger name="jdbc.sqltiming" level="debug" />
+	<logger name="jdbc.audit" level="debug" />
 	<logger name="jdbc.resultset" level="off" />
 	<logger name="jdbc.resultsettable" level="error" />
-	<logger name="jdbc.connection" level="info" />
-	<logger name="kr.wise" level="error" />
-	<logger name="org.springframework" level="error" />
+	<logger name="jdbc.connection" level="debug" />
+	<logger name="kr.wise" level="debug" />
+	<logger name="org.springframework" level="debug" />
 
 
 	<property name="LOG_DIR" value="C:/WDQ/log"></property>
@@ -35,8 +35,8 @@
     </encoder>
   </appender>
   
-  <root level="error">
-    <appender-ref ref="FILE"></appender-ref>
+  <root level="debug">
+    
     <appender-ref ref="STDOUT"></appender-ref>
   </root>
 </configuration>

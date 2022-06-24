@@ -44,7 +44,7 @@ function grid_DMN_init() {
 		headtext += "|<s:message code='META.HEADER.STNDDMN.RQST.IFM.4'/>";
 		*/
 		var headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과";
-		headtext += "|도메인ID|기관명|표준도메인그룹명|도메인분류명|도메인명|도메인설명|데이터타입|데이터길이|소수점길이|저장형식|표현형식|단위|허용값|관리부서명|행정표준코드명";
+		headtext += "|도메인ID|기관명|표준도메인그룹명|도메인분류명|도메인명|도메인설명|*데이터타입|*데이터길이|소수점길이|저장형식|표현형식|단위|허용값|관리부서명|행정표준코드명";
 		headtext += "|담당자ID|담당자명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항|필수항목";
 	
 		headerText = headtext.split("|"); 
@@ -55,7 +55,8 @@ function grid_DMN_init() {
 	
 	var headerInfo = {Sort:1, ColMove:1, ColResize:1, HeaderCheck:1};
 	
-	InitHeaders(headers, headerInfo); 
+	InitHeaders(headers, headerInfo);
+
 
 	var cols = [						
 				{Type:"Seq",		Width:50,   SaveName:"ibsSeq",	    Align:"Center", Edit:0},
