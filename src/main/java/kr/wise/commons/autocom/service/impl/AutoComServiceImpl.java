@@ -105,6 +105,8 @@ public class AutoComServiceImpl implements AutoComService{
 			return mapper.selectAppStwdList(searchmap);
 		}else if("API".equals(searchType)) {
 			return mapper.selectAppSditmList(searchmap);
+		}else if("ORGNM".equals(searchType)) {
+			return mapper.selectOrgNmList(searchmap);
 		}
 		return null;
 	}

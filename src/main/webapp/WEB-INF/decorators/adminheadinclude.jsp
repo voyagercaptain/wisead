@@ -18,7 +18,8 @@ var gMSG_LOGIN_INFO_NOT_EXISTS = '<s:message code="LOGIN.INFO.NOT.EXISTS" />'; /
 var gMSG_SYS_NO_USE		       = '<s:message code="SYS.NO.USE" />'; //시스템을 이용할수 없습니다.<br>관리자에게 문의하세요.
 
 </script>
-
+<title>GOODDATA.GO.KR 기관표준관리스템</title>
+<link rel="shortcut icon" href="<c:url value="/img/favicon.png"/>" />
 <link rel="stylesheet" type="text/css" href='<c:url value="/css/themes/metablue/jquery-ui-1.9.2.custom.min.css"/>' />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/da-import.css"/>"  />
 

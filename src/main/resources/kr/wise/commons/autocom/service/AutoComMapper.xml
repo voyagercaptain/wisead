@@ -372,7 +372,17 @@
 				limit ${maxRows}
 		]]>
 	</select>
-   
+
+	<select id="selectOrgNmList" parameterType="map" resultType="string">
+		<![CDATA[
+		-- AutoComplete 기관명 리스트 조회 10개만 가져온다....
+		SELECT A.ORG_NM
+		FROM waa_org A
+		where A.ORG_NM LIKE CONCAT ('%', #{searchTerm}, '%')
+		GROUP BY A.ORG_NM
+			limit ${maxRows}
+		]]>
+	</select>
 </mapper>
 
 

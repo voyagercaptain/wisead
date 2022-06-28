@@ -11,7 +11,6 @@
 <!-- <head> -->
 <!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> -->
 <!-- <meta http-equiv="x-ua-compatible" content="IE=10" > -->
-<title><%-- ::WISE DA:: <tiles:insertAttribute name="title" ignore="true" /> :: --%></title>
 
 <%@ include file="adminheadinclude.jsp" %>
 

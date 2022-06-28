@@ -151,4 +151,5 @@ public interface AutoComMapper {
 	
 	List<String> selectAppSditmList(Map<String, Object> searchmap);
 
+	List<String> selectOrgNmList(Map<String, Object> searchmap);
 }

@@ -126,52 +126,14 @@ $(document).ready(function() {
 	}).hide();
  
 	$("#divTabs-rqstvrf").hide();
-	
-	// 기관명 onChange Event
-    $("#orgNm").change(function(){
-        // 변경된 값으로 비교 후 alert 표출
-        //if($(this).val() == ""){
-        //    alert("onchange value " + $(this).val());
-        //}
-    	var url = "";
-		url = '<c:url value="/dq/dbstnd/getDbList.do"/>';
-		
-		var param = $("#frmSearch").serialize();
-		
-		$.ajax({
-			url: url,
-			async: false,
-			type: "POST",
-			data: param,
-			dataType: 'json',
-			success: function (data) {
-				if(data){
-					
-					if (data.length > 0) {
-						$('#dbNm').empty(); 
-						
-						var option = $("<option value=''>전체</option>");
-						$('#dbNm').append(option);            
-						
-						for (var i = 0; i < data.length; i++) {
-							var option = $("<option value="+data[i].dbNm+">"+data[i].dbNm+"</option>");
-							$('#dbNm').append(option);            
-						}
-					}
-				}
-			},
-			error: function (jqXHR, textStatus, errorThrown) {
-				
-				var res  = "";
 
-				//시스템을 이용할수 없습니다.<br>관리자에게 문의하세요.
-				res = {RESULT : {CODE:-1, MESSAGE: gMSG_SYS_NO_USE}};		
-				
-				ibscallback(res);
-			}
-		});
-		
-    });
+	setautoComplete($("#frmSearch #orgNm"), "ORGNM", 10);
+
+	$("#frmSearch #orgNm").autocomplete({
+		select: function (event, ui) {
+			getOrgDbList();
+		}
+	});
 	
 });
 
@@ -216,6 +178,49 @@ $(window).load(function() {
 
 $(window).resize(function() {
 });
+
+
+function getOrgDbList() {
+	// 변경된 값으로 비교 후 alert 표출
+	//if($(this).val() == ""){
+	//    alert("onchange value " + $(this).val());
+	//}
+	var url = "";
+	url = '<c:url value="/dq/dbstnd/getDbList.do"/>';
+
+	var param = $("#frmSearch").serialize();
+
+	$.ajax({
+		url: url,
+		async: false,
+		type: "POST",
+		data: param,
+		dataType: 'json',
+		success: function (data) {
+			if(data){
+
+				if (data.length > 0) {
+					$('#dbNm').empty();
+
+					var option = $("<option value=''>전체</option>");
+					$('#dbNm').append(option);
+
+					for (var i = 0; i < data.length; i++) {
+						var option = $("<option value="+data[i].dbNm+">"+data[i].dbNm+"</option>");
+						$('#dbNm').append(option);
+					}
+				}
+			}
+		},
+		error: function (jqXHR, textStatus, errorThrown) {
+			var res  = "";
+			//시스템을 이용할수 없습니다.<br>관리자에게 문의하세요.
+			res = {RESULT : {CODE:-1, MESSAGE: gMSG_SYS_NO_USE}};
+			ibscallback(res);
+		}
+	});
+
+};
 
 //요청정보재조회
 function getMstFrm(){
@@ -620,15 +625,14 @@ function postProcessIBS(res) {
                             
 					         <th scope="row"><label for="orgNm">기관명</label></th> <!-- 사전유형 -->
                                 <td >
-                                <!-- 
-                                <input type="text" id="orgNm" name="orgNm" class="wd98p" value="${orgNm}" />
-                                 -->
-                                 <select id="orgNm" class="" name="orgNm">
+									<input type="text" id="orgNm" name="orgNm" class="wd200" value="${orgNm}"
+										   placeholder="기관명을 입력해주세요."/>
+                                 <%--<select id="orgNm" class="" name="orgNm">
                                 	<option value="">전체</option>
 		 							<c:forEach var="userOrgList" items="${userOrgList}" varStatus="status">
 		 							  <option value="${userOrgList.codeLnm}">${userOrgList.codeLnm}</option>
 		 							</c:forEach> 
-	 					 		</select>
+	 					 		</select>--%>
 	 					 		
 								</td>
 								

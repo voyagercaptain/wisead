@@ -20,6 +20,7 @@ String xmlData    =   sb.toString();
 <html>
 <head>
 <title><s:message code="MAIN.SCRN" /></title> <!-- 메인화면 -->
+    <link rel="shortcut icon" href='<c:url value="/img/favicon.ico"/>'>
 <script type="text/javascript" src='<c:url value="/js/FusionCharts/FusionCharts/FusionCharts.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/js/FusionCharts/FusionWidgets/FusionCharts.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/js/IBChart/ibchart.js"/>'></script>

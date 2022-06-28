@@ -164,10 +164,18 @@ $(document).ready(function() {
 			IBSpostJson2(url, ibsSaveJson, param, ibscallback);		
 		}
 	}).show();
- 
-			$("#divTabs-rqstvrf").hide();
-	
+
+	$("#divTabs-rqstvrf").hide();
+
+	setautoComplete($("#frmSearch #orgNm"), "ORGNM", 10);
+
+	$("#frmSearch #orgNm").autocomplete({
+		select: function (event, ui) {
+			console.log("선택값"+ui.item.label)
+		}
+	});
 });
+
 
 $(window).load(function() {
 	$("#btnRegRqst").hide();
@@ -277,9 +285,6 @@ function getDomainDataType(param, row) {
 		}
 	});
 }
-
-
-
 
 function getDomainDataType_async(param, row) {
 	
@@ -655,6 +660,7 @@ function postProcessIBS(res) {
 	}
 }
 
+
 </script>
 </head>
 
@@ -697,15 +703,16 @@ function postProcessIBS(res) {
                             <tr>
 					         <th scope="row"><label for="orgNm">기관명</label></th> <!-- 사전유형 -->
                                 <td >
-                                <!-- 
-                                <input type="text" id="orgNm" name="orgNm" class="wd98p" value="${orgNm}" />
-                                 -->
-                                <select id="orgNm" class="" name="orgNm">
+                                <input type="text" id="orgNm" name="orgNm" class="wd200" value="${orgNm}"
+									placeholder="기관명을 입력해주세요."/>
+									<%--<ul id="orgList"></ul>--%>
+
+                                <%--<select id="orgNm" class="" name="orgNm">
                                 	<option value="">전체</option>
 		 							<c:forEach var="userOrgList" items="${userOrgList}" varStatus="status">
 		 							  <option value="${userOrgList.codeLnm}">${userOrgList.codeLnm}</option>
-		 							</c:forEach> 
-	 					 		</select>
+		 							</c:forEach>
+	 					 		</select>--%>
 	 					 		
 								</td>
                                 <th scope="row"><label for="stndNm">표준용어명</label></th> <!-- 표준사전명 -->

@@ -135,8 +135,9 @@ $(document).ready(function() {
 	
 	}).hide();
  
-			$("#divTabs-rqstvrf").hide();
-	
+	$("#divTabs-rqstvrf").hide();
+
+	setautoComplete($("#frmSearch #orgNm"), "ORGNM", 10);
 });
 
 $(window).load(function() {
@@ -597,12 +598,14 @@ function postProcessIBS(res) {
                            <tr>
 					         <th scope="row"><label for="orgNm">기관명</label></th> <!-- 사전유형 -->
                                 <td >
-                                 <select id="orgNm" class="" name="orgNm">
+									<input type="text" id="orgNm" name="orgNm" class="wd200" value="${orgNm}"
+										   placeholder="기관명을 입력해주세요."/>
+									<%--<select id="orgNm" class="" name="orgNm">
                                 	<option value="">전체</option>
 		 							<c:forEach var="userOrgList" items="${userOrgList}" varStatus="status">
 		 							  <option value="${userOrgList.codeLnm}">${userOrgList.codeLnm}</option>
 		 							</c:forEach> 
-	 					 		</select>
+	 					 		</select>--%>
                                 
 								</td>
                                 <th scope="row"><label for="stndNm">코드명</label></th> <!-- 표준사전명 -->
