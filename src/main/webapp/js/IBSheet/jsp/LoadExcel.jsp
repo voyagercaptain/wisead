@@ -24,7 +24,7 @@
 	// 예 : "C:/tmp/"   "/usr/tmp/"
 	//====================================================================================================
 
-	ibExcel.setTempFolder("C:/WDQ/ide/tmp/");
+	ibExcel.setTempFolder("/home/jboss/apache-tomcat-9.0.62/wdq/ide/tmp/");
 
 
 
