@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.wise.commons.user.service.RegistStatMapper" >
+  <resultMap id="BaseResultMap" type="kr.wise.commons.user.WaaUserg" extends="kr.wise.commons.cmm.service.CommonMapper.BaseResultMap" >
+    <result column="ORG_ITEM_COUNT"   property="orgItemCount"   jdbcType="NUMERIC" />
+    <result column="ORG_WORD_COUNT"   property="orgWordCount"   jdbcType="NUMERIC" />
+    <result column="ORG_DOMAIN_COUNT" property="orgDomainCount" jdbcType="NUMERIC" />
+    <result column="ORG_CODE_COUNT"   property="orgCodeCount"   jdbcType="NUMERIC" />
+    <result column="DB_ITEM_COUNT"    property="dbItemCount"    jdbcType="NUMERIC" />
+    <result column="DB_WORD_COUNT"    property="dbWordCount"    jdbcType="NUMERIC" />
+    <result column="DB_DOMAIN_COUNT"  property="dbDomainCount"  jdbcType="NUMERIC" />
+    <result column="DB_CODE_COUNT"    property="dbCodeCount"    jdbcType="NUMERIC" />
+    <result column="CM_ITEM_COUNT"    property="cmItemCount"    jdbcType="NUMERIC" />
+    <result column="CM_WORD_COUNT"    property="cmWordCount"    jdbcType="NUMERIC" />
+    <result column="CM_DOMAIN_COUNT"  property="cmDomainCount"  jdbcType="NUMERIC" />
+    
+  </resultMap>
+<select id="selectList" 
+	parameterType="kr.wise.commons.user.WaaUserg" resultMap="BaseResultMap">
+
+SELECT 
+		WO.ORG_CD,
+		WO.ORG_NM,
+		CASE WHEN B.ORG_ITEM_COUNT IS NULL THEN 0 ELSE B.ORG_ITEM_COUNT END 	AS ORG_ITEM_COUNT,  --기관표준용어
+		CASE WHEN C.ORG_WORD_COUNT IS NULL THEN 0 ELSE C.ORG_WORD_COUNT END 	AS ORG_WORD_COUNT,  --기관표준단어
+		CASE WHEN D.ORG_DOMAIN_COUNT IS NULL THEN 0 ELSE D.ORG_DOMAIN_COUNT END AS ORG_DOMAIN_COUNT,--기관표준도메인
+		CASE WHEN E.ORG_CODE_COUNT IS NULL THEN 0 ELSE E.ORG_CODE_COUNT END 	AS ORG_CODE_COUNT,  --기관표준코드
+		CASE WHEN F.DB_ITEM_COUNT IS NULL THEN 0 ELSE F.DB_ITEM_COUNT END 		AS DB_ITEM_COUNT,   --DB표준용어
+		CASE WHEN G.DB_WORD_COUNT IS NULL THEN 0 ELSE G.DB_WORD_COUNT END 		AS DB_WORD_COUNT,   --DB표준단어
+		CASE WHEN H.DB_DOMAIN_COUNT IS NULL THEN 0 ELSE H.DB_DOMAIN_COUNT END 	AS DB_DOMAIN_COUNT, --DB표준도메인
+		CASE WHEN I.DB_CODE_COUNT IS NULL THEN 0 ELSE I.DB_CODE_COUNT END 		AS DB_CODE_COUNT,   --DB표준코드
+		CASE WHEN J.CM_ITEM_COUNT IS NULL THEN 0 ELSE J.CM_ITEM_COUNT END 		AS CM_ITEM_COUNT,   --공통표준용어
+		CASE WHEN K.CM_WORD_COUNT IS NULL THEN 0 ELSE K.CM_WORD_COUNT END 		AS CM_WORD_COUNT,   --공통표준단어
+		CASE WHEN L.CM_DOMAIN_COUNT IS NULL THEN 0 ELSE L.CM_DOMAIN_COUNT END 	AS CM_DOMAIN_COUNT  --공통표준도메인
+  FROM WAA_ORG WO 
+  		LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_ITEM_COUNT FROM WAM_SDITM GROUP BY ORG_CD) B ON (WO.ORG_NM = B.ORG_NM)
+  		LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_WORD_COUNT FROM WAM_STWD  GROUP BY ORG_NM) C ON (WO.ORG_NM = C.ORG_NM)
+  		LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_DOMAIN_COUNT FROM WAM_DMN  GROUP BY ORG_NM) D ON (WO.ORG_NM = D.ORG_NM)
+  		LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_CODE_COUNT FROM WAM_COMM_CD  GROUP BY ORG_NM) E ON (WO.ORG_NM = E.ORG_NM)
+  		LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS DB_ITEM_COUNT FROM WAM_DB_SDITM  GROUP BY ORG_CD) F ON (WO.ORG_NM = F.ORG_NM)
+  		LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS DB_WORD_COUNT FROM WAM_DB_STWD  GROUP BY ORG_CD) G ON (WO.ORG_NM = G.ORG_NM)
+  		LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS DB_DOMAIN_COUNT FROM WAM_DB_DMN  GROUP BY ORG_CD) H ON (WO.ORG_NM = H.ORG_NM)
+  		LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS DB_CODE_COUNT FROM WAM_DB_COMM_CD  GROUP BY ORG_NM) I ON (WO.ORG_NM = I.ORG_NM)
+  		LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS CM_ITEM_COUNT FROM COMM_SDITM  GROUP BY ORG_CD) J ON (WO.ORG_NM = J.ORG_NM)
+  		LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS CM_WORD_COUNT FROM COMM_STWD  GROUP BY ORG_CD) K ON (WO.ORG_NM = K.ORG_NM)
+  		LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS CM_DOMAIN_COUNT FROM COMM_DMN  GROUP BY ORG_CD) L ON (WO.ORG_NM = L.ORG_NM)
+  WHERE 1=1
+  	<if test="orgNm != null and orgNm != '' ">
+  	AND WO.ORG_NM LIKE  '%' || #{orgNm} || '%'
+  	</if>
+  	
+</select>
+</mapper>

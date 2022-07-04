@@ -4282,7 +4282,7 @@
 <entry key="COMBO.CUD"><![CDATA[신규|변경|삭제]]></entry>
 <entry key="COMMON.HEADER.DBMAP.LST2"><![CDATA[No.|상태|선택|DB맵ID|DB스키마명|DDL대상|스키마명|DB스키마명|DDL대상|스키마명|DDL이관여부|설명|버전|등록유형|만료일시|시작일시|작성일시|작성자]]></entry>
 <entry key="COMMON.HEADER.ORG.LST"><![CDATA[No.|선택|기관코드|기관명]]></entry>
-
+<entry key="COMMON.HEADER.REGISTSTAT.LST"><![CDATA[기관명|공통표준용어|공통표준도메인|공통표준단어|기관표준용어|기관표준도메인|기관표준단어|기관표준코드|DB표준용어|DB표준도메인|DB표준단어|DB표준코드]]></entry>
 
 <entry key="META.HEADER.STWDCHANGE.DTL"><![CDATA[No.|표준단어ID|만료일자|시작일자|표준단어논리명|표준단어물리명|영문의미|한자명|출처구분|표준단어구분|도메인여부|요청번호|요청일련번호|설명|버전|등록유형|최초요청일시|최초요청사용자ID|요청일시|요청사용자ID|승인일시|승인사용자ID|비고]]></entry>
 <entry key="META.HEADER.STWDWHEREUSED.DTL.1"><![CDATA[No.|개체유형|개체ID|개체명|개체논리명|개체물리명|도메인ID|비고]]></entry>
@@ -4730,6 +4730,6 @@
 
 	<entry key="META.HEADER.MAP.PDMSTND.LST"><![CDATA[No.|상태|선택|매핑여부|mapid|컬럼id|기관명|DB명|테이블영문명|테이블한글명|컬럼영문명|컬럼한글명|데이터타입|데이터길이|소수점|표준용어id|표준용어명(입력)|영문약어명(입력)|도메인명|표준용어설명]]></entry>
 	<entry key="META.HEADER.MAP.PDMSTND.LST2"><![CDATA[No.|상태|선택|매핑여부|mapid|컬럼id|기관명|DB명|테이블영문명|테이블한글명|컬럼영문명|컬럼한글명|데이터타입|데이터길이|소수점|표준용어id|표준용어명|영문약어명|도메인명|표준용어설명]]></entry>
-	
+	<entry key="USER.REG.STS"><![CDATA[기관별 등록 현황]]></entry>
 
 </properties> 

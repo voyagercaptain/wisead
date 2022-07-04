@@ -1,0 +1,10 @@
+package kr.wise.commons.user.service;
+
+import java.util.List;
+
+import kr.wise.commons.user.WaaUserg;
+
+public interface RegistStatService {
+	
+	public List<WaaUserg> getRegistStatList(WaaUserg search) ;
+}

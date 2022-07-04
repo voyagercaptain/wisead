@@ -162,6 +162,126 @@ public class CommonVo {
     
     private String chkYn;
     
+    private String orgCd;
+    
+	private int orgItemCount;
+	
+	private int orgWordCount;
+	
+	private int orgDomainCount;
+	
+	private int orgCodeCount;
+	
+	private int dbItemCount;
+	
+	private int dbWordCount;
+	
+	private int dbDomainCount;
+	
+	private int dbCodeCount;
+	
+	private int cmItemCount;
+	
+	private int cmWordCount;
+	
+	private int cmDomainCount;
+
+	public int getCmDomainCount() {
+		return cmDomainCount;
+	}
+
+	public void setCmDomainCount(int cmDomainCount) {
+		this.cmDomainCount = cmDomainCount;
+	}
+
+	public String getOrgCd() {
+		return orgCd;
+	}
+
+	public void setOrgCd(String orgCd) {
+		this.orgCd = orgCd;
+	}
+
+	public int getOrgItemCount() {
+		return orgItemCount;
+	}
+
+	public void setOrgItemCount(int orgItemCount) {
+		this.orgItemCount = orgItemCount;
+	}
+
+	public int getOrgWordCount() {
+		return orgWordCount;
+	}
+
+	public void setOrgWordCount(int orgWordCount) {
+		this.orgWordCount = orgWordCount;
+	}
+
+	public int getOrgDomainCount() {
+		return orgDomainCount;
+	}
+
+	public void setOrgDomainCount(int orgDomainCount) {
+		this.orgDomainCount = orgDomainCount;
+	}
+
+	public int getOrgCodeCount() {
+		return orgCodeCount;
+	}
+
+	public void setOrgCodeCount(int orgCodeCount) {
+		this.orgCodeCount = orgCodeCount;
+	}
+
+	public int getDbItemCount() {
+		return dbItemCount;
+	}
+
+	public void setDbItemCount(int dbItemCount) {
+		this.dbItemCount = dbItemCount;
+	}
+
+	public int getDbWordCount() {
+		return dbWordCount;
+	}
+
+	public void setDbWordCount(int dbWordCount) {
+		this.dbWordCount = dbWordCount;
+	}
+
+	public int getDbDomainCount() {
+		return dbDomainCount;
+	}
+
+	public void setDbDomainCount(int dbDomainCount) {
+		this.dbDomainCount = dbDomainCount;
+	}
+
+	public int getDbCodeCount() {
+		return dbCodeCount;
+	}
+
+	public void setDbCodeCount(int dbCodeCount) {
+		this.dbCodeCount = dbCodeCount;
+	}
+
+	public int getCmItemCount() {
+		return cmItemCount;
+	}
+
+	public void setCmItemCount(int cmItemCount) {
+		this.cmItemCount = cmItemCount;
+	}
+
+	public int getCmWordCount() {
+		return cmWordCount;
+	}
+
+	public void setCmWordCount(int cmWordCount) {
+		this.cmWordCount = cmWordCount;
+	}
+
 
 	public String getDbNm() {
 		return dbNm;
