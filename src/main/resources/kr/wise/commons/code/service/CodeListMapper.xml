@@ -1115,8 +1115,8 @@ SELECT A.CD_VAL AS CODE_CD
      SELECT A.ORG_CD AS CODE_CD, 
  			A.ORG_NM AS CODE_LNM 
 	   FROM waa_org A, waa_user_org B
-	   where A.org_cd = B.org_cd 
-	   and B.user_id = #{userId}
+	  WHERE B.user_id = #{userId}
+	    AND (A.org_cd = B.org_cd or A.upper_org_cd = B.org_cd)
 	  ORDER BY A.ORG_NM
   </select>
   
