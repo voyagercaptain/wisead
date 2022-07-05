@@ -55,18 +55,18 @@ function initGrid()
         
 
         var cols = [                        
-        	{Type:"Text",   Width:60,  SaveName:"orgNm",     	 Align:"Left", 	     Edit:0},
-        	{Type:"Text",   Width:50,  SaveName:"cmItemCount",    Align:"Left", 	 Edit:0}, //공통표준용어
-        	{Type:"Text",   Width:50,  SaveName:"cmDomainCount",   Align:"Left", 	 Edit:0}, //공통표준도메인
-        	{Type:"Text",   Width:50,  SaveName:"cmWordCount",    Align:"Left", 	 Edit:0}, //공통표준단어
-        	{Type:"Text",   Width:50,  SaveName:"orgItemCount",   Align:"Left", 	 Edit:0}, //기관표준용어
-        	{Type:"Text",   Width:50,  SaveName:"orgDomainCount", Align:"Left", 	 Edit:0}, //기관표준도메인
-        	{Type:"Text",   Width:50,  SaveName:"orgWordCount",   Align:"Left", 	 Edit:0}, //기관표준단어
-        	{Type:"Text",   Width:50,  SaveName:"orgCodeCount",   Align:"Left", 	 Edit:0}, //기관표준코드
-        	{Type:"Text",   Width:50,  SaveName:"dbItemCount",    Align:"Left", 	 Edit:0}, //db표준용어
-        	{Type:"Text",   Width:50,  SaveName:"dbDomainCount",  Align:"Left", 	 Edit:0}, //db표준도메인
-        	{Type:"Text",   Width:50,  SaveName:"dbWordCount",    Align:"Left", 	 Edit:0}, //db표준단어
-        	{Type:"Text",   Width:50,  SaveName:"dbCodeCount",    Align:"Left", 	 Edit:0}, //db표준코드
+        	{Type:"Text",   Width:60,  SaveName:"orgNm",     	 Align:"Left", 	     			 Edit:0}, //기관명
+        	{Type:"Int",   Width:50,  SaveName:"cmItemCount",    Align:"Left",  Format:"#,##0",  Edit:0}, //공통표준용어
+        	{Type:"Int",   Width:50,  SaveName:"cmDomainCount",  Align:"Left",  Format:"#,##0",	 Edit:0}, //공통표준도메인
+        	{Type:"Int",   Width:50,  SaveName:"cmWordCount",    Align:"Left",  Format:"#,##0",	 Edit:0}, //공통표준단어
+        	{Type:"Int",   Width:50,  SaveName:"orgItemCount",   Align:"Left", 	Format:"#,##0",  Edit:0}, //기관표준용어
+        	{Type:"Int",   Width:50,  SaveName:"orgDomainCount", Align:"Left", 	Format:"#,##0",  Edit:0}, //기관표준도메인
+        	{Type:"Int",   Width:50,  SaveName:"orgWordCount",   Align:"Left", 	Format:"#,##0",  Edit:0}, //기관표준단어
+        	{Type:"Int",   Width:50,  SaveName:"orgCodeCount",   Align:"Left", 	Format:"#,##0",  Edit:0}, //기관표준코드
+        	{Type:"Int",   Width:50,  SaveName:"dbItemCount",    Align:"Left", 	Format:"#,##0",  Edit:0}, //db표준용어
+        	{Type:"Int",   Width:50,  SaveName:"dbDomainCount",  Align:"Left", 	Format:"#,##0",  Edit:0}, //db표준도메인
+        	{Type:"Int",   Width:50,  SaveName:"dbWordCount",    Align:"Left", 	Format:"#,##0",  Edit:0}, //db표준단어
+        	{Type:"Int",   Width:50,  SaveName:"dbCodeCount",    Align:"Left", 	Format:"#,##0",  Edit:0}, //db표준코드
         	
         ];
                     
