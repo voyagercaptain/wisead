@@ -7,5 +7,6 @@ import kr.wise.commons.user.WaaUserg;
 
 @Mapper
 public interface RegistStatMapper {
-	 List<WaaUserg> selectList(WaaUserg param);
+	 List<WaaUserg> getRegistStatList(WaaUserg param);
+	 List<WaaUserg> getDbRegistStatList(WaaUserg param);
 }

@@ -33,17 +33,32 @@ public class RegistStatCtrl {
 	@Inject
 	private RegistStatService service;
 	
-	/**  용어 등록 현황 화면 */
+	/**  기관별 등록 현황 */
 	@RequestMapping("regist_stat_lst.do")
 	public String formpage() {
 		return "/commons/user/regist_stat_lst";
 	}
 	
+	/**  DB별 등록 현황 */
+	@RequestMapping("db_regist_stat_lst.do")
+	public String formpage2() {
+		return "/commons/user/db_regist_stat_lst";
+	}
+	/** 기관표준 등록 변황 조회 **/
 	@RequestMapping("RegistStatSelectlist.do")
 	@ResponseBody
-	public IBSheetListVO<WaaUserg> selectList(@ModelAttribute WaaUserg search) {
+	public IBSheetListVO<WaaUserg> RegistStatSelectlist(@ModelAttribute WaaUserg search) {
 		logger.debug("{}", search);
 		List<WaaUserg> list = service.getRegistStatList(search);
+
+		return new IBSheetListVO<WaaUserg>(list, list.size());
+	}
+	/** DB표준 등록 변황 조회 **/
+	@RequestMapping("DbRegistStatSelectlist.do")
+	@ResponseBody
+	public IBSheetListVO<WaaUserg> DbRegistStatSelectlist(@ModelAttribute WaaUserg search) {
+		logger.debug("{}", search);
+		List<WaaUserg> list = service.getDbRegistStatList(search);
 
 		return new IBSheetListVO<WaaUserg>(list, list.size());
 	}

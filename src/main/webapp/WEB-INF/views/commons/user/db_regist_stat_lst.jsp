@@ -45,8 +45,8 @@ function initGrid()
         SetConfig(cfg);
         
         var headers = [
-                    {Text:"<s:message code='COMMON.HEADER.REGISTSTAT.LST'/>", Align:"Center"}
-                    /* 기관명|기관코드|기관표준용어|기관표준도메인|기관표준단어|기관표준코드 */
+                    {Text:"<s:message code='COMMON.HEADER.DBREGISTSTAT.LST'/>", Align:"Center"}
+                    /* 기관명|DB명|DB표준용어|DB표준도메인|DB표준단어|DB표준코드 */
                 ];
         
         var headerInfo = {Sort:1, ColMove:0, ColResize:1, HeaderCheck:1};
@@ -56,15 +56,15 @@ function initGrid()
 
         var cols = [                        
         	{Type:"Text",  Width:60,  SaveName:"orgNm",     	 Align:"Left", 	     			 Edit:0}, //기관명
-        	{Type:"Text",  Width:20,  SaveName:"orgCd",   	 	 Align:"Left", 	  				 Edit:0}, //기관코드
-        	{Type:"Text",  Width:20,  SaveName:"orgItemYn",   	 Align:"Left", 				     Edit:0}, //기관표준용어YN
-        	{Type:"Int",   Width:30,  SaveName:"orgItemCount",   Align:"Left", 	Format:"#,##0",  Edit:0}, //기관표준용어
-        	{Type:"Text",  Width:20,  SaveName:"orgDomainYn", 	 Align:"Left", 				     Edit:0}, //기관표준도메인YN
-        	{Type:"Int",   Width:30,  SaveName:"orgDomainCount", Align:"Left", 	Format:"#,##0",  Edit:0}, //기관표준도메인
-        	{Type:"Text",  Width:20,  SaveName:"orgWordYn",  	 Align:"Left", 					 Edit:0}, //기관표준단어YN
-        	{Type:"Int",   Width:30,  SaveName:"orgWordCount",   Align:"Left", 	Format:"#,##0",  Edit:0}, //기관표준단어
-        	{Type:"Text",  Width:20,  SaveName:"orgCodeYn",   	 Align:"Left", 				     Edit:0}, //기관표준코드YN
-        	{Type:"Int",   Width:30,  SaveName:"orgCodeCount",   Align:"Left", 	Format:"#,##0",  Edit:0}, //기관표준코드
+        	{Type:"Text",  Width:40,  SaveName:"dbNm",   	 	 Align:"Left", 	  				 Edit:0}, //DB명
+        	{Type:"Text",  Width:20,  SaveName:"dbItemYn",   	 Align:"Left", 				     Edit:0}, //DB표준용어YN
+        	{Type:"Int",   Width:30,  SaveName:"dbItemCount",    Align:"Left", 	Format:"#,##0",  Edit:0}, //DB표준용어
+        	{Type:"Text",  Width:20,  SaveName:"dbDomainYn", 	 Align:"Left", 				     Edit:0}, //DB표준도메인YN
+        	{Type:"Int",   Width:30,  SaveName:"dbDomainCount",  Align:"Left", 	Format:"#,##0",  Edit:0}, //DB표준도메인
+        	{Type:"Text",  Width:20,  SaveName:"dbWordYn",   	 Align:"Left", 				     Edit:0}, //DB표준단어YN
+        	{Type:"Int",   Width:30,  SaveName:"dbWordCount",    Align:"Left", 	Format:"#,##0",  Edit:0}, //DB표준단어
+        	{Type:"Text",  Width:20,  SaveName:"dbCodeYn",   	 Align:"Left", 				     Edit:0}, //DB표준코드YN
+        	{Type:"Int",   Width:30,  SaveName:"dbCodeCount",    Align:"Left", 	Format:"#,##0",  Edit:0}, //DB표준코드
         	
         ];
                     
@@ -89,7 +89,7 @@ function doAction(sAction)
         case "Search":
         	var param = $('#frmSearch').serialize();
         	//alert(param);
-        	grid_sheet.DoSearch('<c:url value="/commons/user/RegistStatSelectlist.do" />', param);
+        	grid_sheet.DoSearch('<c:url value="/commons/user/DbRegistStatSelectlist.do" />', param);
         	
         	break;
        
@@ -112,7 +112,7 @@ function doAction(sAction)
 <!-- 메뉴 메인 제목 -->
 <div class="menu_subject">
 	<div class="tab">
-	    <div class="menu_title"><s:message code="USER.REG.STS" /></div> <!-- 기관표준 등록 현황 -->
+	    <div class="menu_title"><s:message code="USER.DB.REG.STS" /></div> 
 	</div>
 </div>
 <!-- 메뉴 메인 제목 -->
@@ -126,7 +126,7 @@ function doAction(sAction)
             <fieldset>
             <legend><s:message code="FOREWORD" /></legend> <!-- 머리말 -->
             <div class="tb_basic2">
-                <table width="100%" border="0" cellspacing="0" cellpadding="0" summary="<s:message code='USER.REG.INQ' />"> <!--  -->
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" summary="<s:message code='USER.DB.REG.INQ' />"> <!-- DB별 등록 현황 조회 -->
                    <caption><s:message code="TBL.NM1" /></caption> <!-- 테이블 이름 -->
                    <colgroup>
                    <col style="width:15%;" />

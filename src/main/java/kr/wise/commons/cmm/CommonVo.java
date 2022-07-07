@@ -164,6 +164,86 @@ public class CommonVo {
     
     private String orgCd;
     
+    private String orgItemYn;
+	
+	private String orgWordYn;
+	
+	private String orgDomainYn;
+	
+	private String orgCodeYn;
+	
+	private String dbItemYn;
+	
+	private String dbWordYn;
+	
+	private String dbDomainYn;
+	
+	private String dbCodeYn;
+    
+	public String getOrgItemYn() {
+		return orgItemYn;
+	}
+
+	public void setOrgItemYn(String orgItemYn) {
+		this.orgItemYn = orgItemYn;
+	}
+
+	public String getOrgWordYn() {
+		return orgWordYn;
+	}
+
+	public void setOrgWordYn(String orgWordYn) {
+		this.orgWordYn = orgWordYn;
+	}
+
+	public String getOrgDomainYn() {
+		return orgDomainYn;
+	}
+
+	public void setOrgDomainYn(String orgDomainYn) {
+		this.orgDomainYn = orgDomainYn;
+	}
+
+	public String getOrgCodeYn() {
+		return orgCodeYn;
+	}
+
+	public void setOrgCodeYn(String orgCodeYn) {
+		this.orgCodeYn = orgCodeYn;
+	}
+
+	public String getDbItemYn() {
+		return dbItemYn;
+	}
+
+	public void setDbItemYn(String dbItemYn) {
+		this.dbItemYn = dbItemYn;
+	}
+
+	public String getDbWordYn() {
+		return dbWordYn;
+	}
+
+	public void setDbWordYn(String dbWordYn) {
+		this.dbWordYn = dbWordYn;
+	}
+
+	public String getDbDomainYn() {
+		return dbDomainYn;
+	}
+
+	public void setDbDomainYn(String dbDomainYn) {
+		this.dbDomainYn = dbDomainYn;
+	}
+
+	public String getDbCodeYn() {
+		return dbCodeYn;
+	}
+
+	public void setDbCodeYn(String dbCodeYn) {
+		this.dbCodeYn = dbCodeYn;
+	}
+
 	private int orgItemCount;
 	
 	private int orgWordCount;

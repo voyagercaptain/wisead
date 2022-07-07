@@ -22,7 +22,14 @@ public class RegistStatServiceImpl implements RegistStatService{
 	@Override
 	public List<WaaUserg> getRegistStatList(WaaUserg search) {
 		logger.debug("getRegistStatList Start.");
-		List<WaaUserg> list = mapper.selectList(search);
+		List<WaaUserg> list = mapper.getRegistStatList(search);
+		return list;
+	}
+
+	@Override
+	public List<WaaUserg> getDbRegistStatList(WaaUserg search) {
+		logger.debug("getDbRegistStatList Start.");
+		List<WaaUserg> list = mapper.getDbRegistStatList(search);
 		return list;
 	}
 

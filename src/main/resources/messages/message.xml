@@ -1467,6 +1467,8 @@
 <entry key="USER.GRP.MNG"><![CDATA[사용자그룹관리]]></entry>
 <entry key="USER.GRP.LGC.NM"><![CDATA[사용자그룹논리명]]></entry>
 <entry key="USER.GRP.INQ"><![CDATA[사용자그룹조회]]></entry>
+<entry key="USER.REG.INQ"><![CDATA[기관별 등록 현황 조회]]></entry>
+<entry key="USER.DB.REG.INQ"><![CDATA[DB별 등록 현황 조회]]></entry>
 <entry key="DEPT.LVL"><![CDATA[부서레벨]]></entry>
 <entry key="DEPT.INQ"><![CDATA[부서 검색]]></entry>
 <entry key="USER.INFO.CHG"><![CDATA[사용자 정보변경]]></entry>
@@ -4274,7 +4276,8 @@
 <entry key="COMMON.HEADER.COMMDCD.XLS"><![CDATA[No.|상태|삭제|요청구분|공통코드ID|공통코드|공통코드명|공통코드설명|상위공통코드ID|시스템코드여부]]></entry>
 <entry key="COMBO.CUD"><![CDATA[신규|변경|삭제]]></entry>
 <entry key="COMMON.HEADER.DBMAP.LST2"><![CDATA[No.|상태|선택|DB맵ID|DB스키마명|DDL대상|스키마명|DB스키마명|DDL대상|스키마명|DDL이관여부|설명|버전|등록유형|만료일시|시작일시|작성일시|작성자]]></entry>
-<entry key="COMMON.HEADER.REGISTSTAT.LST"><![CDATA[기관명|공통표준용어|공통표준도메인|공통표준단어|기관표준용어|기관표준도메인|기관표준단어|기관표준코드|DB표준용어|DB표준도메인|DB표준단어|DB표준코드]]></entry>
+<entry key="COMMON.HEADER.REGISTSTAT.LST"><![CDATA[기관명|기관코드|여부|기관표준용어|여부|기관표준도메인|여부|기관표준단어|여부|기관표준코드]]></entry>
+<entry key="COMMON.HEADER.DBREGISTSTAT.LST"><![CDATA[기관명|DB명|여부|DB표준용어|여부|DB표준도메인|여부|DB표준단어|여부|DB표준코드]]></entry>
 
 <entry key="META.HEADER.STWDCHANGE.DTL"><![CDATA[No.|표준단어ID|만료일자|시작일자|표준단어논리명|표준단어물리명|영문의미|한자명|출처구분|표준단어구분|도메인여부|요청번호|요청일련번호|설명|버전|등록유형|최초요청일시|최초요청사용자ID|요청일시|요청사용자ID|승인일시|승인사용자ID|비고]]></entry>
 <entry key="META.HEADER.STWDWHEREUSED.DTL.1"><![CDATA[No.|개체유형|개체ID|개체명|개체논리명|개체물리명|도메인ID|비고]]></entry>
@@ -4656,4 +4659,5 @@
 <entry key="BR.EXAM.CNT.SQL">SELECT COUNT(*) AS CNT&#10;  FROM 스키마명.테이블명&#10; WHERE 총 건수 조건식</entry>
 <entry key="BR.EXAM.ANA.SQL">SELECT 컬럼명1, 컬럼명2, ...&#10;  FROM 스키마명.테이블명&#10; WHERE 오류 조건식</entry>
 <entry key="USER.REG.STS"><![CDATA[기관별 등록 현황]]></entry>
+<entry key="USER.DB.REG.STS"><![CDATA[DB별 등록 현황]]></entry>
 </properties> 
