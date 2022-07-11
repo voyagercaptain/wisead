@@ -269,7 +269,7 @@ function mstFrmReset(bizDtlCd){
 function getDomainDataType(param, row) {
 
 	$.ajax({
-		url : "/dq/stnd/getDomainDataType.do",
+		url : "<c:url value="/dq/stnd/getDomainDataType.do"/>",
 		type : "POST",
 		async: false,
 		dataType : "json",
