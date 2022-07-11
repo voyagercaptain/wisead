@@ -259,7 +259,7 @@ function mstFrmReset(bizDtlCd){
 
 function getDomainDataType(param, row) {
 	$.ajax({
-		url : "<c:url value="/dq/stnd/getDomainDataType.do"/>",
+		url : '<c:url value="/dq/stnd/getDomainDataType.do"/>',
 		type : "POST",
 		async: false,
 		dataType : "json",
@@ -292,7 +292,7 @@ function getDomainDataType_async(param, row) {
 	console.log("grid_rowCount:" + grid_rowCount + ", row:" + row);
 
 	$.ajax({
-		url : "<c:url value="/dq/stnd/getDomainDataType.do"/>",
+		url : '<c:url value="/dq/stnd/getDomainDataType.do"/>',
 		type : "POST",
 		dataType : "json",
 		data : JSON.stringify(param),
