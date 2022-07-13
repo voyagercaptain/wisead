@@ -424,7 +424,8 @@ function grid_sheet_OnChange(Row, Col, Value, OldValue, RaiseFlag) {
 	if ("orgCd" == grid_sheet.ColSaveName(Col)) {
 		var orgText = grid_sheet.GetCellText(Row, "orgCd");
 		
-		if (usergId == 'OBJ_00000034586' || usergId == 'OBJ_00000034587') {
+		//if (usergId == 'OBJ_00000034586' || usergId == 'OBJ_00000034587') {
+		if (usergId == 'OBJ_00000034587') {
 			if (orgCd != orgText) {
 				grid_sheet.SetCellValue(Row, "orgCd", OldValue);
 				alert("다른 기관으로 변경할 수 없습니다.");
