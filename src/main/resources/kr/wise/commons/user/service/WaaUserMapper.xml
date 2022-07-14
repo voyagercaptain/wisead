@@ -400,8 +400,12 @@
     ON A.DEPT_ID = C.DEPT_ID
     AND C.EXP_DTM = DATE_FORMAT( '9999-12-31', '%Y-%m-%d')
     AND C.REG_TYP_CD IN ('C', 'U')
-    LEFT OUTER JOIN (select wuo.user_id , wo.org_nm, wo.org_cd from WAA_ORG wo, WAA_USER_ORG wuo where wo.org_cd = wuo.org_cd) D
+    LEFT OUTER JOIN (select wuo.user_id , wo.org_nm, wo.org_cd, wo.upper_org_cd from WAA_ORG wo, WAA_USER_ORG wuo where wo.org_cd = wuo.org_cd) D
     ON A.USER_ID = D.USER_ID
+      <if test="orgCd != null" >
+          INNER JOIN waa_org WORG ON WORG.ORG_NM = #{orgCd,jdbcType=VARCHAR}
+      </if>
+
     <where>
     	A.EXP_DTM = DATE_FORMAT( '9999-12-31', '%Y-%m-%d')
     	AND A.REG_TYP_CD IN ('C', 'U')
@@ -427,7 +431,7 @@
       		AND	A.USER_HTELNO = #{userHtelno,jdbcType=VARCHAR}
       		</if>
       	<if test="orgCd != null" >
-      		AND	D.ORG_NM = #{orgCd,jdbcType=VARCHAR}
+            AND (D.ORG_CD = WORG.org_cd OR D.upper_org_cd = WORG.org_cd )
       		</if>
       </where>
       		ORDER BY USER_NM
