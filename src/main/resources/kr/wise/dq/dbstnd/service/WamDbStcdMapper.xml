@@ -123,7 +123,7 @@
     values (#{commCdId,jdbcType=VARCHAR}, #{commCdNm,jdbcType=VARCHAR}, #{commCdDesc,jdbcType=VARCHAR}, 
       #{comnCdDttpNm,jdbcType=VARCHAR},
       #{comnCdDataLen,jdbcType=DECIMAL}, #{comnCdEnnm,jdbcType=VARCHAR}, 
-      #{mngDeptCd,jdbcType=VARCHAR}, #{writDtm,jdbcType=TIMESTAMP}, 
+      #{mngDeptCd,jdbcType=VARCHAR}, #{writDtm,jdbcType=DATE},
       #{pclrMtr,jdbcType=VARCHAR}, #{uppCommCdId,jdbcType=VARCHAR}, 
       #{commDtlCdNm,jdbcType=VARCHAR}, #{commDtlCdMn,jdbcType=VARCHAR}, #{commDtlCdDesc,jdbcType=VARCHAR},
       #{useYn,jdbcType=VARCHAR}, #{orgNm,jdbcType=VARCHAR}, #{dbNm,jdbcType=VARCHAR}
@@ -140,7 +140,9 @@
 		, COMN_CD_DATA_LEN
 		, COMN_CD_ENNM
 		, MNG_DEPT_CD
-		, WRIT_DTM
+        <if test="writDtm != null" >
+            , WRIT_DTM
+        </if>
 		, PCLR_MTR
 		, UPP_COMM_CD_ID
 		, COMM_DTL_CD_NM
@@ -155,7 +157,11 @@
    	#{commCdId,jdbcType=VARCHAR}, #{commCdNm,jdbcType=VARCHAR}, #{commCdDesc,jdbcType=VARCHAR}, 
       #{comnCdDttpNm,jdbcType=VARCHAR},
       #{comnCdDataLen,jdbcType=DECIMAL}, #{comnCdEnnm,jdbcType=VARCHAR}, 
-      #{mngDeptCd,jdbcType=VARCHAR}, LOCALTIMESTAMP() /* writDtm,jdbcType=TIMESTAMP */,  
+      #{mngDeptCd,jdbcType=VARCHAR},
+      <if test="writDtm != null" >
+          /* LOCALTIMESTAMP() */
+          #{writDtm,jdbcType=DATE},
+      </if>
       #{pclrMtr,jdbcType=VARCHAR}, #{uppCommCdId,jdbcType=VARCHAR}, 
       #{commDtlCdNm,jdbcType=VARCHAR}, #{commDtlCdMn,jdbcType=VARCHAR}, #{commDtlCdDesc,jdbcType=VARCHAR},
       #{useYn,jdbcType=VARCHAR}, #{orgNm,jdbcType=VARCHAR}, #{dbNm,jdbcType=VARCHAR}
@@ -243,8 +249,10 @@
 		, COMN_CD_DATA_LEN = #{comnCdDataLen,jdbcType=DECIMAL}
 		, COMN_CD_ENNM = #{comnCdEnnm,jdbcType=VARCHAR}
 		, MNG_DEPT_CD = #{mngDeptCd,jdbcType=VARCHAR}
-		/* , WRIT_DTM = writDtm,jdbcType=TIMESTAMP */
-		, WRIT_DTM = LOCALTIMESTAMP()   
+		/* , WRIT_DTM = LOCALTIMESTAMP() */
+      <if test="writDtm != null" >
+          , WRIT_DTM = #{writDtm,jdbcType=DATE}
+      </if>
 		, PCLR_MTR = #{pclrMtr,jdbcType=VARCHAR} 
 		, UPP_COMM_CD_ID = #{uppCommCdId,jdbcType=VARCHAR}
 		, COMM_DTL_CD_NM =  #{commDtlCdNm,jdbcType=VARCHAR}

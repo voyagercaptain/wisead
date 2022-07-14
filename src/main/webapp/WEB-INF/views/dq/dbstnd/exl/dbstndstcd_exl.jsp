@@ -79,7 +79,7 @@ function grid_STCD_init() {
 			{Type:"Text",   Width:100,  SaveName:"commDtlCdMn",	    Align:"Left", Edit:1, Hidden:0, KeyField:1},
 			{Type:"Text",   Width:100,  SaveName:"commDtlCdDesc",	    Align:"Left", Edit:1, Hidden:0, KeyField:0},
 			
-			{Type:"Text",   Width:80,  SaveName:"writDtm",  	Align:"Center", Edit:0, Format:"yyyyMMdd", KeyField:1},
+			{Type:"Text",   Width:80,  SaveName:"writDtm",  	Align:"Center", Edit:1, Format:"yyyyMMdd", KeyField:1},
 			{Type:"Text",   Width:150,  SaveName:"pclrMtr",	    Align:"Left", Edit:1, Hidden:0},
 			{Type:"Text",   Width:100,  SaveName:"uppCommCdId",	    Align:"Left", Edit:1, Hidden:0, KeyField:0},
 			{Type:"Combo",   Width:80,  SaveName:"useYn",	    Align:"Left", Edit:1, Hidden:0},
