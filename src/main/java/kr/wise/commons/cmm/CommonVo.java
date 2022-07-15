@@ -179,7 +179,139 @@ public class CommonVo {
 	private String dbDomainYn;
 	
 	private String dbCodeYn;
+	
+	private String orgType;
+	
+	private Float orgItemRate;
+	
+	private Float orgWordRate;
+	
+	private Float orgDomainRate;
+	
+	private Float orgCodeRate;
+	
+	private Float dbItemRate;
+	
+	private Float dbWordRate;
+	
+	private Float dbDomainRate;
+	
+	private Float dbCodeRate;
     
+	private int orgItemCount;
+	
+	private int orgWordCount;
+	
+	private int orgDomainCount;
+	
+	private int orgCodeCount;
+	
+	private int dbItemCount;
+	
+	private int dbWordCount;
+	
+	private int dbDomainCount;
+	
+	private int dbCodeCount;
+	
+	private int cmItemCount;
+	
+	private int cmWordCount;
+	
+	private int cmDomainCount;
+	
+	private int orgCount;
+	
+	public int getOrgCount() {
+		return orgCount;
+	}
+
+	public void setOrgCount(int orgCount) {
+		this.orgCount = orgCount;
+	}
+
+	private int orgDbCount;
+	
+	public String getOrgType() {
+		return orgType;
+	}
+
+	public void setOrgType(String orgType) {
+		this.orgType = orgType;
+	}
+
+	public Float getOrgItemRate() {
+		return orgItemRate;
+	}
+
+	public void setOrgItemRate(Float orgItemRate) {
+		this.orgItemRate = orgItemRate;
+	}
+
+	public Float getOrgWordRate() {
+		return orgWordRate;
+	}
+
+	public void setOrgWordRate(Float orgWordRate) {
+		this.orgWordRate = orgWordRate;
+	}
+
+	public Float getOrgDomainRate() {
+		return orgDomainRate;
+	}
+
+	public void setOrgDomainRate(Float orgDomainRate) {
+		this.orgDomainRate = orgDomainRate;
+	}
+
+	public Float getOrgCodeRate() {
+		return orgCodeRate;
+	}
+
+	public void setOrgCodeRate(Float orgCodeRate) {
+		this.orgCodeRate = orgCodeRate;
+	}
+
+	public Float getDbItemRate() {
+		return dbItemRate;
+	}
+
+	public void setDbItemRate(Float dbItemRate) {
+		this.dbItemRate = dbItemRate;
+	}
+
+	public Float getDbWordRate() {
+		return dbWordRate;
+	}
+
+	public void setDbWordRate(Float dbWordRate) {
+		this.dbWordRate = dbWordRate;
+	}
+
+	public Float getDbDomainRate() {
+		return dbDomainRate;
+	}
+
+	public void setDbDomainRate(Float dbDomainRate) {
+		this.dbDomainRate = dbDomainRate;
+	}
+
+	public Float getDbCodeRate() {
+		return dbCodeRate;
+	}
+
+	public void setDbCodeRate(Float dbCodeRate) {
+		this.dbCodeRate = dbCodeRate;
+	}
+
+	public int getOrgDbCount() {
+		return orgDbCount;
+	}
+
+	public void setOrgDbCount(int orgDbCount) {
+		this.orgDbCount = orgDbCount;
+	}
+	
 	public String getOrgItemYn() {
 		return orgItemYn;
 	}
@@ -243,28 +375,6 @@ public class CommonVo {
 	public void setDbCodeYn(String dbCodeYn) {
 		this.dbCodeYn = dbCodeYn;
 	}
-
-	private int orgItemCount;
-	
-	private int orgWordCount;
-	
-	private int orgDomainCount;
-	
-	private int orgCodeCount;
-	
-	private int dbItemCount;
-	
-	private int dbWordCount;
-	
-	private int dbDomainCount;
-	
-	private int dbCodeCount;
-	
-	private int cmItemCount;
-	
-	private int cmWordCount;
-	
-	private int cmDomainCount;
 
 	public int getCmDomainCount() {
 		return cmDomainCount;

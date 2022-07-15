@@ -44,7 +44,14 @@ public class RegistStatCtrl {
 	public String formpage2() {
 		return "/commons/user/db_regist_stat_lst";
 	}
-	/** 기관표준 등록 변황 조회 **/
+	
+	/**  종합 등록 현황 */
+	@RequestMapping("total_stat_lst.do")
+	public String formpage3() {
+		return "/commons/user/total_stat_lst";
+	}
+	
+	/** 기관표준 등록 현황 조회 **/
 	@RequestMapping("RegistStatSelectlist.do")
 	@ResponseBody
 	public IBSheetListVO<WaaUserg> RegistStatSelectlist(@ModelAttribute WaaUserg search) {
@@ -53,12 +60,22 @@ public class RegistStatCtrl {
 
 		return new IBSheetListVO<WaaUserg>(list, list.size());
 	}
-	/** DB표준 등록 변황 조회 **/
+	/** DB표준 등록 현황 조회 **/
 	@RequestMapping("DbRegistStatSelectlist.do")
 	@ResponseBody
 	public IBSheetListVO<WaaUserg> DbRegistStatSelectlist(@ModelAttribute WaaUserg search) {
 		logger.debug("{}", search);
 		List<WaaUserg> list = service.getDbRegistStatList(search);
+
+		return new IBSheetListVO<WaaUserg>(list, list.size());
+	}
+	
+	/** 종합 등록 현황 조회 **/
+	@RequestMapping("TotalStatSelectlist.do")
+	@ResponseBody
+	public IBSheetListVO<WaaUserg> TotalStatSelectlist(@ModelAttribute WaaUserg search) {
+		logger.debug("{}", search);
+		List<WaaUserg> list = service.getTotalStatList(search);
 
 		return new IBSheetListVO<WaaUserg>(list, list.size());
 	}

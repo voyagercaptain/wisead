@@ -4286,6 +4286,8 @@
 <entry key="COMMON.HEADER.ORG.LST"><![CDATA[No.|선택|기관코드|기관명]]></entry>
 <entry key="COMMON.HEADER.REGISTSTAT.LST"><![CDATA[기관명|기관코드|여부|기관표준용어|여부|기관표준도메인|여부|기관표준단어|여부|기관표준코드]]></entry>
 <entry key="COMMON.HEADER.DBREGISTSTAT.LST"><![CDATA[기관명|DB명|여부|DB표준용어|여부|DB표준도메인|여부|DB표준단어|여부|DB표준코드]]></entry>
+<entry key="COMMON.HEADER.TOTALSTSTAT.LST"><![CDATA[기관분류명|평가대상 기관수|기관표준 제출 현황(단위:기관 수)|기관표준 제출 현황(단위:기관 수)|기관표준 제출 현황(단위:기관 수)|기관표준 제출 현황(단위:기관 수)|기관표준 제출 현황(단위:기관 수)|기관표준 제출 현황(단위:기관 수)|기관표준 제출 현황(단위:기관 수)|기관표준 제출 현황(단위:기관 수)|평가DB수|DB표준 제출 현황(단위:DB 수)|DB표준 제출 현황(단위:DB 수)|DB표준 제출 현황(단위:DB 수)|DB표준 제출 현황(단위:DB 수)|DB표준 제출 현황(단위:DB 수)|DB표준 제출 현황(단위:DB 수)|DB표준 제출 현황(단위:DB 수)|DB표준 제출 현황(단위:DB 수)]]></entry>
+<entry key="COMMON.HEADER.TOTALSTSTAT1.LST"><![CDATA[기관분류명|평가대상 기관수|용어|제출율|단어|제출율|도메인|제출율|코드|제출율|평가DB수|용어|제출율|단어|제출율|도메인|제출율|코드|제출율]]></entry>
 
 <entry key="META.HEADER.STWDCHANGE.DTL"><![CDATA[No.|표준단어ID|만료일자|시작일자|표준단어논리명|표준단어물리명|영문의미|한자명|출처구분|표준단어구분|도메인여부|요청번호|요청일련번호|설명|버전|등록유형|최초요청일시|최초요청사용자ID|요청일시|요청사용자ID|승인일시|승인사용자ID|비고]]></entry>
 <entry key="META.HEADER.STWDWHEREUSED.DTL.1"><![CDATA[No.|개체유형|개체ID|개체명|개체논리명|개체물리명|도메인ID|비고]]></entry>

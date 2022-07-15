@@ -13,6 +13,8 @@
     <result column="CM_ITEM_COUNT"    property="cmItemCount"    jdbcType="NUMERIC" />
     <result column="CM_WORD_COUNT"    property="cmWordCount"    jdbcType="NUMERIC" />
     <result column="CM_DOMAIN_COUNT"  property="cmDomainCount"  jdbcType="NUMERIC" />
+    <result column="ORG_DB_COUNT"     property="orgDbCount"     jdbcType="NUMERIC" />
+    <result column="ORG_COUNT"        property="orgCount"       jdbcType="NUMERIC" />
     <result column="ORG_CD"  		  property="orgCd"  		jdbcType="VARCHAR" />
     <result column="DB_NM"  		  property="dbNm"  		    jdbcType="VARCHAR" />
     <result column="ORG_ITEM_YN"   	  property="orgItemYn"   	jdbcType="VARCHAR" />
@@ -23,6 +25,15 @@
     <result column="DB_WORD_YN"    	  property="dbWordYn"    	jdbcType="VARCHAR" />
     <result column="DB_DOMAIN_YN"  	  property="dbDomainYn"  	jdbcType="VARCHAR" />
     <result column="DB_CODE_YN"    	  property="dbCodeYn"    	jdbcType="VARCHAR" />
+    <result column="ORG_TYPE"    	  property="orgType"    	jdbcType="VARCHAR" />
+    <result column="ORG_ITEM_RATE"    property="orgItemRate"   	jdbcType="FLOAT" />
+    <result column="ORG_WORD_RATE"    property="orgWordRate"   	jdbcType="FLOAT" />
+    <result column="ORG_DOMAIN_RATE"  property="orgDomainRate" 	jdbcType="FLOAT" />
+    <result column="ORG_CODE_RATE"    property="orgCodeRate"   	jdbcType="FLOAT" />
+    <result column="DB_ITEM_RATE"     property="dbItemRate"    	jdbcType="FLOAT" />
+    <result column="DB_WORD_RATE"     property="dbWordRate"    	jdbcType="FLOAT" />
+    <result column="DB_DOMAIN_RATE"   property="dbDomainRate"  	jdbcType="FLOAT" />
+    <result column="DB_CODE_RATE"     property="dbCodeRate"    	jdbcType="FLOAT" />
     
   </resultMap>
   <!-- 기관표준 등록 현황 조회 -->
@@ -76,6 +87,74 @@ SELECT
   	<if test="orgNm != null and orgNm != '' ">
   	AND WO.ORG_NM LIKE  '%' || #{orgNm} || '%'
   	</if>
+  	
+</select>
+
+
+<!-- 종합 등록 현황 조회 -->
+<select id="getTotalStatList" 
+	parameterType="kr.wise.commons.user.WaaUserg" resultMap="BaseResultMap">
+
+SELECT 
+		ORG_TOTAL.ORG_TYPE,			--기관분류명
+		ORG_TOTAL.ORG_COUNT, 		--평가대상 기관수
+		ORG_TOTAL.ORG_ITEM_COUNT, 	--기관표준 > 용어
+		ORG_TOTAL.ORG_ITEM_RATE, 	--기관표준 > 용어 제출율
+		ORG_TOTAL.ORG_WORD_COUNT,	--기관표준 > 단어
+		ORG_TOTAL.ORG_WORD_RATE,	--기관표준 > 단어 제출율
+		ORG_TOTAL.ORG_DOMAIN_COUNT, --기관표준 > 도메인
+		ORG_TOTAL.ORG_DOMAIN_RATE,  --기관표준 > 도메인 제출율
+		ORG_TOTAL.ORG_CODE_COUNT,   --기관표준 > 코드
+		ORG_TOTAL.ORG_CODE_RATE,    --기관표준 > 코드 제출율
+		DB_TOTAL.ORG_DB_COUNT,      --평가DB수
+		DB_TOTAL.DB_ITEM_COUNT,     --DB표준  > 용어
+		DB_TOTAL.DB_ITEM_RATE,      --DB표준  > 용어 제출율
+		DB_TOTAL.DB_WORD_COUNT,		--DB표준  > 단어
+		DB_TOTAL.DB_WORD_RATE,		--DB표준  > 단어 제출율
+		DB_TOTAL.DB_DOMAIN_COUNT,   --DB표준  > 도메인 
+		DB_TOTAL.DB_DOMAIN_RATE,	--DB표준  > 도메인 제출율
+		DB_TOTAL.DB_CODE_COUNT,	    --DB표준  > 코드
+		DB_TOTAL.DB_CODE_RATE		--DB표준  > 코드 제출율
+  FROM 
+  	(SELECT 
+			WO.ORG_TYPE,
+			COUNT(WO.ORG_TYPE) AS ORG_COUNT,
+			CASE WHEN SUM(B.ORG_ITEM_COUNT) IS NULL THEN 0 ELSE COUNT(B.ORG_ITEM_COUNT) END AS ORG_ITEM_COUNT,
+			CASE WHEN SUM(B.ORG_ITEM_COUNT) IS NULL THEN 0 ELSE ROUND(COUNT(B.ORG_ITEM_COUNT) / (COUNT(WO.ORG_TYPE) * 1.0) * 100.0, 2)  END AS ORG_ITEM_RATE,
+			CASE WHEN SUM(C.ORG_WORD_COUNT) IS NULL THEN 0 ELSE COUNT(C.ORG_WORD_COUNT) END AS ORG_WORD_COUNT,
+			CASE WHEN SUM(C.ORG_WORD_COUNT) IS NULL THEN 0 ELSE ROUND(COUNT(C.ORG_WORD_COUNT) / (COUNT(WO.ORG_TYPE) * 1.0) * 100.0, 2)  END AS ORG_WORD_RATE,
+			CASE WHEN SUM(D.ORG_DOMAIN_COUNT) IS NULL THEN 0 ELSE COUNT(D.ORG_DOMAIN_COUNT) END AS ORG_DOMAIN_COUNT,
+			CASE WHEN SUM(D.ORG_DOMAIN_COUNT) IS NULL THEN 0 ELSE ROUND(COUNT(D.ORG_DOMAIN_COUNT) / (COUNT(WO.ORG_TYPE) * 1.0) * 100.0, 2)  END AS ORG_DOMAIN_RATE,
+			CASE WHEN SUM(E.ORG_CODE_COUNT) IS NULL THEN 0 ELSE COUNT(E.ORG_CODE_COUNT) END AS ORG_CODE_COUNT,
+			CASE WHEN SUM(E.ORG_CODE_COUNT) IS NULL THEN 0 ELSE ROUND(COUNT(E.ORG_CODE_COUNT) / (COUNT(WO.ORG_TYPE) * 1.0) * 100.0, 2)  END AS ORG_CODE_RATE
+	  FROM  WAA_ORG WO
+	  		LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_ITEM_COUNT FROM WAM_SDITM GROUP BY ORG_CD) B ON (WO.ORG_NM = B.ORG_NM)
+	  		LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_WORD_COUNT FROM WAM_STWD  GROUP BY ORG_NM) C ON (WO.ORG_NM = C.ORG_NM)
+	  		LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_DOMAIN_COUNT FROM WAM_DMN  GROUP BY ORG_NM) D ON (WO.ORG_NM = D.ORG_NM)
+	  		LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_CODE_COUNT FROM WAM_COMM_CD  GROUP BY ORG_NM) E ON (WO.ORG_NM = E.ORG_NM)
+	 GROUP BY WO.ORG_TYPE
+	 ORDER BY 1 
+	) ORG_TOTAL, 
+	(SELECT 
+			WO.ORG_TYPE,
+			COUNT(WO.DB_NM) AS ORG_DB_COUNT,
+			CASE WHEN SUM(F.DB_ITEM_COUNT) IS NULL THEN 0 ELSE COUNT(F.DB_ITEM_COUNT) END AS DB_ITEM_COUNT,
+			CASE WHEN SUM(F.DB_ITEM_COUNT) IS NULL THEN 0 ELSE ROUND(COUNT(F.DB_ITEM_COUNT) / (COUNT(WO.ORG_TYPE) * 1.0) * 100.0, 2)  END AS DB_ITEM_RATE,
+			CASE WHEN SUM(G.DB_WORD_COUNT) IS NULL THEN 0 ELSE COUNT(G.DB_WORD_COUNT) END AS DB_WORD_COUNT,
+			CASE WHEN SUM(G.DB_WORD_COUNT) IS NULL THEN 0 ELSE ROUND(COUNT(G.DB_WORD_COUNT) / (COUNT(WO.ORG_TYPE) * 1.0) * 100.0, 2)  END AS DB_WORD_RATE,
+			CASE WHEN SUM(H.DB_DOMAIN_COUNT) IS NULL THEN 0 ELSE COUNT(H.DB_DOMAIN_COUNT) END AS DB_DOMAIN_COUNT,
+			CASE WHEN SUM(H.DB_DOMAIN_COUNT) IS NULL THEN 0 ELSE ROUND(COUNT(H.DB_DOMAIN_COUNT) / (COUNT(WO.ORG_TYPE) * 1.0) * 100.0, 2)  END AS DB_DOMAIN_RATE,
+			CASE WHEN SUM(I.DB_CODE_COUNT) IS NULL THEN 0 ELSE COUNT(I.DB_CODE_COUNT) END AS DB_CODE_COUNT,
+			CASE WHEN SUM(I.DB_CODE_COUNT) IS NULL THEN 0 ELSE ROUND(COUNT(I.DB_CODE_COUNT) / (COUNT(WO.ORG_TYPE) * 1.0) * 100.0, 2)  END AS DB_CODE_RATE
+	  FROM (SELECT A.ORG_CD, A.ORG_NM,A.ORG_TYPE, B.DB_NM FROM  WAA_ORG A INNER JOIN WAA_ORG_DB B ON (A.ORG_CD = B.ORG_CD)) WO
+	  	LEFT OUTER JOIN (SELECT ORG_NM, COUNT(DB_NM) AS DB_ITEM_COUNT FROM WAM_DB_SDITM WHERE DB_NM != '' GROUP BY ORG_NM ) F ON (WO.ORG_NM = F.ORG_NM)
+		LEFT OUTER JOIN (SELECT ORG_NM, COUNT(DB_NM) AS DB_WORD_COUNT FROM WAM_DB_STWD WHERE DB_NM != ''  GROUP BY ORG_NM ) G ON (WO.ORG_NM = G.ORG_NM)
+		LEFT OUTER JOIN (SELECT ORG_NM, COUNT(DB_NM) AS DB_DOMAIN_COUNT FROM WAM_DB_DMN WHERE DB_NM != '' GROUP BY ORG_NM ) H ON (WO.ORG_NM = H.ORG_NM)
+		LEFT OUTER JOIN (SELECT ORG_NM, COUNT(DB_NM) AS DB_CODE_COUNT FROM WAM_DB_COMM_CD WHERE DB_NM != '' GROUP BY ORG_NM ) I ON (WO.ORG_NM = I.ORG_NM)
+	 GROUP BY WO.ORG_TYPE
+	 ORDER BY 1
+	) DB_TOTAL
+ WHERE ORG_TOTAL.ORG_TYPE = DB_TOTAL.ORG_TYPE
   	
 </select>
 </mapper>

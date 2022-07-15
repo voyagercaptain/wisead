@@ -9,4 +9,5 @@ import kr.wise.commons.user.WaaUserg;
 public interface RegistStatMapper {
 	 List<WaaUserg> getRegistStatList(WaaUserg param);
 	 List<WaaUserg> getDbRegistStatList(WaaUserg param);
+	 List<WaaUserg> getTotalStatList(WaaUserg param);
 }
