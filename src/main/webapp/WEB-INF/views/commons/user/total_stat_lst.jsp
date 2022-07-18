@@ -179,18 +179,17 @@ function doAction(sAction)
 </div>
 
 <div style="clear:both; height:5px;"><span></span></div>
-        
+    
+	<!-- 그리드 입력 입력 -->
+	<div class="grid_02">
+	     <script type="text/javascript">createIBSheet("grid_sheet2", "50%", "110px");</script>            
+	</div>
+	<!-- 그리드 입력 입력 -->    
+
+<div style="clear:both; height:10px;"><span></span></div>
 	<!-- 그리드 입력 입력 -->
 	<div class="grid_01">
 	     <script type="text/javascript">createIBSheet("grid_sheet", "100%", "500px");</script>            
-	</div>
-	<!-- 그리드 입력 입력 -->
-
-<div style="clear:both; height:10px;"><span></span></div>
-
-<!-- 그리드 입력 입력 -->
-	<div class="grid_02">
-	     <script type="text/javascript">createIBSheet("grid_sheet2", "50%", "120px");</script>            
 	</div>
 	<!-- 그리드 입력 입력 -->
 
