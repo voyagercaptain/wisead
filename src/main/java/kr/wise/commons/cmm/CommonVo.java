@@ -182,6 +182,8 @@ public class CommonVo {
 	
 	private String orgType;
 	
+	private String title;
+	
 	private Float orgItemRate;
 	
 	private Float orgWordRate;
@@ -222,8 +224,76 @@ public class CommonVo {
 	
 	private int orgCount;
 	
+	private int totalOrg;
+	
+	private int regOrg;
+	
+	private int item;
+	
+	private int word;
+	
+	private int dmn;
+	
+	private int code;
+	
 	public int getOrgCount() {
 		return orgCount;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public int getTotalOrg() {
+		return totalOrg;
+	}
+
+	public void setTotalOrg(int totalOrg) {
+		this.totalOrg = totalOrg;
+	}
+
+	public int getRegOrg() {
+		return regOrg;
+	}
+
+	public void setRegOrg(int regOrg) {
+		this.regOrg = regOrg;
+	}
+
+	public int getItem() {
+		return item;
+	}
+
+	public void setItem(int item) {
+		this.item = item;
+	}
+
+	public int getWord() {
+		return word;
+	}
+
+	public void setWord(int word) {
+		this.word = word;
+	}
+
+	public int getDmn() {
+		return dmn;
+	}
+
+	public void setDmn(int dmn) {
+		this.dmn = dmn;
+	}
+
+	public int getCode() {
+		return code;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
 	}
 
 	public void setOrgCount(int orgCount) {

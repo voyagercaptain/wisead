@@ -34,6 +34,7 @@ $(document).ready(function() {
 
 $(window).load(function() {
 	initGrid();
+	initGrid2();
 });
 
 
@@ -93,6 +94,48 @@ function initGrid()
     //===========================
 }
 
+
+function initGrid2()
+{
+    
+    with(grid_sheet2){
+    	
+    	var cfg = {SearchMode:2,Page:100};
+        SetConfig(cfg);
+                
+        SetMergeSheet(msHeaderOnly);
+        
+        var headers = [
+					{Text:"<s:message code='COMMON.HEADER.TOTALSTSTAT.SUB.LST'/>", Align:"Center"},
+					 //|전체기관|등록기관|용어|단어|도메인|코드
+                ];
+        
+        var headerInfo = {Sort:1, ColMove:0, ColResize:1, HeaderCheck:1};
+        
+        InitHeaders(headers, headerInfo); 
+
+        var cols = [                        
+        			{Type:"Text",   			   Width:50,   SaveName:"title",         Align:"Center",  Edit:0}, //기관,DB                    
+                    {Type:"Int",  Format:"#,##0",  Width:50,   SaveName:"totalOrg",      Align:"Center",  Edit:0}, //전체기관
+                    {Type:"Int",  Format:"#,##0",  Width:50,   SaveName:"regOrg",   	 Align:"Center",  Edit:0}, //등록기관
+                    {Type:"Int",  Format:"#,##0",  Width:50,   SaveName:"item", 		 Align:"Center",  Edit:0}, //용어
+                    {Type:"Int",  Format:"#,##0",  Width:50,   SaveName:"word",  		 Align:"Center",  Edit:0}, //단어
+                    {Type:"Int",  Format:"#,##0",  Width:50,   SaveName:"dmn", 		     Align:"Center",  Edit:0}, //도메인
+                    {Type:"Int",  Format:"#,##0",  Width:50,   SaveName:"code", 	     Align:"Center",  Edit:0}, //코드
+                    
+                ];
+                    
+        InitColumns(cols);
+      
+        FitColWidth();  
+        
+        SetExtendLastCol(1);    
+    }
+    
+    //==시트설정 후 아래에 와야함=== 
+    init_sheet(grid_sheet2);    
+    //===========================
+}
 function doAction(sAction)
 {
 
@@ -101,14 +144,15 @@ function doAction(sAction)
         
         case "Search":
         	grid_sheet.DoSearch('<c:url value="/commons/user/TotalStatSelectlist.do" />');
-        	
+        	grid_sheet2.DoSearch('<c:url value="/commons/user/TotalStatSubSelectlist.do" />');
         	break;
        
         case "Down2Excel":  //엑셀내려받기
         
-          
-            grid_sheet.Down2Excel({HiddenColumn:1, Merge:1});
-            
+        	grid_sheet.Down2ExcelBuffer(true);  
+            grid_sheet.Down2Excel({FileName:'종합 등록 현황',HiddenColumn:1, Merge:1});
+            grid_sheet2.Down2Excel({FileName:'종합 등록 현황',HiddenColumn:1, Merge:1});
+            grid_sheet.Down2ExcelBuffer(false);
             break;
     
     }       
@@ -139,6 +183,14 @@ function doAction(sAction)
 	<!-- 그리드 입력 입력 -->
 	<div class="grid_01">
 	     <script type="text/javascript">createIBSheet("grid_sheet", "100%", "500px");</script>            
+	</div>
+	<!-- 그리드 입력 입력 -->
+
+<div style="clear:both; height:10px;"><span></span></div>
+
+<!-- 그리드 입력 입력 -->
+	<div class="grid_02">
+	     <script type="text/javascript">createIBSheet("grid_sheet2", "50%", "120px");</script>            
 	</div>
 	<!-- 그리드 입력 입력 -->
 

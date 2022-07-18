@@ -79,6 +79,17 @@ public class RegistStatCtrl {
 
 		return new IBSheetListVO<WaaUserg>(list, list.size());
 	}
+	
+	
+	/** 종합 등록 현황 > 기관,DB별 항목 총 개수  조회 **/
+	@RequestMapping("TotalStatSubSelectlist.do")
+	@ResponseBody
+	public IBSheetListVO<WaaUserg> TotalStatSubSelectlist(@ModelAttribute WaaUserg search) {
+		logger.debug("{}", search);
+		List<WaaUserg> list = service.getTotalStatSubList(search);
+
+		return new IBSheetListVO<WaaUserg>(list, list.size());
+	}
 
 
 }

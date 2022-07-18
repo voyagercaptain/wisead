@@ -253,8 +253,19 @@ function doAction(sAction)
            	break;
         case "Down2Excel":  //엑셀내려받기
         
-          
-            grid_sheet.Down2Excel({HiddenColumn:1, Merge:1});
+        	grid_sheet.Down2ExcelBuffer(true);  
+        	if(grid_sheet.SearchRows() > 0){
+        		  grid_sheet.Down2Excel({FileName:'사용자 관리',SheetName:'사용자 관리',HiddenColumn:1, Merge:1});	
+        	}
+          	if(grid_sub.SearchRows() > 0){
+          		grid_sub.Down2Excel({FileName:'사용자 관리',SheetName:'접근 DB 권한',HiddenColumn:1, Merge:1});	
+          	}
+            
+          	if(grid_sheet.SearchRows() == 0 && grid_sub.SearchRows() == 0){
+          		return;
+          	}
+          	
+            grid_sheet.Down2ExcelBuffer(false);
             
             break;
         case "LoadExcel":  //엑셀업로

@@ -15,6 +15,12 @@
     <result column="CM_DOMAIN_COUNT"  property="cmDomainCount"  jdbcType="NUMERIC" />
     <result column="ORG_DB_COUNT"     property="orgDbCount"     jdbcType="NUMERIC" />
     <result column="ORG_COUNT"        property="orgCount"       jdbcType="NUMERIC" />
+    <result column="TOTAL_ORG"        property="totalOrg"       jdbcType="NUMERIC" />
+    <result column="REG_ORG"          property="regOrg"       	jdbcType="NUMERIC" />
+    <result column="ITEM"     	      property="item"           jdbcType="NUMERIC" />
+    <result column="WORD"         	  property="word"    	    jdbcType="NUMERIC" />
+    <result column="DMN"   		      property="dmn"       		jdbcType="NUMERIC" />
+    <result column="CODE"   	      property="code"  	        jdbcType="NUMERIC" />
     <result column="ORG_CD"  		  property="orgCd"  		jdbcType="VARCHAR" />
     <result column="DB_NM"  		  property="dbNm"  		    jdbcType="VARCHAR" />
     <result column="ORG_ITEM_YN"   	  property="orgItemYn"   	jdbcType="VARCHAR" />
@@ -26,6 +32,7 @@
     <result column="DB_DOMAIN_YN"  	  property="dbDomainYn"  	jdbcType="VARCHAR" />
     <result column="DB_CODE_YN"    	  property="dbCodeYn"    	jdbcType="VARCHAR" />
     <result column="ORG_TYPE"    	  property="orgType"    	jdbcType="VARCHAR" />
+    <result column="TITLE"    	  	  property="title"    		jdbcType="VARCHAR" />
     <result column="ORG_ITEM_RATE"    property="orgItemRate"   	jdbcType="FLOAT" />
     <result column="ORG_WORD_RATE"    property="orgWordRate"   	jdbcType="FLOAT" />
     <result column="ORG_DOMAIN_RATE"  property="orgDomainRate" 	jdbcType="FLOAT" />
@@ -156,5 +163,41 @@ SELECT
 	) DB_TOTAL
  WHERE ORG_TOTAL.ORG_TYPE = DB_TOTAL.ORG_TYPE
   	
+</select>
+
+<select id="getTotalStatSubList" 
+	parameterType="kr.wise.commons.user.WaaUserg" resultMap="BaseResultMap">
+WITH SUMMARY AS (
+SELECT
+	(SELECT COUNT(*) FROM WAA_ORG) AS TOTAL_ORG,
+	(SELECT COUNT(A.ORG_NM) FROM (SELECT ORG_NM, COUNT(*) AS ORG_ITEM_COUNT FROM WAM_SDITM GROUP BY ORG_CD) A) AS ITEM,
+	(SELECT COUNT(A.ORG_NM) FROM (SELECT ORG_NM, COUNT(*) AS ORG_ITEM_COUNT FROM WAM_STWD  GROUP BY ORG_NM) A) AS WORD,
+	(SELECT COUNT(A.ORG_NM) FROM (SELECT ORG_NM, COUNT(*) AS ORG_ITEM_COUNT FROM WAM_DMN  GROUP BY ORG_NM) A) AS DMN,
+	(SELECT COUNT(A.ORG_NM) FROM (SELECT ORG_NM, COUNT(*) AS ORG_ITEM_COUNT FROM WAM_COMM_CD  GROUP BY ORG_NM) A) AS CODE,
+	(SELECT COUNT(A.ORG_NM) FROM (SELECT ORG_NM, COUNT(*) AS DB_ITEM_COUNT FROM WAM_DB_SDITM WHERE DB_NM != '' GROUP BY ORG_NM ) A) AS DB_ITEM,
+	(SELECT COUNT(A.ORG_NM) FROM (SELECT ORG_NM, COUNT(*) AS DB_WORD_COUNT FROM WAM_DB_STWD WHERE DB_NM != ''  GROUP BY ORG_NM ) A) AS DB_WORD,
+	(SELECT COUNT(A.ORG_NM) FROM (SELECT ORG_NM, COUNT(*) AS DB_DOMAIN_COUNT FROM WAM_DB_DMN WHERE DB_NM != '' GROUP BY ORG_NM ) A) AS DB_DMN,
+	(SELECT COUNT(A.ORG_NM) FROM (SELECT ORG_NM, COUNT(DB_NM) AS DB_CODE_COUNT FROM WAM_DB_COMM_CD WHERE DB_NM != '' GROUP BY ORG_NM )A) AS DB_CODE
+)
+SELECT 
+	'기관표준' AS TITLE,
+	TOTAL_ORG,
+	ITEM + WORD + DMN + CODE AS REG_ORG,
+	ITEM,
+	WORD,
+	DMN,
+	CODE
+ FROM SUMMARY
+UNION ALL
+SELECT 
+	'DB표준' AS TITLE,
+	TOTAL_ORG,
+	DB_ITEM + DB_WORD + DB_DMN + DB_CODE AS REG_ORG,
+	DB_ITEM,
+	DB_WORD,
+	DB_DMN,
+	DB_CODE
+ FROM SUMMARY
+;
 </select>
 </mapper>
