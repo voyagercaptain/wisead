@@ -329,16 +329,15 @@ function doAction(sAction)
 // 			getRqstVrfLst(param);
 			break;
 			
-    	case "Save":  //검증
+		case "Save":  //검증
     		//KeyField 1 인 것 가져오기 orgNm infotpLnm  objDescn dataType 
     		var len = grid_name.RowCount();
 			for(var i=0; i < len; i++) {
 				var str = ""; 
 				for(var j=0; j < colsCount; j++) {
-				
 					var KeyField = grid_name.GetCellProperty(i+1, j+1, "KeyField");
 					var SaveName = grid_name.GetCellProperty(i+1, j+1, "SaveName");
-					
+
 					if(KeyField == "1") {
 						var SaveNameValue = grid_name.GetCellValue(i+1, SaveName);
 						if(str == "") {
@@ -354,7 +353,28 @@ function doAction(sAction)
 					grid_name.SetRowFontColor(i+1,"#FF0000");
 				}
 			}
-			
+
+			var dataTypeArr = ["date","number"];
+			//dataLen KeyField 가 1이 아님.
+			for(var i = 0; i < len; i++) {
+				var dataType = grid_name.GetCellValue(i+1,"dataType");
+				var dataLen = grid_name.GetCellValue(i+1,"dataLen");
+
+				if(dataTypeArr.indexOf(dataType.toLowerCase()) == -1 && dataLen == "") {
+					var str = grid_name.GetCellValue(i+1,"errChk");
+					if(str != "") {
+						var newStr = str.replace(" 누락", "");
+						newStr += ", 데이터길이 누락";
+						grid_name.SetCellValue(i+1,"errChk", newStr);
+						grid_name.SetRowFontColor(i+1,"#FF0000");
+					} else {
+						var newStr = "데이터길이 누락";
+						grid_name.SetCellValue(i+1,"errChk", newStr);
+						grid_name.SetRowFontColor(i+1,"#FF0000");
+					}
+				}
+			}
+
     		//저장 대상의 데이터를 Json 객체로 반환한다.
 			ibsSaveJson = grid_name.GetSaveJson(0);
     	
@@ -368,23 +388,6 @@ function doAction(sAction)
 
 			//프로파일별 url 셋팅
 			var url = "";
-			if(bizDtlCd == "SDITM"){
-				var row = grid_name.ColValueDup("orgNm|sditmLnm|sditmPnm");
-				var rows = grid_name.ColValueDupRows("orgNm|sditmLnm|sditmPnm");
-				
-				
-				if(row>0){
-				    showMsgBox("INF","<s:message code="ERR.DUP" />"+"(용어명)"+"</br>"+rows+"행");
-				    var rowsArr = rows.split(",");
-				    for(var i=0 ; i< rowsArr.length; i++){
-				        grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
-				        grid_name.SetCellValue(rowsArr[i],"vrfRmk","중복데이터");
-				    }
-					return;
-				}
-				url = '<c:url value="/dq/stnd/regitemWamlist.do"/>';
-				
-			}else if(bizDtlCd == "DMN"){
 				/*
 				var row = grid_name.ColValueDup("orgNm|infotpLnm");
 				var rows = grid_name.ColValueDupRows("infotpLnm");
@@ -398,25 +401,9 @@ function doAction(sAction)
 					return;
 				}
 				*/
-				url = '<c:url value="/dq/stnd/regdmnWamlist.do"/>';
-			}else if(bizDtlCd == "STWD"){
-				var row = grid_name.ColValueDup("stwdLnm|stwdPnm");
-				var rows = grid_name.ColValueDupRows("stwdLnm|stwdPnm");
-				
-				if(row>0){
-				    showMsgBox("INF","<s:message code="ERR.DUP" />"+"</br>"+rows+"행");
-				    var rowsArr = rows.split(",");
-				    for(var i=0 ; i< rowsArr.length; i++){
-				        grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
-// 				        grid_name.SetCellValue(rowsArr[i],"vrfRmk","중복데이터");
-				    }
-					return;
-				}				
 
-				url = '<c:url value="/dq/stnd/regStndWordWamlist.do"/>';
-			}
-			
-			
+			url = '<c:url value="/dq/stnd/regdmnWamlist.do"/>';
+
 			var param = $('form[name=mstFrm]').serialize();
 	        IBSpostJson2(url, ibsSaveJson, param, ibscallback);
 	        
