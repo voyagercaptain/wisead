@@ -150,8 +150,8 @@ function doAction(sAction)
         case "Down2Excel":  //엑셀내려받기
         
         	grid_sheet.Down2ExcelBuffer(true);  
-            grid_sheet.Down2Excel({FileName:'종합 등록 현황',HiddenColumn:1, Merge:1});
-            grid_sheet2.Down2Excel({FileName:'종합 등록 현황',HiddenColumn:1, Merge:1});
+            grid_sheet.Down2Excel({FileName:'종합 등록 현황',SheetName:'기관분류별 등록 현황',HiddenColumn:1, Merge:1});
+            grid_sheet2.Down2Excel({FileName:'종합 등록 현황',SheetName:'종합 등록 현황',HiddenColumn:1, Merge:1});
             grid_sheet.Down2ExcelBuffer(false);
             break;
     
