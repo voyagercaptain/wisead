@@ -330,6 +330,9 @@ function doAction(sAction)
 			break;
 			
 		case "Save":  //검증
+
+            var errExistYn = "";
+
     		//KeyField 1 인 것 가져오기 orgNm infotpLnm  objDescn dataType 
     		var len = grid_name.RowCount();
 			for(var i=0; i < len; i++) {
@@ -340,6 +343,9 @@ function doAction(sAction)
 
 					if(KeyField == "1") {
 						var SaveNameValue = grid_name.GetCellValue(i+1, SaveName);
+                        if(SaveNameValue == "") {
+                            errExistYn = "Y";
+                        }
 						if(str == "") {
 							str += SaveNameValue == "" ? headerText[j+1]:"";
 						} else {
@@ -361,19 +367,24 @@ function doAction(sAction)
 				var dataLen = grid_name.GetCellValue(i+1,"dataLen");
 
 				if(dataTypeArr.indexOf(dataType.toLowerCase()) == -1 && dataLen == "") {
+                    errExistYn = "Y";
 					var str = grid_name.GetCellValue(i+1,"errChk");
+					var newStr = "";
 					if(str != "") {
-						var newStr = str.replace(" 누락", "");
+						newStr = str.replace(" 누락", "");
 						newStr += ", 데이터길이 누락";
-						grid_name.SetCellValue(i+1,"errChk", newStr);
-						grid_name.SetRowFontColor(i+1,"#FF0000");
 					} else {
-						var newStr = "데이터길이 누락";
-						grid_name.SetCellValue(i+1,"errChk", newStr);
-						grid_name.SetRowFontColor(i+1,"#FF0000");
+						newStr = "데이터길이 누락";
 					}
+					grid_name.SetCellValue(i+1,"errChk", newStr);
+					grid_name.SetRowFontColor(i+1,"#FF0000");
 				}
 			}
+
+            if(errExistYn == "Y"){
+                showMsgBox("INF", "필수항목 누락으로 저장할 수 없습니다.");
+                return;
+            }
 
     		//저장 대상의 데이터를 Json 객체로 반환한다.
 			ibsSaveJson = grid_name.GetSaveJson(0);
