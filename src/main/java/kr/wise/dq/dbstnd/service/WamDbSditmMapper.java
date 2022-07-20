@@ -48,6 +48,9 @@ public interface WamDbSditmMapper {
 	int updateVrfRmkNull();
 	
 	
-    
-	
+    int bulkInsert(List<WamDbSditm> insertList);
+
+	int bulkUpdate(List<WamDbSditm> insertList);
+
+	int bulkDelete(List<WamDbSditm> insertList);
 }

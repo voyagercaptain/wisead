@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -32,6 +33,9 @@ import kr.wise.dq.dbstnd.service.WapDbDvCanDicMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import static java.lang.Math.min;
+
 
 /**
  * <PRE>
@@ -133,19 +137,65 @@ public class DbStndServiceImpl implements DbStndService {
 		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
 		String userid = user.getUniqId();
 
-
 		int result = 0;
+		/**
+		 * List에서 Insert List와 Update List를 분리해서 별도 리스트로 생성
+		 * Insert List는 채번 로직이 필요함
+ 		 */
+		List<WamDbSditm> insertList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("I"))
+				.collect(Collectors.toList());
 
-		if(reglist != null) {
-			for (WamDbSditm saveVo : (ArrayList<WamDbSditm>)reglist) {
+		List<WamDbSditm> updateList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("U"))
+				.collect(Collectors.toList());
+
+		List<WamDbSditm> deleteList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("D"))
+				.collect(Collectors.toList());
+
+		logger.info("Bulk-Insert insert list size : " + insertList.size());
+
+		long beforeTime = System.currentTimeMillis();
+
+		if(insertList != null) {
+			for (WamDbSditm saveVo : insertList) {
+				//요청번호 셋팅
+				String objid = objectIdGnrService.getNextStringId();
+				saveVo.setSditmId(objid);
+				saveVo.setFrsRqstUserId(userid);
+				saveVo.setRqstUserId(userid);
+			}
+		}
+		long afterTime = System.currentTimeMillis();
+		long secDiffTime = (afterTime - beforeTime)/1000;
+		logger.debug("시간차이(m) : "+secDiffTime);
+
+		beforeTime = System.currentTimeMillis();
+		Integer limit = 1000;
+		for (int id = 0; id < insertList.size(); id += limit){
+			result = wamDbSditmMapper.bulkInsert(new ArrayList<WamDbSditm>(insertList.subList(id, min(id + limit, insertList.size()))));
+		}
+
+		afterTime = System.currentTimeMillis();
+		secDiffTime = (afterTime - beforeTime)/1000;
+		logger.debug("시간차이 2(m) : "+secDiffTime);
+
+		if (updateList != null) {
+			for (WamDbSditm saveVo : updateList) {
 				//요청번호 셋팅
 				saveVo.setFrsRqstUserId(userid);
 				saveVo.setRqstUserId(userid);
-				saveVo.setRqstNo("REQ_01");
-				//단건 저장...
-				result += saveWamStndItem(saveVo);
+				saveVo.setRegTypCd("U");
 			}
+		}
 
+		for (int id = 0; id < updateList.size(); id += limit){
+			result = wamDbSditmMapper.bulkUpdate(new ArrayList<WamDbSditm>(updateList.subList(id, min(id + limit, updateList.size()))));
+		}
+
+		for (int id = 0; id < deleteList.size(); id += limit){
+			result = wamDbSditmMapper.bulkDelete(new ArrayList<WamDbSditm>(deleteList.subList(id, min(id + limit, deleteList.size()))));
 		}
 		
 		if ("1".equals(reqmst.getChkYn())) {
@@ -158,12 +208,8 @@ public class DbStndServiceImpl implements DbStndService {
 			//형식단어로 끝나는지 체크(한글명)
 			wamDbSditmMapper.checkDmnYnExsitsLnm();
 		}
-		
-		
-		
-		
-		return result;
 
+		return result;
 	}
 
 	/** @return insomnia 
