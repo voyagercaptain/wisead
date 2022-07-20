@@ -360,7 +360,7 @@ function doAction(sAction)
 				}
 			}
 
-			var dataTypeArr = ["date","number"];
+			var dataTypeArr = ["boolean", "date", "time", "timestamp", "datetime", "interval", "datetimeltz", "datetimetz", "timestampltz", "timestamptz", "number", "numeric", "decimal", "smalldatetime", "money", "smallmoney", "long", "bigint", "smallint", "short", "tinyint", "bit", "int", "integer", "double", "double precision", "text", "ntext", "nchar", "nvarchar", "ntext", "binary", "varbinary", "binary_float", "binary_double", "varbinary", "image", "real", "clob", "blob", "nclob", "bfile"];
 			//dataLen KeyField 가 1이 아님.
 			for(var i = 0; i < len; i++) {
 				var dataType = grid_name.GetCellValue(i+1,"dataType");

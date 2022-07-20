@@ -418,9 +418,10 @@ function doAction(sAction)
 // 			getRqstVrfLst(param);
 			break;
 			
-    	case "Save":  //검증
+		case "Save":  //검증
     		
     		var len = grid_name.RowCount();
+			/* 데이터 타입, 길이 - 도메인에서 가져오기
     		for(var i = 0; i < len; i++) {
     			var dataType = grid_name.GetCellValue(i+1,"dataType");
         		var dataLen = grid_name.GetCellValue(i+1,"dataLen");
@@ -436,15 +437,17 @@ function doAction(sAction)
 	        		getDomainDataType(param, i+1);
         		}
     		}
+    		*/
     		
-    		//KeyField 1 인 것 가져오기 orgNm sditmLnm  pnm sditmPnm  objDescn 
+    		//KeyField 1 인 것 가져오기 => 변경
     		for(var i=0; i < len; i++) {
     			var str = "";
     			for(var j=0; j < colsCount; j++) {
-    				var KeyField = grid_name.GetCellProperty(i+1, j+1, "KeyField");
+    				//var KeyField = grid_name.GetCellProperty(i+1, j+1, "KeyField");
     				var SaveName = grid_name.GetCellProperty(i+1, j+1, "SaveName");
     				
-    				if(KeyField == "1") {
+    				//if(KeyField == "1") {
+					if(arrayKeyField.indexOf(SaveName) > -1) {
     					var SaveNameValue = grid_name.GetCellValue(i+1, SaveName);
     					if(str == "") {
     						str += SaveNameValue == "" ? headerText[j+1]:"";

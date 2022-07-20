@@ -31,6 +31,7 @@ $(window).resize( function(){
 
 var colsCount = 0;
 var headerText = [];
+var arrayKeyField = ["orgNm", "sditmLnm", "sditmPnm", "infotpLnm", "rqstDtm"];
 function grid_SDITM_init() {
 
     with(grid_SDITM){
@@ -39,14 +40,6 @@ function grid_SDITM_init() {
         SetConfig(cfg);
         //merge 설정
         SetMergeSheet(0);
-        /*
-		var headtext  = "<s:message code='META.HEADER.STNDITEM.RQST.IFM.1'/>";
-		headtext += "<s:message code='META.HEADER.STNDITEM.RQST.IFM.4'/>";
- 		headtext += "<s:message code='META.HEADER.STNDITEM.RQST.IFM.3'/>";
- 		*/
- 		//<entry key="META.HEADER.STNDITEM.RQST.IFM.1"><![CDATA[No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과]]></entry>
- 		//<entry key="META.HEADER.STNDITEM.RQST.IFM.4"><![CDATA[|용어ID|기관명|DB명|표준용어명|용어설명|영문약어명|표준도메인명|데이터타입|데이터길이|소수점길이|허용값|저장형식|표현형식|단위|표준코드명|소관기관명]]></entry>
- 		//<entry key="META.HEADER.STNDITEM.RQST.IFM.3"><![CDATA[|검증결과|등록일자|요청자ID|요청자명|요청번호|요청일련번호]]></entry>
 
  		var headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|";
  		headtext += "용어ID|기관명|표준용어명|영문명|영문약어명|용어설명|표준도메인명|허용값|관리부서명|표준코드명|업무분야|데이터타입|데이터길이|소수점길이|저장형식|표현형식|단위|행정표준코드명";
@@ -68,31 +61,31 @@ function grid_SDITM_init() {
 					{Type:"CheckBox", Width:45, SaveName:"ibsCheck",  Align:"Center", Edit:1, Hidden:0, Sort:0},
 					{Type:"Combo",  Width:80,  SaveName:"rvwStsCd",	  Align:"Center", Edit:0, Hidden:1},						
 					{Type:"Text",   Width:80,  SaveName:"rvwConts",	  Align:"Left", Edit:0, Hidden:1},						
-					{Type:"Combo",  Width:80,  SaveName:"rqstDcd",	  Align:"Center", Edit:1, KeyField:0, ColMerge:0,Hidden:1},						
+					{Type:"Combo",  Width:80,  SaveName:"rqstDcd",	  Align:"Center", Edit:1, ColMerge:0,Hidden:1},
 					{Type:"Combo",  Width:80,  SaveName:"regTypCd",	  Align:"Center", Edit:0, ColMerge:0,Hidden:1},						
 					{Type:"Combo",  Width:120,  SaveName:"vrfCd",	  Align:"Center", Edit:0, ColMerge:0,Hidden:1},
 //		  		기관명	용어명	용어 설명	영문약어명	도메인명	허용값	저장형식	표현형식	단위	행정표준코드명	소관기관명	등록일자					
-					{Type:"Text",   Width:15,  SaveName:"sditmId",     Align:"Left", Edit:1, KeyField:0, Hidden:1},
+					{Type:"Text",   Width:15,  SaveName:"sditmId",     Align:"Left", Edit:1, Hidden:1},
 					
-					{Type:"Text",   Width:100,  SaveName:"orgNm",     Align:"Left", Edit:1, KeyField:1},
+					{Type:"Text",   Width:100,  SaveName:"orgNm",     Align:"Left", Edit:1, KeyField:0},
 					
-					{Type:"Text",   Width:130,  SaveName:"sditmLnm",     Align:"Left", Edit:1, KeyField:1},
-					{Type:"Text",   Width:150,  SaveName:"pnm",     Align:"Left", Edit:1, KeyField:0}, //영문명
-					{Type:"Text",   Width:150,  SaveName:"sditmPnm",     Align:"Left", Edit:1, KeyField:1},
+					{Type:"Text",   Width:130,  SaveName:"sditmLnm",     Align:"Left", Edit:1, KeyField:0},
+					{Type:"Text",   Width:150,  SaveName:"pnm",     Align:"Left", Edit:1}, //영문명
+					{Type:"Text",   Width:150,  SaveName:"sditmPnm",     Align:"Left", Edit:1, KeyField:0},
 					
 					{Type:"Text",   Width:120,  SaveName:"objDescn",	 Align:"Left", 	 Edit:1, KeyField:0, ColMerge:0},
 					
-					{Type:"Text",   Width:100,  SaveName:"infotpLnm",	 Align:"Left", Edit:1, Hidden:0, KeyField:1}, //도메인명
+					{Type:"Text",   Width:100,  SaveName:"infotpLnm",	 Align:"Left", Edit:1, Hidden:0, KeyField:0}, //도메인명
 					{Type:"Text",   Width:100,  SaveName:"alwVal",      Align:"Left", Edit:1},   // 허용값
-					{Type:"Text",   Width:100,  SaveName:"ownrOrg",      Align:"Left", Edit:1, Hidden:0, KeyField:0},  // 소관기관명
+					{Type:"Text",   Width:100,  SaveName:"ownrOrg",      Align:"Left", Edit:1, Hidden:0},  // 소관기관명
 					{Type:"Text",   Width:100,  SaveName:"stndCd", 	      Align:"Left", Edit:1, Hidden:0, ColMerge:0},  //표준코드명
 					{Type:"Text",   Width:100,  SaveName:"bsnssFld",      Align:"Left", Edit:1, Hidden:0}, //업무분야
 										
-					{Type:"Text",   Width:120,  SaveName:"dataType",	 	Align:"Left", Edit:1, Hidden:1, KeyField:0},
-					{Type:"Int",    Width:80,  SaveName:"dataLen",	 	    Align:"Left", Edit:1, Hidden:1, KeyField:0},
+					{Type:"Text",   Width:120,  SaveName:"dataType",	 	Align:"Left", Edit:0, Hidden:0, KeyField:0},
+					{Type:"Int",    Width:80,  SaveName:"dataLen",	 	    Align:"Left", Edit:0, Hidden:0, KeyField:0},
 					{Type:"Int",    Width:100,  SaveName:"dataScal",	 	Align:"Left", Edit:1, Hidden:1},
 
-                    {Type:"Text",   Width:100,  SaveName:"saveFrm", 	 	Align:"Left", Edit:1, Hidden:1, KeyField:0},
+                    {Type:"Text",   Width:100,  SaveName:"saveFrm", 	 	Align:"Left", Edit:1, Hidden:1},
 				    {Type:"Text",   Width:100,  SaveName:"exprsnFrm",	 	Align:"Left", Edit:1, Hidden:1},
 				    {Type:"Text",   Width:100,  SaveName:"unit",    	 	Align:"Left", Edit:1, Hidden:1},
 				    
@@ -100,7 +93,7 @@ function grid_SDITM_init() {
 					
 					{Type:"Text",   Width:100,  SaveName:"vrfRmk",      Align:"Left", Edit:0, Hidden:1},  // 검증결과
 					
-					{Type:"Text",   Width:130,  SaveName:"rqstDtm",  	  Align:"Center", Edit:1, Format:"yyyyMMdd", KeyField:1},
+					{Type:"Text",   Width:130,  SaveName:"rqstDtm",  	  Align:"Center", Edit:1, Format:"yyyyMMdd", KeyField:0},
 					{Type:"Text",   Width:150,  SaveName:"rqstUserId",    Align:"Center", Edit:0, Hidden:1, ColMerge:0},
 					{Type:"Text",   Width:150,  SaveName:"rqstUserNm",    Align:"Center", Edit:0, ColMerge:0, Hidden:1},
 					{Type:"Text",   Width:60,   SaveName:"rqstNo",        Align:"Center", Edit:0, Hidden:1, ColMerge:0}, 
