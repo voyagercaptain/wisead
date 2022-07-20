@@ -197,7 +197,7 @@ SELECT
 	DB_WORD,
 	DB_DMN,
 	DB_CODE
- FROM SUMMARY
+ FROM SUMMARY  
 ;
 </select>
 </mapper>
