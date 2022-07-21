@@ -418,9 +418,10 @@ function doAction(sAction)
 // 			getRqstVrfLst(param);
 			break;
 			
-    	case "Save":  //검증
+		case "Save":  //검증
     		
     		var len = grid_name.RowCount();
+			/* 데이터 타입, 길이 - 도메인에서 가져오기
     		for(var i = 0; i < len; i++) {
     			var dataType = grid_name.GetCellValue(i+1,"dataType");
         		var dataLen = grid_name.GetCellValue(i+1,"dataLen");
@@ -436,15 +437,19 @@ function doAction(sAction)
 	        		getDomainDataType(param, i+1);
         		}
     		}
-    		
-    		//KeyField 1 인 것 가져오기 orgNm sditmLnm  pnm sditmPnm  objDescn 
+    		*/
+
+
+
+    		//KeyField 1 인 것 가져오기 => 변경
     		for(var i=0; i < len; i++) {
     			var str = "";
     			for(var j=0; j < colsCount; j++) {
-    				var KeyField = grid_name.GetCellProperty(i+1, j+1, "KeyField");
+    				//var KeyField = grid_name.GetCellProperty(i+1, j+1, "KeyField");
     				var SaveName = grid_name.GetCellProperty(i+1, j+1, "SaveName");
-    				
-    				if(KeyField == "1") {
+
+    				//if(KeyField == "1") {
+					if(arrayKeyField.indexOf(SaveName) > -1) {
     					var SaveNameValue = grid_name.GetCellValue(i+1, SaveName);
     					if(str == "") {
     						str += SaveNameValue == "" ? headerText[j+1]:"";
@@ -453,13 +458,13 @@ function doAction(sAction)
     					}
     				}
     			}
-    			
+
     			var errChk = grid_name.GetCellValue(i+1, "errChk");
     			if(str != "") {
     				if(errChk != "") {
     					str = errChk + ", " + str +  " 누락";
     				} else {
-    					str += " 누락";	
+    					str += " 누락";
     				}
     				grid_name.SetCellValue(i+1,"errChk", str);
     				grid_name.SetRowFontColor(i+1,"#FF0000");
@@ -742,8 +747,13 @@ function postProcessIBS(res) {
 					  </ul>         
 				    <button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="STRG" /></button> <!-- 저장 --> 
 				    <button class="btn_delete" id="btnDelete" 	name="btnDelete"><s:message code="DEL" /></button> <!-- 삭제 -->
+					<!--
+					<button class="btn_Inspect" id="btnInspect" 	name="btnInspect" onclick="alert('준비중입니다.');">검증</button>
+					<button class="btn_2" id="btnConcluse" 	name="btnConcluse" onclick="alert('준비중입니다.');">확정</button>
+					<button class="btn_3" id="btnInit" 	name="btnInit" onclick="alert('준비중입니다.');">초기화</button>
+					-->
 				</c:if>
-				
+
 			</div>
 			<div class="bt02"> 
 	          <button class="btn_excel_down"  id="btnExcelDown"  name="btnExcelDown"><s:message code="EXCL.DOWNLOAD" /></button> <!-- 엑셀 내리기 -->                       

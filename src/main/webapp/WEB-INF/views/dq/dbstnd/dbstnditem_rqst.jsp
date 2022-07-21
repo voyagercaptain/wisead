@@ -19,12 +19,38 @@
 
 var grid_name ;
 
+//쿠키 불러오기
+function getCookie(name)
+{
+	var obj = name + "=";
+	var x = 0;
+	while ( x <= document.cookie.length )
+	{
+		var y = (x+obj.length);
+		if ( document.cookie.substring( x, y ) == obj )
+		{
+			if ((endOfCookie=document.cookie.indexOf( ";", y )) == -1 )
+				endOfCookie = document.cookie.length;
+			return unescape( document.cookie.substring( y, endOfCookie ) );
+		}
+		x = document.cookie.indexOf( " ", x ) + 1;
+
+		if ( x == 0 ) break;
+	}
+	return "";
+}
+
+
 $(document).ready(function() {
 	
 	//탭 초기화....
 	//$( "#tabs" ).tabs();
 
 	$( "#divTabs-rqstvrf" ).tabs();
+
+	if(getCookie("divpop1") !="Y"){
+		openLayerPop("<c:url value='/commons/user/goNoticePop.do' />", 550, 190);
+	}
 
 	//정보변경 처리...
 	var	flag = '${sessionScope.loginVO.chgPwd}';
@@ -707,6 +733,11 @@ function postProcessIBS(res) {
 					  </ul>         
 				    <button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="STRG" /></button> <!-- 저장 --> 
 				    <button class="btn_delete" id="btnDelete" 	name="btnDelete"><s:message code="DEL" /></button> <!-- 삭제 -->
+					<!--
+					<button class="btn_rqst_new" id="btnInspect" 	name="btnInspect" onclick="alert('준비중입니다.');">검증</button>
+					<button class="btn_rqst_new" id="btnConcluse" 	name="btnConcluse" onclick="alert('준비중입니다.');">확정</button>
+					<button class="btn_rqst_new" id="btnInit" 	name="btnInit" onclick="alert('준비중입니다.');">초기화</button>
+					-->
 				</c:if>
 				
 			</div>

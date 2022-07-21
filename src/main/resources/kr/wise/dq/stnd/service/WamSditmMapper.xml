@@ -51,6 +51,7 @@
     <result column="SPCL_NT"          property="spclNt"        jdbcType="VARCHAR" />
     <result column="BSNSS_FLD"        property="bsnssFld"      jdbcType="VARCHAR" />
     <result column="PNM"        property="pnm"      jdbcType="VARCHAR" />
+    <result column="ERR_CHK"        property="errChk"      jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     SDITM_ID, SDITM_LNM, SDITM_PNM, LNM_CRI_DS, DMN_ID, DMNG_ID, INFOTP_ID, INFOTP_CHG_YN, 
@@ -59,7 +60,7 @@
     ,INFOTP_LNM,
 <!--     BZWK_FLD -->
     ,ALW_VAL,OWNR_ORG,ADMN_STND_CD,SAVE_FRM,EXPRSN_FRM,UNIT
-    , PNM,  STND_CD, SPCL_NT, BSNSS_FLD
+    , PNM,  STND_CD, SPCL_NT, BSNSS_FLD, ERR_CHK
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
 SELECT * 
@@ -219,6 +220,10 @@ SELECT *
       <if test="pnm != null" >
       PNM,
       </if>
+      <if test="errChk != null" >
+        ERR_CHK,
+      </if>
+
       
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -334,7 +339,9 @@ SELECT *
       <if test="pnm != null" >
       	#{pnm,jdbcType=VARCHAR},
       </if>
-      
+      <if test="errChk != null" >
+        #{errChk,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="kr.wise.dq.stnd.service.WamSditm" >
@@ -444,9 +451,11 @@ SELECT *
       BSNSS_FLD = #{bsnssFld,jdbcType=VARCHAR},
       </if>
       <if test="pnm != null" >
-      PNM = #{pnm,jdbcType=VARCHAR}
+      PNM = #{pnm,jdbcType=VARCHAR},
       </if>
-      
+      <if test="errChk != null" >
+        ERR_CHK = #{errChk,jdbcType=VARCHAR},
+      </if>
     </set>
     where SDITM_ID = #{sditmId,jdbcType=VARCHAR}
   </update>
@@ -522,13 +531,12 @@ SELECT *
 			 ,A.INFOTP_LNM, A.ALW_VAL, A.OWNR_ORG, A.ADMN_STND_CD
 			 ,A.SAVE_FRM, A.EXPRSN_FRM, A.UNIT, A.ORG_NM
 			 ,A.VRF_RMK
-			 /* ,CASE WHEN A.VRF_RMK IS NOT NULL THEN '#FF0000' ELSE NULL END AS FontColor */
-			 , null as FontColor
+			 , CASE WHEN A.ERR_CHK IS NOT NULL THEN '#FF0000' ELSE NULL END AS FontColor
 			 , STND_CD
       		 , SPCL_NT
       		 , BSNSS_FLD
       		 , PNM
-      		  
+      		 , ERR_CHK
 		FROM WAM_SDITM A 
 		WHERE 1 = 1
 		  <if test='!"2".equals(usergId) and !"3".equals(usergId)' >	 
