@@ -307,6 +307,12 @@ public class UserCtrl {
 		model.addAttribute("row", row);
 		return "/commons/user/popup/deptlst_pop";
 	}
+
+	/** 임시 공지 팝업 */
+	@RequestMapping("goNoticePop.do")
+	public String goNoticePop() {
+		return "/commons/user/popup/noticePop";
+	}
 	
 		
 	/** 내 정보 변경 팝업 ...*/
