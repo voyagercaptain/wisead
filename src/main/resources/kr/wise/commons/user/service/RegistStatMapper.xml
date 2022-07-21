@@ -167,37 +167,125 @@ SELECT
 
 <select id="getTotalStatSubList" 
 	parameterType="kr.wise.commons.user.WaaUserg" resultMap="BaseResultMap">
+
 WITH SUMMARY AS (
 SELECT
-	(SELECT COUNT(*) FROM WAA_ORG) AS TOTAL_ORG,
-	(SELECT COUNT(A.ORG_NM) FROM (SELECT ORG_NM, COUNT(*) AS ORG_ITEM_COUNT FROM WAM_SDITM GROUP BY ORG_CD) A) AS ITEM,
-	(SELECT COUNT(A.ORG_NM) FROM (SELECT ORG_NM, COUNT(*) AS ORG_ITEM_COUNT FROM WAM_STWD  GROUP BY ORG_NM) A) AS WORD,
-	(SELECT COUNT(A.ORG_NM) FROM (SELECT ORG_NM, COUNT(*) AS ORG_ITEM_COUNT FROM WAM_DMN  GROUP BY ORG_NM) A) AS DMN,
-	(SELECT COUNT(A.ORG_NM) FROM (SELECT ORG_NM, COUNT(*) AS ORG_ITEM_COUNT FROM WAM_COMM_CD  GROUP BY ORG_NM) A) AS CODE,
-	(SELECT COUNT(A.ORG_NM) FROM (SELECT ORG_NM, COUNT(*) AS DB_ITEM_COUNT FROM WAM_DB_SDITM WHERE DB_NM != '' GROUP BY ORG_NM ) A) AS DB_ITEM,
-	(SELECT COUNT(A.ORG_NM) FROM (SELECT ORG_NM, COUNT(*) AS DB_WORD_COUNT FROM WAM_DB_STWD WHERE DB_NM != ''  GROUP BY ORG_NM ) A) AS DB_WORD,
-	(SELECT COUNT(A.ORG_NM) FROM (SELECT ORG_NM, COUNT(*) AS DB_DOMAIN_COUNT FROM WAM_DB_DMN WHERE DB_NM != '' GROUP BY ORG_NM ) A) AS DB_DMN,
-	(SELECT COUNT(A.ORG_NM) FROM (SELECT ORG_NM, COUNT(DB_NM) AS DB_CODE_COUNT FROM WAM_DB_COMM_CD WHERE DB_NM != '' GROUP BY ORG_NM )A) AS DB_CODE
+        (SELECT COUNT(*) FROM WAA_ORG) AS TOTAL_ORG,
+        ( SELECT
+  			COUNT(WO.ORG_NM) 
+  		  FROM WAA_ORG WO 
+  		  LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_ITEM_COUNT FROM WAM_SDITM GROUP BY ORG_NM) B ON (WO.ORG_NM = B.ORG_NM)
+  		  WHERE B.ORG_ITEM_COUNT IS NOT NULL ) AS ITEM, --기관용어
+        (SELECT
+  			COUNT(WO.ORG_NM) 
+  		 FROM WAA_ORG WO 
+  		 LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_WORD_COUNT FROM WAM_STWD  GROUP BY ORG_NM) C ON (WO.ORG_NM = C.ORG_NM)
+  		 WHERE C.ORG_WORD_COUNT IS NOT NULL ) AS WORD, --기관단어
+        (SELECT
+  			COUNT(WO.ORG_NM) 
+  		 FROM WAA_ORG WO 
+  		 LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_DOMAIN_COUNT FROM WAM_DMN  GROUP BY ORG_NM) D ON (WO.ORG_NM = D.ORG_NM)
+ 		 WHERE D.ORG_DOMAIN_COUNT IS NOT NULL ) AS DMN, --기관도메인
+        (SELECT
+  		   COUNT(WO.ORG_NM) 
+  		 FROM WAA_ORG WO 
+  		 LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_CODE_COUNT FROM WAM_COMM_CD  GROUP BY ORG_NM) E ON (WO.ORG_NM = E.ORG_NM)
+  		 WHERE E.ORG_CODE_COUNT IS NOT NULL ) AS CODE, --기관코드
+		(SELECT 
+			COUNT(WO.ORG_NM) 
+		 FROM (SELECT A.ORG_CD, A.ORG_NM, B.DB_NM FROM  WAA_ORG A INNER JOIN WAA_ORG_DB B ON (A.ORG_CD = B.ORG_CD)) WO
+		 LEFT OUTER JOIN (SELECT ORG_NM, DB_NM, COUNT(DB_NM) AS DB_ITEM_COUNT FROM WAM_DB_SDITM WHERE DB_NM != '' GROUP BY ORG_NM, DB_NM ) F 
+		 ON (WO.ORG_NM = F.ORG_NM AND WO.DB_NM = F.DB_NM)
+		 WHERE F.DB_ITEM_COUNT IS NOT NULL) AS DB_ITEM, --DB 용어
+		(SELECT 
+			COUNT(WO.ORG_NM) 
+		 FROM (SELECT A.ORG_CD, A.ORG_NM, B.DB_NM FROM  WAA_ORG A INNER JOIN WAA_ORG_DB B ON (A.ORG_CD = B.ORG_CD)) WO
+	     LEFT OUTER JOIN (SELECT ORG_NM, DB_NM, COUNT(ORG_NM) AS DB_WORD_COUNT FROM WAM_DB_STWD WHERE DB_NM != ''  GROUP BY ORG_NM, DB_NM ) G 
+		 ON (WO.ORG_NM = G.ORG_NM AND WO.DB_NM = G.DB_NM) 
+		 WHERE G.DB_WORD_COUNT IS NOT NULL)  AS DB_WORD, --DB 단어
+		(SELECT 
+			COUNT(WO.ORG_NM) 
+		FROM (SELECT A.ORG_CD, A.ORG_NM, B.DB_NM FROM  WAA_ORG A INNER JOIN WAA_ORG_DB B ON (A.ORG_CD = B.ORG_CD)) WO
+		LEFT OUTER JOIN (SELECT ORG_NM, DB_NM, COUNT(ORG_NM) AS DB_DOMAIN_COUNT FROM WAM_DB_DMN WHERE DB_NM != '' GROUP BY ORG_NM, DB_NM ) H 
+		ON (WO.ORG_NM = H.ORG_NM AND WO.DB_NM = H.DB_NM)
+		WHERE H.DB_DOMAIN_COUNT IS NOT NULL)  AS DB_DMN, --DB 도메인
+		(SELECT 
+			COUNT(WO.ORG_NM) 
+		 FROM (SELECT A.ORG_CD, A.ORG_NM, B.DB_NM FROM  WAA_ORG A INNER JOIN WAA_ORG_DB B ON (A.ORG_CD = B.ORG_CD)) WO
+		 LEFT OUTER JOIN (SELECT ORG_NM, DB_NM, COUNT(ORG_NM) AS DB_CODE_COUNT FROM WAM_DB_COMM_CD WHERE DB_NM != '' GROUP BY ORG_NM, DB_NM ) I 
+		 ON (WO.ORG_NM = I.ORG_NM AND WO.DB_NM = I.DB_NM)
+		 WHERE I.DB_CODE_COUNT IS NOT NULL) AS DB_CODE, --DB 코드
+        (SELECT COUNT(ORG_NM) FROM (
+                                                                SELECT ORG_NM
+                                                                          FROM
+                                                                                        (
+                                                                                        SELECT WO.ORG_NM FROM WAA_ORG WO 
+  																						LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_ITEM_COUNT 
+  																										FROM WAM_SDITM GROUP BY ORG_NM) B 
+  																						ON (WO.ORG_NM = B.ORG_NM)
+  																						WHERE B.ORG_ITEM_COUNT IS NOT NULL
+                                                                                        UNION ALL
+                                                                                        SELECT WO.ORG_NM FROM WAA_ORG WO 
+  																						LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_WORD_COUNT 
+  																										FROM WAM_STWD  GROUP BY ORG_NM) C 
+  																						ON (WO.ORG_NM = C.ORG_NM)
+  																						WHERE C.ORG_WORD_COUNT IS NOT NULL
+                                                                                        UNION ALL
+                                                                                        SELECT WO.ORG_NM FROM WAA_ORG WO 
+  																						LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_DOMAIN_COUN 
+  																										FROM WAM_DMN  GROUP BY ORG_NM) C 
+  																						ON (WO.ORG_NM = C.ORG_NM)
+  																						WHERE C.ORG_DOMAIN_COUN IS NOT NULL
+                                                                                        UNION ALL
+                                                                                        SELECT WO.ORG_NM FROM WAA_ORG WO 
+  																						LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_CODE_COUNT 
+  																										FROM WAM_COMM_CD  GROUP BY ORG_NM) C 
+  																						ON (WO.ORG_NM = C.ORG_NM)
+  																						WHERE C.ORG_CODE_COUNT IS NOT NULL
+                                                                                        )
+                                                                         GROUP BY ORG_NM
+                                                                )) AS ORG_STND, --등록기관 수
+        (SELECT COUNT(ORG_NM) FROM (
+                                                                SELECT ORG_NM
+                                                                          FROM
+                                                                                        (
+                                                                                        SELECT WO.ORG_NM FROM (SELECT A.ORG_CD, A.ORG_NM, B.DB_NM FROM  WAA_ORG A INNER JOIN WAA_ORG_DB B ON (A.ORG_CD = B.ORG_CD)) WO
+                                                                                        LEFT OUTER JOIN (SELECT ORG_NM, DB_NM, COUNT(ORG_NM) AS DB_ITEM_COUNT FROM WAM_DB_SDITM WHERE DB_NM != '' GROUP BY ORG_NM, DB_NM ) F ON (WO.ORG_NM = F.ORG_NM AND WO.DB_NM = F.DB_NM)
+                                                                                        WHERE F.DB_ITEM_COUNT IS NOT NULL
+                                                                                        UNION ALL
+                                                                                        SELECT WO.ORG_NM FROM (SELECT A.ORG_CD, A.ORG_NM, B.DB_NM FROM  WAA_ORG A INNER JOIN WAA_ORG_DB B ON (A.ORG_CD = B.ORG_CD)) WO
+                                                                                        LEFT OUTER JOIN (SELECT ORG_NM, DB_NM, COUNT(DB_NM) AS DB_WORD_COUNT FROM WAM_DB_STWD WHERE DB_NM != ''  GROUP BY ORG_NM, DB_NM ) G ON (WO.ORG_NM = G.ORG_NM AND WO.DB_NM = G.DB_NM)
+                                                                                        WHERE G.DB_WORD_COUNT IS NOT NULL
+                                                                                        UNION ALL
+                                                                                        SELECT WO.ORG_NM FROM (SELECT A.ORG_CD, A.ORG_NM, B.DB_NM FROM  WAA_ORG A INNER JOIN WAA_ORG_DB B ON (A.ORG_CD = B.ORG_CD)) WO
+                                                                                        LEFT OUTER JOIN (SELECT ORG_NM, DB_NM, COUNT(DB_NM) AS DB_DOMAIN_COUNT FROM WAM_DB_DMN WHERE DB_NM != '' GROUP BY ORG_NM, DB_NM ) H ON (WO.ORG_NM = H.ORG_NM AND WO.DB_NM = H.DB_NM)
+                                                                                        WHERE H.DB_DOMAIN_COUNT IS NOT NULL
+                                                                                        UNION ALL
+                                                                                        SELECT WO.ORG_NM FROM (SELECT A.ORG_CD, A.ORG_NM, B.DB_NM FROM  WAA_ORG A INNER JOIN WAA_ORG_DB B ON (A.ORG_CD = B.ORG_CD)) WO
+                                                                                        LEFT OUTER JOIN (SELECT ORG_NM, DB_NM, COUNT(DB_NM) AS DB_CODE_COUNT FROM WAM_DB_COMM_CD WHERE DB_NM != '' GROUP BY ORG_NM, DB_NM ) I ON (WO.ORG_NM = I.ORG_NM AND WO.DB_NM = I.DB_NM)
+                                                                                        WHERE I.DB_CODE_COUNT IS NOT NULL
+                                                                                        )
+                                                                        GROUP BY ORG_NM
+                                                                )) AS DB_STND --등록DB기관 수
 )
-SELECT 
-	'기관표준' AS TITLE,
-	TOTAL_ORG,
-	ITEM + WORD + DMN + CODE AS REG_ORG,
-	ITEM,
-	WORD,
-	DMN,
-	CODE
+SELECT
+        '기관표준' AS TITLE,
+        TOTAL_ORG,
+        ORG_STND AS REG_ORG,
+        ITEM,
+        WORD,
+        DMN,
+        CODE
  FROM SUMMARY
 UNION ALL
-SELECT 
-	'DB표준' AS TITLE,
-	TOTAL_ORG,
-	DB_ITEM + DB_WORD + DB_DMN + DB_CODE AS REG_ORG,
-	DB_ITEM,
-	DB_WORD,
-	DB_DMN,
-	DB_CODE
- FROM SUMMARY  
-;
+SELECT
+        'DB표준' AS TITLE,
+        TOTAL_ORG,
+        DB_STND AS REG_ORG,
+        DB_ITEM,
+        DB_WORD,
+        DB_DMN,
+        DB_CODE
+ FROM SUMMARY
 </select>
 </mapper>
