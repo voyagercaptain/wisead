@@ -865,6 +865,159 @@
      WHERE A.DMN_ID = #{dmnId,jdbcType=VARCHAR}
      ORDER BY A.EXP_DTM DESC, A.STR_DTM DESC
   </select>
-  
-  
+
+    <insert id="bulkInsert" parameterType="java.util.List" >
+        <foreach collection="list" item="item" index="index">
+            insert into WAM_DB_DMN
+            (
+            DMN_ID,
+            DMN_LNM,
+            DMN_PNM,
+            DMNG_ID,
+            INFOTP_ID,
+            UPP_DMN_ID,
+            SUBJ_ID,
+            LST_ENTY_ID,
+            LST_ENTY_PNM,
+            LST_ENTY_LNM,
+            CD_VAL_TYP_CD,
+            CD_VAL_IVW_CD,
+            SDITM_AUTO_CRT_YN,
+            DATA_FRM,
+            CRG_USER_ID,
+            DMN_ORG_DS,
+            RQST_NO,
+            RQST_SNO,
+            OBJ_DESCN,
+            OBJ_VERS,
+            REG_TYP_CD,
+            FRS_RQST_DTM,
+            FRS_RQST_USER_ID,
+            RQST_DTM,
+            RQST_USER_ID,
+            APRV_DTM,
+            APRV_USER_ID,
+            ENC_YN,
+            DMN_DSCD,
+            SAVE_FRM,
+            EXPRSN_FRM,
+            UNIT,
+            CD_VAL,
+            ADMN_STND_CD,
+            DMNG_LNM,
+            INFOTP_LNM,
+            DATA_TYPE,
+            DATA_LEN,
+            DATA_SCAL,
+            ORG_NM,
+            DB_NM,
+            OWNR_ORG,
+            SPCL_NT,
+            )
+            values
+            (
+            concat('I_', db_serial.next_value),
+            #{item.dmnLnm,jdbcType=VARCHAR},
+            #{item.dmnPnm,jdbcType=VARCHAR},
+            #{item.dmngId,jdbcType=VARCHAR},
+            #{item.infotpId,jdbcType=VARCHAR},
+            #{item.uppDmnId,jdbcType=VARCHAR},
+            #{item.subjId,jdbcType=VARCHAR},
+            #{item.lstEntyId,jdbcType=VARCHAR},
+            #{item.lstEntyPnm,jdbcType=VARCHAR},
+            #{item.lstEntyLnm,jdbcType=VARCHAR},
+            #{item.cdValTypCd,jdbcType=VARCHAR},
+            #{item.cdValIvwCd,jdbcType=VARCHAR},
+            #{item.sditmAutoCrtYn,jdbcType=VARCHAR},
+            #{item.dataFrm,jdbcType=VARCHAR},
+            #{item.crgUserId,jdbcType=VARCHAR},
+            #{item.dmnOrgDs,jdbcType=VARCHAR},
+            #{item.rqstNo,jdbcType=VARCHAR},
+            #{item.rqstSno,jdbcType=DECIMAL},
+            #{item.objDescn,jdbcType=VARCHAR},
+            #{item.objVers,jdbcType=DECIMAL},
+            #{item.regTypCd,jdbcType=VARCHAR},
+            #{item.frsRqstDtm,jdbcType=DATE},
+            #{item.frsRqstUserId,jdbcType=VARCHAR},
+            #{item.rqstDtm,jdbcType=DATE},
+            #{item.rqstUserId,jdbcType=VARCHAR},
+            #{item.aprvDtm,jdbcType=DATE},
+            #{item.aprvUserId,jdbcType=VARCHAR},
+            #{item.encYn,jdbcType=VARCHAR},
+            #{item.dmnDscd,jdbcType=VARCHAR},
+            #{item.saveFrm,jdbcType=VARCHAR},
+            #{item.exprsnFrm,jdbcType=VARCHAR},
+            #{item.unit,jdbcType=VARCHAR},
+            #{item.cdVal,jdbcType=VARCHAR},
+            #{item.admnStndCd,jdbcType=VARCHAR},
+            #{item.dmngLnm,jdbcType=VARCHAR},
+            #{item.infotpLnm,jdbcType=VARCHAR},
+            UPPER(#{item.dataType,jdbcType=VARCHAR}),
+            #{item.dataLen,jdbcType=DECIMAL},
+            #{item.dataScal,jdbcType=DECIMAL},
+            #{item.orgNm,jdbcType=VARCHAR},
+            #{item.dbNm,jdbcType=VARCHAR},
+            #{item.ownrOrg,jdbcType=VARCHAR},
+            #{item.spclNt,jdbcType=VARCHAR},
+            )
+        </foreach>
+    </insert>
+
+    <update id="bulkUpdate" parameterType="java.util.List" >
+        <foreach collection="list" item="item" index="index">
+        update WAM_DB_DMN
+           set
+                DMN_LNM = #{item.dmnLnm,jdbcType=VARCHAR},
+                DMN_PNM = #{item.dmnPnm,jdbcType=VARCHAR},
+                DMNG_ID = #{item.dmngId,jdbcType=VARCHAR},
+                INFOTP_ID = #{item.infotpId,jdbcType=VARCHAR},
+                UPP_DMN_ID = #{item.uppDmnId,jdbcType=VARCHAR},
+                SUBJ_ID = #{item.subjId,jdbcType=VARCHAR},
+                LST_ENTY_ID = #{item.lstEntyId,jdbcType=VARCHAR},
+                LST_ENTY_PNM = #{item.lstEntyPnm,jdbcType=VARCHAR},
+                LST_ENTY_LNM = #{item.lstEntyLnm,jdbcType=VARCHAR},
+                CD_VAL_TYP_CD = #{item.cdValTypCd,jdbcType=VARCHAR},
+                CD_VAL_IVW_CD = #{item.cdValIvwCd,jdbcType=VARCHAR},
+                SDITM_AUTO_CRT_YN = #{item.sditmAutoCrtYn,jdbcType=VARCHAR},
+                DATA_FRM = #{item.dataFrm,jdbcType=VARCHAR},
+                CRG_USER_ID = #{item.crgUserId,jdbcType=VARCHAR},
+                DMN_ORG_DS = #{item.dmnOrgDs,jdbcType=VARCHAR},
+                RQST_NO = #{item.rqstNo,jdbcType=VARCHAR},
+                RQST_SNO = #{item.rqstSno,jdbcType=DECIMAL},
+                OBJ_DESCN = #{item.objDescn,jdbcType=VARCHAR},
+                OBJ_VERS = #{item.objVers,jdbcType=DECIMAL},
+                REG_TYP_CD = #{item.regTypCd,jdbcType=VARCHAR},
+                FRS_RQST_DTM = #{item.frsRqstDtm,jdbcType=DATE},
+                FRS_RQST_USER_ID = #{item.frsRqstUserId,jdbcType=VARCHAR},
+                RQST_DTM = #{item.rqstDtm,jdbcType=DATE},
+                RQST_USER_ID = #{item.rqstUserId,jdbcType=VARCHAR},
+                APRV_DTM = #{item.aprvDtm,jdbcType=DATE},
+                APRV_USER_ID = #{item.aprvUserId,jdbcType=VARCHAR},
+                ENC_YN = #{item.encYn,jdbcType=VARCHAR},
+                DMN_DSCD = #{item.dmnDscd,jdbcType=VARCHAR},
+                SAVE_FRM = #{item.saveFrm,jdbcType=VARCHAR},
+                EXPRSN_FRM = #{item.exprsnFrm,jdbcType=VARCHAR},
+                UNIT = #{item.unit,jdbcType=VARCHAR},
+                CD_VAL = #{item.cdVal,jdbcType=VARCHAR},
+                ADMN_STND_CD = #{item.admnStndCd,jdbcType=VARCHAR},
+                DMNG_LNM = #{item.dmngLnm,jdbcType=VARCHAR},
+                INFOTP_LNM = #{item.infotpLnm,jdbcType=VARCHAR},
+                DATA_TYPE = UPPER(#{item.dataType,jdbcType=VARCHAR}),
+                DATA_LEN = #{item.dataLen,jdbcType=DECIMAL},
+                DATA_SCAL = #{item.dataScal,jdbcType=DECIMAL},
+                ORG_NM = #{item.orgNm,jdbcType=VARCHAR},
+                DB_NM = #{item.dbNm,jdbcType=VARCHAR},
+                OWNR_ORG = #{item.ownrOrg,jdbcType=VARCHAR},
+                SPCL_NT = #{item.spclNt,jdbcType=VARCHAR},
+        where DMN_ID = #{item.dmnId,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
+    <delete id="bulkDelete" parameterType="java.util.List" >
+        <foreach collection="list" item="item" index="index">
+        delete from WAM_DB_DMN
+        where DMN_ID = #{item.dmnId,jdbcType=VARCHAR}
+        </foreach>
+    </delete>
+
 </mapper>

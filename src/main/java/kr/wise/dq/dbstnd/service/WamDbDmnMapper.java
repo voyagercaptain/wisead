@@ -37,4 +37,9 @@ public interface WamDbDmnMapper {
 	
 	Map<String, String> selectDbDomainDataType(Map<String, String> param);
 
+    int bulkInsert(List<WamDbDmn> insertList);
+
+    int bulkUpdate(List<WamDbDmn> updateList);
+
+    int bulkDelete(List<WamDbDmn> deleteList);
 }

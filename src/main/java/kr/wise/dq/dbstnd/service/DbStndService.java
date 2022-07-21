@@ -21,7 +21,6 @@ public interface DbStndService {
 	int registerStwdWam(List<WamDbStwd> reglist) throws Exception;
 	
 	int registerStcdWam(List<WamDbStcd> reglist) throws Exception;
-	
 
 	List<WapDbDvCanAsm> getItemDvRqstList(WapDbDvCanDic data);
 	

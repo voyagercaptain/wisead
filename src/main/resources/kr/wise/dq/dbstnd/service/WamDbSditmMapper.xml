@@ -961,7 +961,7 @@ SELECT *
     values
         <foreach collection="list" item="item" index="index" separator=",">
         (
-          #{item.sditmId,jdbcType=VARCHAR},
+          concat('I_', db_serial.next_value),
           #{item.sditmLnm,jdbcType=VARCHAR},
           #{item.sditmPnm,jdbcType=VARCHAR},
           #{item.lnmCriDs,jdbcType=VARCHAR},
@@ -1045,7 +1045,7 @@ SELECT *
     </foreach>
   </update>
 
-  <delete id="bulkDelete" parameterType="java.lang.String" >
+  <delete id="bulkDelete" parameterType="java.util.List" >
     <foreach collection="list" item="item" index="index">
     delete from WAM_DB_SDITM
     where SDITM_ID = #{item.sditmId,jdbcType=VARCHAR}

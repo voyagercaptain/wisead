@@ -50,7 +50,7 @@ public interface WamDbSditmMapper {
 	
     int bulkInsert(List<WamDbSditm> insertList);
 
-	int bulkUpdate(List<WamDbSditm> insertList);
+	int bulkUpdate(List<WamDbSditm> updateList);
 
-	int bulkDelete(List<WamDbSditm> insertList);
+	int bulkDelete(List<WamDbSditm> deleteList);
 }

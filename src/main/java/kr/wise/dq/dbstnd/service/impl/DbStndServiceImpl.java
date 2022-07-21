@@ -160,9 +160,9 @@ public class DbStndServiceImpl implements DbStndService {
 
 		if(insertList != null) {
 			for (WamDbSditm saveVo : insertList) {
-				//요청번호 셋팅
-				String objid = objectIdGnrService.getNextStringId();
-				saveVo.setSditmId(objid);
+				//요청번호 셋팅 (Sequence 처리로 수정)
+				//String objid = objectIdGnrService.getNextStringId();
+				//saveVo.setSditmId(objid);
 				saveVo.setFrsRqstUserId(userid);
 				saveVo.setRqstUserId(userid);
 			}
@@ -241,31 +241,60 @@ public class DbStndServiceImpl implements DbStndService {
 		return result;
 	}
 
-
-
 	public int registerDmnWam(List<WamDbDmn> reglist) throws Exception {
-
-//		logger.debug("mstVo:{}\nbizInfo:{}", mstVo, mstVo.getBizInfo());
 
 		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
 		String userid = user.getUniqId();
 
-	
-
 		int result = 0;
 
-		if(reglist != null) {
-			for (WamDbDmn saveVo : (ArrayList<WamDbDmn>)reglist) {
-				
-				//요청번호 셋팅
+		/**
+		 * List에서 Insert List와 Update List를 분리해서 별도 리스트로 생성
+		 * Insert List는 채번 로직이 필요함
+		 */
+		List<WamDbDmn> insertList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("I"))
+				.collect(Collectors.toList());
+
+		List<WamDbDmn> updateList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("U"))
+				.collect(Collectors.toList());
+
+		List<WamDbDmn> deleteList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("D"))
+				.collect(Collectors.toList());
+
+		if(insertList != null) {
+			for (WamDbDmn saveVo : insertList) {
+				//요청번호 셋팅 (Sequence 처리로 수정)
+				//String objid = objectIdGnrService.getNextStringId();
+				//saveVo.setDmnId(objid);
 				saveVo.setFrsRqstUserId(userid);
 				saveVo.setRqstUserId(userid);
-				saveVo.setRqstNo("REQ_01");
-				//단건 저장...
-				result += saveWamStndDmn(saveVo);
 			}
 		}
 
+		int limit = 1000;
+		for (int id = 0; id < insertList.size(); id += limit){
+			result = wamDbDmnMapper.bulkInsert(new ArrayList<WamDbDmn>(insertList.subList(id, min(id + limit, insertList.size()))));
+		}
+
+		if (updateList != null) {
+			for (WamDbDmn saveVo : updateList) {
+				//요청번호 셋팅
+				saveVo.setFrsRqstUserId(userid);
+				saveVo.setRqstUserId(userid);
+				saveVo.setRegTypCd("U");
+			}
+		}
+
+		for (int id = 0; id < updateList.size(); id += limit){
+			result = wamDbDmnMapper.bulkUpdate(new ArrayList<WamDbDmn>(updateList.subList(id, min(id + limit, updateList.size()))));
+		}
+
+		for (int id = 0; id < deleteList.size(); id += limit){
+			result = wamDbDmnMapper.bulkDelete(new ArrayList<WamDbDmn>(deleteList.subList(id, min(id + limit, deleteList.size()))));
+		}
 
 		return result;
 	}
@@ -317,16 +346,52 @@ public class DbStndServiceImpl implements DbStndService {
 
 		int result = 0;
 
-		if(reglist != null) {
-			for (WamDbStwd saveVo : (ArrayList<WamDbStwd>)reglist) {
-				//요청번호 셋팅...
+		/**
+		 * List에서 Insert List와 Update List를 분리해서 별도 리스트로 생성
+		 * Insert List는 채번 로직이 필요함
+		 */
+		List<WamDbStwd> insertList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("I"))
+				.collect(Collectors.toList());
+
+		List<WamDbStwd> updateList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("U"))
+				.collect(Collectors.toList());
+
+		List<WamDbStwd> deleteList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("D"))
+				.collect(Collectors.toList());
+
+		if(insertList != null) {
+			for (WamDbStwd saveVo : insertList) {
+				//요청번호 셋팅(Sequence 처리로 수정)
+				//String objid = objectIdGnrService.getNextStringId();
+				//saveVo.setStwdId(objid);
 				saveVo.setFrsRqstUserId(userid);
 				saveVo.setRqstUserId(userid);
-				saveVo.setRqstNo("REQ_01");
-
-				//단건 저장...
-				result += saveWamStndWord(saveVo);
 			}
+		}
+
+		int limit = 1000;
+		for (int id = 0; id < insertList.size(); id += limit){
+			result = wamDbStwdMapper.bulkInsert(new ArrayList<WamDbStwd>(insertList.subList(id, min(id + limit, insertList.size()))));
+		}
+
+		if (updateList != null) {
+			for (WamDbStwd saveVo : updateList) {
+				//요청번호 셋팅
+				saveVo.setFrsRqstUserId(userid);
+				saveVo.setRqstUserId(userid);
+				saveVo.setRegTypCd("U");
+			}
+		}
+
+		for (int id = 0; id < updateList.size(); id += limit){
+			result = wamDbStwdMapper.bulkUpdate(new ArrayList<WamDbStwd>(updateList.subList(id, min(id + limit, updateList.size()))));
+		}
+
+		for (int id = 0; id < deleteList.size(); id += limit){
+			result = wamDbStwdMapper.bulkDelete(new ArrayList<WamDbStwd>(deleteList.subList(id, min(id + limit, deleteList.size()))));
 		}
 
 		return result;
@@ -376,16 +441,52 @@ public class DbStndServiceImpl implements DbStndService {
 
 		int result = 0;
 
-		if(reglist != null) {
-			for (WamDbStcd saveVo : (ArrayList<WamDbStcd>)reglist) {
-				//요청번호 셋팅...
+		/**
+		 * List에서 Insert List와 Update List를 분리해서 별도 리스트로 생성
+		 * Insert List는 채번 로직이 필요함
+		 */
+		List<WamDbStcd> insertList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("I"))
+				.collect(Collectors.toList());
+
+		List<WamDbStcd> updateList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("U"))
+				.collect(Collectors.toList());
+
+		List<WamDbStcd> deleteList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("D"))
+				.collect(Collectors.toList());
+
+		if(insertList != null) {
+			for (WamDbStcd saveVo : insertList) {
+				//요청번호 셋팅 (Sequence 처리로 수정)
+				//String objid = objectIdGnrService.getNextStringId();
+				//saveVo.setCommCdId(objid);
 				saveVo.setFrsRqstUserId(userid);
 				saveVo.setRqstUserId(userid);
-				saveVo.setRqstNo("REQ_01");
-
-				//단건 저장...
-				result += saveWamStcd(saveVo);
 			}
+		}
+
+		int limit = 1000;
+		for (int id = 0; id < insertList.size(); id += limit){
+			result = wamDbStcdMapper.bulkInsert(new ArrayList<WamDbStcd>(insertList.subList(id, min(id + limit, insertList.size()))));
+		}
+
+		if (updateList != null) {
+			for (WamDbStcd saveVo : updateList) {
+				//요청번호 셋팅
+				saveVo.setFrsRqstUserId(userid);
+				saveVo.setRqstUserId(userid);
+				saveVo.setRegTypCd("U");
+			}
+		}
+
+		for (int id = 0; id < updateList.size(); id += limit){
+			result = wamDbStcdMapper.bulkUpdate(new ArrayList<WamDbStcd>(updateList.subList(id, min(id + limit, updateList.size()))));
+		}
+
+		for (int id = 0; id < deleteList.size(); id += limit){
+			result = wamDbStcdMapper.bulkDelete(new ArrayList<WamDbStcd>(deleteList.subList(id, min(id + limit, deleteList.size()))));
 		}
 
 		return result;
