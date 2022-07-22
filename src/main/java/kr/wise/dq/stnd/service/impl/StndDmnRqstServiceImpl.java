@@ -17,9 +17,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import kr.wise.commons.WiseConfig;
 import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.cmm.exception.WiseBizException;
 import kr.wise.commons.cmm.service.EgovIdGnrService;
@@ -30,29 +32,14 @@ import kr.wise.commons.rqstmst.service.WaqMstr;
 import kr.wise.commons.rqstmst.service.WaqRqstVrfDtls;
 import kr.wise.commons.rqstmst.service.WaqRqstVrfDtlsMapper;
 import kr.wise.commons.util.UtilString;
-import kr.wise.dq.stnd.service.StndDmnRqstService;
-import kr.wise.dq.stnd.service.StndItemRqstService;
-import kr.wise.dq.stnd.service.WamDmn;
-import kr.wise.dq.stnd.service.WamDmnMapper;
-import kr.wise.dq.stnd.service.WapDvCanAsm;
-import kr.wise.dq.stnd.service.WapDvCanAsmMapper;
-import kr.wise.dq.stnd.service.WapDvCanDic;
-import kr.wise.dq.stnd.service.WapDvCanDicMapper;
-import kr.wise.dq.stnd.service.WaqCdVal;
-import kr.wise.dq.stnd.service.WaqCdValMapper;
-import kr.wise.dq.stnd.service.WaqDmn;
-import kr.wise.dq.stnd.service.WaqDmnMapper;
-import kr.wise.dq.stnd.service.WaqSditm;
-import kr.wise.dq.stnd.service.WaqSditmMapper;
-import kr.wise.dq.stnd.service.WaqStwd;
-import kr.wise.dq.stnd.service.WaqStwdCnfg;
-import kr.wise.dq.stnd.service.WaqStwdCnfgMapper;
-import kr.wise.dq.stnd.service.WaqStwdMapper;
+import kr.wise.dq.stnd.service.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import static java.lang.Math.min;
 
 /**
  * <PRE>
@@ -128,7 +115,7 @@ public class StndDmnRqstServiceImpl implements StndDmnRqstService {
 
 		if(reglist != null) {
 			for (WaqDmn saveVo : (ArrayList<WaqDmn>)reglist) {
-				
+
 				//요청번호 셋팅
 				saveVo.setFrsRqstUserId(userid);
 				saveVo.setRqstUserId(userid);
@@ -1183,17 +1170,61 @@ public class StndDmnRqstServiceImpl implements StndDmnRqstService {
 
 		int result = 0;
 
-		if(reglist != null) {
-			for (WamDmn saveVo : (ArrayList<WamDmn>)reglist) {
-				
+		/**
+		 * List에서 Insert List와 Update List를 분리해서 별도 리스트로 생성
+		 * Insert List는 채번 로직이 필요함
+		 */
+		List<WamDmn> insertList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("I"))
+				.collect(Collectors.toList());
+
+		List<WamDmn> updateList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("U"))
+				.collect(Collectors.toList());
+
+		List<WamDmn> deleteList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("D"))
+				.collect(Collectors.toList());
+
+		if(insertList != null) {
+			for (WamDmn saveVo : insertList) {
+				saveVo.setFrsRqstUserId(userid);
+				saveVo.setRqstUserId(userid);
+			}
+		}
+
+		for (int id = 0; id < insertList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wammapper.bulkInsert(new ArrayList<WamDmn>(insertList.subList(id, min(id + WiseConfig.FETCH_SIZE, insertList.size()))));
+		}
+
+		if (updateList != null) {
+			for (WamDmn saveVo : updateList) {
 				//요청번호 셋팅
 				saveVo.setFrsRqstUserId(userid);
 				saveVo.setRqstUserId(userid);
-				saveVo.setRqstNo("REQ_01");
-				//단건 저장...
-				result += saveWamStndDmn(saveVo);
+				saveVo.setRegTypCd("U");
 			}
 		}
+
+		for (int id = 0; id < updateList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wammapper.bulkUpdate(new ArrayList<WamDmn>(updateList.subList(id, min(id + WiseConfig.FETCH_SIZE, updateList.size()))));
+		}
+
+		for (int id = 0; id < deleteList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wammapper.bulkDelete(new ArrayList<WamDmn>(deleteList.subList(id, min(id + WiseConfig.FETCH_SIZE, deleteList.size()))));
+		}
+
+//		if(reglist != null) {
+//			for (WamDmn saveVo : (ArrayList<WamDmn>)reglist) {
+//
+//				//요청번호 셋팅
+//				saveVo.setFrsRqstUserId(userid);
+//				saveVo.setRqstUserId(userid);
+//				saveVo.setRqstNo("REQ_01");
+//				//단건 저장...
+//				result += saveWamStndDmn(saveVo);
+//			}
+//		}
 
 //		mstVo.setRqstStepCd("S"); //임시저장 상태로 변경....
 //		requestMstService.updateRqstPrcStep(mstVo);

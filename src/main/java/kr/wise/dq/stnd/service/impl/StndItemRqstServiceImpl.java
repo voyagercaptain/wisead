@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import kr.wise.commons.WiseConfig;
 import kr.wise.commons.cmm.CommonVo;
 import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.cmm.exception.WiseBizException;
@@ -1151,9 +1152,8 @@ public class StndItemRqstServiceImpl implements StndItemRqstService {
 				}
 			}
 
-			Integer limit = 1000;
-			for (int id = 0; id < insertList.size(); id += limit){
-				result = wammapper.bulkInsert(new ArrayList<WamSditm>(insertList.subList(id, min(id + limit, insertList.size()))));
+			for (int id = 0; id < insertList.size(); id += WiseConfig.FETCH_SIZE){
+				result = wammapper.bulkInsert(new ArrayList<WamSditm>(insertList.subList(id, min(id + WiseConfig.FETCH_SIZE, insertList.size()))));
 			}
 
 			if (updateList != null) {
@@ -1165,12 +1165,12 @@ public class StndItemRqstServiceImpl implements StndItemRqstService {
 				}
 			}
 
-			for (int id = 0; id < updateList.size(); id += limit){
-				result = wammapper.bulkUpdate(new ArrayList<WamSditm>(updateList.subList(id, min(id + limit, updateList.size()))));
+			for (int id = 0; id < updateList.size(); id += WiseConfig.FETCH_SIZE){
+				result = wammapper.bulkUpdate(new ArrayList<WamSditm>(updateList.subList(id, min(id + WiseConfig.FETCH_SIZE, updateList.size()))));
 			}
 
-			for (int id = 0; id < deleteList.size(); id += limit){
-				result = wammapper.bulkDelete(new ArrayList<WamSditm>(deleteList.subList(id, min(id + limit, deleteList.size()))));
+			for (int id = 0; id < deleteList.size(); id += WiseConfig.FETCH_SIZE){
+				result = wammapper.bulkDelete(new ArrayList<WamSditm>(deleteList.subList(id, min(id + WiseConfig.FETCH_SIZE, deleteList.size()))));
 			}
 
 			/*if(reglist != null) {

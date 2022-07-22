@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import kr.wise.commons.WiseConfig;
 import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.cmm.service.EgovIdGnrService;
 import kr.wise.commons.helper.UserDetailHelper;
@@ -32,6 +34,8 @@ import kr.wise.dq.dbstnd.service.WapDbDvCanDicMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import static java.lang.Math.min;
 
 /**
  * <PRE>
@@ -70,17 +74,63 @@ public class StndServiceImpl implements StndService {
 
 		int result = 0;
 
-		if(reglist != null) {
-			for (WamDbStcd saveVo : (ArrayList<WamDbStcd>)reglist) {
-				//요청번호 셋팅...
+		/**
+		 * List에서 Insert List와 Update List를 분리해서 별도 리스트로 생성
+		 * Insert List는 채번 로직이 필요함
+		 */
+		List<WamDbStcd> insertList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("I"))
+				.collect(Collectors.toList());
+
+		List<WamDbStcd> updateList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("U"))
+				.collect(Collectors.toList());
+
+		List<WamDbStcd> deleteList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("D"))
+				.collect(Collectors.toList());
+
+		logger.info("Bulk-Insert insert list size : " + insertList.size());
+
+		if(insertList != null) {
+			for (WamDbStcd saveVo : insertList) {
 				saveVo.setFrsRqstUserId(userid);
 				saveVo.setRqstUserId(userid);
-				saveVo.setRqstNo("REQ_01");
-
-				//단건 저장...
-				result += saveWamStcd(saveVo);
 			}
 		}
+
+		for (int id = 0; id < insertList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamStcdMapper.bulkInsert(new ArrayList<WamDbStcd>(insertList.subList(id, min(id + WiseConfig.FETCH_SIZE, insertList.size()))));
+		}
+
+		if (updateList != null) {
+			for (WamDbStcd saveVo : updateList) {
+				//요청번호 셋팅
+				saveVo.setFrsRqstUserId(userid);
+				saveVo.setRqstUserId(userid);
+				saveVo.setRegTypCd("U");
+			}
+		}
+
+		for (int id = 0; id < updateList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamStcdMapper.bulkUpdate(new ArrayList<WamDbStcd>(updateList.subList(id, min(id + WiseConfig.FETCH_SIZE, updateList.size()))));
+		}
+
+		for (int id = 0; id < deleteList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamStcdMapper.bulkDelete(new ArrayList<WamDbStcd>(deleteList.subList(id, min(id + WiseConfig.FETCH_SIZE, deleteList.size()))));
+		}
+
+//		if(reglist != null) {
+//			for (WamDbStcd saveVo : (ArrayList<WamDbStcd>)reglist) {
+//				//요청번호 셋팅...
+//				saveVo.setFrsRqstUserId(userid);
+//				saveVo.setRqstUserId(userid);
+//				saveVo.setRqstNo("REQ_01");
+//
+//				//단건 저장...
+//				result += saveWamStcd(saveVo);
+//			}
+//		}
 
 		return result;
 	}

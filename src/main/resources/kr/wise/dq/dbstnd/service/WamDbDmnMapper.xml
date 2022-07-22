@@ -911,11 +911,11 @@
             ORG_NM,
             DB_NM,
             OWNR_ORG,
-            SPCL_NT,
+            SPCL_NT
             )
             values
+        <foreach collection="list" item="item" index="index" separator=",">
             (
-            <foreach collection="list" item="item" index="index" separator=",">
             concat('I_', db_serial.next_value),
             #{item.dmnLnm,jdbcType=VARCHAR},
             #{item.dmnPnm,jdbcType=VARCHAR},
@@ -936,7 +936,7 @@
             #{item.rqstSno,jdbcType=DECIMAL},
             #{item.objDescn,jdbcType=VARCHAR},
             #{item.objVers,jdbcType=DECIMAL},
-            #{item.regTypCd,jdbcType=VARCHAR},
+            'C',
             #{item.frsRqstDtm,jdbcType=DATE},
             #{item.frsRqstUserId,jdbcType=VARCHAR},
             #{item.rqstDtm,jdbcType=DATE},
@@ -958,7 +958,7 @@
             #{item.orgNm,jdbcType=VARCHAR},
             #{item.dbNm,jdbcType=VARCHAR},
             #{item.ownrOrg,jdbcType=VARCHAR},
-            #{item.spclNt,jdbcType=VARCHAR},
+            #{item.spclNt,jdbcType=VARCHAR}
             )
         </foreach>
     </insert>
@@ -1008,7 +1008,7 @@
                 ORG_NM = #{item.orgNm,jdbcType=VARCHAR},
                 DB_NM = #{item.dbNm,jdbcType=VARCHAR},
                 OWNR_ORG = #{item.ownrOrg,jdbcType=VARCHAR},
-                SPCL_NT = #{item.spclNt,jdbcType=VARCHAR},
+                SPCL_NT = #{item.spclNt,jdbcType=VARCHAR}
         where DMN_ID = #{item.dmnId,jdbcType=VARCHAR}
         </foreach>
     </update>

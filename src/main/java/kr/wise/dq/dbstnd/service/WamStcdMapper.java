@@ -52,5 +52,10 @@ public interface WamStcdMapper {
 	//사전비교 리스트
 	List<WamDbStcd> selectStndWordComparisonList(String stwdId);
 	
+    int bulkInsert(List<WamDbStcd> insertList);
+
+    int bulkUpdate(List<WamDbStcd> updateList);
+
+    int bulkDelete(List<WamDbStcd> deleteList);
 
 }

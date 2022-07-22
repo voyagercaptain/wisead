@@ -304,7 +304,77 @@
   
   
   </select>
-  
-  
-  
+
+Ï
+    <insert id="bulkInsert" parameterType="java.util.List" >
+        insert into WAM_COMM_CD
+        ( COMM_CD_ID
+        , COMM_CD_NM
+        , COMM_CD_DESC
+        , COMN_CD_DTTP_NM
+        , COMN_CD_DATA_LEN
+        , COMN_CD_ENNM
+        , MNG_DEPT_CD
+        , WRIT_DTM
+        , PCLR_MTR
+        , UPP_COMM_CD_ID
+        , COMM_DTL_CD_NM
+        , COMM_DTL_CD_MN
+        , COMM_DTL_CD_DESC
+        , USE_YN
+        , ORG_NM
+        , DB_NM
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+        (
+                concat('I_', db_serial.next_value),
+                #{item.commCdNm,jdbcType=VARCHAR},
+                #{item.commCdDesc,jdbcType=VARCHAR},
+                #{item.comnCdDttpNm,jdbcType=VARCHAR},
+                #{item.comnCdDataLen,jdbcType=DECIMAL},
+                #{item.comnCdEnnm,jdbcType=VARCHAR},
+                #{item.mngDeptCd,jdbcType=VARCHAR},
+                #{item.writDtm,jdbcType=DATE},
+                #{item.pclrMtr,jdbcType=VARCHAR},
+                #{item.uppCommCdId,jdbcType=VARCHAR},
+                #{item.commDtlCdNm,jdbcType=VARCHAR},
+                #{item.commDtlCdMn,jdbcType=VARCHAR},
+                #{item.commDtlCdDesc,jdbcType=VARCHAR},
+                #{item.useYn,jdbcType=VARCHAR},
+                #{item.orgNm,jdbcType=VARCHAR},
+                #{item.dbNm,jdbcType=VARCHAR}
+                )
+        </foreach>
+    </insert>
+
+    <update id="bulkUpdate" parameterType="java.util.List" >
+        <foreach collection="list" item="item" index="index">
+        update WAM_COMM_CD
+        set COMM_CD_NM = #{item.commCdNm,jdbcType=VARCHAR}
+        , COMM_CD_DESC = #{item.commCdDesc,jdbcType=VARCHAR}
+        , COMN_CD_DTTP_NM = #{item.comnCdDttpNm,jdbcType=VARCHAR}
+        , COMN_CD_DATA_LEN = #{item.comnCdDataLen,jdbcType=DECIMAL}
+        , COMN_CD_ENNM = #{item.comnCdEnnm,jdbcType=VARCHAR}
+        , MNG_DEPT_CD = #{item.mngDeptCd,jdbcType=VARCHAR}
+        , WRIT_DTM = #{item.writDtm,jdbcType=DATE}
+        , PCLR_MTR = #{item.pclrMtr,jdbcType=VARCHAR}
+        , UPP_COMM_CD_ID = #{item.uppCommCdId,jdbcType=VARCHAR}
+        , COMM_DTL_CD_NM =  #{item.commDtlCdNm,jdbcType=VARCHAR}
+        , COMM_DTL_CD_MN =  #{item.commDtlCdMn,jdbcType=VARCHAR}
+        , COMM_DTL_CD_DESC = #{item.commDtlCdDesc,jdbcType=VARCHAR}
+        , USE_YN = #{item.useYn,jdbcType=VARCHAR}
+        , ORG_NM = #{item.orgNm,jdbcType=VARCHAR}
+        , DB_NM = #{item.dbNm,jdbcType=VARCHAR}
+        where COMM_CD_ID = #{item.commCdId,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
+    <delete id="bulkDelete" parameterType="java.util.List" >
+        <foreach collection="list" item="item" index="index">
+        delete from WAM_COMM_CD
+        where COMM_CD_ID = #{item.commCdId,jdbcType=VARCHAR}
+        </foreach>
+    </delete>
+
 </mapper>

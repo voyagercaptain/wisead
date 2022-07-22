@@ -3,6 +3,7 @@ package kr.wise.commons;
 import javax.inject.Inject;
 
 import org.springframework.context.MessageSource;
+import scala.Int;
 
 public class WiseConfig {
 
@@ -87,6 +88,8 @@ public class WiseConfig {
 	
 	//라이센스 경로
 	public static String LICENSE_PATH = "license.dir";
+
+	public static Integer FETCH_SIZE = 1000;
 
 	//메일발송요청 XML파일경로
 //	public static final String MAIL_REQUEST_PATH = EgovProperties.getPathProperty("Globals.MailRequestPath");

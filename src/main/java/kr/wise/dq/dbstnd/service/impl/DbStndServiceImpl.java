@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import kr.wise.commons.WiseConfig;
 import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.cmm.service.EgovIdGnrService;
 import kr.wise.commons.helper.UserDetailHelper;
@@ -172,9 +173,9 @@ public class DbStndServiceImpl implements DbStndService {
 		logger.debug("시간차이(m) : "+secDiffTime);
 
 		beforeTime = System.currentTimeMillis();
-		Integer limit = 1000;
-		for (int id = 0; id < insertList.size(); id += limit){
-			result = wamDbSditmMapper.bulkInsert(new ArrayList<WamDbSditm>(insertList.subList(id, min(id + limit, insertList.size()))));
+
+		for (int id = 0; id < insertList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamDbSditmMapper.bulkInsert(new ArrayList<WamDbSditm>(insertList.subList(id, min(id + WiseConfig.FETCH_SIZE, insertList.size()))));
 		}
 
 		afterTime = System.currentTimeMillis();
@@ -190,12 +191,12 @@ public class DbStndServiceImpl implements DbStndService {
 			}
 		}
 
-		for (int id = 0; id < updateList.size(); id += limit){
-			result = wamDbSditmMapper.bulkUpdate(new ArrayList<WamDbSditm>(updateList.subList(id, min(id + limit, updateList.size()))));
+		for (int id = 0; id < updateList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamDbSditmMapper.bulkUpdate(new ArrayList<WamDbSditm>(updateList.subList(id, min(id + WiseConfig.FETCH_SIZE, updateList.size()))));
 		}
 
-		for (int id = 0; id < deleteList.size(); id += limit){
-			result = wamDbSditmMapper.bulkDelete(new ArrayList<WamDbSditm>(deleteList.subList(id, min(id + limit, deleteList.size()))));
+		for (int id = 0; id < deleteList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamDbSditmMapper.bulkDelete(new ArrayList<WamDbSditm>(deleteList.subList(id, min(id + WiseConfig.FETCH_SIZE, deleteList.size()))));
 		}
 		
 		if ("1".equals(reqmst.getChkYn())) {
@@ -274,9 +275,8 @@ public class DbStndServiceImpl implements DbStndService {
 			}
 		}
 
-		int limit = 1000;
-		for (int id = 0; id < insertList.size(); id += limit){
-			result = wamDbDmnMapper.bulkInsert(new ArrayList<WamDbDmn>(insertList.subList(id, min(id + limit, insertList.size()))));
+		for (int id = 0; id < insertList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamDbDmnMapper.bulkInsert(new ArrayList<WamDbDmn>(insertList.subList(id, min(id + WiseConfig.FETCH_SIZE, insertList.size()))));
 		}
 
 		if (updateList != null) {
@@ -288,12 +288,12 @@ public class DbStndServiceImpl implements DbStndService {
 			}
 		}
 
-		for (int id = 0; id < updateList.size(); id += limit){
-			result = wamDbDmnMapper.bulkUpdate(new ArrayList<WamDbDmn>(updateList.subList(id, min(id + limit, updateList.size()))));
+		for (int id = 0; id < updateList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamDbDmnMapper.bulkUpdate(new ArrayList<WamDbDmn>(updateList.subList(id, min(id + WiseConfig.FETCH_SIZE, updateList.size()))));
 		}
 
-		for (int id = 0; id < deleteList.size(); id += limit){
-			result = wamDbDmnMapper.bulkDelete(new ArrayList<WamDbDmn>(deleteList.subList(id, min(id + limit, deleteList.size()))));
+		for (int id = 0; id < deleteList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamDbDmnMapper.bulkDelete(new ArrayList<WamDbDmn>(deleteList.subList(id, min(id + WiseConfig.FETCH_SIZE, deleteList.size()))));
 		}
 
 		return result;
@@ -372,9 +372,8 @@ public class DbStndServiceImpl implements DbStndService {
 			}
 		}
 
-		int limit = 1000;
-		for (int id = 0; id < insertList.size(); id += limit){
-			result = wamDbStwdMapper.bulkInsert(new ArrayList<WamDbStwd>(insertList.subList(id, min(id + limit, insertList.size()))));
+		for (int id = 0; id < insertList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamDbStwdMapper.bulkInsert(new ArrayList<WamDbStwd>(insertList.subList(id, min(id + WiseConfig.FETCH_SIZE, insertList.size()))));
 		}
 
 		if (updateList != null) {
@@ -386,12 +385,12 @@ public class DbStndServiceImpl implements DbStndService {
 			}
 		}
 
-		for (int id = 0; id < updateList.size(); id += limit){
-			result = wamDbStwdMapper.bulkUpdate(new ArrayList<WamDbStwd>(updateList.subList(id, min(id + limit, updateList.size()))));
+		for (int id = 0; id < updateList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamDbStwdMapper.bulkUpdate(new ArrayList<WamDbStwd>(updateList.subList(id, min(id + WiseConfig.FETCH_SIZE, updateList.size()))));
 		}
 
-		for (int id = 0; id < deleteList.size(); id += limit){
-			result = wamDbStwdMapper.bulkDelete(new ArrayList<WamDbStwd>(deleteList.subList(id, min(id + limit, deleteList.size()))));
+		for (int id = 0; id < deleteList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamDbStwdMapper.bulkDelete(new ArrayList<WamDbStwd>(deleteList.subList(id, min(id + WiseConfig.FETCH_SIZE, deleteList.size()))));
 		}
 
 		return result;
@@ -467,9 +466,8 @@ public class DbStndServiceImpl implements DbStndService {
 			}
 		}
 
-		int limit = 1000;
-		for (int id = 0; id < insertList.size(); id += limit){
-			result = wamDbStcdMapper.bulkInsert(new ArrayList<WamDbStcd>(insertList.subList(id, min(id + limit, insertList.size()))));
+		for (int id = 0; id < insertList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamDbStcdMapper.bulkInsert(new ArrayList<WamDbStcd>(insertList.subList(id, min(id + WiseConfig.FETCH_SIZE, insertList.size()))));
 		}
 
 		if (updateList != null) {
@@ -481,12 +479,12 @@ public class DbStndServiceImpl implements DbStndService {
 			}
 		}
 
-		for (int id = 0; id < updateList.size(); id += limit){
-			result = wamDbStcdMapper.bulkUpdate(new ArrayList<WamDbStcd>(updateList.subList(id, min(id + limit, updateList.size()))));
+		for (int id = 0; id < updateList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamDbStcdMapper.bulkUpdate(new ArrayList<WamDbStcd>(updateList.subList(id, min(id + WiseConfig.FETCH_SIZE, updateList.size()))));
 		}
 
-		for (int id = 0; id < deleteList.size(); id += limit){
-			result = wamDbStcdMapper.bulkDelete(new ArrayList<WamDbStcd>(deleteList.subList(id, min(id + limit, deleteList.size()))));
+		for (int id = 0; id < deleteList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamDbStcdMapper.bulkDelete(new ArrayList<WamDbStcd>(deleteList.subList(id, min(id + WiseConfig.FETCH_SIZE, deleteList.size()))));
 		}
 
 		return result;

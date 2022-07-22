@@ -968,7 +968,7 @@ SELECT *
         #{item.rqstSno,jdbcType=DECIMAL},
         #{item.objDescn,jdbcType=VARCHAR},
         #{item.objVers,jdbcType=DECIMAL},
-        #{item.regTypCd,jdbcType=VARCHAR},
+        'C',
         #{item.frsRqstDtm,jdbcType=TIMESTAMP},
         #{item.frsRqstUserId,jdbcType=VARCHAR},
         #{item.rqstDtm,jdbcType=TIMESTAMP},

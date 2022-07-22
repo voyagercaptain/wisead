@@ -43,4 +43,10 @@ public interface WamDmnMapper {
     int updateSditmTransYnPrc(WamDmn record);	
     
     List<WamDmn> selectDmnComparisonList(String dmnId);
+
+    int bulkInsert(List<WamDmn> insertList);
+
+    int bulkUpdate(List<WamDmn> updateList);
+
+    int bulkDelete(List<WamDmn> deleteList);
 }

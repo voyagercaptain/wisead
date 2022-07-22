@@ -17,9 +17,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import kr.wise.commons.WiseConfig;
 import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.cmm.exception.WiseBizException;
 import kr.wise.commons.cmm.service.EgovIdGnrService;
@@ -32,6 +34,7 @@ import kr.wise.commons.rqstmst.service.WaqMstr;
 //import kr.wise.commons.rqstmst.service.WaqRqstVrfDtlsMapper;
 import kr.wise.commons.util.UtilString;
 //import kr.wise.dq.app.service.WaqAppStwdMapper;
+import kr.wise.dq.dbstnd.service.WamDbStcd;
 import kr.wise.dq.stnd.service.StndDmnRqstService;
 import kr.wise.dq.stnd.service.StndItemRqstService;
 import kr.wise.dq.stnd.service.StndWordRqstService;
@@ -43,6 +46,8 @@ import kr.wise.dq.stnd.service.WaqStwd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import static java.lang.Math.min;
 
 /**
  * <PRE>
@@ -453,36 +458,63 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
 		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
 		String userid = user.getUniqId();
 
-		//마스터 정보 확인 : 상태정보가 작성전("N")일 경우 신규 등록 처리
-//		if( "N".equals(mstVo.getRqstStepCd())) {
-//			requestMstService.insertWaqMst(mstVo);
-//		}
-
-//		String rqstNo = mstVo.getRqstNo();
-
 		int result = 0;
 
-		if(reglist != null) {
-			for (WamStwd saveVo : (ArrayList<WamStwd>)reglist) {
-				//요청번호 셋팅...
+		/**
+		 * List에서 Insert List와 Update List를 분리해서 별도 리스트로 생성
+		 * Insert List는 채번 로직이 필요함
+		 */
+		List<WamStwd> insertList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("I"))
+				.collect(Collectors.toList());
+
+		List<WamStwd> updateList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("U"))
+				.collect(Collectors.toList());
+
+		List<WamStwd> deleteList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("D"))
+				.collect(Collectors.toList());
+
+		if(insertList != null) {
+			for (WamStwd saveVo : insertList) {
 				saveVo.setFrsRqstUserId(userid);
 				saveVo.setRqstUserId(userid);
-				saveVo.setRqstNo("REQ_01");
-
-				//단건 저장...
-				result += saveWamStndWord(saveVo);
 			}
 		}
 
-//		mstVo.setRqstStepCd("S"); //임시저장 상태로 변경....
-//		requestMstService.updateRqstPrcStep(mstVo);
+		for (int id = 0; id < insertList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wammapper.bulkInsert(new ArrayList<WamStwd>(insertList.subList(id, min(id + WiseConfig.FETCH_SIZE, insertList.size()))));
+		}
 
-		//요청서명 업데이트
-		//requestMstService.updateRequestMsterNm(mstVo);
-//		String bizdtlnm = cmcdCodeService.getDetailCodeNm("BIZ_DTL_CD", "STWD");
+		if (updateList != null) {
+			for (WamStwd saveVo : updateList) {
+				//요청번호 셋팅
+				saveVo.setFrsRqstUserId(userid);
+				saveVo.setRqstUserId(userid);
+				saveVo.setRegTypCd("U");
+			}
+		}
 
-		//요청명 업데이트 (표준단어 aaaa 외 3건)
-//		requestMstService.updateWaqMstrqstNm(mstVo.getRqstNo(), "WAQ_STWD", "STWD_LNM",  bizdtlnm);
+		for (int id = 0; id < updateList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wammapper.bulkUpdate(new ArrayList<WamStwd>(updateList.subList(id, min(id + WiseConfig.FETCH_SIZE, updateList.size()))));
+		}
+
+		for (int id = 0; id < deleteList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wammapper.bulkDelete(new ArrayList<WamStwd>(deleteList.subList(id, min(id + WiseConfig.FETCH_SIZE, deleteList.size()))));
+		}
+
+//		if(reglist != null) {
+//			for (WamStwd saveVo : (ArrayList<WamStwd>)reglist) {
+//				//요청번호 셋팅...
+//				saveVo.setFrsRqstUserId(userid);
+//				saveVo.setRqstUserId(userid);
+//				saveVo.setRqstNo("REQ_01");
+//
+//				//단건 저장...
+//				result += saveWamStndWord(saveVo);
+//			}
+//		}
 
 		return result;
 	}
