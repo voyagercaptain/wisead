@@ -42,6 +42,36 @@ public class WaaUserg extends CommonVo {
 	
 	private int dbItemCount;
 	
+	private int commItemCount;
+	
+	private int commDomainCount;
+	
+	private int commWordCount;
+	
+	public int getCommItemCount() {
+		return commItemCount;
+	}
+
+	public void setCommItemCount(int commItemCount) {
+		this.commItemCount = commItemCount;
+	}
+
+	public int getCommDomainCount() {
+		return commDomainCount;
+	}
+
+	public void setCommDomainCount(int commDomainCount) {
+		this.commDomainCount = commDomainCount;
+	}
+
+	public int getCommWordCount() {
+		return commWordCount;
+	}
+
+	public void setCommWordCount(int commWordCount) {
+		this.commWordCount = commWordCount;
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -234,6 +264,12 @@ public class WaaUserg extends CommonVo {
 	private String dbCodeYn;
 		
 	private String orgType;
+	
+	private String commItemCountRate;
+	 
+	private String commDomainCountRate;
+	 
+	private String commWordCountRate;
 		
 	private Float orgItemRate;
 		
@@ -250,6 +286,70 @@ public class WaaUserg extends CommonVo {
 	private Float dbDomainRate;
 		
 	private Float dbCodeRate;
+	
+	private Float CodeRate;
+	
+	private Float itemRate;
+	
+	private Float domainRate;
+	
+	public String getCommItemCountRate() {
+		return commItemCountRate;
+	}
+
+	public void setCommItemCountRate(String commItemCountRate) {
+		this.commItemCountRate = commItemCountRate;
+	}
+
+	public String getCommDomainCountRate() {
+		return commDomainCountRate;
+	}
+
+	public void setCommDomainCountRate(String commDomainCountRate) {
+		this.commDomainCountRate = commDomainCountRate;
+	}
+
+	public String getCommWordCountRate() {
+		return commWordCountRate;
+	}
+
+	public void setCommWordCountRate(String commWordCountRate) {
+		this.commWordCountRate = commWordCountRate;
+	}
+
+	private Float wordRate;
+	
+	public Float getCodeRate() {
+		return CodeRate;
+	}
+
+	public void setCodeRate(Float codeRate) {
+		CodeRate = codeRate;
+	}
+
+	public Float getItemRate() {
+		return itemRate;
+	}
+
+	public void setItemRate(Float itemRate) {
+		this.itemRate = itemRate;
+	}
+
+	public Float getDomainRate() {
+		return domainRate;
+	}
+
+	public void setDomainRate(Float domainRate) {
+		this.domainRate = domainRate;
+	}
+
+	public Float getWordRate() {
+		return wordRate;
+	}
+
+	public void setWordRate(Float wordRate) {
+		this.wordRate = wordRate;
+	}
 		
 		public String getOrgItemYn() {
 			return orgItemYn;

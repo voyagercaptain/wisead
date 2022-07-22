@@ -115,13 +115,17 @@ function initGrid2()
         InitHeaders(headers, headerInfo); 
 
         var cols = [                        
-        			{Type:"Text",   			   Width:50,   SaveName:"title",         Align:"Center",  Edit:0}, //기관,DB                    
-                    {Type:"Int",  Format:"#,##0",  Width:50,   SaveName:"totalOrg",      Align:"Center",  Edit:0}, //전체기관
-                    {Type:"Int",  Format:"#,##0",  Width:50,   SaveName:"regOrg",   	 Align:"Center",  Edit:0}, //등록기관
-                    {Type:"Int",  Format:"#,##0",  Width:50,   SaveName:"item", 		 Align:"Center",  Edit:0}, //용어
-                    {Type:"Int",  Format:"#,##0",  Width:50,   SaveName:"word",  		 Align:"Center",  Edit:0}, //단어
-                    {Type:"Int",  Format:"#,##0",  Width:50,   SaveName:"dmn", 		     Align:"Center",  Edit:0}, //도메인
-                    {Type:"Int",  Format:"#,##0",  Width:50,   SaveName:"code", 	     Align:"Center",  Edit:0}, //코드
+        			{Type:"Text",  Width : 50, 			   	SaveName:"title",       Align:"Center",  Edit:0}, //기관,DB                    
+                    {Type:"Int",   Format:"#,##0",  	    SaveName:"totalOrg",    Align:"Center",  Edit:0}, //전체기관
+                    {Type:"Int",   Format:"#,##0",          SaveName:"regOrg",   	Align:"Center",  Edit:0}, //등록기관
+                    {Type:"Int",   Format:"#,##0",          SaveName:"item", 		Align:"Center",  Edit:0}, //용어
+                    {Type:"Float", Format:"#,##0.##\\%",    SaveName:"itemRate",    Align:"Center",  Edit:0}, //용어  > 제출율
+                    {Type:"Int",   Format:"#,##0",  	    SaveName:"word",  		Align:"Center",  Edit:0}, //단어
+                    {Type:"Float", Format:"#,##0.##\\%",    SaveName:"wordRate",    Align:"Center",  Edit:0}, //단어  > 제출율
+                    {Type:"Int",   Format:"#,##0",  	    SaveName:"dmn", 		Align:"Center",  Edit:0}, //도메인
+                    {Type:"Float", Format:"#,##0.##\\%",    SaveName:"domainRate",  Align:"Center",  Edit:0}, //도메인 > 제출율
+                    {Type:"Int",   Format:"#,##0",  	    SaveName:"code", 	    Align:"Center",  Edit:0}, //코드
+                    {Type:"Float", Format:"#,##0.##\\%",    SaveName:"codeRate",    Align:"Center",  Edit:0}, //코드  > 제출율
                     
                 ];
                     
