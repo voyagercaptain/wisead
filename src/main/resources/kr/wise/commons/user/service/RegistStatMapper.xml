@@ -41,6 +41,10 @@
     <result column="DB_WORD_RATE"     property="dbWordRate"    	jdbcType="FLOAT" />
     <result column="DB_DOMAIN_RATE"   property="dbDomainRate"  	jdbcType="FLOAT" />
     <result column="DB_CODE_RATE"     property="dbCodeRate"    	jdbcType="FLOAT" />
+    <result column="ITEM_RATE"     	  property="itemRate"    	jdbcType="FLOAT" />
+    <result column="WORD_RATE"     	  property="wordRate"    	jdbcType="FLOAT" />
+    <result column="DOMAIN_RATE"   	  property="domainRate"  	jdbcType="FLOAT" />
+    <result column="CODE_RATE"     	  property="codeRate"    	jdbcType="FLOAT" />
     
   </resultMap>
   <!-- 기관표준 등록 현황 조회 -->
@@ -273,9 +277,13 @@ SELECT
         TOTAL_ORG,
         ORG_STND AS REG_ORG,
         ITEM,
+      	ROUND(ITEM / (TOTAL_ORG*1.0) *100.0,2) as ITEM_RATE,
         WORD,
+        ROUND(WORD / (TOTAL_ORG*1.0) *100.0,2) as WORD_RATE,
         DMN,
-        CODE
+        ROUND(DMN / (TOTAL_ORG*1.0) *100.0,2) as DOMAIN_RATE,
+        CODE,
+        ROUND(CODE / (TOTAL_ORG*1.0) *100.0,2) as CODE_RATE
  FROM SUMMARY
 UNION ALL
 SELECT
@@ -283,9 +291,13 @@ SELECT
         TOTAL_ORG,
         DB_STND AS REG_ORG,
         DB_ITEM,
+        ROUND(DB_ITEM / (TOTAL_ORG*1.0) *100.0,2) as ITEM_RATE,
         DB_WORD,
+        ROUND(DB_WORD / (TOTAL_ORG*1.0) *100.0,2) as WORD_RATE,
         DB_DMN,
-        DB_CODE
+        ROUND(DB_DMN / (TOTAL_ORG*1.0) *100.0,2) as DOMAIN_RATE,
+        DB_CODE,
+        ROUND(DB_CODE / (TOTAL_ORG*1.0) *100.0,2) as CODE_RATE
  FROM SUMMARY
 </select>
 </mapper>

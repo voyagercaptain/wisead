@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.wise.commons.user.service.CmpRateMapper" >
+<resultMap id="BaseResultMap" type="kr.wise.commons.user.WaaUserg" extends="kr.wise.commons.cmm.service.CommonMapper.BaseResultMap" >
+	<result column="ORG_ITEM_COUNT"   		property="orgItemCount"   	   jdbcType="NUMERIC" />
+    <result column="ORG_WORD_COUNT"   		property="orgWordCount"   	   jdbcType="NUMERIC" />
+    <result column="ORG_DOMAIN_COUNT" 		property="orgDomainCount"      jdbcType="NUMERIC" />
+    <result column="DB_ITEM_COUNT"   		property="dbItemCount"   	   jdbcType="NUMERIC" />
+    <result column="DB_WORD_COUNT"   		property="dbWordCount"   	   jdbcType="NUMERIC" />
+    <result column="DB_DOMAIN_COUNT" 		property="dbDomainCount"       jdbcType="NUMERIC" />
+    <result column="COMM_ITEM_COUNT"   		property="commItemCount"   	   jdbcType="NUMERIC" />
+    <result column="COMM_WORD_COUNT"   		property="commWordCount"   	   jdbcType="NUMERIC" />
+    <result column="COMM_DOMAIN_COUNT" 		property="commDomainCount"     jdbcType="NUMERIC" />
+    <result column="COMM_ITEM_COUNT_RATE"   property="commItemCountRate"   jdbcType="VARCHAR" />
+    <result column="COMM_DOMAIN_COUNT_RATE" property="commDomainCountRate" jdbcType="VARCHAR" />
+    <result column="COMM_WORD_COUNT_RATE"   property="commWordCountRate"   jdbcType="VARCHAR" />
+</resultMap>
+<select id="getOrgCmpRateList" 
+	parameterType="kr.wise.commons.user.WaaUserg" resultMap="BaseResultMap">
+SELECT
+	T.ORG_NM,							  	--기관명
+	CASE WHEN T.COMM_ITEM_COUNT >0 THEN 
+			  TO_CHAR(T.COMM_ITEM_COUNT) || ' / ' || TO_CHAR(ROUND(T.COMM_ITEM_COUNT / (T.ORG_ITEM_COUNT* 1.0) * 100.0,2))||'%' 
+	ELSE '0' END AS COMM_ITEM_COUNT_RATE, 	--공통표준 용어 
+	T.ORG_ITEM_COUNT,					  	--기관표준 용어
+	CASE WHEN T.COMM_DOMAIN_COUNT > 0 THEN 
+			  TO_CHAR(T.COMM_DOMAIN_COUNT) || ' / ' || TO_CHAR(ROUND(T.COMM_DOMAIN_COUNT / (T.ORG_DOMAIN_COUNT * 1.0) * 100.0,2))||'%' 
+	ELSE '0' END AS COMM_DOMAIN_COUNT_RATE, --공통표준 도메인
+	T.ORG_DOMAIN_COUNT,						--기관표준 도메인
+	CASE WHEN T.COMM_WORD_COUNT > 0 THEN 
+			  TO_CHAR(T.COMM_WORD_COUNT) || ' / ' || TO_CHAR(ROUND(T.COMM_WORD_COUNT / (T.ORG_WORD_COUNT* 1.0) * 100.0,2))||'%' 
+	ELSE '0' END AS COMM_WORD_COUNT_RATE, 	--공통표준 단어
+	T.ORG_WORD_COUNT 						--기관표준 단어
+FROM
+(SELECT 
+	WO.ORG_NM,
+	(SELECT COUNT(*) FROM WAM_SDITM WHERE ORG_NM=WO.ORG_NM) AS ORG_ITEM_COUNT,
+	(SELECT COUNT(*) FROM WAM_DMN   WHERE ORG_NM=WO.ORG_NM) AS ORG_DOMAIN_COUNT,
+	(SELECT COUNT(*) FROM WAM_STWD  WHERE ORG_NM=WO.ORG_NM) AS ORG_WORD_COUNT,
+	(SELECT COUNT(*) FROM COMM_SDITM A INNER JOIN (SELECT SDITM_LNM,SDITM_PNM,INFOTP_LNM FROM WAM_SDITM WHERE ORG_NM = WO.ORG_NM) B 
+	 ON (A.SDITM_LNM =B.SDITM_LNM AND A.SDITM_PNM = B.SDITM_PNM AND A.INFOTP_LNM =B.INFOTP_LNM)
+	 ) 														AS COMM_ITEM_COUNT,
+	(SELECT COUNT(*) FROM COMM_DMN A INNER JOIN (SELECT INFOTP_LNM,DATA_LEN,DATA_TYPE FROM WAM_DMN WHERE ORG_NM = WO.ORG_NM) B 
+	ON(A.INFOTP_LNM=B.INFOTP_LNM AND A.DATA_LEN = B.DATA_LEN AND A.DATA_TYPE = B.DATA_TYPE)
+	)														AS  COMM_DOMAIN_COUNT,
+	(SELECT COUNT(*) FROM COMM_STWD A INNER JOIN (SELECT STWD_LNM,STWD_PNM FROM WAM_STWD WHERE ORG_NM = WO.ORG_NM) B 
+	ON(A.STWD_LNM=B.STWD_LNM AND A.STWD_PNM = B.STWD_PNM)
+	)														AS  COMM_WORD_COUNT
+FROM WAA_ORG WO
+<if test="orgNm != null and orgNm != '' ">
+ WHERE WO.ORG_NM LIKE  '%' || #{orgNm} || '%'
+</if> 
+) T
+	
+</select>
+
+
+
+
+<select id="getDbCmpRateList" 
+	parameterType="kr.wise.commons.user.WaaUserg" resultMap="BaseResultMap">
+SELECT 
+	WO.ORG_NM,																		--기관명
+	(SELECT COUNT(*) FROM WAM_DB_SDITM WHERE ORG_NM=WO.ORG_NM) AS DB_ITEM_COUNT,	--DB표준 용어 수
+	(SELECT COUNT(*) FROM WAM_DB_DMN  WHERE ORG_NM=WO.ORG_NM)  AS DB_DOMAIN_COUNT,  --DB표준 도메인 수
+	(SELECT COUNT(*) FROM WAM_DB_STWD WHERE ORG_NM=WO.ORG_NM)  AS DB_WORD_COUNT,    --DB표준 단어 수
+	(SELECT COUNT(*) FROM COMM_SDITM A INNER JOIN (SELECT SDITM_LNM,SDITM_PNM,INFOTP_LNM FROM WAM_DB_SDITM WHERE ORG_NM = WO.ORG_NM) B 
+		 ON (A.SDITM_LNM =B.SDITM_LNM AND A.SDITM_PNM = B.SDITM_PNM AND A.INFOTP_LNM =B.INFOTP_LNM)
+	) 														  AS COMM_ITEM_COUNT,   --공통표준 용어 일치 수
+	(SELECT COUNT(*) FROM WAM_SDITM  A INNER JOIN (SELECT SDITM_LNM,SDITM_PNM,INFOTP_LNM FROM WAM_DB_SDITM WHERE ORG_NM = WO.ORG_NM) B 
+	 	ON (A.SDITM_LNM =B.SDITM_LNM AND A.SDITM_PNM = B.SDITM_PNM AND A.INFOTP_LNM =B.INFOTP_LNM)
+	) 														  AS ORG_ITEM_COUNT,    --기관표준 용어 일치 수 
+	(SELECT COUNT(*) FROM COMM_DMN  A INNER JOIN (SELECT INFOTP_LNM,DATA_LEN,DATA_TYPE FROM WAM_DB_DMN  WHERE ORG_NM = WO.ORG_NM) B 
+	 	ON (A.INFOTP_LNM=B.INFOTP_LNM AND A.DATA_LEN = B.DATA_LEN AND A.DATA_TYPE = B.DATA_TYPE)
+	) 														  AS COMM_DOMAIN_COUNT, --공통표준 도메인 일치 수
+	(SELECT COUNT(*) FROM WAM_DMN  A INNER JOIN (SELECT INFOTP_LNM,DATA_LEN,DATA_TYPE FROM WAM_DB_DMN   WHERE ORG_NM = WO.ORG_NM) B 
+	 	ON (A.INFOTP_LNM=B.INFOTP_LNM AND A.DATA_LEN = B.DATA_LEN AND A.DATA_TYPE = B.DATA_TYPE)
+	) 														  AS ORG_DOMAIN_COUNT,  --기관표준 도메인 일치 수
+	(SELECT COUNT(*) FROM COMM_STWD A INNER JOIN (SELECT STWD_LNM,STWD_PNM FROM WAM_DB_STWD WHERE ORG_NM = WO.ORG_NM) B 
+		ON(A.STWD_LNM=B.STWD_LNM AND A.STWD_PNM = B.STWD_PNM)
+	)														  AS  COMM_WORD_COUNT,  --공통표준 단어 일치 수
+	(SELECT COUNT(*) FROM WAM_STWD A INNER JOIN (SELECT STWD_LNM,STWD_PNM FROM WAM_DB_STWD WHERE ORG_NM = WO.ORG_NM) B 
+		ON(A.STWD_LNM=B.STWD_LNM AND A.STWD_PNM = B.STWD_PNM)
+	)														  AS  ORG_WORD_COUNT   --기관표준 단어 일치 수
+FROM WAA_ORG WO
+<if test="orgNm != null and orgNm != '' ">
+ WHERE WO.ORG_NM LIKE  '%' || #{orgNm} || '%'
+</if> 
+
+</select>
+</mapper>
