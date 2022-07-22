@@ -165,7 +165,7 @@ $(window).load(function() {
 // 	checkApproveYn($("#mstFrm"));
 
 // 	setTimeOut
- 	doAction("Search");
+ 	//doAction("Search");
  	/*
     setTimeout(function(){
     	 $( "#tab-SDITM a" ).click();
