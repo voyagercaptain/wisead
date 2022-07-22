@@ -676,7 +676,6 @@
   </select>
 
     <insert id="bulkInsert" parameterType="java.util.List" >
-        <foreach collection="list" item="item" index="index">
         insert into WAM_DB_STWD
         (
          STWD_ID,
@@ -705,6 +704,7 @@
          )
         values
         (
+        <foreach collection="list" item="item" index="index" separator=",">
         concat('I_', db_serial.next_value),
         #{item.stwdLnm,jdbcType=VARCHAR},
         UPPER(#{item.stwdPnm,jdbcType=VARCHAR}),

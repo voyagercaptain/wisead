@@ -309,28 +309,27 @@
 
 
     <insert id="bulkInsert" parameterType="java.util.List" >
-        <foreach collection="list" item="item" index="index" separator=",">
         insert into WAM_DB_COMM_CD
         (
-
-            COMM_CD_ID
-            , COMM_CD_NM
-            , COMM_CD_DESC
-            , COMN_CD_DTTP_NM
-            , COMN_CD_DATA_LEN
-            , COMN_CD_ENNM
-            , MNG_DEPT_CD
-            , WRIT_DTM
-            , PCLR_MTR
-            , UPP_COMM_CD_ID
-            , COMM_DTL_CD_NM
-            , COMM_DTL_CD_MN
-            , COMM_DTL_CD_DESC
-            , USE_YN
-            , ORG_NM
-            , DB_NM
+        COMM_CD_ID
+        , COMM_CD_NM
+        , COMM_CD_DESC
+        , COMN_CD_DTTP_NM
+        , COMN_CD_DATA_LEN
+        , COMN_CD_ENNM
+        , MNG_DEPT_CD
+        , WRIT_DTM
+        , PCLR_MTR
+        , UPP_COMM_CD_ID
+        , COMM_DTL_CD_NM
+        , COMM_DTL_CD_MN
+        , COMM_DTL_CD_DESC
+        , USE_YN
+        , ORG_NM
+        , DB_NM
         )
         values
+        <foreach collection="list" item="item" index="index" separator=",">
         (
             concat('I_', db_serial.next_value),
             #{item.commCdNm,jdbcType=VARCHAR},

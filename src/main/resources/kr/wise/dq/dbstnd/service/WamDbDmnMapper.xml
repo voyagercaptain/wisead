@@ -867,7 +867,6 @@
   </select>
 
     <insert id="bulkInsert" parameterType="java.util.List" >
-        <foreach collection="list" item="item" index="index">
             insert into WAM_DB_DMN
             (
             DMN_ID,
@@ -916,6 +915,7 @@
             )
             values
             (
+            <foreach collection="list" item="item" index="index" separator=",">
             concat('I_', db_serial.next_value),
             #{item.dmnLnm,jdbcType=VARCHAR},
             #{item.dmnPnm,jdbcType=VARCHAR},

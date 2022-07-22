@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -32,6 +33,7 @@ import kr.wise.commons.rqstmst.service.WaqMstr;
 import kr.wise.commons.rqstmst.service.WaqRqstVrfDtls;
 import kr.wise.commons.rqstmst.service.WaqRqstVrfDtlsMapper;
 import kr.wise.commons.util.UtilString;
+import kr.wise.dq.dbstnd.service.WamDbSditm;
 import kr.wise.dq.stnd.service.StndItemRqstService;
 import kr.wise.dq.stnd.service.WamSditm;
 import kr.wise.dq.stnd.service.WamSditmMapper;
@@ -53,6 +55,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import static java.lang.Math.min;
 
 /**
  * <PRE>
@@ -1119,7 +1123,57 @@ public class StndItemRqstServiceImpl implements StndItemRqstService {
 
 			int result = 0;
 
-			if(reglist != null) {
+			/**
+			 * List에서 Insert List와 Update List를 분리해서 별도 리스트로 생성
+			 * Insert List는 채번 로직이 필요함
+			 */
+			List<WamSditm> insertList = reglist.stream()
+					.filter(s -> s.getIbsStatus().equals("I"))
+					.collect(Collectors.toList());
+
+			List<WamSditm> updateList = reglist.stream()
+					.filter(s -> s.getIbsStatus().equals("U"))
+					.collect(Collectors.toList());
+
+			List<WamSditm> deleteList = reglist.stream()
+					.filter(s -> s.getIbsStatus().equals("D"))
+					.collect(Collectors.toList());
+
+			logger.info("Bulk-Insert insert list size : " + insertList.size());
+
+			if(insertList != null) {
+				for (WamSditm saveVo : insertList) {
+					//요청번호 셋팅 (Sequence 처리로 수정)
+					//String objid = objectIdGnrService.getNextStringId();
+					//saveVo.setSditmId(objid);
+					saveVo.setFrsRqstUserId(userid);
+					saveVo.setRqstUserId(userid);
+				}
+			}
+
+			Integer limit = 1000;
+			for (int id = 0; id < insertList.size(); id += limit){
+				result = wammapper.bulkInsert(new ArrayList<WamSditm>(insertList.subList(id, min(id + limit, insertList.size()))));
+			}
+
+			if (updateList != null) {
+				for (WamSditm saveVo : updateList) {
+					//요청번호 셋팅
+					saveVo.setFrsRqstUserId(userid);
+					saveVo.setRqstUserId(userid);
+					saveVo.setRegTypCd("U");
+				}
+			}
+
+			for (int id = 0; id < updateList.size(); id += limit){
+				result = wammapper.bulkUpdate(new ArrayList<WamSditm>(updateList.subList(id, min(id + limit, updateList.size()))));
+			}
+
+			for (int id = 0; id < deleteList.size(); id += limit){
+				result = wammapper.bulkDelete(new ArrayList<WamSditm>(deleteList.subList(id, min(id + limit, deleteList.size()))));
+			}
+
+			/*if(reglist != null) {
 				for (WamSditm saveVo : (ArrayList<WamSditm>)reglist) {
 					//요청번호 셋팅
 					saveVo.setFrsRqstUserId(userid);
@@ -1129,7 +1183,7 @@ public class StndItemRqstServiceImpl implements StndItemRqstService {
 					result += saveWamStndItem(saveVo);
 				}
 
-			}
+			}*/
 			
 			if ("1".equals(reqmst.getChkYn())) {
 				wammapper.updateVrfRmkNull();
