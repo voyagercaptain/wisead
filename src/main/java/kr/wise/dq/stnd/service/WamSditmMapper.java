@@ -36,5 +36,9 @@ public interface WamSditmMapper {
 	int checkDmnYnExsitsLnm();
 	
 	int updateVrfRmkNull();
-	
+
+	int bulkInsert(List<WamSditm> insertList);
+	int bulkUpdate(List<WamSditm> updateList);
+	int bulkDelete(List<WamSditm> deleteList);
+
 }
