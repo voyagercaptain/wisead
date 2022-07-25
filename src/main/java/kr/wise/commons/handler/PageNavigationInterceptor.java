@@ -83,6 +83,9 @@ public class PageNavigationInterceptor extends HandlerInterceptorAdapter {
 					servletPath.equals("/commons/user/getuserlistbydept.do")){
 				logger.debug("사용자 조회 팝업");
 				return true;
+			}else if(servletPath.equals("/commons/user/goNoticePop.do")) {
+				logger.debug("임시 팝업");
+				return true;
 			}else{
 				logger.debug("관리자 권한 없슴");
 				response.sendRedirect(request.getContextPath() + "/error.do");
