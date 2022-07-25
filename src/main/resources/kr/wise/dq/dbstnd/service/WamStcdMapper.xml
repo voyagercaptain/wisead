@@ -300,12 +300,8 @@
   	OR STWD_PNM = UPPER(#{sbswdPnm}))
   	AND REG_TYP_CD IN ('C', 'U')
   </where>
-
-  
-  
   </select>
 
-Ï
     <insert id="bulkInsert" parameterType="java.util.List" >
         insert into WAM_COMM_CD
         ( COMM_CD_ID
