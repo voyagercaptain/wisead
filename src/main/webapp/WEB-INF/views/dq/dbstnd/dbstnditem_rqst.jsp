@@ -370,7 +370,17 @@ function doAction(sAction)
         	break;
         
 		case "Search":
-			
+			if(frmSearch.orgNm.value == '') {
+				showMsgBox("INF", "기관명을 입력하고 검색해 주세요.");
+				return;
+			}
+			/*
+			if(frmSearch.dbNm.value == '') {
+				showMsgBox("INF", "DB명을 선택하고 검색해 주세요.");
+				return;
+			}
+			*/
+
 			//프로파일별 url 셋팅
 			var url = "";
 			if(bizDtlCd == "SDITM"){
@@ -733,11 +743,10 @@ function postProcessIBS(res) {
 					  </ul>         
 				    <button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="STRG" /></button> <!-- 저장 --> 
 				    <button class="btn_delete" id="btnDelete" 	name="btnDelete"><s:message code="DEL" /></button> <!-- 삭제 -->
-					<!--
-					<button class="btn_rqst_new" id="btnInspect" 	name="btnInspect" onclick="alert('준비중입니다.');">검증</button>
-					<button class="btn_rqst_new" id="btnConcluse" 	name="btnConcluse" onclick="alert('준비중입니다.');">확정</button>
-					<button class="btn_rqst_new" id="btnInit" 	name="btnInit" onclick="alert('준비중입니다.');">초기화</button>
-					-->
+
+					<button class="btn_inspect" id="btnInspect" 	name="btnInspect" onclick="alert('준비중입니다.');">검증</button>
+					<button class="btn_decide" id="btnDecide" 	name="btnDecide" onclick="alert('준비중입니다.');">확정</button>
+					<button class="btn_init" id="btnInit" 	name="btnInit" onclick="alert('준비중입니다.');">초기화</button>
 				</c:if>
 				
 			</div>

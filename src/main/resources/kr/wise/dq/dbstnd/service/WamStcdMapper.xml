@@ -50,7 +50,6 @@
 	limit 30;
   </select>
   <select id="selectWordDetail" resultMap="BaseResultMap" parameterType="java.lang.String">
-
   SELECT A.*
   	  	,(SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.FRS_RQST_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS FRS_RQST_USER_NM
   	  	,(SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.RQST_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS RQST_USER_NM
@@ -59,8 +58,8 @@
   	WAM_COMM_CD A
   WHERE A.COMM_CD_ID =  #{commCdId, jdbcType=VARCHAR}
     AND A.REG_TYP_CD IN ('C', 'U')
-
   </select>
+
   <select id="selectList" resultMap="BaseResultMap" parameterType="kr.wise.dq.dbstnd.service.WamDbStcd" >
   	SELECT * FROM 
   	(SELECT A.*
@@ -372,5 +371,4 @@
         where COMM_CD_ID = #{item.commCdId,jdbcType=VARCHAR}
         </foreach>
     </delete>
-
 </mapper>
