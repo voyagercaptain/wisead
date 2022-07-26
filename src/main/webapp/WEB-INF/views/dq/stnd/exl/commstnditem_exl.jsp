@@ -33,10 +33,14 @@ function grid_SDITM_init() {
 
     with(grid_SDITM){
     	
-     	var cfg = {SearchMode:2,Page:100,UseHeaderSortCancel:1};
+     	//var cfg = {SearchMode:2,Page:100,UseHeaderSortCancel:1};
+        var cfg = {SearchMode:1,Page:300,UseHeaderSortCancel:1};
         SetConfig(cfg);
         //merge 설정
         SetMergeSheet(0);
+        SetCountPosition(1);
+        SetPagingPosition(2);
+
         /*
 		var headtext  = "<s:message code='META.HEADER.STNDITEM.RQST.IFM.1'/>";
 		headtext += "<s:message code='META.HEADER.STNDITEM.RQST.IFM.4'/>";

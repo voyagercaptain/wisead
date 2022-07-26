@@ -34,9 +34,12 @@ function grid_STWD_init() {
 
     with(grid_STWD){
     	
-		var cfg = {SearchMode:2,Page:100};
-		SetConfig(cfg);
-		
+		//var cfg = {SearchMode:2,Page:100};
+        var cfg = {SearchMode:1,Page:300,UseHeaderSortCancel:1};
+        SetConfig(cfg);
+        SetCountPosition(1);
+        SetPagingPosition(2);
+
 		var headers = [
 					{Text:"<s:message code='META.HEADER.STNDWORD.RQST'/>", Align:"Center"}
 				];

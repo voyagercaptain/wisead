@@ -35,9 +35,11 @@ function grid_DMN_init() {
 
     with(grid_DMN){
     	
-     	var cfg = {SearchMode:2,Page:100};
+     	//var cfg = {SearchMode:2,Page:100};
+        var cfg = {SearchMode:1,Page:300,UseHeaderSortCancel:1};
         SetConfig(cfg);
-    	
+        SetCountPosition(1);
+        SetPagingPosition(2);
         /*
 		var headtext  = "<s:message code='META.HEADER.STNDDMN.RQST.IFM.1'/>";
 		headtext += "|<s:message code='META.HEADER.STNDDMN.RQST.IFM.5'/>";
