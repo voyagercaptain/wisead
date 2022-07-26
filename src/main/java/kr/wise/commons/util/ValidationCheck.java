@@ -80,8 +80,8 @@ public class ValidationCheck {
     /**
      * 표준 용어 설명 검증
      * 용어설명이 표준용어명과 동일한 경우 오류 처리
-     * @param source
-     * @param target
+     * @param source (용어설명)
+     * @param target (표준용어명)
      * @return
      */
     public static String checkSditmDesc(String source, String target) {
