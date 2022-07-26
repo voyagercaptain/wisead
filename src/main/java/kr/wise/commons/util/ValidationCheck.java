@@ -69,7 +69,7 @@ public class ValidationCheck {
         }
 
         //문자열 대문자가 아닌경우 입력된 경우
-        String pattern = "^[A-Z_]*$";
+        String pattern = "^[A-Z]+_[A-Z]*$";
         if(!Pattern.matches(pattern, data)){
             return ErrorCode.ERROR_ITEM_ENG_REGEX_NOT_MATCH.getMessage();
         }
@@ -127,6 +127,182 @@ public class ValidationCheck {
         }
         catch (Exception e) {
             return ErrorCode.ERROR_ITEM_DATE_FORMAT.getMessage();
+        }
+    }
+
+    /**
+     * 도메인명 검증
+     * 필수입력 체크
+     * @param data
+     * @return
+     */
+    public static String checkDmnName(String data) {
+        if (StringUtils.isEmpty(data))
+            return ErrorCode.ERROR_DMN_NOTNULL.getMessage();
+
+        return "";
+    }
+
+    /**
+     * 데이터타입 검증
+     * @param data
+     * @return
+     */
+    public static String checkDmnType(String data) {
+        if (StringUtils.isEmpty(data))
+            return ErrorCode.ERROR_DMN_TYPE_NOTNULL.getMessage();
+
+        return "";
+    }
+
+    /**
+     * 데이터길이 검증
+     * @param data
+     * @return
+     */
+    public static String checkDmnLength(String data) {
+
+        if (StringUtils.isEmpty(data))
+            return ErrorCode.ERROR_DMN_LENGTH_NOTNULL.getMessage();
+
+        return "";
+    }
+
+    /**
+     * 도메인 제정일자 검증
+     * @param data
+     * @return
+     */
+    public static String checkDmnDate(String data) {
+        try {
+            if (StringUtils.isEmpty(data)) {
+                return ErrorCode.ERROR_DMN_DATE_NOTNULL.getMessage();
+            }
+
+            SimpleDateFormat dateFormatParser = new SimpleDateFormat("yyyyMMdd"); //검증할 날짜 포맷 설정
+            dateFormatParser.setLenient(false); //false일경우 처리시 입력한 값이 잘못된 형식일 시 오류가 발생
+            dateFormatParser.parse(data); //대상 값 포맷에 적용되는지 확인
+            return "";
+        }
+        catch (Exception e) {
+            return ErrorCode.ERROR_DMN_DATE_FORMAT.getMessage();
+        }
+    }
+
+    /**
+     * 표준단어명 검증
+     * @param data
+     * @return
+     */
+    public static String checkWordName(String data) {
+        if (StringUtils.isEmpty(data))
+            return ErrorCode.ERROR_WORD_NOTNULL.getMessage();
+
+        return "";
+    }
+
+    /**
+     * 표준단어영문명 검증
+     * @param data
+     * @return
+     */
+    public static String checkWordEngName(String data) {
+        if (StringUtils.isEmpty(data))
+            return ErrorCode.ERROR_WORD_ENG_NOTNULL.getMessage();
+
+        return "";
+    }
+
+    /**
+     * 표준단어 형식 여부 검증
+     * @param data
+     * @return
+     */
+    public static String checkWordFormat(String data) {
+        if (StringUtils.isEmpty(data))
+            return ErrorCode.ERROR_WORD_FORMAT_NOTNULL.getMessage();
+
+        if (!"Y".equals(data) || !"N".equals(data))
+            return ErrorCode.ERROR_WORD_FORMAT.getMessage();
+
+        return "";
+    }
+
+    /**
+     * 단어 제정일자 검증
+     * @param data
+     * @return
+     */
+    public static String checkWordDate(String data) {
+        try {
+            if (StringUtils.isEmpty(data)) {
+                return ErrorCode.ERROR_WORD_DATE_NOTNULL.getMessage();
+            }
+
+            SimpleDateFormat dateFormatParser = new SimpleDateFormat("yyyyMMdd"); //검증할 날짜 포맷 설정
+            dateFormatParser.setLenient(false); //false일경우 처리시 입력한 값이 잘못된 형식일 시 오류가 발생
+            dateFormatParser.parse(data); //대상 값 포맷에 적용되는지 확인
+            return "";
+        }
+        catch (Exception e) {
+            return ErrorCode.ERROR_WORD_DATE_FORMAT.getMessage();
+        }
+    }
+
+    /**
+     * 코드명 검증
+     * @param data
+     * @return
+     */
+    public static String checkCodeName(String data) {
+        if (StringUtils.isEmpty(data))
+            return ErrorCode.ERROR_CODE_NOTNULL.getMessage();
+
+        return "";
+    }
+
+    /**
+     * 코드값 검증
+     * @param data
+     * @return
+     */
+    public static String checkCodeValue(String data) {
+        if (StringUtils.isEmpty(data))
+            return ErrorCode.ERROR_CODE_VALUE_NOTNULL.getMessage();
+
+        return "";
+    }
+
+    /**
+     * 코드값의미 검증
+     * @param data
+     * @return
+     */
+    public static String checkCodeValueMean(String data) {
+        if (StringUtils.isEmpty(data))
+            return ErrorCode.ERROR_CODE_VALUE_MEAN_NOTNULL.getMessage();
+
+        return "";
+    }
+
+    /**
+     * 코드 제공일자 검증
+     * @param data
+     * @return
+     */
+    public static String checkCodedDate(String data) {
+        try {
+            if (StringUtils.isEmpty(data)) {
+                return ErrorCode.ERROR_CODE_DATE_NOTNULL.getMessage();
+            }
+
+            SimpleDateFormat dateFormatParser = new SimpleDateFormat("yyyyMMdd"); //검증할 날짜 포맷 설정
+            dateFormatParser.setLenient(false); //false일경우 처리시 입력한 값이 잘못된 형식일 시 오류가 발생
+            dateFormatParser.parse(data); //대상 값 포맷에 적용되는지 확인
+            return "";
+        }
+        catch (Exception e) {
+            return ErrorCode.ERROR_CODE_DATE_FORMAT.getMessage();
         }
     }
 }

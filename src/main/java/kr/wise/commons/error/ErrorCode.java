@@ -14,10 +14,26 @@ public enum ErrorCode {
     ERROR_ITEM_DATE_NOTNULL("1008", "제정일자 누락"),
 
     // 2000~ 도메인 오류
+    ERROR_DMN_NOTNULL("2001", "도메인명 누락"),
+    ERROR_DMN_TYPE_NOTNULL("2002", "데이터타입 누락"),
+    ERROR_DMN_LENGTH_NOTNULL("2003", "데이터길이 누락"),
+    ERROR_DMN_DATE_FORMAT("2004", "제정일자 포맷오류"),
+    ERROR_DMN_DATE_NOTNULL("2005", "제정일자 누락"),
 
     // 3000~ 단어 오류
+    ERROR_WORD_NOTNULL("3001", "단어명 누락"),
+    ERROR_WORD_ENG_NOTNULL("3002", "영문약어명 누락"),
+    ERROR_WORD_FORMAT("3003", "형식단어 오류"),
+    ERROR_WORD_FORMAT_NOTNULL("3004", "형식단어 누락"),
+    ERROR_WORD_DATE_FORMAT("3005", "제정일자 포맷오류"),
+    ERROR_WORD_DATE_NOTNULL("3006", "제정일자 누락"),
 
     // 4000~ 코드 오류
+    ERROR_CODE_NOTNULL("4001", "코드명 누락"),
+    ERROR_CODE_VALUE_NOTNULL("4002", "코드값 누락"),
+    ERROR_CODE_VALUE_MEAN_NOTNULL("4004", "코드값의미 누락"),
+    ERROR_CODE_DATE_FORMAT("4005", "제정일자 포맷오류"),
+    ERROR_CODE_DATE_NOTNULL("4006", "제정일자 누락"),
     ;
 
     private String code;
