@@ -65,7 +65,7 @@ public class ValidationCheck {
 
         // 문자열 비어있는 경우
         if (StringUtils.isEmpty(data)) {
-            return ErrorCode.ERROR_ITEM_ENG_NOTNULL.getMessage();
+            return ErrorCode.ERROR_ITEM_ENG_INIT_NOTNULL.getMessage();
         }
 
         //문자열 대문자가 아닌경우 입력된 경우
@@ -117,7 +117,7 @@ public class ValidationCheck {
     public static String checkSditmDate(String data) {
         try {
             if (StringUtils.isEmpty(data)) {
-                return ErrorCode.ERROR_ITEM_ENG_NOTNULL.getMessage();
+                return ErrorCode.ERROR_ITEM_DATE_NOTNULL.getMessage();
             }
 
             SimpleDateFormat dateFormatParser = new SimpleDateFormat("yyyyMMdd"); //검증할 날짜 포맷 설정
