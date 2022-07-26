@@ -671,8 +671,8 @@
   	AND REG_TYP_CD IN ('C', 'U')
   </where>
 
-  
-  
+
+
   </select>
 
     <insert id="bulkInsert" parameterType="java.util.List" >
@@ -703,8 +703,8 @@
          SPCL_NT
          )
         values
-        (
         <foreach collection="list" item="item" index="index" separator=",">
+        (
         concat('I_', db_serial.next_value),
         #{item.stwdLnm,jdbcType=VARCHAR},
         UPPER(#{item.stwdPnm,jdbcType=VARCHAR}),
