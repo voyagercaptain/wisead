@@ -17,8 +17,11 @@ public enum ErrorCode {
     ERROR_DMN_NOTNULL("2001", "도메인명 누락"),
     ERROR_DMN_TYPE_NOTNULL("2002", "데이터타입 누락"),
     ERROR_DMN_LENGTH_NOTNULL("2003", "데이터길이 누락"),
+
+
     ERROR_DMN_DATE_FORMAT("2004", "제정일자 포맷오류"),
     ERROR_DMN_DATE_NOTNULL("2005", "제정일자 누락"),
+    ERROR_DMN_TYPE_LENGTH_ERROR("2006", "표준도메인 오류"),
 
     // 3000~ 단어 오류
     ERROR_WORD_NOTNULL("3001", "단어명 누락"),
