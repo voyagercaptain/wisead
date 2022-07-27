@@ -69,7 +69,7 @@ public class ValidationCheck {
         }
 
         //문자열 대문자가 아닌경우 입력된 경우
-        String pattern = "^[A-Z]+_[A-Z]*$";
+        String pattern = "^[A-Z_]*$";
         if(!Pattern.matches(pattern, data)){
             return ErrorCode.ERROR_ITEM_ENG_REGEX_NOT_MATCH.getMessage();
         }
