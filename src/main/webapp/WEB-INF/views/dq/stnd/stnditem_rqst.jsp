@@ -106,6 +106,14 @@ $(document).ready(function() {
 	$("#btnDecide").click( function(){
 		doAction("Decide");
 	} ).show();
+
+	//초기화
+	$("#btnInit").click( function(){
+		if(confirm("초기화 하시겠습니까?")){
+			doAction("Init");
+		}
+	} ).show();
+
     
     //화면리로드
     $("#btnBlank").click( function(){
@@ -113,6 +121,7 @@ $(document).ready(function() {
     } );
 
 	document.getElementById('btnDecide').disabled = true;
+	document.getElementById('btnInit').disabled = true;
 		
  // 결재 Event Bind
 	$("#btnRegRqst").click(function(){
@@ -449,6 +458,27 @@ function doAction(sAction)
 			//프로파일별 url 셋팅
 			var url = "";
 			url = '<c:url value="/dq/stnd/decideStndItem.do"/>';
+
+			var param = $('form[name=frmSearch]').serialize();
+			//var chkYn = $('input:checkbox[id="chkYn"]:checked').val();
+			//param = param + "&chkYn="+chkYn;
+
+			IBSpostJson2(url, ibsSaveJson, param, ibscallback);
+			break;
+
+		case "Init":  //초기화
+
+			//저장 대상의 데이터를 Json 객체로 반환한다.
+			ibsSaveJson = grid_name.GetSaveJson(1);
+
+			if(ibsSaveJson.data.length == 0){
+				showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
+				return;
+			}
+
+			//프로파일별 url 셋팅
+			var url = "";
+			url = '<c:url value="/dq/stnd/initStndItem.do"/>';
 
 			var param = $('form[name=frmSearch]').serialize();
 			//var chkYn = $('input:checkbox[id="chkYn"]:checked').val();

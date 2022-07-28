@@ -518,6 +518,29 @@ public class StndItemRqstCtrl {
 		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
 	}
 
+	/** 표준항목 리스트 초기화  */
+	@RequestMapping("/dq/stnd/initStndItem.do")
+	@ResponseBody
+	public IBSResultVO<WaqMstr> initStndItem(@RequestBody WamSditms data, WaqMstr reqmst, Locale locale) throws Exception {
+
+		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+		ArrayList<WamSditm> list = data.get("data");
+
+		int result = stndItemRqstService.initStndItm(list, reqmst);
+		String resmsg;
+
+		if(result > 0 ){
+			result = 0;
+			resmsg = message.getMessage("MSG.SAVE", null, locale);
+		} else {
+			result = -1;
+			resmsg = message.getMessage("ERR.SAVE", null, locale);
+		}
+		String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+
+		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+	}
+
     
     /** 표준항목 리스트 등록 @throws Exception insomnia */
     @RequestMapping("/dq/stnd/regitemWamlist.do")

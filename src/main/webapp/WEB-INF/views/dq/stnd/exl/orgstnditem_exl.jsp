@@ -92,9 +92,7 @@ function grid_SDITM_init() {
                     {Type:"Text",   Width:100,  SaveName:"saveFrm", 	 	Align:"Left", Edit:1, Hidden:1},
 				    {Type:"Text",   Width:100,  SaveName:"exprsnFrm",	 	Align:"Left", Edit:1, Hidden:1},
 				    {Type:"Text",   Width:100,  SaveName:"unit",    	 	Align:"Left", Edit:1, Hidden:1},
-				    
 					{Type:"Text",   Width:100,  SaveName:"admnStndCd", 	      Align:"Left", Edit:1, Hidden:0, ColMerge:0},  //행정표준코드명
-					
 					{Type:"Text",   Width:100,  SaveName:"vrfRmk",      Align:"Left", Edit:0, Hidden:1},  // 검증결과
 					
 					{Type:"Text",   Width:130,  SaveName:"rqstDtm",  	  Align:"Center", Edit:1, Format:"yyyyMMdd", KeyField:0},
@@ -103,13 +101,15 @@ function grid_SDITM_init() {
 					{Type:"Text",   Width:60,   SaveName:"rqstNo",        Align:"Center", Edit:0, Hidden:1, ColMerge:0}, 
 					{Type:"Int",    Width:60,   SaveName:"rqstSno",       Align:"Center", Edit:0, Hidden:1, ColMerge:0},
 					{Type:"Text",   Width:150,  SaveName:"spclNt",    Align:"Center", Edit:1, Hidden:0},
-					{Type:"Text",   Width:250,  SaveName:"errChk",    Align:"Center", Edit:1, Hidden:0}
+					{Type:"Text",   Width:250,  SaveName:"errChk",    Align:"Center", Edit:1, Hidden:0},
+                    {Type:"Text",   Width:100,  SaveName:"validYn",   	Align:"Left", Edit:1, Hidden:1},
+                    {Type:"Text",   Width:100,  SaveName:"confirmYn",  	Align:"Left", Edit:1, Hidden:1}
 				];
 		
 		colsCount = cols.length;
-					
+
 		InitColumns(cols);
-		
+
 		//콤보 목록 설정
 		SetColProperty("rvwStsCd", 	${codeMap.rvwStsCdibs});
 		SetColProperty("rqstDcd", 	${codeMap.rqstDcdibs});
@@ -192,13 +192,21 @@ function grid_SDITM_OnSearchEnd(code, message, stCode, stMsg) {
 		return;
 	} else {
 		//조회 성공시....
+        var len = grid_SDITM.RowCount();
         if(frmSearch.chkYn.value == "Y") {
-            var len = grid_SDITM.RowCount();
             if(len > 0) {
                 document.getElementById('btnDecide').disabled = false;
             }
         } else {
             document.getElementById('btnDecide').disabled = true;
+        }
+
+        if(frmSearch.chkYn.value != "" && frmSearch.chkYn.value != "YY") {
+            if(len > 0) {
+                document.getElementById('btnInit').disabled = false;
+            }
+        } else {
+            document.getElementById('btnInit').disabled = true;
         }
     }
 }

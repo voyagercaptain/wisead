@@ -1133,17 +1133,18 @@ public class StndItemRqstServiceImpl implements StndItemRqstService {
 			for (WamSditm checkVo : reglist) {
 				checkStr = "";
 
-				//중복체크
-				String check1_1 = "";
-				int dupCnt = wammapper.selectDupSditmCount(checkVo);
-				if(dupCnt > 0) {
-					check1_1 = ErrorCode.ERROR_ITEM_DUP.getMessage();
-					checkStr += check1_1;
+				if(!"Y".equals(checkVo.getConfirmYn())) {
+					//중복체크
+					String check1_1 = "";
+					int dupCnt = wammapper.selectDupSditmCount(checkVo);
+					if (dupCnt > 0) {
+						check1_1 = ErrorCode.ERROR_ITEM_DUP.getMessage();
+						checkStr += check1_1;
+					}
+					if (!"".equals(check1_1)) {
+						checkStr += ", ";
+					}
 				}
-				if(!"".equals(check1_1)) {
-					checkStr += ", ";
-				}
-
 				//기관명 체크
 				String check1_2 = "";
 				if (StringUtils.isEmpty(checkVo.getOrgNm())) {
@@ -1206,9 +1207,15 @@ public class StndItemRqstServiceImpl implements StndItemRqstService {
 					checkVo.setDataLen((Integer)result.get("DATA_LEN"));
 				}
 
+				checkStr = checkStr.trim();
 				if(!"".equals(checkStr)) {
+					String lastStr = checkStr.substring(checkStr.length()-1, checkStr.length());
+					if(",".equals(lastStr)) {
+						checkStr = checkStr.substring(0, checkStr.length()-1);
+					}
 					checkVo.setErrChk(checkStr);
 					checkVo.setValidYn("E");
+					checkVo.setConfirmYn("N");
 				} else {
 					checkVo.setErrChk("");
 					checkVo.setValidYn("Y");
@@ -1217,7 +1224,7 @@ public class StndItemRqstServiceImpl implements StndItemRqstService {
 		}
 
 
-	/** 표준항목 요청서 리스트 저장 insomnia */
+	/** 표준항목 - 확정 */
 	public int decideStndItm(List<WamSditm> reglist, WaqMstr reqmst ) throws Exception {
 		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
 		String userid = user.getUniqId();
@@ -1231,6 +1238,19 @@ public class StndItemRqstServiceImpl implements StndItemRqstService {
 
 		for (int id = 0; id < reglist.size(); id += WiseConfig.FETCH_SIZE){
 			result = wammapper.bulkUpdateConfirm(new ArrayList<WamSditm>(reglist.subList(id, min(id + WiseConfig.FETCH_SIZE, reglist.size()))));
+		}
+
+		return result;
+	}
+
+	/** 표준항목 - 초기화 */
+	public int initStndItm(List<WamSditm> reglist, WaqMstr reqmst ) throws Exception {
+		//LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+		//String userid = user.getUniqId();
+		int result = 0;
+
+		for (int id = 0; id < reglist.size(); id += WiseConfig.FETCH_SIZE){
+			result = wammapper.bulkDelete(new ArrayList<WamSditm>(reglist.subList(id, min(id + WiseConfig.FETCH_SIZE, reglist.size()))));
 		}
 
 		return result;
