@@ -20,6 +20,8 @@ public interface WamSditmMapper {
     int updateByPrimaryKey(WamSditm record);
 
 	List<WamSditm> selectSditmList(WamSditm data);
+
+	int selectDupSditmCount(WamSditm data);
 	
 	List<WamSditm> selectSditmChangeList(@Param("sditmId") String sditmId);
 	
@@ -39,6 +41,9 @@ public interface WamSditmMapper {
 
 	int bulkInsert(List<WamSditm> insertList);
 	int bulkUpdate(List<WamSditm> updateList);
+
+	int bulkUpdateConfirm(List<WamSditm> updateList);
+
 	int bulkDelete(List<WamSditm> deleteList);
 
 }

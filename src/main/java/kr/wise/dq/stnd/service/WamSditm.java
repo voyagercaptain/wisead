@@ -86,6 +86,26 @@ public class WamSditm extends CommonVo {
 
 	private String errChk;
 
+	private String confirmYn;
+
+	private String validYn;
+
+	public String getConfirmYn() {
+		return confirmYn;
+	}
+
+	public void setConfirmYn(String confirmYn) {
+		this.confirmYn = confirmYn;
+	}
+
+	public String getValidYn() {
+		return validYn;
+	}
+
+	public void setValidYn(String validYn) {
+		this.validYn = validYn;
+	}
+
 	public String getErrChk() {
 		return errChk;
 	}

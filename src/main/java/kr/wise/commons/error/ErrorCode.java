@@ -13,6 +13,12 @@ public enum ErrorCode {
     ERROR_ITEM_DATE_FORMAT("1007", "제정일자 포맷오류"),
     ERROR_ITEM_DATE_NOTNULL("1008", "제정일자 누락"),
 
+    ERROR_ITEM_DUP("1009", "데이터 중복 오류"),
+
+    ERROR_ITEM_ORG_NM_NOTNULL("1009", "기관명 누락"),
+
+
+
     // 2000~ 도메인 오류
     ERROR_DMN_NOTNULL("2001", "도메인명 누락"),
     ERROR_DMN_TYPE_NOTNULL("2002", "데이터타입 누락"),

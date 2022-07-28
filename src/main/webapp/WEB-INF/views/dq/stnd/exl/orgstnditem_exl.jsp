@@ -36,14 +36,18 @@ function grid_SDITM_init() {
 
     with(grid_SDITM){
     	
-     	var cfg = {SearchMode:2,Page:100,UseHeaderSortCancel:1};
+        var cfg = {SearchMode:1,Page:300,UseHeaderSortCancel:1};
         SetConfig(cfg);
+
+        SetCountPosition(1);
+        SetPagingPosition(2);
+
         //merge 설정
         SetMergeSheet(0);
 
  		var headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|";
  		headtext += "용어ID|기관명|표준용어명|영문명|영문약어명|용어설명|표준도메인명|허용값|관리부서명|표준코드명|업무분야|데이터타입|데이터길이|소수점길이|저장형식|표현형식|단위|행정표준코드명";
- 		headtext += "|검증결과|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항|필수항목";
+ 		headtext += "|검증결과|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항|검증메세지";
  		
  		headerText = headtext.split("|"); 
 		
@@ -187,8 +191,16 @@ function grid_SDITM_OnSearchEnd(code, message, stCode, stMsg) {
 		showMsgBox("ERR", "<s:message code="ERR.SEARCH" />");
 		return;
 	} else {
-		//조회 성공....
-	}
+		//조회 성공시....
+        if(frmSearch.chkYn.value == "Y") {
+            var len = grid_SDITM.RowCount();
+            if(len > 0) {
+                document.getElementById('btnDecide').disabled = false;
+            }
+        } else {
+            document.getElementById('btnDecide').disabled = true;
+        }
+    }
 }
 
 </script>
