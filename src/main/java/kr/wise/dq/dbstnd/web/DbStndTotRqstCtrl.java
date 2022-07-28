@@ -521,7 +521,7 @@ public class DbStndTotRqstCtrl {
 		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
 		ArrayList<WamDbDmn> list = data.get("data");
 		logger.debug("DB표준 도메인 검증 시작");
-		list = dmnValidCheck(list);
+		//list = dmnValidCheck(list);
 		logger.debug("DB표준 도메인 검증 종료");
 		int result = dbStndService.registerDmnWam(list);
 

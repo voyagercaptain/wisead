@@ -911,10 +911,7 @@
             ORG_NM,
             DB_NM,
             OWNR_ORG,
-            SPCL_NT,
-            ERR_CHK,
-            VALID_YN,
-            CONFIRM_YN
+            SPCL_NT
             )
             values
         <foreach collection="list" item="item" index="index" separator=",">
@@ -961,10 +958,7 @@
             #{item.orgNm,jdbcType=VARCHAR},
             #{item.dbNm,jdbcType=VARCHAR},
             #{item.ownrOrg,jdbcType=VARCHAR},
-            #{item.spclNt,jdbcType=VARCHAR},
-            #{item.errChk,jdbcType=VARCHAR},
-            #{item.vaildYn,jdbcType=VARCHAR},
-            #{item.confirmYn,jdbcType=VARCHAR}
+            #{item.spclNt,jdbcType=VARCHAR}
             )
         </foreach>
     </insert>
@@ -1014,10 +1008,7 @@
                 ORG_NM        = #{item.orgNm,jdbcType=VARCHAR},
                 DB_NM         = #{item.dbNm,jdbcType=VARCHAR},
                 OWNR_ORG      = #{item.ownrOrg,jdbcType=VARCHAR},
-                SPCL_NT       = #{item.spclNt,jdbcType=VARCHAR},
-                ERR_CHK       = #{item.errChk,jdbcType=VARCHAR},
-                VALID_YN      = #{item.validYn,jdbcType=VARCHAR},
-                CONFIRM_YN    = #{item.confirmYn,jdbcType=VARCHAR}
+                SPCL_NT       = #{item.spclNt,jdbcType=VARCHAR}
         where DMN_ID = #{item.dmnId,jdbcType=VARCHAR}
         </foreach>
     </update>
