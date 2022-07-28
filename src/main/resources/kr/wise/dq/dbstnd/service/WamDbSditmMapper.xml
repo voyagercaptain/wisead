@@ -41,6 +41,8 @@
     <result column="SPCL_NT"          property="spclNt"        jdbcType="VARCHAR" />
     <result column="BSNSS_FLD"        property="bsnssFld"      jdbcType="VARCHAR" />
     <result column="PNM"        property="pnm"      jdbcType="VARCHAR" />
+    <result column="ERR_CHK"        property="errChk"      jdbcType="VARCHAR" />
+    <result column="CONFIRM_YN"  property="confirmYn" jdbcType = "VARCHAR"/>
       
   </resultMap>
   <sql id="Base_Column_List" >
@@ -507,6 +509,8 @@ SELECT *
              ,A.APRV_DTM
              ,A.APRV_USER_ID
              ,A.PNM_CRI_DS
+             ,A.ERR_CHK
+             ,A.CONFIRM_YN 
 <!-- 		     ,B.DMN_LNM -->
 <!-- 		     ,B.DMN_PNM -->
 		     ,A.DATA_TYPE
@@ -519,21 +523,37 @@ SELECT *
 			 ,A.INFOTP_LNM, A.ALW_VAL, A.OWNR_ORG, A.ADMN_STND_CD
 			 ,A.SAVE_FRM, A.EXPRSN_FRM, A.UNIT, A.ORG_NM
 			 ,A.VRF_RMK
-			 /* , CASE WHEN A.VRF_RMK IS NOT NULL THEN '#FF0000' ELSE NULL END AS FontColor */
-			 , null as FontColor
+			 , CASE WHEN A.ERR_CHK IS NOT null AND A.ERR_CHK != '' THEN '#FF0000' ELSE NULL END AS FontColor
 			 , A.DB_NM
 			 
 			 , STND_CD
       		 , SPCL_NT
       		 , BSNSS_FLD
       		 , PNM
-      
 		FROM WAM_DB_SDITM A
 		WHERE  1 = 1 
 		 <if test='!"2".equals(usergId) and !"3".equals(usergId)' >
 		 AND replace(DB_NM, ' ','') IN (SELECT replace(DB_NAME, ' ','') AS DB_NAME FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})     
 		 AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
 		 </if>       
+         <if test="vcWh != null">
+         	<if test='vcWh == "Y"'>
+         	AND A.VALID_YN   ='Y'
+         	AND A.CONFIRM_YN ='N'
+         	</if>
+         	<if test='vcWh == "N"'>
+         	AND A.VALID_YN   ='N'
+         	AND A.CONFIRM_YN ='N'
+         	</if>
+         	<if test='vcWh == "E"'>
+			AND A.VALID_YN   ='E'
+			AND A.CONFIRM_YN ='N'			         	
+         	</if>
+         	<if test='vcWh == "YY"'>
+         	AND A.CONFIRM_YN ='Y'
+         	AND A.VALID_YN   ='Y' 
+         	</if>
+         </if>  
            ) FSQ -- 임시 Alias
   <where>
   <trim prefix="" suffix="" suffixOverrides="," >
@@ -956,7 +976,9 @@ SELECT *
         STND_CD,
         SPCL_NT,
         BSNSS_FLD,
-        PNM
+        PNM,
+        ERR_CHK,
+        VALID_YN
         )
     values
         <foreach collection="list" item="item" index="index" separator=",">
@@ -997,7 +1019,9 @@ SELECT *
           #{item.stndCd,jdbcType=VARCHAR},
           #{item.spclNt,jdbcType=VARCHAR},
           #{item.bsnssFld,jdbcType=VARCHAR},
-          #{item.pnm,jdbcType=VARCHAR}
+          #{item.pnm,jdbcType=VARCHAR},
+          #{item.errChk,jdbcType=VARCHAR},
+          #{item.validYn,jdbcType=VARCHAR}
         )
         </foreach>
   </insert>
@@ -1006,41 +1030,44 @@ SELECT *
     <foreach collection="list" item="item" index="index">
         update WAM_DB_SDITM
            set
-            SDITM_LNM = #{item.sditmLnm,jdbcType=VARCHAR},
-            SDITM_PNM = #{item.sditmPnm,jdbcType=VARCHAR},
-            LNM_CRI_DS = #{item.lnmCriDs,jdbcType=VARCHAR},
-            DMN_ID = #{item.dmnId,jdbcType=VARCHAR},
-            DMNG_ID = #{item.dmngId,jdbcType=VARCHAR},
-            INFOTP_ID = #{item.infotpId,jdbcType=VARCHAR},
-            INFOTP_CHG_YN = #{item.infotpChgYn,jdbcType=VARCHAR},
-            ENC_YN = #{item.encYn,jdbcType=VARCHAR},
-            RQST_NO = #{item.rqstNo,jdbcType=VARCHAR},
-            RQST_SNO = #{item.rqstSno,jdbcType=DECIMAL},
-            OBJ_DESCN = #{item.objDescn,jdbcType=VARCHAR},
-            OBJ_VERS = #{item.objVers,jdbcType=DECIMAL},
-            REG_TYP_CD = #{item.regTypCd,jdbcType=VARCHAR},
-            FRS_RQST_DTM = #{item.frsRqstDtm,jdbcType=TIMESTAMP},
+            SDITM_LNM 		= #{item.sditmLnm,jdbcType=VARCHAR},
+            SDITM_PNM 		= #{item.sditmPnm,jdbcType=VARCHAR},
+            LNM_CRI_DS 		= #{item.lnmCriDs,jdbcType=VARCHAR},
+            DMN_ID 			= #{item.dmnId,jdbcType=VARCHAR},
+            DMNG_ID 		= #{item.dmngId,jdbcType=VARCHAR},
+            INFOTP_ID 		= #{item.infotpId,jdbcType=VARCHAR},
+            INFOTP_CHG_YN 	= #{item.infotpChgYn,jdbcType=VARCHAR},
+            ENC_YN 			= #{item.encYn,jdbcType=VARCHAR},
+            RQST_NO 		= #{item.rqstNo,jdbcType=VARCHAR},
+            RQST_SNO 		= #{item.rqstSno,jdbcType=DECIMAL},
+            OBJ_DESCN 		= #{item.objDescn,jdbcType=VARCHAR},
+            OBJ_VERS 		= #{item.objVers,jdbcType=DECIMAL},
+            REG_TYP_CD 		= #{item.regTypCd,jdbcType=VARCHAR},
+            FRS_RQST_DTM 	= #{item.frsRqstDtm,jdbcType=TIMESTAMP},
             FRS_RQST_USER_ID = #{item.frsRqstUserId,jdbcType=VARCHAR},
-            RQST_DTM = #{item.rqstDtm,jdbcType=TIMESTAMP},
-            RQST_USER_ID = #{item.rqstUserId,jdbcType=VARCHAR},
-            APRV_DTM = #{item.aprvDtm,jdbcType=TIMESTAMP},
-            APRV_USER_ID = #{item.aprvUserId,jdbcType=VARCHAR},
-            INFOTP_LNM = #{item.infotpLnm,jdbcType=VARCHAR},
-            ALW_VAL = #{item.alwVal,jdbcType=VARCHAR},
-            OWNR_ORG = #{item.ownrOrg,jdbcType=VARCHAR},
-            ADMN_STND_CD = #{item.admnStndCd,jdbcType=VARCHAR},
-            SAVE_FRM = #{item.saveFrm,jdbcType=VARCHAR},
-            EXPRSN_FRM = #{item.exprsnFrm,jdbcType=VARCHAR},
-            UNIT = #{item.unit,jdbcType=VARCHAR},
-            DATA_TYPE = UPPER(#{item.dataType,jdbcType=VARCHAR}),
-            DATA_LEN = #{item.dataLen,jdbcType=DECIMAL},
-            DATA_SCAL = #{item.dataScal,jdbcType=DECIMAL},
-            ORG_NM = #{item.orgNm,jdbcType=DECIMAL},
-            DB_NM = #{item.dbNm,jdbcType=VARCHAR},
-            STND_CD = #{item.stndCd,jdbcType=VARCHAR},
-            SPCL_NT = #{item.spclNt,jdbcType=VARCHAR},
-            BSNSS_FLD = #{item.bsnssFld,jdbcType=VARCHAR},
-            PNM = #{item.pnm,jdbcType=VARCHAR}
+            RQST_DTM 		= #{item.rqstDtm,jdbcType=TIMESTAMP},
+            RQST_USER_ID 	= #{item.rqstUserId,jdbcType=VARCHAR},
+            APRV_DTM 		= #{item.aprvDtm,jdbcType=TIMESTAMP},
+            APRV_USER_ID 	= #{item.aprvUserId,jdbcType=VARCHAR},
+            INFOTP_LNM 		= #{item.infotpLnm,jdbcType=VARCHAR},
+            ALW_VAL 		= #{item.alwVal,jdbcType=VARCHAR},
+            OWNR_ORG 		= #{item.ownrOrg,jdbcType=VARCHAR},
+            ADMN_STND_CD 	= #{item.admnStndCd,jdbcType=VARCHAR},
+            SAVE_FRM 	 	= #{item.saveFrm,jdbcType=VARCHAR},
+            EXPRSN_FRM  	= #{item.exprsnFrm,jdbcType=VARCHAR},
+            UNIT 			= #{item.unit,jdbcType=VARCHAR},
+            DATA_TYPE 		= UPPER(#{item.dataType,jdbcType=VARCHAR}),
+            DATA_LEN 		= #{item.dataLen,jdbcType=DECIMAL},
+            DATA_SCAL   	= #{item.dataScal,jdbcType=DECIMAL},
+            ORG_NM 			= #{item.orgNm,jdbcType=DECIMAL},
+            DB_NM 	 		= #{item.dbNm,jdbcType=VARCHAR},
+            STND_CD 		= #{item.stndCd,jdbcType=VARCHAR},
+            SPCL_NT 		= #{item.spclNt,jdbcType=VARCHAR},
+            BSNSS_FLD   	= #{item.bsnssFld,jdbcType=VARCHAR},
+            PNM 			= #{item.pnm,jdbcType=VARCHAR},
+            ERR_CHK 		= #{item.errChk,jdbcType=VARCHAR},
+            VALID_YN 		= #{item.validYn,jdbcType=VARCHAR},
+            CONFIRM_YN 		= #{item.confirmYn,jdbcType=VARCHAR}
         where SDITM_ID = #{item.sditmId,jdbcType=VARCHAR}
     </foreach>
   </update>
@@ -1051,4 +1078,14 @@ SELECT *
     where SDITM_ID = #{item.sditmId,jdbcType=VARCHAR}
     </foreach>
   </delete>
+  
+  <select id="dupliCheckDbStndItem" resultType="java.util.Map" parameterType="java.util.Map">
+    select ORG_NM
+    FROM WAM_DB_SDITM  
+    WHERE INFOTP_LNM = #{infotpLnm,jdbcType=VARCHAR}
+    AND ORG_NM 		 = #{orgNm,jdbcType=VARCHAR}
+    AND SDITM_LNM 	 = #{sditmLnm,jdbcType=VARCHAR}
+    AND SDITM_Pnm 	 = #{sditmPnm,jdbcType=VARCHAR}
+    AND CONFIRM_YN   = 'Y'
+  </select>
 </mapper>

@@ -42,4 +42,6 @@ public interface WamDbDmnMapper {
     int bulkUpdate(List<WamDbDmn> updateList);
 
     int bulkDelete(List<WamDbDmn> deleteList);
+    
+    Map<String, String> dupliCheckDbStndDmn(Map<String, String> param);
 }

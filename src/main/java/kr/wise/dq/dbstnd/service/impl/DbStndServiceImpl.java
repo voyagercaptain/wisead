@@ -1,5 +1,7 @@
 package kr.wise.dq.dbstnd.service.impl;
 
+import static java.lang.Math.min;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +9,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import kr.wise.commons.WiseConfig;
 import kr.wise.commons.cmm.LoginVO;
@@ -16,6 +22,7 @@ import kr.wise.commons.rqstmst.service.WaqMstr;
 import kr.wise.commons.user.service.WaaOrg;
 import kr.wise.commons.user.service.WaaUserMapper;
 import kr.wise.commons.util.UtilString;
+import kr.wise.commons.util.ValidationCheck;
 import kr.wise.dq.dbstnd.service.DbStndService;
 import kr.wise.dq.dbstnd.service.WamDbDmn;
 import kr.wise.dq.dbstnd.service.WamDbDmnMapper;
@@ -29,13 +36,6 @@ import kr.wise.dq.dbstnd.service.WapDbDvCanAsm;
 import kr.wise.dq.dbstnd.service.WapDbDvCanAsmMapper;
 import kr.wise.dq.dbstnd.service.WapDbDvCanDic;
 import kr.wise.dq.dbstnd.service.WapDbDvCanDicMapper;
-
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
-import static java.lang.Math.min;
 
 
 /**
@@ -160,6 +160,8 @@ public class DbStndServiceImpl implements DbStndService {
 		long beforeTime = System.currentTimeMillis();
 
 		if(insertList != null) {
+			ArrayList<String> errorList = new ArrayList<>();
+			String errorMsg = "";
 			for (WamDbSditm saveVo : insertList) {
 				//요청번호 셋팅 (Sequence 처리로 수정)
 				//String objid = objectIdGnrService.getNextStringId();
@@ -660,6 +662,72 @@ public class DbStndServiceImpl implements DbStndService {
 			dbList = wamDbSditmMapper.selectUserDbList(user.getId());
 		}
 		return dbList;
+	}
+
+	@Override
+	public Map<String, String> dupliCheckDbStndItem(Map<String, String> param) {
+		return wamDbSditmMapper.dupliCheckDbStndItem(param);
+	}
+
+	@Override
+	public int decideItemWam(List<WamDbSditm> reglist, WaqMstr reqmst) throws Exception {
+		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+		String userid = user.getUniqId();
+
+		int result = 0;
+		/**
+		 * List에서 Insert List와 Update List를 분리해서 별도 리스트로 생성
+		 * Insert List는 채번 로직이 필요함
+ 		 */
+		
+		List<WamDbSditm> updateList = reglist.stream()
+				.filter(s -> s.getIbsStatus().equals("U"))
+				.collect(Collectors.toList());
+
+
+		long beforeTime = System.currentTimeMillis();
+		long afterTime = System.currentTimeMillis();
+		long secDiffTime = (afterTime - beforeTime)/1000;
+		logger.debug("시간차이(m) : "+secDiffTime);
+
+		beforeTime = System.currentTimeMillis();
+		afterTime = System.currentTimeMillis();
+		secDiffTime = (afterTime - beforeTime)/1000;
+		logger.debug("시간차이 2(m) : "+secDiffTime);
+
+		if (updateList != null) {
+			for (WamDbSditm saveVo : updateList) {
+				//요청번호 셋팅
+				saveVo.setFrsRqstUserId(userid);
+				saveVo.setRqstUserId(userid);
+				saveVo.setRegTypCd("U");
+				if(saveVo.getErrChk()== "") {
+					saveVo.setConfirmYn("Y");
+				}
+			}
+		}
+
+		for (int id = 0; id < updateList.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamDbSditmMapper.bulkUpdate(new ArrayList<WamDbSditm>(updateList.subList(id, min(id + WiseConfig.FETCH_SIZE, updateList.size()))));
+		}
+		
+//		if ("1".equals(reqmst.getChkYn())) {
+//			wamDbSditmMapper.updateVrfRmkNull();
+//			//영문약어명 체크  올바르게 들어간 약어인지 체크
+////			wamDbSditmMapper.checkStwdAbr();
+//			//형식단어로 끝나는지 체크
+//			wamDbSditmMapper.checkDmnYnExsits();
+//
+//			//형식단어로 끝나는지 체크(한글명)
+//			wamDbSditmMapper.checkDmnYnExsitsLnm();
+//		}
+
+		return result;
+	}
+
+	@Override
+	public Map<String, String> dupliCheckDbStndDmn(Map<String, String> param) {
+		return wamDbDmnMapper.dupliCheckDbStndDmn(param);
 	}
 
 }

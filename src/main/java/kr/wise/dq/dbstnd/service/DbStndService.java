@@ -37,4 +37,10 @@ public interface DbStndService {
 	Map<String, String> selectDomainDataType(Map<String, String> param);
 	
 	Map<String, String> selectDbDomainDataType(Map<String, String> param);
+	
+	Map<String, String> dupliCheckDbStndItem(Map<String, String> param);
+	
+	Map<String, String> dupliCheckDbStndDmn(Map<String, String> param);
+	
+	int decideItemWam(List<WamDbSditm> reglist, WaqMstr reqmst) throws Exception;
 }
