@@ -31,7 +31,8 @@
 	<result column="OWNR_ORG" property="ownrOrg" jdbcType="VARCHAR"/>
     <result column="SPCL_NT"          property="spclNt"        jdbcType="VARCHAR" />
     <result column="SEQ"          property="seq"        jdbcType="VARCHAR" />
-
+    <result column="REVISION_DESCN" property="revisionDescn" jdbcType="VARCHAR"/>
+    <result column="USE_YN"          property="useYn"        jdbcType="VARCHAR" />
 <!--     <result column="FRS_RQST_USER_NM" property="frsRqstUserNm" jdbcType="VARCHAR" /> -->
 <!--     <result column="RQST_USER_NM" property="rqstUserNm" jdbcType="VARCHAR" /> -->
 <!--     <result column="APRV_USER_NM" property="aprvUserNm" jdbcType="VARCHAR" /> -->
@@ -65,8 +66,38 @@
 
   </select>
   <select id="selectList" resultMap="BaseResultMap" parameterType="kr.wise.dq.stnd.service.WamStwd" >
-  	SELECT * FROM 
-  	
+  	SELECT
+      STWD_ID,
+      STWD_LNM,
+      STWD_PNM,
+      ENG_MEAN,
+      CCH_NM,
+      ORG_DS,
+      WD_DCD,
+      RQST_NO,
+      RQST_SNO,
+      OBJ_DESCN,
+      REG_TYP_CD,
+      FRS_RQST_DTM,
+      FRS_RQST_USER_ID,
+      RQST_DTM,
+      RQST_USER_ID,
+      APRV_DTM,
+      APRV_USER_ID,
+      DMN_YN,
+      DMN_LNM,
+      SYMN_LNM,
+      ORG_NM,
+      ORG_CD,
+      REVISION_DESCN,
+      USE_YN,
+      FBDN_LNM,
+      OWNR_ORG,
+      SPCL_NT,
+      OBJ_VERS,
+      ORD,
+      SEQ
+  	FROM
   	(SELECT A.*,
   		   (SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.FRS_RQST_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS FRS_RQST_USER_NM,
     	   (SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.RQST_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS RQST_USER_NM,
@@ -140,6 +171,9 @@
 	  <if test="orgNm != null" >
         AND ORG_NM LIKE CONCAT('%',#{orgNm,jdbcType=VARCHAR},'%')
       </if>
+        <if test='discardYn != null and discardYn.equals("Y")'>
+            AND USE_YN = 'Y'
+        </if>
        <if test="stndNm != null" >
         AND (STWD_LNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
         	 OR STWD_PNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
@@ -147,6 +181,13 @@
         	 OR STWD_PNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
       </if>
   	</where>
+      <choose>
+          <when test="discardYn !=null">
+          </when>
+          <otherwise>
+              AND USE_YN='Y'
+          </otherwise>
+      </choose>
   	ORDER BY SEQ 
   </select>
   <select id="selectStndList" resultMap="BaseResultMap" parameterType="kr.wise.dq.stnd.service.WamStwd" >
@@ -463,6 +504,12 @@
        <if test="seq != null" >
         SEQ,
       </if>
+        <if test="revisionDescn != null" >
+            REVISION_DESCN,
+        </if>
+        <if test="useYn != null" >
+            USE_YN,
+        </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="stwdId != null" >
@@ -538,6 +585,12 @@
        <if test="seq != null" >
         #{seq,jdbcType=DECIMAL},
       </if>
+        <if test="revisionDescn != null" >
+            #{revisionDescn,jdbcType=VARCHAR},
+        </if>
+        <if test="useYn != null" >
+            #{useYn,jdbcType=VARCHAR},
+        </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="kr.wise.dq.stnd.service.WamStwd" >
@@ -612,6 +665,12 @@
         SPCL_NT = #{spclNt,jdbcType=VARCHAR},
       </if>
         SEQ = #{seq,jdbcType=DECIMAL},
+        <if test="revisionDescn != null" >
+            REVISION_DESCN = #{revisionDescn,jdbcType=VARCHAR},
+        </if>
+        <if test="useYn != null" >
+            USE_YN = #{useYn,jdbcType=VARCHAR},
+        </if>
     </set>
     where STWD_ID = #{stwdId,jdbcType=VARCHAR}
   </update>
@@ -641,7 +700,9 @@
       OWNR_ORG = #{ownrOrg,jdbcType=VARCHAR},
       SPCL_NT = #{spclNt,jdbcType=VARCHAR},
       ORD = #{ord,jdbcType=VARCHAR},
-      SEQ = #{seq,jdbcType=DECIMAL}
+      SEQ = #{seq,jdbcType=DECIMAL},
+      REVISION_DESCN = #{revisionDescn,jdbcType=VARCHAR},
+      USE_YN = #{useYn,jdbcType=VARCHAR}
     where STWD_ID = #{stwdId,jdbcType=VARCHAR}
   </update>
   <insert id="insertWamStwd" parameterType="java.lang.String" >

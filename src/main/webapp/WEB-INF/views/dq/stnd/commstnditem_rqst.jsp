@@ -334,8 +334,8 @@ function doAction(sAction)
 			//프로파일별 url 셋팅
 			var url = "";
 			if(bizDtlCd == "SDITM"){
-				var row = grid_name.ColValueDup("orgNm|sditmLnm|sditmPnm");
-				var rows = grid_name.ColValueDupRows("orgNm|sditmLnm|sditmPnm");
+				var row = 0;//grid_name.ColValueDup("orgNm|sditmLnm|sditmPnm");
+				var rows = 0;//grid_name.ColValueDupRows("orgNm|sditmLnm|sditmPnm");
 				
 				
 				if(row>0){
@@ -579,10 +579,12 @@ function postProcessIBS(res) {
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" summary="<s:message code='BFHD.INTG.INQ' />"> <!-- 사전통합조회 -->
                    <caption><s:message code="BFHD.INTG.INQ.FORM" /></caption> <!-- 사전통합 검색폼 -->
                    <colgroup>
-                   <col style="width:20%;" />
-                   <col style="width:30%;" />
-                   <col style="width:20%;" />
-                   <col style="width:30%;" />
+					   <col style="width:15%;" />
+					   <col style="width:20%;" />
+					   <col style="width:15%;" />
+					   <col style="width:20%;" />
+					   <col style="width:15%;" />
+					   <col style="width:20%;" />
 <%--                    <col style="width:8%;" /> --%>
 <%--                    <col style="width:35%;" /> --%>
                    </colgroup>
@@ -595,6 +597,8 @@ function postProcessIBS(res) {
 								</td>
                                 <th scope="row"><label for="objDescn">용어설명</label></th> <!-- 표준사전명 -->
                                 <td><input type="text" id="objDescn" name="objDescn" class="wd98p" value="${objDescn}" /></td>
+								<th scope="row"><label for="discardYn">폐기내용조회</label></th> <!-- 폐기내용조회 -->
+								<td><input type="checkbox" id="discardYn" name="discardYn" class="wd98p" value="Y" /></td>
                             </tr>
                    </tbody>
                  </table>   

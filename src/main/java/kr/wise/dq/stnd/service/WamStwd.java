@@ -106,9 +106,38 @@ public class WamStwd extends CommonVo  {
     private String usergId;
     
     private Integer seq;
-    
-    
-    public Integer getSeq() {
+
+	private String revisionDescn;
+
+	private String useYn;
+
+	private String discardYn;
+
+	public String getRevisionDescn() {
+		return revisionDescn;
+	}
+
+	public void setRevisionDescn(String revisionDescn) {
+		this.revisionDescn = revisionDescn;
+	}
+
+	public String getUseYn() {
+		return useYn;
+	}
+
+	public void setUseYn(String useYn) {
+		this.useYn = useYn;
+	}
+
+	public String getDiscardYn() {
+		return discardYn;
+	}
+
+	public void setDiscardYn(String discardYn) {
+		this.discardYn = discardYn;
+	}
+
+	public Integer getSeq() {
 		return seq;
 	}
 

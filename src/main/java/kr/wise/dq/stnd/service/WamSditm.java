@@ -86,6 +86,46 @@ public class WamSditm extends CommonVo {
 
 	private String errChk;
 
+	private String synonym;
+
+	private String revisionDescn;
+
+	private String useYn;
+
+	private String discardYn;
+
+	public String getSynonym() {
+		return synonym;
+	}
+
+	public void setSynonym(String synonym) {
+		this.synonym = synonym;
+	}
+
+	public String getRevisionDescn() {
+		return revisionDescn;
+	}
+
+	public void setRevisionDescn(String revisionDescn) {
+		this.revisionDescn = revisionDescn;
+	}
+
+	public String getUseYn() {
+		return useYn;
+	}
+
+	public void setUseYn(String useYn) {
+		this.useYn = useYn;
+	}
+
+	public String getDiscardYn() {
+		return discardYn;
+	}
+
+	public void setDiscardYn(String discardYn) {
+		this.discardYn = discardYn;
+	}
+
 	public String getErrChk() {
 		return errChk;
 	}

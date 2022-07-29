@@ -579,10 +579,12 @@ function postProcessIBS(res) {
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" summary="<s:message code='BFHD.INTG.INQ' />"> <!-- 사전통합조회 -->
                    <caption><s:message code="BFHD.INTG.INQ.FORM" /></caption> <!-- 사전통합 검색폼 -->
                    <colgroup>
-                   <col style="width:20%;" />
-                   <col style="width:30%;" />
-                   <col style="width:20%;" />
-                   <col style="width:30%;" />
+					   <col style="width:15%;" />
+					   <col style="width:20%;" />
+					   <col style="width:15%;" />
+					   <col style="width:20%;" />
+					   <col style="width:15%;" />
+					   <col style="width:20%;" />
 <%--                    <col style="width:8%;" /> --%>
 <%--                    <col style="width:35%;" /> --%>
                    </colgroup>
@@ -597,7 +599,9 @@ function postProcessIBS(res) {
                                 <td><input type="text" id="objDescn" name="objDescn" class="wd98p" value="${objDescn}" /></td>
 <%--                                 <th scope="row"><label for="objDescn"><s:message code="CONTENT.TXT" /></label></th> <!-- 설명 --> --%>
 <!--                                 <td><input type="text" id="objDescn" name="objDescn" class="wd98p"/></td> -->
-                            </tr>
+								<th scope="row"><label for="discardYn">폐기내용조회</label></th> <!-- 폐기내용조회 -->
+								<td><input type="checkbox" id="discardYn" name="discardYn" class="wd98p" value="Y" /></td>
+							</tr>
                    </tbody>
                  </table>   
             </div>

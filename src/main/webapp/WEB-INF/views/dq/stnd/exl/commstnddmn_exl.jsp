@@ -46,7 +46,7 @@ function grid_DMN_init() {
 		*/
 		var headtext  = "No.|상태|선택|번호|제정차수|검토상태|검토내용|요청구분|등록유형|검증결과";
 		headtext += "|도메인ID|공통표준도메인그룹명|공통표준도메인분류명|공통표준도메인명|공통표준도메인설명|데이터타입|데이터길이|데이터소수점길이|저장형식|표현형식|단위|허용값|관리부서명|행정표준코드명";
-		headtext += "|담당자ID|담당자명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항";
+		headtext += "|담당자ID|담당자명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항|제개정내용|사용여부";
 		
 
 	var headers = [
@@ -101,7 +101,10 @@ function grid_DMN_init() {
 				{Type:"Text",       Width:60,   SaveName:"rqstUserNm",  Align:"Center", Edit:1, Hidden:1}, 
 				{Type:"Text",       Width:60,   SaveName:"rqstNo",      Align:"Center", Edit:1, Hidden:1}, 
 				{Type:"Int",        Width:60,   SaveName:"rqstSno",     Align:"Center", Edit:1, Hidden:1},
-				{Type:"Text",   	Width:150,  SaveName:"spclNt",    Align:"Center", Edit:1, Hidden:1}
+				{Type:"Text",   	Width:150,  SaveName:"spclNt",    Align:"Center", Edit:1, Hidden:1},
+                {Type:"Text",   	Width:150,  SaveName:"revisionDescn",    Align:"Center", Edit:1, Hidden:0},
+                {Type:"Combo",   	Width:150,  SaveName:"useYn",    Align:"Center", Edit:1, Hidden:0, KeyField:0},
+
 			];
 				
 	InitColumns(cols);
@@ -111,7 +114,8 @@ function grid_DMN_init() {
 	SetColProperty("rqstDcd", 	${codeMap.rqstDcdibs});
 	SetColProperty("regTypCd", 	${codeMap.regTypCdibs});
 	SetColProperty("vrfCd", 	${codeMap.vrfCdibs});
-	
+    SetColProperty("useYn", 	{ComboCode:"N|Y", ComboText:"N|Y"}); /* 아니요|예 */
+
 // 	SetColProperty("dmngId", 	${codeMap.dmngibs});
 // 	SetColProperty("infotpId",	${codeMap.infotpibs});
 // 	SetColProperty("cdValTypCd", 	${codeMap.cdValTypCdibs});

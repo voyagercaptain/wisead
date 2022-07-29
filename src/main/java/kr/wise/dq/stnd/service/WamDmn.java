@@ -5,6 +5,7 @@ import kr.wise.commons.cmm.CommonVo;
 public class WamDmn extends CommonVo{
     private String dmnId;
 
+
     private String dmnLnm;
 
     private String dmnPnm;
@@ -62,8 +63,37 @@ public class WamDmn extends CommonVo{
     private String exprsnFrm;
     private String unit;
     private String admnStndCd;
-    
-//    private String rqstNo;
+
+	private String revisionDescn;
+
+	private String useYn;
+
+	private String discardYn;
+
+	public String getDiscardYn() {
+		return discardYn;
+	}
+
+	public void setDiscardYn(String discardYn) {
+		this.discardYn = discardYn;
+	}
+
+	public String getRevisionDescn() {
+		return revisionDescn;
+	}
+
+	public void setRevisionDescn(String revisionDescn) {
+		this.revisionDescn = revisionDescn;
+	}
+
+	public String getUseYn() {
+		return useYn;
+	}
+
+	public void setUseYn(String useYn) {
+		this.useYn = useYn;
+	}
+	//    private String rqstNo;
 //
 //    private Integer rqstSno;
 //

@@ -50,6 +50,8 @@
     <result column="OWNR_ORG" property="ownrOrg" jdbcType="VARCHAR"/>
      <result column="SPCL_NT"          property="spclNt"        jdbcType="VARCHAR" />
      <result column="SEQ"          property="seq"        jdbcType="VARCHAR" />
+      <result column="REVISION_DESCN" property="revisionDescn" jdbcType="VARCHAR"/>
+      <result column="USE_YN"          property="useYn"        jdbcType="VARCHAR" />
   </resultMap>
   
   <sql id="Base_Column_List" >
@@ -93,10 +95,63 @@
 	limit 30
   </select>
   <select id="selectList" resultMap="BaseResultMap" parameterType="kr.wise.dq.stnd.service.WamDmn" >
-  	SELECT A.*
-<!--   	 , B.DATA_TYPE
-  	     , B.DATA_LEN
-  	     , B.DATA_SCAL  -->
+  	SELECT
+          A.DMN_ID,
+          A.DMN_LNM,
+          A.DMN_PNM,
+          A.LNM_CRI_DS,
+          A.DMNG_ID,
+          A.INFOTP_ID,
+          A.UPP_DMN_ID,
+          A.SUBJ_ID,
+          A.LST_ENTY_ID,
+          A.LST_ENTY_PNM,
+          A.LST_ENTY_LNM,
+          A.LST_ATTR_ID,
+          A.LST_ATTR_PNM,
+          A.LST_ATTR_LNM,
+          A.CD_VAL_TYP_CD,
+          A.CD_VAL_IVW_CD,
+          A.SDITM_AUTO_CRT_YN,
+          A.DATA_FRM,
+          A.CRG_USER_ID,
+          A.DMN_ORG_DS,
+          A.RQST_NO,
+          A.RQST_SNO,
+          A.OBJ_DESCN,
+          A.OBJ_VERS,
+          A.REG_TYP_CD,
+          A.FRS_RQST_DTM,
+          A.FRS_RQST_USER_ID,
+          A.RQST_DTM,
+          A.RQST_USER_ID,
+          A.APRV_DTM,
+          A.APRV_USER_ID,
+          A.FULL_PATH,
+          A.PNM_CRI_DS,
+          A.ENC_YN,
+          A.DMN_DSCD,
+          A.TRANS_YN,
+          A.DMN_MAX_VAL,
+          A.DMN_MIN_VAL,
+          A.DATA_TYPE,
+          A.DATA_LEN,
+          A.DATA_SCAL,
+          A.DMNG_LNM,
+          A.INFOTP_LNM,
+          A.SAVE_FRM,
+          A.EXPRSN_FRM,
+          A.UNIT,
+          A.CD_VAL,
+        A.REVISION_DESCN,
+              A.USE_YN,
+          A.ADMN_STND_CD,
+          A.ORG_NM,
+          A.ORG_CD,
+          A.OWNR_ORG,
+          A.SPCL_NT,
+          A.ORD,
+          A.SEQ
   	  FROM COMM_DMN A 
 <!--      INNER JOIN V_WAA_DMNG G
         ON A.DMNG_ID = G.DMNG_ID
@@ -211,6 +266,9 @@
       <if test="orgNm != null" >
         AND ORG_NM LIKE CONCAT('%',#{orgNm,jdbcType=VARCHAR},'%')
       </if>
+        <if test='discardYn != null and discardYn.equals("Y")'>
+            AND USE_YN = 'Y'
+        </if>
        <if test="stndNm != null" >
         AND (DMN_LNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
         	 OR DMN_PNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
@@ -224,6 +282,13 @@
       </if>
       
   	</where>
+      <choose>
+          <when test="discardYn !=null">
+          </when>
+          <otherwise>
+              AND USE_YN='Y'
+          </otherwise>
+      </choose>
   	ORDER BY SEQ
   </select>
   <select id="selectListSLC" resultMap="BaseResultMap" parameterType="kr.wise.dq.stnd.service.WamDmn" >
@@ -364,7 +429,7 @@
       DMN_ORG_DS, RQST_NO, RQST_SNO, 
       OBJ_DESCN, OBJ_VERS, REG_TYP_CD, 
       FRS_RQST_DTM, FRS_RQST_USER_ID, RQST_DTM, 
-      RQST_USER_ID, APRV_DTM, APRV_USER_ID,ENC_YN,DMN_DSCD, OWNR_ORG, SPCL_NT, ORD, SEQ  
+      RQST_USER_ID, APRV_DTM, APRV_USER_ID,ENC_YN,DMN_DSCD, OWNR_ORG, SPCL_NT, ORD, SEQ, REVISION_DESCN, USE_YN
       )
     values (#{dmnId,jdbcType=VARCHAR}, #{dmnLnm,jdbcType=VARCHAR}, #{dmnPnm,jdbcType=VARCHAR}, 
       #{dmngId,jdbcType=VARCHAR}, #{infotpId,jdbcType=VARCHAR}, #{uppDmnId,jdbcType=VARCHAR}, 
@@ -375,7 +440,8 @@
       #{objDescn,jdbcType=VARCHAR}, #{objVers,jdbcType=DECIMAL}, #{regTypCd,jdbcType=VARCHAR}, 
       #{frsRqstDtm,jdbcType=DATE}, #{frsRqstUserId,jdbcType=VARCHAR}, #{rqstDtm,jdbcType=DATE}, 
       #{rqstUserId,jdbcType=VARCHAR}, #{aprvDtm,jdbcType=DATE}, #{aprvUserId,jdbcType=VARCHAR}, #{encYn,jdbcType=VARCHAR},
-      #{dmnDscd,jdbcType=VARCHAR}, #{ownrOrg,jdbcType=VARCHAR}, #{spclNt,jdbcType=VARCHAR}, #{ord,jdbcType=VARCHAR}, #{seq,jdbcType=DECIMAL}
+      #{dmnDscd,jdbcType=VARCHAR}, #{ownrOrg,jdbcType=VARCHAR}, #{spclNt,jdbcType=VARCHAR}, #{ord,jdbcType=VARCHAR}, #{seq,jdbcType=DECIMAL},
+      #{revisionDescn,jdbcType=VARCHAR},#{useYn,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="kr.wise.dq.stnd.service.WamDmn" >
@@ -513,6 +579,12 @@
       <if test="seq != null" >
         SEQ,
       </if>
+      <if test="revisionDescn != null" >
+        REVISION_DESCN,
+      </if>
+      <if test="useYn != null" >
+        USE_YN,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="dmnId != null" >
@@ -647,6 +719,12 @@
       <if test="seq != null" >
         #{seq,jdbcType=DECIMAL},
       </if>
+      <if test="revisionDescn != null" >
+        #{revisionDescn,jdbcType=VARCHAR},
+      </if>
+      <if test="useYn != null" >
+        #{useYn,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="kr.wise.dq.stnd.service.WamDmn" >
@@ -779,7 +857,15 @@
       <if test="spclNt != null" >
         SPCL_NT = #{spclNt,jdbcType=VARCHAR},
       </if>
+        <if test="seq != null" >
         SEQ = #{seq,jdbcType=DECIMAL},
+        </if>
+        <if test="revisionDescn != null" >
+        REVISION_DESCN = #{revisionDescn,jdbcType=VARCHAR},
+        </if>
+        <if test="useYn != null" >
+        USE_YN = #{useYn,jdbcType=VARCHAR},
+        </if>
     </set>
     where DMN_ID = #{dmnId,jdbcType=VARCHAR}
   </update>
@@ -821,6 +907,8 @@
         , SPCL_NT = #{spclNt,jdbcType=VARCHAR}
         , ORD = #{ord,jdbcType=VARCHAR} 
         , SEQ = #{seq,jdbcType=DECIMAL}
+        ,REVISION_DESCN = #{revisionDescn,jdbcType=VARCHAR}
+        ,USE_YN = #{useYn,jdbcType=VARCHAR}
     where DMN_ID = #{dmnId,jdbcType=VARCHAR}
   </update>
   <insert id="insertWamDmn" parameterType="java.lang.String" >

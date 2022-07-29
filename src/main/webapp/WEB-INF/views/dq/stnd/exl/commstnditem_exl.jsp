@@ -52,7 +52,7 @@ function grid_SDITM_init() {
 
  		var headtext  = "No.|상태|선택|번호|제정차수|검토상태|검토내용|요청구분|등록유형|검증결과|";
  		headtext += "용어ID|공통표준용어명|공통표준용어설명|공통표준용어영문약어명|공통표준도메인명|데이터타입|데이터길이|소수점길이|영문명|허용값|표준코드명|저장형식|표현형식|단위|업무분야|표현형식|행정표준코드명";
- 		headtext += "|검증결과|제정일자|요청자ID|요청자명|요청번호|요청일련번호|소관기관명";
+ 		headtext += "|검증결과|제정일자|요청자ID|요청자명|요청번호|요청일련번호|소관기관명|용여이음동의어목록|제개정내용|사용여부";
 		
 		var headers = [
 					{Text:headtext, Align:"Center"}
@@ -109,8 +109,12 @@ function grid_SDITM_init() {
 					{Type:"Text",   Width:60,   SaveName:"rqstNo",        Align:"Center", Edit:0, Hidden:1, ColMerge:0}, 
 					{Type:"Int",    Width:60,   SaveName:"rqstSno",       Align:"Center", Edit:0, Hidden:1, ColMerge:0},
 					
-					{Type:"Text",   Width:100,  SaveName:"ownrOrg",      Align:"Left", Edit:1, Hidden:0}  // 소관기관명
-				];
+					{Type:"Text",   Width:100,  SaveName:"ownrOrg",      Align:"Left", Edit:1, Hidden:0},  // 소관기관명
+                    {Type:"Text",   Width:150,  SaveName:"synonym",    Align:"Center", Edit:1, Hidden:0}, // 동음이의어
+                    {Type:"Text",   Width:150,  SaveName:"revisionDescn",    Align:"Center", Edit:1, Hidden:0}, // 제개정내용
+                    {Type:"Combo",   Width:150,  SaveName:"useYn",    Align:"Center", Edit:1, Hidden:0, KeyField:0}, // 사용여부
+
+        ];
 					
 		InitColumns(cols);
 		
@@ -119,6 +123,8 @@ function grid_SDITM_init() {
 		SetColProperty("rqstDcd", 	${codeMap.rqstDcdibs});
 		SetColProperty("regTypCd", 	${codeMap.regTypCdibs});
 		SetColProperty("vrfCd", 	${codeMap.vrfCdibs});
+        SetColProperty("useYn", 	{ComboCode:"N|Y", ComboText:"N|Y"}); /* 아니요|예 */
+
 //		SetColProperty("stndAsrt", 	${codeMap.stndAsrtibs});
 		//SetColProperty("persInfoGrd", 	${codeMap.persInfoGrdibs});
 		
