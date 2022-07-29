@@ -240,7 +240,7 @@ function doChangeLicense(){
 	</c:when>
 	<c:otherwise>
 <%--     	<div class="lg_logo"><img src='<c:url value="/images/logo/logo_dq.png" />' alt="WISE DA LOGIN"></div> --%>
-    	<div class="lg_tit">기관표준관리시스템</div>
+    	<div class="lg_tit">표준관리시스템</div>
 	</c:otherwise>
 </c:choose>    	
     	
@@ -292,11 +292,17 @@ function doChangeLicense(){
         
         
 	<div class="lg_foot">
-		<div class="lg_foot_tit">기관표준관리시스템 이용관련 안내</div> <!-- 메타관리시스템  이용관련 안내 -->
+		<div class="lg_foot_tit">표준관리시스템 이용관련 안내</div> <!-- 메타관리시스템  이용관련 안내 -->
 	    <div class="lg_foot_cont">
 	    	<ul>
-	        	<li>크롬, 엣지 브라우저를 사용해서 접속하셔야 정상적인 기능 사용이 가능합니다. MS 익스플로러 브라우저(Explorer Browser)는 정상적인 사용이 불가능할 수 있습니다.</li>
-                <li>기관표준관리시스템 사용 시 불편사항이나 문의사항은 대표전화 1600-2187로 문의해 주시기 바랍니다.</li>
+	        	<li>본 시스템 사용을 위해, 수준평가시스템에 등록된 기관 ‘실무담당자’ → ‘기관표준담당자’로 등록하였습니다.
+                    각 기관의 ‘기관표준담당자’는 ‘사용자관리 > 사용자관리’ 메뉴에서 동일한 권한을 갖는 ‘기관표준담당자’ 및 소관 DB별 ‘DB표준담당자’를 등록해 주시기 바랍니다.
+                </li>
+                <li>DB표준담당자의 경우, 다음 절차에 따라 소관 DB목록을 추가로 등록해 주셔야 합니다.</li>
+                <li>기관의 사용자목록에서 DB표준담당자 행(row)의 ‘No’를 더블클릭 합니다.</li>
+                <li>하단에 조회된 기관 DB목록(접근DB권한)에서 DB표준담당자가 관리하는 소관DB를 선택(복수선택 가능)합니다.</li>
+                <li>‘저장‘ 버튼을 선택하여 DB표준담당자의 소관DB 등록을 위한 접근DB권한’ 등록을 완료합니다.</li>
+                <li>표준관리시스템 사용 시 불편사항이나 문의사항은 대표전화 1600-2187로 문의해 주시기 바랍니다.</li>
 	        </ul>
 	    </div>
 	</div>
