@@ -72,22 +72,19 @@ function grid_DMN_init() {
 				{Type:"Combo",      Width:100,  SaveName:"vrfCd",		Align:"Center", Edit:0,Hidden:1},							
 				
 				{Type:"Text",       Width:10,  SaveName:"dmnId",	 	    Align:"Left", Edit:1, Hidden:1, KeyField:0},
-				{Type:"Text",       Width:100,  SaveName:"orgNm",	 	 Align:"Left", Edit:1, Hidden:0, KeyField:1}, //기관명
+				{Type:"Text",       Width:100,  SaveName:"orgNm",	 	 Align:"Left", Edit:1, Hidden:0, KeyField:0}, //기관명
 				{Type:"Text",       Width:100,  SaveName:"dmngLnm",	 	    Align:"Left", Edit:1, Hidden:0, KeyField:0}, //도메인그룹명
 				{Type:"Text",       Width:150,  SaveName:"dmnLnm",   	    Align:"Left", Edit:1, KeyField:0}, //도메인분류명
 				
-				{Type:"Text",       Width:100,  SaveName:"infotpLnm",	 	Align:"Left", Edit:1, Hidden:0, KeyField:1}, //도메인명
+				{Type:"Text",       Width:100,  SaveName:"infotpLnm",	 	Align:"Left", Edit:1, Hidden:0, KeyField:0}, //도메인명
 				{Type:"Text",       Width:150,  SaveName:"objDescn",	    Align:"Left", Edit:1, KeyField:0},
 				
-				{Type:"Text",       Width:120,  SaveName:"dataType",	 	Align:"Left", Edit:1, Hidden:0, KeyField:1},
+				{Type:"Text",       Width:120,  SaveName:"dataType",	 	Align:"Left", Edit:1, Hidden:0, KeyField:0},
 				{Type:"Int",       Width:100,  SaveName:"dataLen",	 	    Align:"Left", Edit:1, Hidden:0, KeyField:0},
 				
-				
-				
-				
+
 // 				{Type:"Text",       Width:180,  SaveName:"dmnPnm",   	    Align:"Left", Edit:1, KeyField:1, Hidden:0}, 
-				
-				
+
 				{Type:"Int",       Width:100,  SaveName:"dataScal",	 	Align:"Left", Edit:1, Hidden:0},
 				{Type:"Text",       Width:100,  SaveName:"saveFrm", 	 	Align:"Left", Edit:1, Hidden:0, KeyField:0},
 				{Type:"Text",       Width:100,  SaveName:"exprsnFrm",	 	Align:"Left", Edit:1, Hidden:0},
@@ -100,13 +97,15 @@ function grid_DMN_init() {
 				                    
 				{Type:"Text",       Width:60,   SaveName:"crgUserId",	Align:"Left",   Edit:1, Hidden:1},
 				{Type:"Text",       Width:60,   SaveName:"crgUserNm",	Align:"Left",   Edit:1, Hidden:1},
-				{Type:"Text",       Width:60,   SaveName:"rqstDtm",  	Align:"Center", Edit:1, Format:"yyyyMMdd", KeyField:1},
+				{Type:"Text",       Width:60,   SaveName:"rqstDtm",  	Align:"Center", Edit:1, Format:"yyyyMMdd", KeyField:0},
 				{Type:"Text",       Width:60,   SaveName:"rqstUserId",  Align:"Center", Edit:1, Hidden:1},
 				{Type:"Text",       Width:60,   SaveName:"rqstUserNm",  Align:"Center", Edit:1, Hidden:1}, 
 				{Type:"Text",       Width:60,   SaveName:"rqstNo",      Align:"Center", Edit:1, Hidden:1}, 
 				{Type:"Int",        Width:60,   SaveName:"rqstSno",     Align:"Center", Edit:1, Hidden:1},
 				{Type:"Text",   	Width:150,  SaveName:"spclNt",    Align:"Center", Edit:1, Hidden:0},
-				{Type:"Text",   	Width:250,  SaveName:"errChk",    Align:"Center", Edit:0, Hidden:0}
+				{Type:"Text",   	Width:250,  SaveName:"errChk",    Align:"Center", Edit:0, Hidden:0},
+                {Type:"Text",   Width:100,  SaveName:"validYn",   	Align:"Left", Edit:1, Hidden:1},
+                {Type:"Text",   Width:100,  SaveName:"confirmYn",  	Align:"Left", Edit:1, Hidden:1}
 				
 			];
 	

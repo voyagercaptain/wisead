@@ -1,6 +1,5 @@
 package kr.wise.dq.stnd.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -48,5 +47,9 @@ public interface WamDmnMapper {
 
     int bulkUpdate(List<WamDmn> updateList);
 
+    int bulkUpdateConfirm(List<WamDmn> updateList);
+
     int bulkDelete(List<WamDmn> deleteList);
+
+    int selectDupSdDmnCount(WamDmn data);
 }

@@ -120,8 +120,6 @@ $(document).ready(function() {
 		location.href = '<c:url value="/dq/stnd/stndtot_rqst.do" />';
     } );
 
-	document.getElementById('btnDecide').disabled = true;
-	document.getElementById('btnInit').disabled = true;
 		
  // 결재 Event Bind
 	$("#btnRegRqst").click(function(){
@@ -827,6 +825,11 @@ function postProcessIBS(res) {
 					<button class="btn_inspect" id="btnInspect" 	name="btnInspect">검증</button>
 					<button class="btn_decide" id="btnDecide" 	name="btnDecide">확정</button>
 					<button class="btn_init" id="btnInit" 	name="btnInit">초기화</button>
+
+					<SCRIPT>
+						document.getElementById('btnDecide').disabled = true;
+						document.getElementById('btnInit').disabled = true;
+					</SCRIPT>
 
 				</c:if>
 

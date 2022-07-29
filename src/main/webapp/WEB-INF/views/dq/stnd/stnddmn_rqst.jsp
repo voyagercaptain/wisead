@@ -83,43 +83,40 @@ $(document).ready(function() {
 	$("#btnChangAdd").click(function(){
 		doAction("AddWam");
 	}).hide();
-	
-	//저장
-    $("#btnSave").click( function(){
-    	var bizDtlCd = $("form[name=mstFrm] #bizDtlCd").val();
-    	if(bizDtlCd == "STWD"){
-//         	//표준단어명 중복 저장 확인
-// 			var row = grid_name.ColValueDup("stwdLnm");
-// 			var rows = grid_name.ColValueDupRows("stwdLnm");
-// 			if(row > -1){
-// 			    showMsgBox("CNF", rows+"행에 "+"<s:message code="CNF.DUP.STWDLNM" />"+"</br>","Save");
-// 				return;
-// 			}
-// 			//표준단어 영문약어 중복 저장 확인
-// 			row = grid_name.ColValueDup("stwdPnm");
-// 			rows = grid_name.ColValueDupRows("stwdPnm");
-// 			if(row > -1){
-// 			    showMsgBox("CNF", rows+"행에 "+"<s:message code="CNF.DUP.STWDPNM" />"+"</br>","Save");
-// 				return;
-// 			}
 
-			doAction("Save");
-    	}else{doAction("Save");}
-    	    	
-    } ).show();
+	//저장
+	$("#btnSave").click( function(){
+		//var bizDtlCd = $("form[name=mstFrm] #bizDtlCd").val();
+		doAction("Save");
+	} ).show();
 	
     //삭제
     $("#btnDelete").click( function(){
     	doAction("Delete"); 
     } ).show();
-    
-    
+
+	//검증
+	$("#btnInspect").click( function(){
+		doAction("Inspect");
+	} ).show();
+
+	//확정
+	$("#btnDecide").click( function(){
+		doAction("Decide");
+	} ).show();
+
+	//초기화
+	$("#btnInit").click( function(){
+		if(confirm("초기화 하시겠습니까?")){
+			doAction("Init");
+		}
+	} ).show();
     
     //화면리로드
     $("#btnBlank").click( function(){
 		location.href = '<c:url value="/dq/stnd/stndtot_rqst.do" />';
     } );
-    
+
 		
  // 결재 Event Bind
 	$("#btnRegRqst").click(function(){
@@ -328,7 +325,70 @@ function doAction(sAction)
 // 			console.log(param);
 // 			getRqstVrfLst(param);
 			break;
-			
+
+		case "Inspect":  //검증
+
+			//저장 대상의 데이터를 Json 객체로 반환한다.
+			ibsSaveJson = grid_name.GetSaveJson(0);
+
+			if(ibsSaveJson.data.length == 0){
+				showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
+				return;
+			}
+
+			//프로파일별 url 셋팅
+			var url = "";
+			url = '<c:url value="/dq/stnd/inspectStndDmn.do"/>';
+
+			var param = $('form[name=frmSearch]').serialize();
+			//var chkYn = $('input:checkbox[id="chkYn"]:checked').val();
+			//param = param + "&chkYn="+chkYn;
+
+			IBSpostJson2(url, ibsSaveJson, param, ibscallback);
+			break;
+
+		case "Decide":  //확정
+
+			//저장 대상의 데이터를 Json 객체로 반환한다.
+			ibsSaveJson = grid_name.GetSaveJson(1);
+
+			if(ibsSaveJson.data.length == 0){
+				showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
+				return;
+			}
+
+			//프로파일별 url 셋팅
+			var url = "";
+			url = '<c:url value="/dq/stnd/decideStndDmn.do"/>';
+
+			var param = $('form[name=frmSearch]').serialize();
+			//var chkYn = $('input:checkbox[id="chkYn"]:checked').val();
+			//param = param + "&chkYn="+chkYn;
+
+			IBSpostJson2(url, ibsSaveJson, param, ibscallback);
+			break;
+
+		case "Init":  //초기화
+
+			//저장 대상의 데이터를 Json 객체로 반환한다.
+			ibsSaveJson = grid_name.GetSaveJson(1);
+
+			if(ibsSaveJson.data.length == 0){
+				showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
+				return;
+			}
+
+			//프로파일별 url 셋팅
+			var url = "";
+			url = '<c:url value="/dq/stnd/initStndDmn.do"/>';
+
+			var param = $('form[name=frmSearch]').serialize();
+			//var chkYn = $('input:checkbox[id="chkYn"]:checked').val();
+			//param = param + "&chkYn="+chkYn;
+
+			IBSpostJson2(url, ibsSaveJson, param, ibscallback);
+			break;
+
 		case "Save":  //검증
 
             var errExistYn = "";
@@ -614,15 +674,17 @@ function postProcessIBS(res) {
             <legend><s:message code="FOREWORD" /></legend> <!-- 머리말 -->
             <div class="tb_basic2">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" summary="<s:message code='BFHD.INTG.INQ' />"> <!-- 사전통합조회 -->
-                   <caption><s:message code="BFHD.INTG.INQ.FORM" /></caption> <!-- 사전통합 검색폼 -->
-                   <colgroup>
-                   <col style="width:20%;" />
-                   <col style="width:30%;" />
-                   <col style="width:20%;" />
-                   <col style="width:30%;" />
-<%--                    <col style="width:8%;" /> --%>
-<%--                    <col style="width:35%;" /> --%>
-                   </colgroup>
+					<caption><s:message code="BFHD.INTG.INQ.FORM" /></caption> <!-- 사전통합 검색폼 -->
+					<colgroup>
+						<col style="width:15%;" />
+						<col style="width:15%;" />
+						<col style="width:15%;" />
+						<col style="width:15%;" />
+						<col style="width:15%;" />
+						<col style="width:15%;" />
+						<%--                    <col style="width:8%;" /> --%>
+						<%--                    <col style="width:35%;" /> --%>
+					</colgroup>
                    
                    <tbody>      
                             <tr>
@@ -642,6 +704,16 @@ function postProcessIBS(res) {
                                 <td><input type="text" id="stndNm" name="stndNm" class="wd98p" value="${stndNm}" /></td>
 <%--                                 <th scope="row"><label for="objDescn"><s:message code="CONTENT.TXT" /></label></th> <!-- 설명 --> --%>
 <!--                                 <td><input type="text" id="objDescn" name="objDescn" class="wd98p"/></td> -->
+
+								<th scope="row"><label for="chkYn">검증여부</label></th> <!-- 표준사전명 -->
+								<td><select id="chkYn" name="chkYn" class="wd98p">
+									<option value="">전체</option>
+									<option value="E">검증오류</option>
+									<option value="Y">검증성공</option>
+									<option value="N">미검증</option>
+									<option value="YY">확정</option>
+								</select>
+								</td>
                             </tr>
                    </tbody>
                  </table>   
@@ -661,9 +733,19 @@ function postProcessIBS(res) {
 					    <li class="btn_new" id="btnNew"><a><span class="ui-icon ui-icon-pencil"></span><s:message code="NEW.ADDT" /></a></li> <!-- 신규 추가 -->
 					    <li class="btn_chang_add" id="btnChangAdd"><a><span class="ui-icon ui-icon-folder-open"></span><s:message code="CHG.TRGT.ADDT" /></a></li> <!-- 변경대상 추가 -->
 					    <li class="btn_excel_load" id="btnExcelLoad"><a><span class="ui-icon ui-icon-document"></span><s:message code="EXCL.UPLOAD" /></a></li> <!-- 엑셀 올리기 -->
-					  </ul>         
-				    <button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="STRG" /></button> <!-- 저장 --> 
+					  </ul>
+					<!--
+				    <button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="STRG" /></button>
+					-->
 				    <button class="btn_delete" id="btnDelete" 	name="btnDelete"><s:message code="DEL" /></button> <!-- 삭제 -->
+
+					<button class="btn_inspect" id="btnInspect" 	name="btnInspect">검증</button>
+					<button class="btn_decide" id="btnDecide" 	name="btnDecide">확정</button>
+					<button class="btn_init" id="btnInit" 	name="btnInit">초기화</button>
+					<SCRIPT>
+						document.getElementById('btnDecide').disabled = true;
+						document.getElementById('btnInit').disabled = true;
+					</SCRIPT>
 				</c:if>
 				
 			</div>

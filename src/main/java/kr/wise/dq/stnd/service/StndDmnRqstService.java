@@ -126,4 +126,8 @@ public interface StndDmnRqstService extends CommonRqstService {
 	
 	int registerWam(List<WamDmn> list) throws Exception;
 
+	int decideStndDmn(List<WamDmn> reglist, WaqMstr reqmst ) throws Exception;
+	int initStndDmn(List<WamDmn> reglist, WaqMstr reqmst ) throws Exception;
+
+	void registerWamCheck(List<WamDmn> list, WaqMstr reqmst) throws Exception;
 }

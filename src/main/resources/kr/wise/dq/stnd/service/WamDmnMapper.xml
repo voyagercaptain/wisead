@@ -49,6 +49,10 @@
     
     <result column="OWNR_ORG" property="ownrOrg" jdbcType="VARCHAR"/>
      <result column="SPCL_NT"          property="spclNt"        jdbcType="VARCHAR" />
+
+      <result column="ERR_CHK"        property="errChk"      jdbcType="VARCHAR" />
+      <result column="VALID_YN"        property="validYn"      jdbcType="VARCHAR" />
+      <result column="CONFIRM_YN"        property="confirmYn"      jdbcType="VARCHAR" />
   </resultMap>
   
   <sql id="Base_Column_List" >
@@ -90,22 +94,42 @@
 		     ORDER BY A.RQST_DTM DESC
 	limit 30
   </select>
+
+    <select id="selectDupSdDmnCount" parameterType="kr.wise.dq.stnd.service.WamSditm" resultType="java.lang.Integer">
+        SELECT
+            COUNT(INFOTP_LNM)
+        FROM WAM_DMN
+        WHERE 1 = 1
+          AND ORG_NM = #{orgNm,jdbcType=VARCHAR}
+          AND INFOTP_LNM = #{infotpLnm,jdbcType=VARCHAR}
+          AND CONFIRM_YN = 'Y'
+    </select>
+
   <select id="selectList" resultMap="BaseResultMap" parameterType="kr.wise.dq.stnd.service.WamDmn" >
   	SELECT A.*
-<!--   	 , B.DATA_TYPE
-  	     , B.DATA_LEN
-  	     , B.DATA_SCAL  -->
-  	  FROM WAM_DMN A 
-<!--      INNER JOIN V_WAA_DMNG G
-        ON A.DMNG_ID = G.DMNG_ID
-  	 INNER JOIN WAA_INFO_TYPE B
-  	    ON A.INFOTP_ID = B.INFOTP_ID
-  	   AND B.EXP_DTM = DATE_FORMAT( '99991231', '%Y%m%d') -->
+  	     , CASE WHEN A.ERR_CHK IS NOT NULL and A.ERR_CHK != '' THEN '#FF0000' ELSE NULL END AS FontColor
+  	  FROM WAM_DMN A
+
   	<where>
         AND A.REG_TYP_CD IN ('C', 'U')
       <if test='!"2".equals(usergId) and !"3".equals(usergId)' >	
   	   	AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))	
-      </if>  
+      </if>
+
+        <if test="chkYn eq 'E'.toString()" >
+            AND VALID_YN = 'E'
+        </if>
+        <if test="chkYn eq 'Y'.toString()" >
+            AND VALID_YN = 'Y'
+        </if>
+        <if test="chkYn eq 'N'.toString()" >
+            AND (VALID_YN IS NULL OR VALID_YN = 'N')
+        </if>
+        <if test="chkYn eq 'YY'.toString()" >
+            AND CONFIRM_YN = 'Y'
+        </if>
+
+
       <if test="dmnLnm != null" >
        AND (DMN_LNM LIKE CONCAT('%' , #{dmnLnm,jdbcType=VARCHAR} , '%')
   	    OR DMN_PNM LIKE CONCAT('%' , #{dmnLnm,jdbcType=VARCHAR} , '%')
@@ -764,6 +788,9 @@
       <if test="spclNt != null" >
         SPCL_NT = #{spclNt,jdbcType=VARCHAR},
       </if>
+        <if test="errChk != null" >
+            ERR_CHK = #{errChk,jdbcType=VARCHAR},
+        </if>
     </set>
     where DMN_ID = #{dmnId,jdbcType=VARCHAR}
   </update>
@@ -1120,7 +1147,10 @@
         DATA_SCAL,
         ORG_NM,
         OWNR_ORG,
-        SPCL_NT
+        SPCL_NT,
+        ERR_CHK,
+        VALID_YN,
+        CONFIRM_YN
         )
         values
         <foreach collection="list" item="item" index="index" separator=",">
@@ -1166,7 +1196,10 @@
         #{item.dataScal,jdbcType=DECIMAL},
         #{item.orgNm,jdbcType=VARCHAR},
         #{item.ownrOrg,jdbcType=VARCHAR},
-        #{item.spclNt,jdbcType=VARCHAR}
+        #{item.spclNt,jdbcType=VARCHAR},
+        #{item.errChk,jdbcType=VARCHAR},
+        #{item.validYn,jdbcType=VARCHAR},
+        #{item.confirmYn,jdbcType=VARCHAR}
         )
         </foreach>
     </insert>
@@ -1216,8 +1249,23 @@
                 DATA_SCAL = #{item.dataScal,jdbcType=DECIMAL},
                 ORG_NM = #{item.orgNm,jdbcType=VARCHAR},
                 OWNR_ORG = #{item.ownrOrg,jdbcType=VARCHAR},
-                SPCL_NT = #{item.spclNt,jdbcType=VARCHAR}
+                SPCL_NT = #{item.spclNt,jdbcType=VARCHAR},
+                ERR_CHK = #{item.errChk,jdbcType=VARCHAR},
+                VALID_YN = #{item.validYn,jdbcType=VARCHAR},
+                <if test="item.confirmYn eq 'Y'.toString()" >
+                    CONFIRM_DTM = SYSDATE,
+                </if>
+                CONFIRM_YN =  #{item.confirmYn,jdbcType=VARCHAR}
         where DMN_ID = #{item.dmnId,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
+    <update id="bulkUpdateConfirm" parameterType="java.util.List" >
+        <foreach collection="list" item="item" index="index">
+            update WAM_DMN
+            set CONFIRM_DTM = SYSDATE,
+            CONFIRM_YN =  'Y'
+            where DMN_ID = #{item.dmnId,jdbcType=VARCHAR}
         </foreach>
     </update>
 

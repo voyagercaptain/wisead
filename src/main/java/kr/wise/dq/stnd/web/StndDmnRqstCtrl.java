@@ -41,13 +41,7 @@ import kr.wise.commons.rqstmst.service.WaqMstr;
 import kr.wise.commons.sysmgmt.basicinfo.service.BasicInfoLvlService;
 import kr.wise.commons.sysmgmt.basicinfo.service.WaaBscLvl;
 import kr.wise.commons.util.UtilJson;
-import kr.wise.dq.stnd.service.StndCommDmnRqstService;
-import kr.wise.dq.stnd.service.StndDmnRqstService;
-import kr.wise.dq.stnd.service.WamDmn;
-import kr.wise.dq.stnd.service.WapDvCanAsm;
-import kr.wise.dq.stnd.service.WapDvCanDic;
-import kr.wise.dq.stnd.service.WaqCdVal;
-import kr.wise.dq.stnd.service.WaqDmn;
+import kr.wise.dq.stnd.service.*;
 import kr.wise.dq.stnd.web.StndItemRqstCtrl.WapDvCanAsms;
 
 import org.slf4j.Logger;
@@ -564,7 +558,81 @@ public class StndDmnRqstCtrl {
 		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
 		
 	}
-	
+
+
+
+	/** 표준항목 리스트 검증  */
+	@RequestMapping("/dq/stnd/inspectStndDmn.do")
+	@ResponseBody
+	public IBSResultVO<WaqMstr> inspectStndDmn(@RequestBody WamDmns data, WaqMstr reqmst, Locale locale) throws Exception {
+
+		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+		ArrayList<WamDmn> list = data.get("data");
+
+		logger.debug("검증 시작");
+		stndDmnRqstService.registerWamCheck(list, reqmst);
+		logger.debug("검증 종료");
+
+		int result = stndDmnRqstService.registerWam(list);
+		String resmsg;
+
+		if(result > 0 ){
+			result = 0;
+			resmsg = message.getMessage("MSG.SAVE", null, locale);
+		} else {
+			result = -1;
+			resmsg = message.getMessage("ERR.SAVE", null, locale);
+		}
+		String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+
+		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+	}
+
+	/** 표준항목 리스트 확정  */
+	@RequestMapping("/dq/stnd/decideStndDmn.do")
+	@ResponseBody
+	public IBSResultVO<WaqMstr> decideStndDmn(@RequestBody WamDmns data, WaqMstr reqmst, Locale locale) throws Exception {
+
+		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+		ArrayList<WamDmn> list = data.get("data");
+
+		int result = stndDmnRqstService.decideStndDmn(list, reqmst);
+		String resmsg;
+
+		if(result > 0 ){
+			result = 0;
+			resmsg = message.getMessage("MSG.SAVE", null, locale);
+		} else {
+			result = -1;
+			resmsg = message.getMessage("ERR.SAVE", null, locale);
+		}
+		String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+
+		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+	}
+
+	/** 표준항목 리스트 초기화  */
+	@RequestMapping("/dq/stnd/initStndDmn.do")
+	@ResponseBody
+	public IBSResultVO<WaqMstr> initStndDmn(@RequestBody WamDmns data, WaqMstr reqmst, Locale locale) throws Exception {
+
+		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+		ArrayList<WamDmn> list = data.get("data");
+
+		int result = stndDmnRqstService.initStndDmn(list, reqmst);
+		String resmsg;
+
+		if(result > 0 ){
+			result = 0;
+			resmsg = message.getMessage("MSG.SAVE", null, locale);
+		} else {
+			result = -1;
+			resmsg = message.getMessage("ERR.SAVE", null, locale);
+		}
+		String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+
+		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+	}
 	
 	
 

@@ -106,7 +106,7 @@ function grid_SDITM_init() {
                     {Type:"Text",   Width:100,  SaveName:"confirmYn",  	Align:"Left", Edit:1, Hidden:1}
 				];
 		
-		colsCount = cols.length;
+		colsCount = cols.length;-
 
 		InitColumns(cols);
 

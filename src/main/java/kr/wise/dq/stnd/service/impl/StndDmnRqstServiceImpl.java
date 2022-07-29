@@ -13,10 +13,7 @@
  */
 package kr.wise.dq.stnd.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -26,12 +23,14 @@ import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.cmm.exception.WiseBizException;
 import kr.wise.commons.cmm.service.EgovIdGnrService;
 import kr.wise.commons.damgmt.approve.service.RequestApproveService;
+import kr.wise.commons.error.ErrorCode;
 import kr.wise.commons.helper.UserDetailHelper;
 import kr.wise.commons.rqstmst.service.RequestMstService;
 import kr.wise.commons.rqstmst.service.WaqMstr;
 import kr.wise.commons.rqstmst.service.WaqRqstVrfDtls;
 import kr.wise.commons.rqstmst.service.WaqRqstVrfDtlsMapper;
 import kr.wise.commons.util.UtilString;
+import kr.wise.commons.util.ValidationCheck;
 import kr.wise.dq.stnd.service.*;
 
 import org.slf4j.Logger;
@@ -1267,5 +1266,128 @@ public class StndDmnRqstServiceImpl implements StndDmnRqstService {
 
 		return result;
 	}
+
+
+	/** 검증 */
+	public void registerWamCheck(List<WamDmn> reglist, WaqMstr reqmst ) throws Exception {
+		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+		String userid = user.getUniqId();
+
+		Map<String, String> params = new HashMap<String, String>();
+		String[] dataTypeArr = {"boolean", "date", "time", "timestamp", "datetime", "interval", "datetimeltz", "datetimetz", "timestampltz", "timestamptz", "number", "numeric", "decimal", "smalldatetime", "money", "smallmoney", "long", "bigint", "smallint", "short", "tinyint", "bit", "int", "integer", "double", "double precision", "text", "ntext", "nchar", "nvarchar", "ntext", "binary", "varbinary", "binary_float", "binary_double", "varbinary", "image", "real", "clob", "blob", "nclob", "bfile"};
+		String checkStr = "";
+		for (WamDmn checkVo : reglist) {
+			checkStr = "";
+
+			if(!"Y".equals(checkVo.getConfirmYn())) {
+				//중복체크
+				String check1_1 = "";
+				int dupCnt = wammapper.selectDupSdDmnCount(checkVo);
+				if (dupCnt > 0) {
+					check1_1 = ErrorCode.ERROR_ITEM_DUP.getMessage();
+					checkStr += check1_1;
+				}
+				if (!"".equals(check1_1)) {
+					checkStr += ", ";
+				}
+			}
+			//기관명 체크
+			String check1_2 = "";
+			if (StringUtils.isEmpty(checkVo.getOrgNm())) {
+				check1_2 = ErrorCode.ERROR_ITEM_ORG_NM_NOTNULL.getMessage();
+				checkStr += check1_2;
+			}
+			if(!"".equals(check1_2)) {
+				checkStr += ", ";
+			}
+
+			//도메인명 필수체크
+			String check1 = "";
+			if (StringUtils.isEmpty(checkVo.getInfotpLnm())) {
+				check1 = ErrorCode.ERROR_DMN_NOTNULL.getMessage();
+			}
+			checkStr += check1;
+			if(!"".equals(check1)) {
+				checkStr += ", ";
+			}
+
+			//데이터타입 필수체크
+			String check2 = "";
+			if (StringUtils.isEmpty(checkVo.getDataType())) {
+				check2 = ErrorCode.ERROR_DMN_TYPE_NOTNULL.getMessage();
+			}
+			checkStr += check2;
+			if(!"".equals(check2)) {
+				checkStr += ", ";
+			}
+
+			//dataLen 필수체크(데이터 타입에 따라 필수가 나뉜다)
+			String check3 = "";
+			String dataType = checkVo.getDataType();
+			Integer dataLen = checkVo.getDataLen();
+			if(Arrays.asList(dataTypeArr).contains(dataType.toLowerCase()) == false && dataLen == null) {
+				check3 = ErrorCode.ERROR_DMN_LENGTH_NOTNULL.getMessage();
+			}
+			checkStr += check3;
+			if(!"".equals(check3)) {
+				checkStr += ", ";
+			}
+
+			//제정일자
+			String check5 = ValidationCheck.checkSditmDateDate(checkVo.getRqstDtm());
+			checkStr += check5;
+			if(!"".equals(check5)) {
+				checkStr += ", ";
+			}
+
+			checkStr = checkStr.trim();
+			if(!"".equals(checkStr)) {
+				String lastStr = checkStr.substring(checkStr.length()-1, checkStr.length());
+				if(",".equals(lastStr)) {
+					checkStr = checkStr.substring(0, checkStr.length()-1);
+				}
+				checkVo.setErrChk(checkStr);
+				checkVo.setValidYn("E");
+				checkVo.setConfirmYn("N");
+			} else {
+				checkVo.setErrChk("");
+				checkVo.setValidYn("Y");
+			}
+		}
+	}
+
+
+	/** 표준항목 - 확정 */
+	public int decideStndDmn(List<WamDmn> reglist, WaqMstr reqmst ) throws Exception {
+		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+		String userid = user.getUniqId();
+		int result = 0;
+
+		for (WamDmn saveVo : reglist) {
+			saveVo.setFrsRqstUserId(userid);
+			saveVo.setRqstUserId(userid);
+			saveVo.setRegTypCd("U");
+		}
+
+		for (int id = 0; id < reglist.size(); id += WiseConfig.FETCH_SIZE){
+			result = wammapper.bulkUpdateConfirm(new ArrayList<WamDmn>(reglist.subList(id, min(id + WiseConfig.FETCH_SIZE, reglist.size()))));
+		}
+
+		return result;
+	}
+
+	/** 표준항목 - 초기화 */
+	public int initStndDmn(List<WamDmn> reglist, WaqMstr reqmst ) throws Exception {
+		//LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+		//String userid = user.getUniqId();
+		int result = 0;
+
+		for (int id = 0; id < reglist.size(); id += WiseConfig.FETCH_SIZE) {
+			result = wammapper.bulkDelete(new ArrayList<WamDmn>(reglist.subList(id, min(id + WiseConfig.FETCH_SIZE, reglist.size()))));
+		}
+
+		return result;
+	}
+
 
 }
