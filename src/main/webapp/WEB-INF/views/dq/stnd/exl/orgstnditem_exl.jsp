@@ -192,22 +192,24 @@ function grid_SDITM_OnSearchEnd(code, message, stCode, stMsg) {
 		return;
 	} else {
 		//조회 성공시....
-        var len = grid_SDITM.RowCount();
-        if(frmSearch.chkYn.value == "Y") {
-            if(len > 0) {
-                document.getElementById('btnDecide').disabled = false;
+        <c:if test="${sessionScope.loginVO.usergId eq 'OBJ_00000034586'}">
+            var len = grid_SDITM.RowCount();
+            if(frmSearch.chkYn.value == "Y") {
+                if(len > 0) {
+                    document.getElementById('btnDecide').disabled = false;
+                }
+            } else {
+                document.getElementById('btnDecide').disabled = true;
             }
-        } else {
-            document.getElementById('btnDecide').disabled = true;
-        }
 
-        if(frmSearch.chkYn.value != "" && frmSearch.chkYn.value != "YY") {
-            if(len > 0) {
-                document.getElementById('btnInit').disabled = false;
+            if(frmSearch.chkYn.value != "" && frmSearch.chkYn.value != "YY") {
+                if(len > 0) {
+                    document.getElementById('btnInit').disabled = false;
+                }
+            } else {
+                document.getElementById('btnInit').disabled = true;
             }
-        } else {
-            document.getElementById('btnInit').disabled = true;
-        }
+        </c:if>
     }
 }
 

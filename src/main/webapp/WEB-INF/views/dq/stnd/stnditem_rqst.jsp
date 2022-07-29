@@ -446,7 +446,7 @@ function doAction(sAction)
 		case "Decide":  //확정
 
 			//저장 대상의 데이터를 Json 객체로 반환한다.
-			ibsSaveJson = grid_name.GetSaveJson(1);
+			ibsSaveJson = grid_name.GetSaveJson(0);
 
 			if(ibsSaveJson.data.length == 0){
 				showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
@@ -467,7 +467,7 @@ function doAction(sAction)
 		case "Init":  //초기화
 
 			//저장 대상의 데이터를 Json 객체로 반환한다.
-			ibsSaveJson = grid_name.GetSaveJson(1);
+			ibsSaveJson = grid_name.GetSaveJson(0);
 
 			if(ibsSaveJson.data.length == 0){
 				showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");

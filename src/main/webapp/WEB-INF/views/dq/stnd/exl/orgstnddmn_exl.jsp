@@ -207,7 +207,25 @@ function grid_DMN_OnSearchEnd(code, message, stCode, stMsg) {
 		showMsgBox("ERR", "<s:message code="ERR.SEARCH" />");
 		return;
 	} else {
-		//조회 성공....
+        //조회 성공시....
+        <c:if test="${sessionScope.loginVO.usergId eq 'OBJ_00000034586'}">
+            var len = grid_DMN.RowCount();
+            if(frmSearch.chkYn.value == "Y") {
+                if(len > 0) {
+                    document.getElementById('btnDecide').disabled = false;
+                }
+            } else {
+                document.getElementById('btnDecide').disabled = true;
+            }
+
+            if(frmSearch.chkYn.value != "" && frmSearch.chkYn.value != "YY") {
+                if(len > 0) {
+                    document.getElementById('btnInit').disabled = false;
+                }
+            } else {
+                document.getElementById('btnInit').disabled = true;
+            }
+        </c:if>
 	}
 }
 
