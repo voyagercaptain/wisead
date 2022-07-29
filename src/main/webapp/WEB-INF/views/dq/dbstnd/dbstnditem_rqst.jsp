@@ -42,9 +42,7 @@ function getCookie(name)
 
 
 $(document).ready(function() {
-	//확정,초기화 disabled 처리
-	document.getElementById('btnDecide').disabled = true;
-    document.getElementById('btnInit').disabled = true;
+	
 	//탭 초기화....
 	//$( "#tabs" ).tabs();
 
@@ -452,10 +450,7 @@ function doAction(sAction)
 			$("#decideYn").val("Y");
 			//프로파일별 url 셋팅
 			var url = "";
-			url = '<c:url value="/dq/dbstnd/decideItemWam.do"/>';
-				
-			
-			
+			url = '<c:url value="/dq/dbstnd/regitemWamlist.do"/>';
 			
 			var param = $('form[name=mstFrm]').serialize();
 	        IBSpostJson2(url, ibsSaveJson, param, ibscallback);
@@ -738,8 +733,8 @@ function postProcessIBS(res) {
 				    <%-- <button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="STRG" /></button> --%> <!-- 저장 --> 
 				    <button class="btn_delete"  id="btnDelete" 	name="btnDelete"><s:message code="DEL" /></button> <!-- 삭제 -->
 					<button class="btn_inspect" id="btnInspect" name="btnInspect" >검증</button>
-					<button class="btn_decide"  id="btnDecide" 	name="btnDecide">확정</button>
-					<button class="btn_init"    id="btnInit" 	name="btnInit">초기화</button>
+					<button class="btn_decide"  id="btnDecide" 	name="btnDecide" disabled>확정</button>
+					<button class="btn_init"    id="btnInit" 	name="btnInit" disabled>초기화</button>
 				</c:if>
 				
 			</div>
