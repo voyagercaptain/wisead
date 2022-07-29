@@ -88,40 +88,40 @@ $(document).ready(function() {
 	
 	//저장
     $("#btnSave").click( function(){
-    	var bizDtlCd = $("form[name=mstFrm] #bizDtlCd").val();
-    	if(bizDtlCd == "STWD"){
-//         	//표준단어명 중복 저장 확인
-// 			var row = grid_name.ColValueDup("stwdLnm");
-// 			var rows = grid_name.ColValueDupRows("stwdLnm");
-// 			if(row > -1){
-// 			    showMsgBox("CNF", rows+"행에 "+"<s:message code="CNF.DUP.STWDLNM" />"+"</br>","Save");
-// 				return;
-// 			}
-// 			//표준단어 영문약어 중복 저장 확인
-// 			row = grid_name.ColValueDup("stwdPnm");
-// 			rows = grid_name.ColValueDupRows("stwdPnm");
-// 			if(row > -1){
-// 			    showMsgBox("CNF", rows+"행에 "+"<s:message code="CNF.DUP.STWDPNM" />"+"</br>","Save");
-// 				return;
-// 			}
-
-			doAction("Save");
-    	}else{doAction("Save");}
-    	    	
+    	//var bizDtlCd = $("form[name=mstFrm] #bizDtlCd").val();
+		doAction("Save");
     } ).show();
 	
     //삭제
     $("#btnDelete").click( function(){
     	doAction("Delete"); 
     } ).show();
-    
-    
+
+    //검증
+    $("#btnInspect").click( function(){
+	    doAction("Inspect");
+	} ).show();
+
+	//확정
+	$("#btnDecide").click( function(){
+		doAction("Decide");
+	} ).show();
+
+	//초기화
+	$("#btnInit").click( function(){
+		if(confirm("초기화 하시겠습니까?")){
+			doAction("Init");
+		}
+	} ).show();
+
     
     //화면리로드
     $("#btnBlank").click( function(){
 		location.href = '<c:url value="/dq/stnd/stndtot_rqst.do" />';
     } );
-    
+
+	document.getElementById('btnDecide').disabled = true;
+	document.getElementById('btnInit').disabled = true;
 		
  // 결재 Event Bind
 	$("#btnRegRqst").click(function(){
@@ -395,10 +395,12 @@ function doAction(sAction)
         	break;
         
 		case "Search":
+			/*
 			if(frmSearch.orgNm.value == '') {
 				showMsgBox("INF", "기관명을 입력하고 검색해 주세요.");
 				return;
 			}
+			*/
 
 			//프로파일별 url 셋팅
 			var url = "";
@@ -421,8 +423,71 @@ function doAction(sAction)
 // 			console.log(param);
 // 			getRqstVrfLst(param);
 			break;
-			
-		case "Save":  //검증
+
+		case "Inspect":  //검증
+
+			//저장 대상의 데이터를 Json 객체로 반환한다.
+			ibsSaveJson = grid_name.GetSaveJson(0);
+
+			if(ibsSaveJson.data.length == 0){
+				showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
+				return;
+			}
+
+			//프로파일별 url 셋팅
+			var url = "";
+			url = '<c:url value="/dq/stnd/inspectStndItem.do"/>';
+
+			var param = $('form[name=frmSearch]').serialize();
+			//var chkYn = $('input:checkbox[id="chkYn"]:checked').val();
+			//param = param + "&chkYn="+chkYn;
+
+			IBSpostJson2(url, ibsSaveJson, param, ibscallback);
+			break;
+
+		case "Decide":  //확정
+
+			//저장 대상의 데이터를 Json 객체로 반환한다.
+			ibsSaveJson = grid_name.GetSaveJson(1);
+
+			if(ibsSaveJson.data.length == 0){
+				showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
+				return;
+			}
+
+			//프로파일별 url 셋팅
+			var url = "";
+			url = '<c:url value="/dq/stnd/decideStndItem.do"/>';
+
+			var param = $('form[name=frmSearch]').serialize();
+			//var chkYn = $('input:checkbox[id="chkYn"]:checked').val();
+			//param = param + "&chkYn="+chkYn;
+
+			IBSpostJson2(url, ibsSaveJson, param, ibscallback);
+			break;
+
+		case "Init":  //초기화
+
+			//저장 대상의 데이터를 Json 객체로 반환한다.
+			ibsSaveJson = grid_name.GetSaveJson(1);
+
+			if(ibsSaveJson.data.length == 0){
+				showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
+				return;
+			}
+
+			//프로파일별 url 셋팅
+			var url = "";
+			url = '<c:url value="/dq/stnd/initStndItem.do"/>';
+
+			var param = $('form[name=frmSearch]').serialize();
+			//var chkYn = $('input:checkbox[id="chkYn"]:checked').val();
+			//param = param + "&chkYn="+chkYn;
+
+			IBSpostJson2(url, ibsSaveJson, param, ibscallback);
+			break;
+
+		case "Save":   //저장
     		
     		var len = grid_name.RowCount();
 			/* 데이터 타입, 길이 - 도메인에서 가져오기
@@ -442,8 +507,6 @@ function doAction(sAction)
         		}
     		}
     		*/
-
-
 
     		//KeyField 1 인 것 가져오기 => 변경
     		for(var i=0; i < len; i++) {
@@ -548,7 +611,6 @@ function doAction(sAction)
 					}
 				}
 				grid_name.RowDelete(delete_Row, 0);
-				
 				empty_Row_Location.clear
 				vrfed_Row_Location.clear
 			}else if(empty_Row_Location.length == 0 && vrfed_Row_Location.length != 0){
@@ -728,7 +790,14 @@ function postProcessIBS(res) {
 <%--                                 <th scope="row"><label for="objDescn"><s:message code="CONTENT.TXT" /></label></th> <!-- 설명 --> --%>
 <!--                                 <td><input type="text" id="objDescn" name="objDescn" class="wd98p"/></td> -->
 								<th scope="row"><label for="chkYn">검증여부</label></th> <!-- 표준사전명 -->
-                                <td><input type="checkbox" id="chkYn" name="chkYn" class="wd98p" value="1" /></td>
+                                <td><select id="chkYn" name="chkYn" class="wd98p">
+										<option value="">전체</option>
+										<option value="E">검증오류</option>
+									    <option value="Y">검증성공</option>
+									    <option value="N">미검증</option>
+									    <option value="YY">확정</option>
+								    </select>
+								</td>
                             </tr>
                    </tbody>
                  </table>   
@@ -750,12 +819,14 @@ function postProcessIBS(res) {
 					    <li class="btn_excel_load" id="btnExcelLoad"><a><span class="ui-icon ui-icon-document"></span><s:message code="EXCL.UPLOAD" /></a></li> <!-- 엑셀 올리기 -->
 					  </ul>
 
+                    <!--
 				    <button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="STRG" /></button>
+                    -->
 				    <button class="btn_delete" id="btnDelete" 	name="btnDelete"><s:message code="DEL" /></button>
 
-					<button class="btn_inspect" id="btnInspect" 	name="btnInspect" onclick="alert('준비중입니다.');">검증</button>
-					<button class="btn_decide" id="btnDecide" 	name="btnDecide" onclick="alert('준비중입니다.');">확정</button>
-					<button class="btn_init" id="btnInit" 	name="btnInit" onclick="alert('준비중입니다.');">초기화</button>
+					<button class="btn_inspect" id="btnInspect" 	name="btnInspect">검증</button>
+					<button class="btn_decide" id="btnDecide" 	name="btnDecide">확정</button>
+					<button class="btn_init" id="btnInit" 	name="btnInit">초기화</button>
 
 				</c:if>
 

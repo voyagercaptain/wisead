@@ -967,48 +967,48 @@
         <foreach collection="list" item="item" index="index">
         update WAM_DB_DMN
            set
-                DMN_LNM = #{item.dmnLnm,jdbcType=VARCHAR},
-                DMN_PNM = #{item.dmnPnm,jdbcType=VARCHAR},
-                DMNG_ID = #{item.dmngId,jdbcType=VARCHAR},
-                INFOTP_ID = #{item.infotpId,jdbcType=VARCHAR},
-                UPP_DMN_ID = #{item.uppDmnId,jdbcType=VARCHAR},
-                SUBJ_ID = #{item.subjId,jdbcType=VARCHAR},
-                LST_ENTY_ID = #{item.lstEntyId,jdbcType=VARCHAR},
-                LST_ENTY_PNM = #{item.lstEntyPnm,jdbcType=VARCHAR},
-                LST_ENTY_LNM = #{item.lstEntyLnm,jdbcType=VARCHAR},
+                DMN_LNM 	  = #{item.dmnLnm,jdbcType=VARCHAR},
+                DMN_PNM 	  = #{item.dmnPnm,jdbcType=VARCHAR},
+                DMNG_ID 	  = #{item.dmngId,jdbcType=VARCHAR},
+                INFOTP_ID 	  = #{item.infotpId,jdbcType=VARCHAR},
+                UPP_DMN_ID 	  = #{item.uppDmnId,jdbcType=VARCHAR},
+                SUBJ_ID 	  = #{item.subjId,jdbcType=VARCHAR},
+                LST_ENTY_ID   = #{item.lstEntyId,jdbcType=VARCHAR},
+                LST_ENTY_PNM  = #{item.lstEntyPnm,jdbcType=VARCHAR},
+                LST_ENTY_LNM  = #{item.lstEntyLnm,jdbcType=VARCHAR},
                 CD_VAL_TYP_CD = #{item.cdValTypCd,jdbcType=VARCHAR},
                 CD_VAL_IVW_CD = #{item.cdValIvwCd,jdbcType=VARCHAR},
                 SDITM_AUTO_CRT_YN = #{item.sditmAutoCrtYn,jdbcType=VARCHAR},
-                DATA_FRM = #{item.dataFrm,jdbcType=VARCHAR},
-                CRG_USER_ID = #{item.crgUserId,jdbcType=VARCHAR},
-                DMN_ORG_DS = #{item.dmnOrgDs,jdbcType=VARCHAR},
-                RQST_NO = #{item.rqstNo,jdbcType=VARCHAR},
-                RQST_SNO = #{item.rqstSno,jdbcType=DECIMAL},
-                OBJ_DESCN = #{item.objDescn,jdbcType=VARCHAR},
-                OBJ_VERS = #{item.objVers,jdbcType=DECIMAL},
-                REG_TYP_CD = #{item.regTypCd,jdbcType=VARCHAR},
-                FRS_RQST_DTM = #{item.frsRqstDtm,jdbcType=DATE},
+                DATA_FRM 	  = #{item.dataFrm,jdbcType=VARCHAR},
+                CRG_USER_ID   = #{item.crgUserId,jdbcType=VARCHAR},
+                DMN_ORG_DS 	  = #{item.dmnOrgDs,jdbcType=VARCHAR},
+                RQST_NO 	  = #{item.rqstNo,jdbcType=VARCHAR},
+                RQST_SNO 	  = #{item.rqstSno,jdbcType=DECIMAL},
+                OBJ_DESCN 	  = #{item.objDescn,jdbcType=VARCHAR},
+                OBJ_VERS 	  = #{item.objVers,jdbcType=DECIMAL},
+                REG_TYP_CD    = #{item.regTypCd,jdbcType=VARCHAR},
+                FRS_RQST_DTM  = #{item.frsRqstDtm,jdbcType=DATE},
                 FRS_RQST_USER_ID = #{item.frsRqstUserId,jdbcType=VARCHAR},
-                RQST_DTM = #{item.rqstDtm,jdbcType=DATE},
-                RQST_USER_ID = #{item.rqstUserId,jdbcType=VARCHAR},
-                APRV_DTM = #{item.aprvDtm,jdbcType=DATE},
-                APRV_USER_ID = #{item.aprvUserId,jdbcType=VARCHAR},
-                ENC_YN = #{item.encYn,jdbcType=VARCHAR},
-                DMN_DSCD = #{item.dmnDscd,jdbcType=VARCHAR},
-                SAVE_FRM = #{item.saveFrm,jdbcType=VARCHAR},
-                EXPRSN_FRM = #{item.exprsnFrm,jdbcType=VARCHAR},
-                UNIT = #{item.unit,jdbcType=VARCHAR},
-                CD_VAL = #{item.cdVal,jdbcType=VARCHAR},
-                ADMN_STND_CD = #{item.admnStndCd,jdbcType=VARCHAR},
-                DMNG_LNM = #{item.dmngLnm,jdbcType=VARCHAR},
-                INFOTP_LNM = #{item.infotpLnm,jdbcType=VARCHAR},
-                DATA_TYPE = UPPER(#{item.dataType,jdbcType=VARCHAR}),
-                DATA_LEN = #{item.dataLen,jdbcType=DECIMAL},
-                DATA_SCAL = #{item.dataScal,jdbcType=DECIMAL},
-                ORG_NM = #{item.orgNm,jdbcType=VARCHAR},
-                DB_NM = #{item.dbNm,jdbcType=VARCHAR},
-                OWNR_ORG = #{item.ownrOrg,jdbcType=VARCHAR},
-                SPCL_NT = #{item.spclNt,jdbcType=VARCHAR}
+                RQST_DTM 	  = #{item.rqstDtm,jdbcType=DATE},
+                RQST_USER_ID  = #{item.rqstUserId,jdbcType=VARCHAR},
+                APRV_DTM 	  = #{item.aprvDtm,jdbcType=DATE},
+                APRV_USER_ID  = #{item.aprvUserId,jdbcType=VARCHAR},
+                ENC_YN 	  	  = #{item.encYn,jdbcType=VARCHAR},
+                DMN_DSCD 	  = #{item.dmnDscd,jdbcType=VARCHAR},
+                SAVE_FRM 	  = #{item.saveFrm,jdbcType=VARCHAR},
+                EXPRSN_FRM    = #{item.exprsnFrm,jdbcType=VARCHAR},
+                UNIT          = #{item.unit,jdbcType=VARCHAR},
+                CD_VAL        = #{item.cdVal,jdbcType=VARCHAR},
+                ADMN_STND_CD  = #{item.admnStndCd,jdbcType=VARCHAR},
+                DMNG_LNM      = #{item.dmngLnm,jdbcType=VARCHAR},
+                INFOTP_LNM    = #{item.infotpLnm,jdbcType=VARCHAR},
+                DATA_TYPE     = UPPER(#{item.dataType,jdbcType=VARCHAR}),
+                DATA_LEN      = #{item.dataLen,jdbcType=DECIMAL},
+                DATA_SCAL     = #{item.dataScal,jdbcType=DECIMAL},
+                ORG_NM        = #{item.orgNm,jdbcType=VARCHAR},
+                DB_NM         = #{item.dbNm,jdbcType=VARCHAR},
+                OWNR_ORG      = #{item.ownrOrg,jdbcType=VARCHAR},
+                SPCL_NT       = #{item.spclNt,jdbcType=VARCHAR}
         where DMN_ID = #{item.dmnId,jdbcType=VARCHAR}
         </foreach>
     </update>
@@ -1019,5 +1019,16 @@
         where DMN_ID = #{item.dmnId,jdbcType=VARCHAR}
         </foreach>
     </delete>
+    
+  
+  <select id="dupliCheckDbStndItem" resultType="java.util.Map" parameterType="java.util.Map">
+    select ORG_NM
+    FROM WAM_DB_DMN  
+    WHERE INFOTP_LNM = #{infotpLnm,jdbcType=VARCHAR}
+    AND ORG_NM 		 = #{orgNm,jdbcType=VARCHAR}
+    AND DATA_TYPE 	 = #{dataType,jdbcType=VARCHAR}
+    AND DATA_LEN 	 = #{dataLen,jdbcType=VARCHAR}
+    AND CONFIRM_YN   = 'Y'
+  </select>
 
 </mapper>

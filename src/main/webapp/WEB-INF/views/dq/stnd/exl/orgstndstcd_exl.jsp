@@ -36,8 +36,11 @@ function grid_STCD_init() {
 
     with(grid_STCD){
     	
-		var cfg = {SearchMode:2,Page:100};
-		SetConfig(cfg);
+        var cfg = {SearchMode:1,Page:300,UseHeaderSortCancel:1};
+        SetConfig(cfg);
+
+        SetCountPosition(1);
+        SetPagingPosition(2);
 		
 		/*
 		var headtext  = "<s:message code='META.HEADER.STNDWORD.RQST'/>";

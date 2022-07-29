@@ -13,6 +13,8 @@
  */
 package kr.wise.dq.dbstnd.web;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,38 +23,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
-
-import kr.wise.commons.WiseMetaConfig;
-import kr.wise.commons.cmm.LoginVO;
-import kr.wise.commons.cmm.service.EgovIdGnrService;
-import kr.wise.commons.code.service.CmcdCodeService;
-import kr.wise.commons.code.service.CodeListService;
-import kr.wise.commons.code.service.CodeListVo;
-import kr.wise.commons.damgmt.approve.service.ApproveLineServie;
-import kr.wise.commons.damgmt.approve.service.MstrAprPrcVO;
-import kr.wise.commons.damgmt.approve.service.RequestApproveService;
-import kr.wise.commons.damgmt.approve.service.WaaRqstBizApr;
-import kr.wise.commons.helper.UserDetailHelper;
-import kr.wise.commons.helper.grid.IBSResultVO;
-import kr.wise.commons.helper.grid.IBSheetListVO;
-import kr.wise.commons.rqstmst.service.RequestMstService;
-import kr.wise.commons.rqstmst.service.WaqMstr;
-import kr.wise.commons.sysmgmt.basicinfo.service.BasicInfoLvlService;
-import kr.wise.commons.sysmgmt.basicinfo.service.WaaBscLvl;
-import kr.wise.commons.util.UtilJson;
-import kr.wise.commons.util.UtilString;
-import kr.wise.dq.dbstnd.service.DbStndService;
-import kr.wise.dq.dbstnd.service.StndService;
-import kr.wise.dq.dbstnd.service.WamDbSditm;
-import kr.wise.dq.dbstnd.service.WamDbStcd;
-import kr.wise.dq.dbstnd.service.WamDbStwd;
-import kr.wise.dq.dbstnd.service.WapDbDvCanAsm;
-import kr.wise.dq.dbstnd.service.WapDbDvCanDic;
-
-import kr.wise.dq.stnd.service.WapDvCanDic;
-import kr.wise.dq.stnd.service.WaqSditm;
-
-import kr.wise.dq.dbstnd.service.WamDbDmn;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,11 +42,38 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import kr.wise.commons.WiseMetaConfig;
+import kr.wise.commons.cmm.LoginVO;
+import kr.wise.commons.cmm.service.EgovIdGnrService;
+import kr.wise.commons.code.service.CmcdCodeService;
+import kr.wise.commons.code.service.CodeListService;
+import kr.wise.commons.code.service.CodeListVo;
+import kr.wise.commons.damgmt.approve.service.ApproveLineServie;
+import kr.wise.commons.damgmt.approve.service.MstrAprPrcVO;
+import kr.wise.commons.error.ErrorCode;
+import kr.wise.commons.helper.grid.IBSResultVO;
+import kr.wise.commons.helper.grid.IBSheetListVO;
+import kr.wise.commons.rqstmst.service.RequestMstService;
+import kr.wise.commons.rqstmst.service.WaqMstr;
+import kr.wise.commons.sysmgmt.basicinfo.service.BasicInfoLvlService;
+import kr.wise.commons.sysmgmt.basicinfo.service.WaaBscLvl;
+import kr.wise.commons.util.UtilJson;
+import kr.wise.commons.util.ValidationCheck;
+import kr.wise.dq.dbstnd.service.DbStndService;
+import kr.wise.dq.dbstnd.service.StndService;
+import kr.wise.dq.dbstnd.service.WamDbDmn;
+import kr.wise.dq.dbstnd.service.WamDbSditm;
+import kr.wise.dq.dbstnd.service.WamDbStcd;
+import kr.wise.dq.dbstnd.service.WamDbStwd;
+import kr.wise.dq.dbstnd.service.WapDbDvCanAsm;
+import kr.wise.dq.dbstnd.service.WapDbDvCanDic;
+import kr.wise.dq.stnd.service.WaqSditm;
+
 @Controller
 public class DbStndTotRqstCtrl {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
-
+	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 	    binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
@@ -111,6 +108,7 @@ public class DbStndTotRqstCtrl {
 
     @Inject
 	private EgovIdGnrService requestIdGnrService;
+    
 
 	static class WamDbSditms extends HashMap<String, ArrayList<WamDbSditm>> {}
 	
@@ -383,7 +381,9 @@ public class DbStndTotRqstCtrl {
 
 
 		long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
-        
+		logger.debug("DB표준 용어 검증 시작");
+		list = itemValidCheck(list);
+		logger.debug("DB표준 용어 검증 종료");
 		int result = dbStndService.registerItemWam(list, reqmst);
 
 		
@@ -520,7 +520,9 @@ public class DbStndTotRqstCtrl {
 
 		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
 		ArrayList<WamDbDmn> list = data.get("data");
-
+		logger.debug("DB표준 도메인 검증 시작");
+		//list = dmnValidCheck(list);
+		logger.debug("DB표준 도메인 검증 종료");
 		int result = dbStndService.registerDmnWam(list);
 
 
@@ -829,4 +831,199 @@ public class DbStndTotRqstCtrl {
 			
 	    	return body;
 	    }
+	    
+	    //표준용어 유효성 검사 체크
+	    public ArrayList<WamDbSditm> itemValidCheck(ArrayList<WamDbSditm> reglist) {
+	    	ArrayList<String> errorList = new ArrayList<>();
+	    	Map<String, String> params = new HashMap<String, String>();
+			String errorMsg = "";
+	    	for (WamDbSditm saveVo : reglist) {
+	    		// 표준용어 검증
+				errorMsg = ValidationCheck.checkSditmName(saveVo.getSditmLnm());
+				if(errorMsg != "") {
+					errorList.add(errorMsg);
+				}
+				// 표준용어 영문명 검증
+				errorMsg = ValidationCheck.checkSditmEng(saveVo.getPnm());
+				if(errorMsg != "") {
+					errorList.add(errorMsg);
+				}
+				// 표준 용어 영문 약어명 검증
+				errorMsg = ValidationCheck.checkSditmInit(saveVo.getSditmPnm());
+				if(errorMsg != "") {
+					errorList.add(errorMsg);
+				}
+				// 표준 용어 설명 검증
+				errorMsg = ValidationCheck.checkSditmDesc(saveVo.getObjDescn(),saveVo.getSditmLnm());
+				if(errorMsg != "") {
+					errorList.add(errorMsg);
+				}
+				// 표준 용어 제정일자 검증
+				errorMsg = ValidationCheck.checkSditmDateDate(saveVo.getRqstDtm());
+				if(errorMsg != "") {
+					errorList.add(errorMsg);
+				}
+				
+				//표준 도메인 검증
+				String orgNm     = saveVo.getOrgNm();
+				String domainNm  = saveVo.getInfotpLnm();
+		    	errorMsg         = "";
+		    	
+		    	
+		    	if(!"".equals(orgNm) && !"".equals(domainNm)) {
+		    		
+			    	params.put("domainNm", domainNm);
+			    	params.put("orgNm", orgNm);
+			    	Map<String, String> domainResult = dbStndService.selectDbDomainDataType(params);
+					
+			    	if(domainResult != null) {
+			    		saveVo.setDataType(domainResult.get("DATA_TYPE"));
+			    		saveVo.setDataLen(Integer.parseInt(String.valueOf(domainResult.get("DATA_LEN"))));
+			    	}else {
+			    		errorMsg = ErrorCode.ERROR_DMN_TYPE_LENGTH_ERROR.getMessage();
+			    	}
+		    	}
+		    	if(errorMsg != "") {
+					errorList.add(errorMsg);
+				}
+		    	
+		    	//DB표준용어 중복 확인 기관명+표준용어명+영문약어명+표준도메인명이 중복이 되면 안된다.
+		    	if(saveVo.getConfirmYn() == "N") {
+		    		params = new HashMap<String, String>();
+		    		params.put("orgNm", saveVo.getOrgNm()); 	    // 기관명
+		    		params.put("sditmLnm", saveVo.getSditmLnm());   //표준용어명
+		    		params.put("sditmPnm", saveVo.getSditmPnm());   //영문약어명
+		    		params.put("infotpLnm", saveVo.getInfotpLnm()); //표준도메인명이
+		    		Map<String, String> map = dbStndService.dupliCheckDbStndItem(params);
+		    		if(map != null) {
+		    			errorMsg = ErrorCode.ERROR_ITEM_DUP.getMessage();
+		    		}else {
+		    			errorMsg = "";
+		    		}
+		    	
+		    		if(errorMsg != "") {
+		    			errorList.add(errorMsg);
+		    		}
+		    	}
+		    	
+		    	if(errorList.size() > 0) {
+		    		saveVo.setValidYn("E");
+		    		saveVo.setConfirmYn("N");
+		    		saveVo.setErrChk(errorList.toString().replaceAll("\\[", "").replaceAll("\\]", ""));
+		    	}else {
+		    		saveVo.setValidYn("Y");
+		    		saveVo.setErrChk(errorMsg);
+		    		if(saveVo.getConfirmYn() == "Y") {
+		    			saveVo.setConfirmYn("Y");
+		    		}else {
+		    			saveVo.setConfirmYn("N");
+		    		}
+		    	}
+	    	}
+			return reglist;
+	    }
+	    
+	    
+	    
+	    //표준도메인 유효성 검사 체크
+	    public ArrayList<WamDbDmn> dmnValidCheck(ArrayList<WamDbDmn> reglist) {
+	    	ArrayList<String> errorList = new ArrayList<>();
+	    	Map<String, String> params = new HashMap<String, String>();
+			String errorMsg = "";
+	    	for (WamDbDmn saveVo : reglist) {
+	    		// 표준도메인 검증
+				errorMsg = ValidationCheck.checkDmnName(saveVo.getInfotpLnm());
+				if(errorMsg != "") {
+					errorList.add(errorMsg);
+				}
+				// 데이터 타입 검증
+				errorMsg = ValidationCheck.checkDmnType(saveVo.getDataType());
+				if(errorMsg != "") {
+					errorList.add(errorMsg);
+				}
+				// 데이터 길이 거증
+				errorMsg = ValidationCheck.checkSditmInit(saveVo.getDataLen().toString());
+				if(errorMsg != "") {
+					errorList.add(errorMsg);
+				}
+				
+				// 표준 도메인 제정일자 검증
+				errorMsg = ValidationCheck.checkSditmDateDate(saveVo.getRqstDtm());
+				if(errorMsg != "") {
+					errorList.add(errorMsg);
+				}
+		    	
+		    	//DB표준도메인 중복 확인 기관명+도메인명+데이터타입+데이터길이 중복이 되면 안된다.
+				if(saveVo.getConfirmYn() == "N") {
+					params = new HashMap<String, String>();
+					params.put("orgNm", saveVo.getOrgNm()); 	   		  // 기관명
+					params.put("dataType", saveVo.getDataType());         // 데이터타입
+					params.put("dataLen", saveVo.getDataLen().toString());// 데이터길이
+					params.put("infotpLnm", saveVo.getInfotpLnm()); 	  // 도메인명
+					Map<String, String> map = dbStndService.dupliCheckDbStndDmn(params);
+					if(map != null) {
+						errorMsg = ErrorCode.ERROR_ITEM_DUP.getMessage();
+					}else {
+						errorMsg = "";
+					}
+		    	
+					if(errorMsg != "") {
+						errorList.add(errorMsg);
+					}
+				}
+		    	
+		    	if(errorList.size() > 0) {
+		    		saveVo.setValidYn("E");
+		    		saveVo.setConfirmYn("N");
+		    		saveVo.setErrChk(errorList.toString().replaceAll("\\[", "").replaceAll("\\]", ""));
+		    	}else {
+		    		saveVo.setValidYn("Y");
+		    		saveVo.setErrChk(errorMsg);
+		    		if(saveVo.getConfirmYn() == "Y") {
+		    			saveVo.setConfirmYn("Y");
+		    		}else {
+		    			saveVo.setConfirmYn("N");
+		    		}
+		    	}
+	    	}
+			return reglist;
+	    }
+	    
+	    
+	    /** 표준항목 리스트 등록 @throws Exception insomnia */
+	    @RequestMapping("/dq/dbstnd/decideItemWam.do")
+	    @ResponseBody
+		public IBSResultVO<WaqMstr> decideItemWam(@RequestBody WamDbSditms data, WaqMstr reqmst, Locale locale) throws Exception {
+
+			logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+			ArrayList<WamDbSditm> list = data.get("data");
+
+
+			long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
+			logger.debug("DB표준 용어 검증 시작");
+			list = itemValidCheck(list);
+			logger.debug("DB표준 용어 검증 종료");
+			int result = dbStndService.decideItemWam(list, reqmst);
+
+			
+			String resmsg;
+
+			if(result > 0 ){
+				result = 0;
+				resmsg = message.getMessage("MSG.SAVE", null, locale);
+			} else {
+				result = -1;
+				resmsg = message.getMessage("ERR.SAVE", null, locale);
+			}
+			
+			String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+			
+			long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+			long secDiffTime = (afterTime - beforeTime)/1000; //두 시간에 차 계산
+			logger.debug("시간차이(m): {}", secDiffTime);
+			
+			return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+		}
+	    
+	  
 }

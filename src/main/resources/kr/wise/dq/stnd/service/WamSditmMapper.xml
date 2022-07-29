@@ -52,6 +52,8 @@
     <result column="BSNSS_FLD"        property="bsnssFld"      jdbcType="VARCHAR" />
     <result column="PNM"        property="pnm"      jdbcType="VARCHAR" />
     <result column="ERR_CHK"        property="errChk"      jdbcType="VARCHAR" />
+    <result column="VALID_YN"        property="validYn"      jdbcType="VARCHAR" />
+    <result column="CONFIRM_YN"        property="confirmYn"      jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     SDITM_ID, SDITM_LNM, SDITM_PNM, LNM_CRI_DS, DMN_ID, DMNG_ID, INFOTP_ID, INFOTP_CHG_YN, 
@@ -489,7 +491,17 @@ SELECT *
       
     where SDITM_ID = #{sditmId,jdbcType=VARCHAR}
   </update>
-  
+
+  <select id="selectDupSditmCount" parameterType="kr.wise.dq.stnd.service.WamSditm" resultType="java.lang.Integer">
+      SELECT
+        COUNT(SDITM_LNM)
+      FROM WAM_SDITM
+      WHERE 1 = 1
+        AND ORG_NM = #{orgNm,jdbcType=VARCHAR}
+        AND SDITM_LNM = #{sditmLnm,jdbcType=VARCHAR}
+        AND CONFIRM_YN = 'Y'
+  </select>
+
   <select id="selectSditmList" parameterType="kr.wise.dq.stnd.service.WamSditm" resultMap="BaseResultMap">
   SELECT * 
   FROM
@@ -513,21 +525,12 @@ SELECT *
              ,A.APRV_DTM
              ,A.APRV_USER_ID
              ,A.PNM_CRI_DS
-<!-- 		     ,B.DMN_LNM -->
-<!-- 		     ,B.DMN_PNM -->
 		     ,A.DATA_TYPE
 		     ,A.DATA_LEN
 		     ,A.DATA_SCAL
 		     ,(SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.FRS_RQST_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS FRS_RQST_USER_NM
 	    	 ,(SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.RQST_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS RQST_USER_NM
 	    	 ,(SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.APRV_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS APRV_USER_NM
-<!-- 	    	 ,G.DMNG_LNM -->
-<!-- 	    	 ,G.DMNG_PNM -->
-<!-- 	    	 ,G.UPP_DMNG_ID -->
-<!-- 	    	 ,G.UPP_DMNG_LNM -->
-	    	 -- ,I.ITM_ENG_MEAN ||'_'|| DD.DMN_ENG_MEAN AS FULL_ENG_MEAN	    
-<!-- 	    	 ,IFNULL(B.ENC_YN,'N') ENC_YN	 -->
-<!--  	    	 ,IFNULL(B.PERS_INFO_YN,'N') PERS_INFO_YN      -->
 			 ,A.INFOTP_LNM, A.ALW_VAL, A.OWNR_ORG, A.ADMN_STND_CD
 			 ,A.SAVE_FRM, A.EXPRSN_FRM, A.UNIT, A.ORG_NM
 			 ,A.VRF_RMK
@@ -537,46 +540,30 @@ SELECT *
       		 , BSNSS_FLD
       		 , PNM
       		 , ERR_CHK
+	         , VALID_YN
+             , CONFIRM_YN
 		FROM WAM_SDITM A 
 		WHERE 1 = 1
 		  <if test='!"2".equals(usergId) and !"3".equals(usergId)' >	 
 		  	AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
 		  </if>
-		
-<!-- 	    LEFT OUTER JOIN WAM_DMN B -->
-<!-- 	       ON A.DMN_ID = B.DMN_ID  -->
-<!--           AND A.REG_TYP_CD IN ('C', 'U') -->
-<!--           AND B.REG_TYP_CD IN ('C', 'U') -->
-<!--   	     LEFT OUTER JOIN WAA_DMNG_INFOTP_MAP C
-  	       ON A.DMNG_ID = C.DMNG_ID
-  	      AND A.INFOTP_ID = C.INFOTP_ID
-            AND A.REG_TYP_CD IN ('C', 'U')
-            AND C.EXP_DTM = DATE_FORMAT( '9999-12-31', '%Y-%m-%d')
-	     LEFT OUTER JOIN WAA_INFO_TYPE D
-	       ON A.INFOTP_ID = D.INFOTP_ID 
-          AND D.EXP_DTM = DATE_FORMAT( '9999-12-31', '%Y-%m-%d')
-         LEFT OUTER JOIN V_WAA_DMNG G
-           ON A.DMNG_ID = G.DMNG_ID -->
-<!--          LEFT OUTER JOIN (SELECT A.OBJ_ID -->
-<!--                          ,LISTAGG(B.ENG_MEAN, '_') WITHIN GROUP (ORDER BY A.WD_SNO) AS ITM_ENG_MEAN -->
-<!--                     FROM WAM_STWD_CNFG A -->
-<!--                          INNER JOIN WAM_STWD B -->
-<!--                             ON A.STWD_ID = B.STWD_ID -->
-<!--                            AND B.REG_TYP_CD IN ('C','U') -->
-<!--                    GROUP BY A.OBJ_ID) I -->
-<!--            ON A.SDITM_ID = I.OBJ_ID -->
-<!--          LEFT OUTER JOIN (SELECT A.OBJ_ID -->
-<!--                                  ,LISTAGG(B.ENG_MEAN, '_') WITHIN GROUP (ORDER BY A.WD_SNO) AS DMN_ENG_MEAN -->
-<!--                             FROM WAM_STWD_CNFG A -->
-<!--                                  INNER JOIN WAM_STWD B -->
-<!--                                     ON A.STWD_ID = B.STWD_ID -->
-<!--                                    AND B.REG_TYP_CD IN ('C','U') -->
-<!--                            GROUP BY A.OBJ_ID ) DD -->
-<!--            ON A.DMN_ID = DD.OBJ_ID -->
-           
-           ) FSQ -- 임시 Alias
+          <if test="chkYn eq 'E'.toString()" >
+            AND VALID_YN = 'E'
+          </if>
+          <if test="chkYn eq 'Y'.toString()" >
+            AND VALID_YN = 'Y'
+          </if>
+          <if test="chkYn eq 'N'.toString()" >
+            AND (VALID_YN IS NULL OR VALID_YN = 'N')
+          </if>
+          <if test="chkYn eq 'YY'.toString()" >
+            AND CONFIRM_YN = 'Y'
+          </if>
+
+          ) FSQ -- 임시 Alias
   <where>
   <trim prefix="" suffix="" suffixOverrides="," >
+
   	<if test="sditmId != null" >
       AND SDITM_ID = #{sditmId,jdbcType=VARCHAR}
     </if>
@@ -613,12 +600,6 @@ SELECT *
     <if test="encYn != null" >
       AND ENC_YN = #{encYn,jdbcType=VARCHAR}
     </if>
-<!--     <if test="rqstNo != null" > -->
-<!--       AND RQST_NO = #{rqstNo,jdbcType=VARCHAR} -->
-<!--     </if> -->
-<!--     <if test="rqstSno != null" > -->
-<!--       AND RQST_SNO = #{rqstSno,jdbcType=DECIMAL} -->
-<!--     </if> -->
     <if test="objDescn != null" >
       AND OBJ_DESCN LIKE CONCAT('%' , #{objDescn,jdbcType=VARCHAR} , '%')
     </if>
@@ -950,7 +931,9 @@ SELECT *
       SPCL_NT,
       BSNSS_FLD,
       PNM,
-      ERR_CHK
+      ERR_CHK,
+       VALID_YN,
+       CONFIRM_YN
       )
       values
     <foreach collection="list" item="item" index="index" separator=",">
@@ -991,7 +974,9 @@ SELECT *
         #{item.spclNt,jdbcType=VARCHAR},
         #{item.bsnssFld,jdbcType=VARCHAR},
         #{item.pnm,jdbcType=VARCHAR},
-        #{item.errChk,jdbcType=VARCHAR}
+        #{item.errChk,jdbcType=VARCHAR},
+        #{item.validYn,jdbcType=VARCHAR},
+        #{item.confirmYn,jdbcType=VARCHAR}
       )
     </foreach>
   </insert>
@@ -1034,8 +1019,22 @@ SELECT *
         SPCL_NT = #{item.spclNt,jdbcType=VARCHAR},
         BSNSS_FLD = #{item.bsnssFld,jdbcType=VARCHAR},
         PNM = #{item.pnm,jdbcType=VARCHAR},
-        ERR_CHK = #{item.errChk,jdbcType=VARCHAR}
+        ERR_CHK = #{item.errChk,jdbcType=VARCHAR},
+        VALID_YN = #{item.validYn,jdbcType=VARCHAR},
+      <if test="item.confirmYn eq 'Y'.toString()" >
+        CONFIRM_DTM = SYSDATE,
+      </if>
+        CONFIRM_YN =  #{item.confirmYn,jdbcType=VARCHAR}
     where SDITM_ID = #{item.sditmId,jdbcType=VARCHAR}
+    </foreach>
+  </update>
+
+  <update id="bulkUpdateConfirm" parameterType="java.util.List" >
+    <foreach collection="list" item="item" index="index">
+      update WAM_SDITM
+      set CONFIRM_DTM = SYSDATE,
+      CONFIRM_YN =  'Y'
+      where SDITM_ID = #{item.sditmId,jdbcType=VARCHAR}
     </foreach>
   </update>
 
@@ -1045,5 +1044,6 @@ SELECT *
     where SDITM_ID = #{item.sditmId,jdbcType=VARCHAR}
     </foreach>
   </delete>
+
 
 </mapper>

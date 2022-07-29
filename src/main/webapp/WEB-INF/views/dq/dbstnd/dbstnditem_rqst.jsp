@@ -138,15 +138,31 @@ $(document).ready(function() {
     	}else{doAction("Save");}
     	    	
     } ).show();
+	//검증
+    $("#btnInspect").click( function(){
+    	doAction("Save");
+    } ).show();
 	
+ 	 //확정
+    $("#btnDecide").click( function(){
+    	doAction("Decide");
+    } ).show();
+
+	 //초기화
+    $("#btnInit").click( function(){
+   		if(confirm("초기화 하시겠습니까?")){
+   			doAction("Delete");
+   		}
+    } ).show();
+    
     //삭제
     $("#btnDelete").click( function(){
     	doAction("Delete"); 
     } ).show();
     
     
-    
-    
+    document.getElementById('btnDecide').disabled = true;
+    document.getElementById('btnInit').disabled = true;
     //화면리로드
     $("#btnBlank").click( function(){
 		location.href = '<c:url value="/dq/dbstnd/stndtot_rqst.do" />';
@@ -374,12 +390,6 @@ function doAction(sAction)
 				showMsgBox("INF", "기관명을 입력하고 검색해 주세요.");
 				return;
 			}
-			/*
-			if(frmSearch.dbNm.value == '') {
-				showMsgBox("INF", "DB명을 선택하고 검색해 주세요.");
-				return;
-			}
-			*/
 
 			//프로파일별 url 셋팅
 			var url = "";
@@ -405,51 +415,6 @@ function doAction(sAction)
 			
     	case "Save":  //검증
     		var len = grid_name.RowCount();
-    		for(var i = 0; i < len; i++) {
-    			var dataType = grid_name.GetCellValue(i+1,"dataType");
-        		var dataLen = grid_name.GetCellValue(i+1,"dataLen");
-        		//var orgNm = grid_name.GetCellValue(i+1,"orgNm");
-        		var orgNm = "${userOrg.orgNm}";
-        		var sditmLnm = grid_name.GetCellValue(i+1,"sditmLnm"); //표준용어명
-        		var infotpLnm = grid_name.GetCellValue(i+1,"infotpLnm"); //표준도메인명
-
-        		console.log("dataType:" + dataType + ", dataLen:" + dataLen);
-        		
-        		if(infotpLnm != "" && (dataLen == "" || dataType == "")) {
-	        		//도메인 조회
-	        		var param = {"orgNm":orgNm, "domainNm":infotpLnm, "dataType":dataType, "dataLen":dataLen};
-	        		getDomainDataType(param, i+1);
-        		}
-    		}
-    		
-    		//KeyField 1 인 것 가져오기 orgNm sditmLnm  pnm sditmPnm  objDescn 
-    		for(var i=0; i < len; i++) {
-    			var str = "";
-    			for(var j=0; j < colsCount; j++) {
-    				var KeyField = grid_name.GetCellProperty(i+1, j+1, "KeyField");
-    				var SaveName = grid_name.GetCellProperty(i+1, j+1, "SaveName");
-    				
-    				if(KeyField == "1") {
-    					var SaveNameValue = grid_name.GetCellValue(i+1, SaveName);
-    					if(str == "") {
-    						str += SaveNameValue == "" ? headerText[j+1]:"";
-    					} else {
-    						str += SaveNameValue == "" ? ", " + headerText[j+1]:"";
-    					}
-    				}
-    			}
-    			
-    			var errChk = grid_name.GetCellValue(i+1, "errChk");
-    			if(str != "") {
-    				if(errChk != "") {
-    					str = errChk + ", " + str +  " 누락";
-    				} else {
-    					str += " 누락";	
-    				}
-    				grid_name.SetCellValue(i+1,"errChk", str);
-    				grid_name.SetRowFontColor(i+1,"#FF0000");
-    			}
-    		}
     		
     		//저장 대상의 데이터를 Json 객체로 반환한다.
 			ibsSaveJson = grid_name.GetSaveJson(0);
@@ -465,23 +430,29 @@ function doAction(sAction)
 			//프로파일별 url 셋팅
 			var url = "";
 			
-			/*
-			var row = grid_name.ColValueDup("orgNm|dbNm|sditmLnm|sditmPnm");
-			var rows = grid_name.ColValueDupRows("orgNm|dbNm|sditmLnm|sditmPnm");
+			url = '<c:url value="/dq/dbstnd/regitemWamlist.do"/>';
 			
-			//alert(rows);
+			var param = $('form[name=mstFrm]').serialize();
+	        IBSpostJson2(url, ibsSaveJson, param, ibscallback);
+	        
+        	break;
+    	case "Decide":  //확정
+    		var len = grid_name.RowCount();
+    		
+    		//저장 대상의 데이터를 Json 객체로 반환한다.
+			ibsSaveJson = grid_name.GetSaveJson(0);
+    	
+    		//2. 필수입력 누락인 경우
+			if (ibsSaveJson.Code == "IBS010") return;
 			
-			if(row>0){
-			    showMsgBox("INF","<s:message code="ERR.DUP" />"+"(용어명)"+"</br>"+rows+"행");
-			    var rowsArr = rows.split(",");
-			    for(var i=0 ; i< rowsArr.length; i++){
-			        grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
-			        grid_name.SetCellValue(rowsArr[i],"vrfRmk","중복데이터");
-			    }
+			if(ibsSaveJson.data.length == 0){
+				showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
 				return;
 			}
-			*/
-			url = '<c:url value="/dq/dbstnd/regitemWamlist.do"/>';
+
+			//프로파일별 url 셋팅
+			var url = "";
+			url = '<c:url value="/dq/dbstnd/decideItemWam.do"/>';
 				
 			
 			
@@ -489,7 +460,20 @@ function doAction(sAction)
 			var param = $('form[name=mstFrm]').serialize();
 	        IBSpostJson2(url, ibsSaveJson, param, ibscallback);
 	        
-// 	        $("#BTNREGRQST").show();
+        	break;
+       
+    	case "Init":  //초기화
+    		//저장 대상의 데이터를 Json 객체로 반환한다.
+			ibsSaveJson = grid_name.GetSaveJson(0);
+    	
+    	
+			//프로파일별 url 셋팅
+			var url = "";
+			url = '<c:url value="/dq/dbstnd/InitItemWam.do"/>';
+			
+			var param = $('form[name=mstFrm]').serialize();
+	        IBSpostJson2(url,ibsSaveJson, param, ibscallback);
+	        
         	break;
         	
     	case "Delete" :
@@ -681,7 +665,9 @@ function postProcessIBS(res) {
                    <col style="width:10%;" />
                    <col style="width:20%;" />
                    <col style="width:10%;" />
-                   <col style="width:20%;" />
+                   <col style="width:10%;" />
+                   <col style="width:10%;" />
+                   <col style="width:10%;" />
                    <col style="width:10%;" />
                    <col style="width:20%;" />
                    </colgroup>
@@ -705,14 +691,22 @@ function postProcessIBS(res) {
 								
 							<th scope="row"><label for="dbNm">DB명</label></th> <!-- 사전유형 -->
                             <td >
-                                <!-- 
-                                <input type="text" id="dbNm" name="dbNm" class="wd98p" value="${dbNm}" />
-                                 -->
                                 <select id="dbNm" class="" name="dbNm">
                                 	<option value="">전체</option>
 	 							<c:forEach var="userDbList" items="${userDbList}" varStatus="status">
 	 							  <option value="${userDbList.dbNm}">${userDbList.dbNm}</option>
 	 							</c:forEach> 
+	 					 		</select> 
+							</td>
+							
+							<th scope="row"><label for="dbNm">검증 여부</label></th> <!-- 사전유형 -->
+                            <td >
+                                <select id="vcWh" class="" name="vcWh" style ="width:100%;">
+                                  <option value="">전체</option>
+	 							  <option value="E">검증오류</option>
+	 							  <option value="Y">검증성공</option>
+	 							  <option value="N">미검증</option>
+	 							  <option value="YY">확정</option>
 	 					 		</select> 
 							</td>
 							
@@ -741,12 +735,11 @@ function postProcessIBS(res) {
 					    <li class="btn_chang_add" id="btnChangAdd"><a><span class="ui-icon ui-icon-folder-open"></span><s:message code="CHG.TRGT.ADDT" /></a></li> <!-- 변경대상 추가 -->
 					    <li class="btn_excel_load" id="btnExcelLoad"><a><span class="ui-icon ui-icon-document"></span><s:message code="EXCL.UPLOAD" /></a></li> <!-- 엑셀 올리기 -->
 					  </ul>         
-				    <button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="STRG" /></button> <!-- 저장 --> 
-				    <button class="btn_delete" id="btnDelete" 	name="btnDelete"><s:message code="DEL" /></button> <!-- 삭제 -->
-
-					<button class="btn_inspect" id="btnInspect" 	name="btnInspect" onclick="alert('준비중입니다.');">검증</button>
-					<button class="btn_decide" id="btnDecide" 	name="btnDecide" onclick="alert('준비중입니다.');">확정</button>
-					<button class="btn_init" id="btnInit" 	name="btnInit" onclick="alert('준비중입니다.');">초기화</button>
+				    <%-- <button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="STRG" /></button> --%> <!-- 저장 --> 
+				    <button class="btn_delete"  id="btnDelete" 	name="btnDelete"><s:message code="DEL" /></button> <!-- 삭제 -->
+					<button class="btn_inspect" id="btnInspect" name="btnInspect" >검증</button>
+					<button class="btn_decide"  id="btnDecide" 	name="btnDecide">확정</button>
+					<button class="btn_init"    id="btnInit" 	name="btnInit">초기화</button>
 				</c:if>
 				
 			</div>

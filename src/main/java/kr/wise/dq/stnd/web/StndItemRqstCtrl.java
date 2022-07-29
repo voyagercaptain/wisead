@@ -467,7 +467,80 @@ public class StndItemRqstCtrl {
 //
 //    	return new IBSheetListVO<WaqSditm>(list, list.size());
 //    }
-    
+
+	/** 표준항목 리스트 검증  */
+	@RequestMapping("/dq/stnd/inspectStndItem.do")
+	@ResponseBody
+	public IBSResultVO<WaqMstr> inspectStndItem(@RequestBody WamSditms data, WaqMstr reqmst, Locale locale) throws Exception {
+
+		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+		ArrayList<WamSditm> list = data.get("data");
+
+		logger.debug("검증 시작");
+		stndItemRqstService.registerWamCheck(list, reqmst);
+		logger.debug("검증 종료");
+
+		int result = stndItemRqstService.registerWam(list, reqmst);
+		String resmsg;
+
+		if(result > 0 ){
+			result = 0;
+			resmsg = message.getMessage("MSG.SAVE", null, locale);
+		} else {
+			result = -1;
+			resmsg = message.getMessage("ERR.SAVE", null, locale);
+		}
+		String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+
+		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+	}
+
+	/** 표준항목 리스트 확정  */
+	@RequestMapping("/dq/stnd/decideStndItem.do")
+	@ResponseBody
+	public IBSResultVO<WaqMstr> decideStndItem(@RequestBody WamSditms data, WaqMstr reqmst, Locale locale) throws Exception {
+
+		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+		ArrayList<WamSditm> list = data.get("data");
+
+		int result = stndItemRqstService.decideStndItm(list, reqmst);
+		String resmsg;
+
+		if(result > 0 ){
+			result = 0;
+			resmsg = message.getMessage("MSG.SAVE", null, locale);
+		} else {
+			result = -1;
+			resmsg = message.getMessage("ERR.SAVE", null, locale);
+		}
+		String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+
+		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+	}
+
+	/** 표준항목 리스트 초기화  */
+	@RequestMapping("/dq/stnd/initStndItem.do")
+	@ResponseBody
+	public IBSResultVO<WaqMstr> initStndItem(@RequestBody WamSditms data, WaqMstr reqmst, Locale locale) throws Exception {
+
+		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+		ArrayList<WamSditm> list = data.get("data");
+
+		int result = stndItemRqstService.initStndItm(list, reqmst);
+		String resmsg;
+
+		if(result > 0 ){
+			result = 0;
+			resmsg = message.getMessage("MSG.SAVE", null, locale);
+		} else {
+			result = -1;
+			resmsg = message.getMessage("ERR.SAVE", null, locale);
+		}
+		String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+
+		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+	}
+
     
     /** 표준항목 리스트 등록 @throws Exception insomnia */
     @RequestMapping("/dq/stnd/regitemWamlist.do")

@@ -43,6 +43,7 @@ public class WamDbSditm extends CommonVo {
     
     private String alwVal;
     
+    private String vcWh;
 //    private String rqstNo;
 //
 //    private Integer rqstSno;
@@ -86,6 +87,13 @@ public class WamDbSditm extends CommonVo {
     
     private String usergId;
     
+    private String errChk;
+    
+    private String validYn;
+    
+    private String confirmYn;
+    
+    private String confirmDtm ;
         
     public String getUsergId() {
 		return usergId;
@@ -522,22 +530,6 @@ public class WamDbSditm extends CommonVo {
 		this.testDataCnvYn = testDataCnvYn;
 	}
 
-	@Override
-	public String toString() {
-		return "WamSditm [sditmId=" + sditmId + ", sditmLnm=" + sditmLnm
-				+ ", sditmPnm=" + sditmPnm + ", notsditmLnm=" + notsditmLnm
-				+ ", notsditmPnm=" + notsditmPnm + ", lnmCriDs=" + lnmCriDs
-				+ ", pnmCriDs=" + pnmCriDs + ", dmnId=" + dmnId + ", dmngId="
-				+ dmngId + ", dmngLnm=" + dmngLnm + ", infotpId=" + infotpId
-				+ ", infotpLnm=" + infotpLnm + ", infotpChgYn=" + infotpChgYn
-				+ ", encYn=" + encYn + ", stndInfoYn=" + stndInfoYn
-				+ ", dataLen=" + dataLen + ", dataScal=" + dataScal
-				+ ", dataType=" + dataType + ", dmnPnm=" + dmnPnm + ", dmnLnm="
-				+ dmnLnm + ", uppDmngId=" + uppDmngId + ", uppDmngLnm="
-				+ uppDmngLnm + ", fullEngMean=" + fullEngMean + ", transYn="
-				+ transYn + ", reqStr=" + reqStr + ", testDataCnvYn="
-				+ testDataCnvYn + "]";
-	}
 
 	public String getBzwkFld() {
 		return bzwkFld;
@@ -570,6 +562,68 @@ public class WamDbSditm extends CommonVo {
 	public void setAlwVal(String alwVal) {
 		this.alwVal = alwVal;
 	}
+
+	public String getErrChk() {
+		return errChk;
+	}
+
+	public void setErrChk(String errChk) {
+		this.errChk = errChk;
+	}
+
+	public String getValidYn() {
+		return validYn;
+	}
+
+	public void setValidYn(String validYn) {
+		this.validYn = validYn;
+	}
+
+	public String getConfirmYn() {
+		return confirmYn;
+	}
+
+	public void setConfirmYn(String confirmYn) {
+		this.confirmYn = confirmYn;
+	}
+
+	public String getConfirmDtm() {
+		return confirmDtm;
+	}
+
+	public void setConfirmDtm(String confirmDtm) {
+		this.confirmDtm = confirmDtm;
+	}
+
+	public String getVcWh() {
+		return vcWh;
+	}
+
+	public void setVcWh(String vcWh) {
+		this.vcWh = vcWh;
+	}
+
+	@Override
+	public String toString() {
+		return "WamDbSditm [sditmId=" + sditmId + ", sditmLnm=" + sditmLnm + ", sditmPnm=" + sditmPnm + ", notsditmLnm="
+				+ notsditmLnm + ", notsditmPnm=" + notsditmPnm + ", lnmCriDs=" + lnmCriDs + ", pnmCriDs=" + pnmCriDs
+				+ ", dmnId=" + dmnId + ", dmngId=" + dmngId + ", dmngLnm=" + dmngLnm + ", infotpId=" + infotpId
+				+ ", infotpLnm=" + infotpLnm + ", infotpChgYn=" + infotpChgYn + ", encYn=" + encYn + ", stndInfoYn="
+				+ stndInfoYn + ", bzwkFld=" + bzwkFld + ", ownrOrg=" + ownrOrg + ", admnStndCd=" + admnStndCd
+				+ ", saveFrm=" + saveFrm + ", exprsnFrm=" + exprsnFrm + ", unit=" + unit + ", alwVal=" + alwVal
+				+ ", vcWh=" + vcWh + ", dataLen=" + dataLen + ", dataScal=" + dataScal + ", userId=" + userId
+				+ ", stndCd=" + stndCd + ", spclNt=" + spclNt + ", bsnssFld=" + bsnssFld + ", pnm=" + pnm + ", orgCd="
+				+ orgCd + ", orgNm=" + orgNm + ", usergId=" + usergId + ", errChk=" + errChk + ", validYn=" + validYn
+				+ ", confirmYn=" + confirmYn + ", confirmDtm=" + confirmDtm + ", dataType=" + dataType + ", dmnPnm="
+				+ dmnPnm + ", dmnLnm=" + dmnLnm + ", uppDmngId=" + uppDmngId + ", uppDmngLnm=" + uppDmngLnm
+				+ ", fullEngMean=" + fullEngMean + ", transYn=" + transYn + ", reqStr=" + reqStr + ", testDataCnvYn="
+				+ testDataCnvYn + ", persInfoCnvYn=" + persInfoCnvYn + ", persInfoGrd=" + persInfoGrd + ", oraDataType="
+				+ oraDataType + ", msDataType=" + msDataType + ", myDataType=" + myDataType + ", dupYn=" + dupYn
+				+ ", persInfoYn=" + persInfoYn + "]";
+	}
+
+	
+	
 
     
 }
