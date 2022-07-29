@@ -42,7 +42,9 @@ function getCookie(name)
 
 
 $(document).ready(function() {
-	
+	//확정,초기화 disabled 처리
+	document.getElementById('btnDecide').disabled = true;
+    document.getElementById('btnInit').disabled = true;
 	//탭 초기화....
 	//$( "#tabs" ).tabs();
 
@@ -161,8 +163,6 @@ $(document).ready(function() {
     } ).show();
     
     
-    document.getElementById('btnDecide').disabled = true;
-    document.getElementById('btnInit').disabled = true;
     //화면리로드
     $("#btnBlank").click( function(){
 		location.href = '<c:url value="/dq/dbstnd/stndtot_rqst.do" />';
@@ -449,7 +449,7 @@ function doAction(sAction)
 				showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
 				return;
 			}
-
+			$("#decideYn").val("Y");
 			//프로파일별 url 셋팅
 			var url = "";
 			url = '<c:url value="/dq/dbstnd/decideItemWam.do"/>';
@@ -774,9 +774,10 @@ function postProcessIBS(res) {
 	<div id = "Msthidden" style="display:none;">
 	<form name="mstFrm" id="mstFrm">
 				<!-- 전체승인 및 전체반려시 승인/반려 및 반려 사유를 마스터에서 처리한다. -->
-				<input type="hidden" name="rvwStsCd" id="rvwStsCd">
-				<input type="hidden" name="rvwConts" id="rvwConts">
+				<input type="hidden" name="rvwStsCd"   id="rvwStsCd">
+				<input type="hidden" name="rvwConts"   id="rvwConts">
 				<input type="hidden" name="rqstUserId" id="rqstUserId" value="${waqMstr.rqstUserId}" />
+				<input type="hidden" name="decideYn"   id="decideYn" value="N"/>
 				
 			    <table width="100%" border="0" cellspacing="0" cellpadding="0" summary="<s:message code='MSG.TBL.SMRY' />"> <!-- 테이블 서머리입니다. -->
 					<caption><s:message code="SUBJ.TRRT.INFO" /></caption> <!-- 주제영역정보 -->

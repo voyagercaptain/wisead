@@ -378,11 +378,11 @@ public class DbStndTotRqstCtrl {
 
 		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
 		ArrayList<WamDbSditm> list = data.get("data");
-
+		String decideYn =reqmst.getDecideYn();
 
 		long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
 		logger.debug("DB표준 용어 검증 시작");
-		list = itemValidCheck(list);
+		list = itemValidCheck(list,decideYn);
 		logger.debug("DB표준 용어 검증 종료");
 		int result = dbStndService.registerItemWam(list, reqmst);
 
@@ -520,9 +520,7 @@ public class DbStndTotRqstCtrl {
 
 		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
 		ArrayList<WamDbDmn> list = data.get("data");
-		logger.debug("DB표준 도메인 검증 시작");
 		//list = dmnValidCheck(list);
-		logger.debug("DB표준 도메인 검증 종료");
 		int result = dbStndService.registerDmnWam(list);
 
 
@@ -833,7 +831,7 @@ public class DbStndTotRqstCtrl {
 	    }
 	    
 	    //표준용어 유효성 검사 체크
-	    public ArrayList<WamDbSditm> itemValidCheck(ArrayList<WamDbSditm> reglist) {
+	    public ArrayList<WamDbSditm> itemValidCheck(ArrayList<WamDbSditm> reglist,String decideYn) {
 	    	ArrayList<String> errorList = new ArrayList<>();
 	    	Map<String, String> params = new HashMap<String, String>();
 			String errorMsg = "";
@@ -910,6 +908,7 @@ public class DbStndTotRqstCtrl {
 		    		saveVo.setValidYn("E");
 		    		saveVo.setConfirmYn("N");
 		    		saveVo.setErrChk(errorList.toString().replaceAll("\\[", "").replaceAll("\\]", ""));
+		    		saveVo.setDecideYn("N");
 		    	}else {
 		    		saveVo.setValidYn("Y");
 		    		saveVo.setErrChk(errorMsg);
@@ -917,6 +916,13 @@ public class DbStndTotRqstCtrl {
 		    			saveVo.setConfirmYn("Y");
 		    		}else {
 		    			saveVo.setConfirmYn("N");
+		    		}
+		    		
+		    		//확정여부 구분
+		    		if("Y".equals(decideYn)) {
+		    			saveVo.setDecideYn("Y");
+		    		}else {
+		    			saveVo.setDecideYn("N");
 		    		}
 		    	}
 	    	}
@@ -990,19 +996,19 @@ public class DbStndTotRqstCtrl {
 	    }
 	    
 	    
-	    /** 표준항목 리스트 등록 @throws Exception insomnia */
+	    /** 확정 @throws Exception insomnia */
 	    @RequestMapping("/dq/dbstnd/decideItemWam.do")
 	    @ResponseBody
 		public IBSResultVO<WaqMstr> decideItemWam(@RequestBody WamDbSditms data, WaqMstr reqmst, Locale locale) throws Exception {
 
 			logger.debug("reqmst:{}\ndata:{}", reqmst, data);
 			ArrayList<WamDbSditm> list = data.get("data");
-
+			String decideYn = reqmst.getDecideYn();
 
 			long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
-			logger.debug("DB표준 용어 검증 시작");
-			list = itemValidCheck(list);
-			logger.debug("DB표준 용어 검증 종료");
+			
+			list = itemValidCheck(list,decideYn);
+			
 			int result = dbStndService.decideItemWam(list, reqmst);
 
 			

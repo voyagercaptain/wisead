@@ -183,6 +183,7 @@ function grid_SDITM_OnSearchEnd(code, message, stCode, stMsg) {
 	} else {
 		//조회 성공....
 		 var len = grid_SDITM.RowCount();
+		 $("#decideYn").val("N");
         if(frmSearch.vcWh.value === "Y") {
             if(len > 0) {
                 document.getElementById('btnDecide').disabled = false;

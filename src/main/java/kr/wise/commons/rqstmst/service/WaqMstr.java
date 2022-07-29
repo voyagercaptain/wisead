@@ -53,7 +53,9 @@ public class WaqMstr extends CommonVo{
     
     
     private String screenGb;
-
+    
+    private String decideYn;
+    
 	public String getScreenGb() {
 		return screenGb;
 	}
@@ -276,6 +278,14 @@ public class WaqMstr extends CommonVo{
 
 	public void setDtSrchDcd(String dtSrchDcd) {
 		this.dtSrchDcd = dtSrchDcd;
+	}
+
+	public String getDecideYn() {
+		return decideYn;
+	}
+
+	public void setDecideYn(String decideYn) {
+		this.decideYn = decideYn;
 	}
 
 	

@@ -1067,6 +1067,9 @@ SELECT *
             PNM 			= #{item.pnm,jdbcType=VARCHAR},
             ERR_CHK 		= #{item.errChk,jdbcType=VARCHAR},
             VALID_YN 		= #{item.validYn,jdbcType=VARCHAR},
+            <if test='item.decideYn =="Y" and item.confirmYn =="Y"'>
+            CONFIRM_DTM     = SYSDATE,
+            </if>
             CONFIRM_YN 		= #{item.confirmYn,jdbcType=VARCHAR}
         where SDITM_ID = #{item.sditmId,jdbcType=VARCHAR}
     </foreach>
