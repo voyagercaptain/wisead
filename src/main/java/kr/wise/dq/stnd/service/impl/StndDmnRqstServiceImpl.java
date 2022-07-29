@@ -1325,7 +1325,7 @@ public class StndDmnRqstServiceImpl implements StndDmnRqstService {
 			String check3 = "";
 			String dataType = checkVo.getDataType();
 			Integer dataLen = checkVo.getDataLen();
-			if(Arrays.asList(dataTypeArr).contains(dataType.toLowerCase()) == false && dataLen == null) {
+			if(Arrays.asList(dataTypeArr).contains(dataType.toLowerCase()) == false && (dataLen == null || dataLen == 0)) {
 				check3 = ErrorCode.ERROR_DMN_LENGTH_NOTNULL.getMessage();
 			}
 			checkStr += check3;
