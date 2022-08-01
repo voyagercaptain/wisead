@@ -11,7 +11,7 @@
 <!-- <head> -->
 <!-- <title></title> -->
 <script type="text/javascript">
-
+var usergId = "${sessionScope.loginVO.usergId}";
 $(document).ready(function(){
 	//그리드 초기화
 	grid_SDITM_init();
@@ -182,6 +182,8 @@ function grid_SDITM_OnSearchEnd(code, message, stCode, stMsg) {
 		return;
 	} else {
 		//조회 성공....
+		//dquser로 로그인 할 경우 버튼 활성화 비활성화 처리
+	if(usergId == "OBJ_00000034587"){	
 		 var len = grid_SDITM.RowCount();
 		 $("#decideYn").val("N");
         if(frmSearch.vcWh.value === "Y") {
@@ -190,17 +192,20 @@ function grid_SDITM_OnSearchEnd(code, message, stCode, stMsg) {
             }else{
             	document.getElementById('btnDecide').disabled = true;
             }
-        }else if(frmSearch.vcWh.value === "E"||frmSearch.vcWh.value === "Y"||frmSearch.vcWh.value === "N"){
-        	if(len > 0) {
-                document.getElementById('btnInit').disabled = false;
-            }else{
-            	document.getElementById('btnInit').disabled = true;
-            }
-        } else {
+        }else {
             document.getElementById('btnDecide').disabled = true;
             document.getElementById('btnInit').disabled = true;
         }
+        
+        if(frmSearch.vcWh.value === "E"||frmSearch.vcWh.value === "Y"||frmSearch.vcWh.value === "N"){
+         	if(len > 0) {
+                 document.getElementById('btnInit').disabled = false;
+           }else{
+             	document.getElementById('btnInit').disabled = true;
+           }
+       }
 	}
+  }	
 }
 
 </script>

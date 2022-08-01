@@ -18,7 +18,7 @@
 <script type="text/javascript">
 
 var grid_name ;
-
+var INIT;
 //쿠키 불러오기
 function getCookie(name)
 {
@@ -151,6 +151,7 @@ $(document).ready(function() {
 	 //초기화
     $("#btnInit").click( function(){
    		if(confirm("초기화 하시겠습니까?")){
+   			init = "Y";
    			doAction("Delete");
    		}
     } ).show();
@@ -391,35 +392,19 @@ function doAction(sAction)
 
 			//프로파일별 url 셋팅
 			var url = "";
-			if(bizDtlCd == "SDITM"){
-// 				url = '<c:url value="/dq/dbstnd/getitemrqstlist.do"/>';
 				url = '<c:url value="/dq/dbstnd/getsditmlist.do"/>';
-			}else if(bizDtlCd == "DMN"){
-// 				url = '<c:url value="/dq/dbstnd/getdmnrqstlist.do"/>';
-				url = '<c:url value="/dq/dbstnd/getDomainlist.do"/>';
-			}else if(bizDtlCd == "STWD"){
-// 				url = '<c:url value="/dq/dbstnd/getstwdrqstlist.do"/>';
-				url = '<c:url value="/dq/dbstnd/getStndWordlist.do"/>';
-			}
-			
-// 			var param = $("#mstFrm").serialize();
 			var param = $("#frmSearch").serialize();
 			grid_name.DoSearch(url, param);
-			
-			//전체 검증결과 조회 (rqstNo, bizDtlCd)
-// 			console.log(param);
-// 			getRqstVrfLst(param);
+	
 			break;
 			
     	case "Save":  //검증
-    		var len = grid_name.RowCount();
-    		
+    	
     		//저장 대상의 데이터를 Json 객체로 반환한다.
 			ibsSaveJson = grid_name.GetSaveJson(0);
-    	
     		//2. 필수입력 누락인 경우
 			if (ibsSaveJson.Code == "IBS010") return;
-			
+         	
 			if(ibsSaveJson.data.length == 0){
 				showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
 				return;
@@ -435,7 +420,6 @@ function doAction(sAction)
 	        
         	break;
     	case "Decide":  //확정
-    		var len = grid_name.RowCount();
     		
     		//저장 대상의 데이터를 Json 객체로 반환한다.
 			ibsSaveJson = grid_name.GetSaveJson(0);
@@ -456,22 +440,25 @@ function doAction(sAction)
 	        IBSpostJson2(url, ibsSaveJson, param, ibscallback);
 	        
         	break;
-       
-    	case "Init":  //초기화
-    		//저장 대상의 데이터를 Json 객체로 반환한다.
-			ibsSaveJson = grid_name.GetSaveJson(0);
-    	
-    	
-			//프로파일별 url 셋팅
-			var url = "";
-			url = '<c:url value="/dq/dbstnd/InitItemWam.do"/>';
-			
-			var param = $('form[name=mstFrm]').serialize();
-	        IBSpostJson2(url,ibsSaveJson, param, ibscallback);
-	        
-        	break;
-        	
+        
     	case "Delete" :
+    		
+    		//초기화 버튼 클릭시
+    		if(init ==="Y"){
+    			init ="";
+    			//저장 대상의 데이터를 Json 객체로 반환한다.
+    			ibsSaveJson = grid_name.GetSaveJson(1);
+
+    			//프로파일별 url 셋팅
+    			var url = "";
+    			
+    			url = '<c:url value="/dq/dbstnd/initDbStndItem.do"/>';
+    			
+    			var param = $('form[name=mstFrm]').serialize();
+    	        IBSpostJson2(url, ibsSaveJson, param, ibscallback);
+    	        
+    		}else{
+    		
 			//체크박스가 입력상태인 경우 삭제...
 			if(!grid_name.CheckedRows("ibsCheck")) {
 				//삭제할 대상이 없습니다...
@@ -480,16 +467,8 @@ function doAction(sAction)
 			}
         	
 			var url = "";
-			if(bizDtlCd == "SDITM"){
-// 				url = '<c:url value="/dq/dbstnd/delSditmrqstlist.do"/>';
 				url = '<c:url value="/dq/dbstnd/delitemWamlist.do"/>';
-			}else if(bizDtlCd == "DMN"){
-// 				url = '<c:url value="/dq/dbstnd/deldmnrqstlist.do"/>';
-				url = '<c:url value="/dq/dbstnd/deldmnWamlist.do"/>';
-			}else if(bizDtlCd == "STWD"){
-// 				url = '<c:url value="/dq/dbstnd/delstwdrqstlist.do"/>';
-				url = '<c:url value="/dq/dbstnd/delstwdwamlist.do"/>';
-			}
+			
 			
 			//삭제로직 김경택
 			//모든 Row에서 Check 된 것을 저장한 뒤에
@@ -574,6 +553,7 @@ function doAction(sAction)
 				vrfed_Row_Location.clear
 				IBSpostJson2(url, DelJson, param, ibscallback);
 			}
+    	}
     }       
 }
  

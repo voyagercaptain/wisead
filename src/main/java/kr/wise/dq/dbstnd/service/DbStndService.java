@@ -42,5 +42,16 @@ public interface DbStndService {
 	
 	Map<String, String> dupliCheckDbStndDmn(Map<String, String> param);
 	
-	int decideItemWam(List<WamDbSditm> reglist, WaqMstr reqmst) throws Exception;
+	Map<String, String> dupliCheckDbStndStwd(Map<String, String> param);
+	
+	Map<String, String> dupliCheckDbStndStcd(Map<String, String> param);
+	
+	int initDbStndItem(List<WamDbSditm> reglist, WaqMstr reqmst) throws Exception;
+	
+	int initDbStndDmn(List<WamDbDmn> reglist, WaqMstr reqmst) throws Exception;
+	
+	int initDbStndStwd(List<WamDbStwd> reglist, WaqMstr reqmst) throws Exception;
+	
+	int initDbStndStcd(List<WamDbStcd> reglist, WaqMstr reqmst) throws Exception;
+	
 }

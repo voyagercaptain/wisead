@@ -22,7 +22,6 @@ import kr.wise.commons.rqstmst.service.WaqMstr;
 import kr.wise.commons.user.service.WaaOrg;
 import kr.wise.commons.user.service.WaaUserMapper;
 import kr.wise.commons.util.UtilString;
-import kr.wise.commons.util.ValidationCheck;
 import kr.wise.dq.dbstnd.service.DbStndService;
 import kr.wise.dq.dbstnd.service.WamDbDmn;
 import kr.wise.dq.dbstnd.service.WamDbDmnMapper;
@@ -36,6 +35,7 @@ import kr.wise.dq.dbstnd.service.WapDbDvCanAsm;
 import kr.wise.dq.dbstnd.service.WapDbDvCanAsmMapper;
 import kr.wise.dq.dbstnd.service.WapDbDvCanDic;
 import kr.wise.dq.dbstnd.service.WapDbDvCanDicMapper;
+import kr.wise.dq.stnd.service.WamSditm;
 
 
 /**
@@ -669,65 +669,72 @@ public class DbStndServiceImpl implements DbStndService {
 		return wamDbSditmMapper.dupliCheckDbStndItem(param);
 	}
 
+
 	@Override
-	public int decideItemWam(List<WamDbSditm> reglist, WaqMstr reqmst) throws Exception {
-		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
-		String userid = user.getUniqId();
+	public Map<String, String> dupliCheckDbStndDmn(Map<String, String> param) {
+		return wamDbDmnMapper.dupliCheckDbStndDmn(param);
+	}
 
-		int result = 0;
-		/**
-		 * List에서 Insert List와 Update List를 분리해서 별도 리스트로 생성
-		 * Insert List는 채번 로직이 필요함
- 		 */
-		
-		List<WamDbSditm> updateList = reglist.stream()
-				.filter(s -> s.getIbsStatus().equals("U"))
-				.collect(Collectors.toList());
+	@Override
+	public Map<String, String> dupliCheckDbStndStwd(Map<String, String> param) {
+		return wamDbStwdMapper.dupliCheckDbStndStwd(param);
+	}
 
+	@Override
+	public Map<String, String> dupliCheckDbStndStcd(Map<String, String> param) {
+		return wamDbStcdMapper.dupliCheckDbStndStcd(param);
+	}
 
-		long beforeTime = System.currentTimeMillis();
-		long afterTime = System.currentTimeMillis();
-		long secDiffTime = (afterTime - beforeTime)/1000;
-		logger.debug("시간차이(m) : "+secDiffTime);
+	@Override
+	public int initDbStndItem(List<WamDbSditm> reglist, WaqMstr reqmst) throws Exception {
+		//LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+				//String userid = user.getUniqId();
+				int result = 0;
 
-		beforeTime = System.currentTimeMillis();
-		afterTime = System.currentTimeMillis();
-		secDiffTime = (afterTime - beforeTime)/1000;
-		logger.debug("시간차이 2(m) : "+secDiffTime);
-
-		if (updateList != null) {
-			for (WamDbSditm saveVo : updateList) {
-				//요청번호 셋팅
-				saveVo.setFrsRqstUserId(userid);
-				saveVo.setRqstUserId(userid);
-				saveVo.setRegTypCd("U");
-				if(saveVo.getErrChk()== "") {
-					saveVo.setConfirmYn("Y");
+				for (int id = 0; id < reglist.size(); id += WiseConfig.FETCH_SIZE){
+					result = wamDbSditmMapper.bulkDelete(new ArrayList<WamDbSditm>(reglist.subList(id, min(id + WiseConfig.FETCH_SIZE, reglist.size()))));
 				}
-			}
-		}
 
-		for (int id = 0; id < updateList.size(); id += WiseConfig.FETCH_SIZE){
-			result = wamDbSditmMapper.bulkUpdate(new ArrayList<WamDbSditm>(updateList.subList(id, min(id + WiseConfig.FETCH_SIZE, updateList.size()))));
+				return result;
+	}
+
+	@Override
+	public int initDbStndDmn(List<WamDbDmn> reglist, WaqMstr reqmst) throws Exception {
+		//LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+		//String userid = user.getUniqId();
+		int result = 0;
+
+		for (int id = 0; id < reglist.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamDbDmnMapper.bulkDelete(new ArrayList<WamDbDmn>(reglist.subList(id, min(id + WiseConfig.FETCH_SIZE, reglist.size()))));
 		}
-		
-//		if ("1".equals(reqmst.getChkYn())) {
-//			wamDbSditmMapper.updateVrfRmkNull();
-//			//영문약어명 체크  올바르게 들어간 약어인지 체크
-////			wamDbSditmMapper.checkStwdAbr();
-//			//형식단어로 끝나는지 체크
-//			wamDbSditmMapper.checkDmnYnExsits();
-//
-//			//형식단어로 끝나는지 체크(한글명)
-//			wamDbSditmMapper.checkDmnYnExsitsLnm();
-//		}
 
 		return result;
 	}
 
 	@Override
-	public Map<String, String> dupliCheckDbStndDmn(Map<String, String> param) {
-		return wamDbDmnMapper.dupliCheckDbStndDmn(param);
+	public int initDbStndStwd(List<WamDbStwd> reglist, WaqMstr reqmst) throws Exception {
+		//LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+				//String userid = user.getUniqId();
+				int result = 0;
+
+				for (int id = 0; id < reglist.size(); id += WiseConfig.FETCH_SIZE){
+					result = wamDbStwdMapper.bulkDelete(new ArrayList<WamDbStwd>(reglist.subList(id, min(id + WiseConfig.FETCH_SIZE, reglist.size()))));
+				}
+
+				return result;
+	}
+
+	@Override
+	public int initDbStndStcd(List<WamDbStcd> reglist, WaqMstr reqmst) throws Exception {
+		//LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+		//String userid = user.getUniqId();
+		int result = 0;
+
+		for (int id = 0; id < reglist.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamDbStcdMapper.bulkDelete(new ArrayList<WamDbStcd>(reglist.subList(id, min(id + WiseConfig.FETCH_SIZE, reglist.size()))));
+		}
+
+		return result;
 	}
 
 }

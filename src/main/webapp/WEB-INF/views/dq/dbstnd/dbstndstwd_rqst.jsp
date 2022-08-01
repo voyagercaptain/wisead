@@ -18,9 +18,8 @@
 <script type="text/javascript">
 
 var grid_name ;
-
+var init;
 $(document).ready(function() {
-	
 	//탭 초기화....
 	//$( "#tabs" ).tabs();
 	
@@ -83,28 +82,27 @@ $(document).ready(function() {
 		doAction("AddWam");
 	}).hide();
 	
+	//검증
+    $("#btnInspect").click( function(){
+    	doAction("Save");
+    } ).show();
+	
+ 	 //확정
+    $("#btnDecide").click( function(){
+    	doAction("Decide");
+    } ).show();
+ 	
+ 	 //초기화
+    $("#btnInit").click( function(){
+   		if(confirm("초기화 하시겠습니까?")){
+   			init = "Y";
+   			doAction("Delete");
+   		}
+    } ).show();
+ 	 
 	//저장
     $("#btnSave").click( function(){
-    	var bizDtlCd = $("form[name=mstFrm] #bizDtlCd").val();
-    	if(bizDtlCd == "STWD"){
-//         	//표준단어명 중복 저장 확인
-// 			var row = grid_name.ColValueDup("stwdLnm");
-// 			var rows = grid_name.ColValueDupRows("stwdLnm");
-// 			if(row > -1){
-// 			    showMsgBox("CNF", rows+"행에 "+"<s:message code="CNF.DUP.STWDLNM" />"+"</br>","Save");
-// 				return;
-// 			}
-// 			//표준단어 영문약어 중복 저장 확인
-// 			row = grid_name.ColValueDup("stwdPnm");
-// 			rows = grid_name.ColValueDupRows("stwdPnm");
-// 			if(row > -1){
-// 			    showMsgBox("CNF", rows+"행에 "+"<s:message code="CNF.DUP.STWDPNM" />"+"</br>","Save");
-// 				return;
-// 			}
-
-			doAction("Save");
-    	}else{doAction("Save");}
-    	    	
+    	doAction("Save");
     } ).show();
 	
     //삭제
@@ -276,6 +274,7 @@ function doAction(sAction)
     {
     	case "New":  //그리드추가
     		grid_name.DataInsert(0);
+    		grid_name.SetCellValue(1,"orgNm", "${userOrg.orgNm}");
         	break;
 
 	
@@ -305,60 +304,18 @@ function doAction(sAction)
         	break;
         
 		case "Search":
-			
 			//프로파일별 url 셋팅
 			var url = "";
-			if(bizDtlCd == "SDITM"){
-// 				url = '<c:url value="/dq/dbstnd/getitemrqstlist.do"/>';
-				url = '<c:url value="/dq/dbstnd/getsditmlist.do"/>';
-			}else if(bizDtlCd == "DMN"){
-// 				url = '<c:url value="/dq/dbstnd/getdmnrqstlist.do"/>';
-				url = '<c:url value="/dq/dbstnd/getDomainlist.do"/>';
-			}else if(bizDtlCd == "STWD"){
-// 				url = '<c:url value="/dq/dbstnd/getstwdrqstlist.do"/>';
 				url = '<c:url value="/dq/dbstnd/getStndWordlist.do"/>';
-			}
-			
-// 			var param = $("#mstFrm").serialize();
 			var param = $("#frmSearch").serialize();
 			grid_name.DoSearch(url, param);
 			
-			//전체 검증결과 조회 (rqstNo, bizDtlCd)
-// 			console.log(param);
-// 			getRqstVrfLst(param);
 			break;
 			
     	case "Save":  //검증
     	
     		//KeyField 1 인 것 가져오기 orgNm sditmLnm  pnm sditmPnm  objDescn 
     		var len = grid_name.RowCount();
-    		for(var i=0; i < len; i++) {
-    			var str = "";
-    			for(var j=0; j < colsCount; j++) {
-    				var KeyField = grid_name.GetCellProperty(i+1, j+1, "KeyField");
-    				var SaveName = grid_name.GetCellProperty(i+1, j+1, "SaveName");
-    				
-    				if(KeyField == "1") {
-    					var SaveNameValue = grid_name.GetCellValue(i+1, SaveName);
-    					if(str == "") {
-    						str += SaveNameValue == "" ? headerText[j+1]:"";
-    					} else {
-    						str += SaveNameValue == "" ? ", " + headerText[j+1]:"";
-    					}
-    				}
-    			}
-    			
-    			var errChk = grid_name.GetCellValue(i+1, "errChk");
-    			if(str != "") {
-    				if(errChk != "") {
-    					str = errChk + ", " + str +  " 누락";
-    				} else {
-    					str += " 누락";	
-    				}
-    				grid_name.SetCellValue(i+1,"errChk", str);
-    				grid_name.SetRowFontColor(i+1,"#FF0000");
-    			}
-    		}
     	
     		//저장 대상의 데이터를 Json 객체로 반환한다.
 			ibsSaveJson = grid_name.GetSaveJson(0);
@@ -371,55 +328,8 @@ function doAction(sAction)
 				return;
 			}
 
-			//프로파일별 url 셋팅
-			var url = "";
-			if(bizDtlCd == "SDITM"){
-				var row = grid_name.ColValueDup("orgNm|dbNm|sditmLnm|sditmPnm");
-				var rows = grid_name.ColValueDupRows("orgNm|dbNm|sditmLnm|sditmPnm");
 				
-				if(row>0){
-				    showMsgBox("INF","<s:message code="ERR.DUP" />"+"(용어명)"+"</br>"+rows+"행");
-				    var rowsArr = rows.split(",");
-				    for(var i=0 ; i< rowsArr.length; i++){
-				        grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
-				        grid_name.SetCellValue(rowsArr[i],"vrfRmk","중복데이터");
-				    }
-					return;
-				}
-				url = '<c:url value="/dq/dbstnd/regitemWamlist.do"/>';
-				
-			}else if(bizDtlCd == "DMN"){
-				
-				var row = grid_name.ColValueDup("orgNm|dbNm|infotpLnm");
-				var rows = grid_name.ColValueDupRows("orgNm|dbNm|infotpLnm");
-				if(row>0){
-				    showMsgBox("INF","<s:message code="ERR.DUP" />"+"</br>"+rows+"행");
-				    var rowsArr = rows.split(",");
-				    for(var i=0 ; i< rowsArr.length; i++){
-				        grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
-// 				        grid_name.SetCellValue(rowsArr[i],"vrfRmk","중복데이터");
-				    }
-					return;
-				}
-				url = '<c:url value="/dq/dbstnd/regdmnWamlist.do"/>';
-			}else if(bizDtlCd == "STWD"){
-				
-				/*
-				var row = grid_name.ColValueDup("dbNm|stwdLnm|stwdPnm");
-				var rows = grid_name.ColValueDupRows("dbNm|stwdLnm|stwdPnm");
-				
-				if(row>0){
-				    showMsgBox("INF","<s:message code="ERR.DUP" />"+"</br>"+rows+"행");
-				    var rowsArr = rows.split(",");
-				    for(var i=0 ; i< rowsArr.length; i++){
-				        grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
-// 				        grid_name.SetCellValue(rowsArr[i],"vrfRmk","중복데이터");
-				    }
-					return;
-				}				
-				*/
-				url = '<c:url value="/dq/dbstnd/regStndWordWamlist.do"/>';
-			}
+			var url = '<c:url value="/dq/dbstnd/regStndWordWamlist.do"/>';
 			
 			
 			var param = $('form[name=mstFrm]').serialize();
@@ -427,8 +337,48 @@ function doAction(sAction)
 	        
 // 	        $("#BTNREGRQST").show();
         	break;
-        	
+        
+    	case "Decide":  //확정
+    		var len = grid_name.RowCount();
+    		
+    		//저장 대상의 데이터를 Json 객체로 반환한다.
+			ibsSaveJson = grid_name.GetSaveJson(0);
+			$("#decideYn").val("Y");
+    		//2. 필수입력 누락인 경우
+			if (ibsSaveJson.Code == "IBS010") return;
+			
+			if(ibsSaveJson.data.length == 0){
+				showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
+				return;
+			}
+
+			//프로파일별 url 셋팅
+			var url = "";
+			url = '<c:url value="/dq/dbstnd/regStndWordWamlist.do"/>';
+				
+			
+			
+			
+			var param = $('form[name=mstFrm]').serialize();
+	        IBSpostJson2(url, ibsSaveJson, param, ibscallback);
+	        
+        	break;
+       
     	case "Delete" :
+    		
+    		if(init === "Y"){//초기화 이벤트
+    			init ="";
+    			//저장 대상의 데이터를 Json 객체로 반환한다.
+    			ibsSaveJson = grid_name.GetSaveJson(1);
+             	
+    			//프로파일별 url 셋팅
+    			var url = "";
+    			url = '<c:url value="/dq/dbstnd/initDbStndStwd.do"/>';
+    			
+    			var param = $('form[name=mstFrm]').serialize();
+    	        IBSpostJson2(url, ibsSaveJson, param, ibscallback);
+    		}else{//일반 삭제
+    			
 			//체크박스가 입력상태인 경우 삭제...
 			if(!grid_name.CheckedRows("ibsCheck")) {
 				//삭제할 대상이 없습니다...
@@ -437,16 +387,7 @@ function doAction(sAction)
 			}
         	
 			var url = "";
-			if(bizDtlCd == "SDITM"){
-// 				url = '<c:url value="/dq/dbstnd/delSditmrqstlist.do"/>';
-				url = '<c:url value="/dq/dbstnd/delitemWamlist.do"/>';
-			}else if(bizDtlCd == "DMN"){
-// 				url = '<c:url value="/dq/dbstnd/deldmnrqstlist.do"/>';
-				url = '<c:url value="/dq/dbstnd/deldmnWamlist.do"/>';
-			}else if(bizDtlCd == "STWD"){
-// 				url = '<c:url value="/dq/dbstnd/delstwdrqstlist.do"/>';
 				url = '<c:url value="/dq/dbstnd/delstwdwamlist.do"/>';
-			}
 			
 			//삭제로직 김경택
 			//모든 Row에서 Check 된 것을 저장한 뒤에
@@ -531,6 +472,7 @@ function doAction(sAction)
 				vrfed_Row_Location.clear
 				IBSpostJson2(url, DelJson, param, ibscallback);
 			}
+    	}
     }       
 }
  
@@ -617,7 +559,9 @@ function postProcessIBS(res) {
                    <col style="width:10%;" />
                    <col style="width:20%;" />
                    <col style="width:10%;" />
-                   <col style="width:20%;" />
+                   <col style="width:10%;" />
+                   <col style="width:10%;" />
+                   <col style="width:10%;" />
                    <col style="width:10%;" />
                    <col style="width:20%;" />
                    </colgroup>
@@ -653,6 +597,17 @@ function postProcessIBS(res) {
 	 					 		
 							</td>
 							
+							<th scope="row"><label for="dbNm">검증 여부</label></th> <!-- 사전유형 -->
+                            <td >
+                                <select id="vcWh" class="" name="vcWh" style ="width:100%;">
+                                  <option value="">전체</option>
+	 							  <option value="E">검증오류</option>
+	 							  <option value="Y">검증성공</option>
+	 							  <option value="N">미검증</option>
+	 							  <option value="YY">확정</option>
+	 					 		</select> 
+							</td>
+							
 							
                                 <th scope="row"><label for="stndNm">표준단어명</label></th> <!-- 표준사전명 -->
                                 <td><input type="text" id="stndNm" name="stndNm" class="wd98p" value="${stndNm}" /></td>
@@ -678,8 +633,11 @@ function postProcessIBS(res) {
 					    <li class="btn_chang_add" id="btnChangAdd"><a><span class="ui-icon ui-icon-folder-open"></span><s:message code="CHG.TRGT.ADDT" /></a></li> <!-- 변경대상 추가 -->
 					    <li class="btn_excel_load" id="btnExcelLoad"><a><span class="ui-icon ui-icon-document"></span><s:message code="EXCL.UPLOAD" /></a></li> <!-- 엑셀 올리기 -->
 					  </ul>         
-				    <button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="STRG" /></button> <!-- 저장 --> 
-				    <button class="btn_delete" id="btnDelete" 	name="btnDelete"><s:message code="DEL" /></button> <!-- 삭제 -->
+				    <%-- <button class="btn_save"    id="btnSave" 	name="btnSave"><s:message code="STRG" /></button> <!-- 저장 --> --%> 
+				    <button class="btn_delete"  id="btnDelete" 	name="btnDelete"><s:message code="DEL" /></button> <!-- 삭제 -->
+				    <button class="btn_inspect" id="btnInspect" name="btnInspect" >검증</button>
+					<button class="btn_decide"  id="btnDecide" 	name="btnDecide" disabled>확정</button>
+					<button class="btn_init"    id="btnInit" 	name="btnInit" disabled>초기화</button>
 				</c:if>
 				
 			</div>
@@ -716,6 +674,7 @@ function postProcessIBS(res) {
 				<input type="hidden" name="rvwStsCd" id="rvwStsCd">
 				<input type="hidden" name="rvwConts" id="rvwConts">
 				<input type="hidden" name="rqstUserId" id="rqstUserId" value="${waqMstr.rqstUserId}" />
+				<input type="hidden" name="decideYn"   id="decideYn" value="N"/>
 				
 			    <table width="100%" border="0" cellspacing="0" cellpadding="0" summary="<s:message code='MSG.TBL.SMRY' />"> <!-- 테이블 서머리입니다. -->
 					<caption><s:message code="SUBJ.TRRT.INFO" /></caption> <!-- 주제영역정보 -->

@@ -46,9 +46,12 @@
     <result column="UNIT"              property="unit"        jdbcType="VARCHAR" />
     <result column="CD_VAL"            property="cdVal"       jdbcType="VARCHAR" />
     <result column="ADMN_STND_CD"      property="admnStndCd"  jdbcType="VARCHAR" />
-     <result column="DB_NM"          property="dbNm"        jdbcType="VARCHAR" />
-     <result column="OWNR_ORG" property="ownrOrg" jdbcType="VARCHAR"/>
+     <result column="DB_NM"            property="dbNm"        jdbcType="VARCHAR" />
+     <result column="OWNR_ORG"         property="ownrOrg" jdbcType="VARCHAR"/>
      <result column="SPCL_NT"          property="spclNt"        jdbcType="VARCHAR" />
+    <result column="ERR_CHK"           property="errChk"      jdbcType="VARCHAR" />
+    <result column="CONFIRM_YN"        property="confirmYn" jdbcType = "VARCHAR"/>
+    <result column="VALID_YN"          property="validYn" jdbcType = "VARCHAR"/>
   </resultMap>
   
   <sql id="Base_Column_List" >
@@ -113,6 +116,7 @@
 <!--   	 , B.DATA_TYPE
   	     , B.DATA_LEN
   	     , B.DATA_SCAL  -->
+  	     , CASE WHEN A.ERR_CHK IS NOT null AND A.ERR_CHK != '' THEN '#FF0000' ELSE NULL END AS FontColor
   	  FROM WAM_DB_DMN A 
 <!--      INNER JOIN V_WAA_DMNG G
         ON A.DMNG_ID = G.DMNG_ID
@@ -121,6 +125,24 @@
   	   AND B.EXP_DTM = DATE_FORMAT( '99991231', '%Y%m%d') -->
   	<where>
        AND A.REG_TYP_CD IN ('C', 'U')
+         <if test="vcWh != null">
+         	<if test='vcWh == "Y"'>
+         	AND A.VALID_YN   ='Y'
+         	AND A.CONFIRM_YN ='N'
+         	</if>
+         	<if test='vcWh == "N"'>
+         	AND A.VALID_YN   ='N'
+         	AND A.CONFIRM_YN ='N'
+         	</if>
+         	<if test='vcWh == "E"'>
+			AND A.VALID_YN   ='E'
+			AND A.CONFIRM_YN ='N'			         	
+         	</if>
+         	<if test='vcWh == "YY"'>
+         	AND A.CONFIRM_YN ='Y'
+         	AND A.VALID_YN   ='Y' 
+         	</if>
+         </if>  
       <if test='!"2".equals(usergId) and !"3".equals(usergId)' >
   	   AND REPLACE(DB_NM, ' ', '') IN (SELECT REPLACE(DB_NAME, ' ', '') AS DB_NAME FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})	
   	   AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
@@ -866,7 +888,7 @@
      ORDER BY A.EXP_DTM DESC, A.STR_DTM DESC
   </select>
 
-    <insert id="bulkInsert" parameterType="java.util.List" >
+    <insert id="bulkInsert" parameterType="kr.wise.dq.dbstnd.service.WamDbDmn" >
             insert into WAM_DB_DMN
             (
             DMN_ID,
@@ -911,7 +933,9 @@
             ORG_NM,
             DB_NM,
             OWNR_ORG,
-            SPCL_NT
+            SPCL_NT,
+            ERR_CHK,
+            VALID_YN
             )
             values
         <foreach collection="list" item="item" index="index" separator=",">
@@ -958,7 +982,9 @@
             #{item.orgNm,jdbcType=VARCHAR},
             #{item.dbNm,jdbcType=VARCHAR},
             #{item.ownrOrg,jdbcType=VARCHAR},
-            #{item.spclNt,jdbcType=VARCHAR}
+            #{item.spclNt,jdbcType=VARCHAR},
+            #{item.errChk,jdbcType=VARCHAR},
+            #{item.validYn,jdbcType=VARCHAR}
             )
         </foreach>
     </insert>
@@ -1008,7 +1034,17 @@
                 ORG_NM        = #{item.orgNm,jdbcType=VARCHAR},
                 DB_NM         = #{item.dbNm,jdbcType=VARCHAR},
                 OWNR_ORG      = #{item.ownrOrg,jdbcType=VARCHAR},
-                SPCL_NT       = #{item.spclNt,jdbcType=VARCHAR}
+                SPCL_NT       = #{item.spclNt,jdbcType=VARCHAR},
+                ERR_CHK       = #{item.errChk,jdbcType=VARCHAR},
+                <if test='item.decideYn =="Y" and item.validYn =="Y"'>
+           		CONFIRM_DTM   = SYSDATE,
+           		CONFIRM_YN    = 'Y',
+            	</if>
+            	<if test='item.decideYn =="N" and item.validYn =="E"'>
+            	CONFIRM_YN    = 'N',
+            	</if>
+                VALID_YN      = #{item.validYn,jdbcType=VARCHAR}
+               
         where DMN_ID = #{item.dmnId,jdbcType=VARCHAR}
         </foreach>
     </update>
@@ -1021,13 +1057,12 @@
     </delete>
     
   
-  <select id="dupliCheckDbStndItem" resultType="java.util.Map" parameterType="java.util.Map">
+  <select id="dupliCheckDbStndDmn" resultType="java.util.Map" parameterType="java.util.Map">
     select ORG_NM
     FROM WAM_DB_DMN  
     WHERE INFOTP_LNM = #{infotpLnm,jdbcType=VARCHAR}
     AND ORG_NM 		 = #{orgNm,jdbcType=VARCHAR}
-    AND DATA_TYPE 	 = #{dataType,jdbcType=VARCHAR}
-    AND DATA_LEN 	 = #{dataLen,jdbcType=VARCHAR}
+    AND DB_NM        = #{dbNm,jdbcType=VARCHAR}
     AND CONFIRM_YN   = 'Y'
   </select>
 
