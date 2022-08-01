@@ -186,7 +186,7 @@ function doAction(sAction)
     
 	<!-- 그리드 입력 입력 -->
 	<div class="grid_02">
-	     <script type="text/javascript">createIBSheet("grid_sheet2", "50%", "110px");</script>            
+	     <script type="text/javascript">createIBSheet("grid_sheet2", "50%", "130px");</script>
 	</div>
 	<!-- 그리드 입력 입력 -->    
 

@@ -169,7 +169,7 @@ SELECT
 	 ORDER BY 1
 	) DB_TOTAL
  WHERE ORG_TOTAL.ORG_TYPE = DB_TOTAL.ORG_TYPE
-  	
+
 </select>
 
 <select id="getTotalStatSubList" 
@@ -310,5 +310,26 @@ SELECT
         DB_CODE,
         ROUND(DB_CODE / (TOTAL_ORG*1.0) *100.0,2) as CODE_RATE
  FROM SUMMARY
+UNION ALL
+SELECT
+    	'등록DB' AS TITLE,
+		(SELECT count(db_nm) FROM waa_org_db ) as TOTAL_ORG,
+		count(a.db_nm) as REG_ORG,
+		'' AS DB_ITEM,
+		'' AS ITEM_RATE,
+		'' AS DB_WORD,
+		'' AS WORD_RATE,
+		'' AS DB_DMN,
+		'' AS DOMAIN_RATE,
+		'' AS DB_CODE,
+		'' AS CODE_RATE
+  FROM
+	(SELECT db_nm FROM wam_db_sditm
+	 UNION
+	 SELECT db_nm FROM wam_db_dmn
+	 UNION
+	 SELECT db_nm FROM wam_db_stwd
+	 UNION
+	 SELECT db_nm FROM wam_db_comm_cd) a
 </select>
 </mapper>
