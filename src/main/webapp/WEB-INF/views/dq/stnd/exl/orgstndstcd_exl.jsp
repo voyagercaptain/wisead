@@ -69,17 +69,17 @@ function grid_STCD_init() {
 					{Type:"Text",   Width:150,  SaveName:"commCdId",   	Align:"Left", Edit:0, KeyField:0, Hidden:1},
 					
 					{Type:"Text",   Width:100,  SaveName:"commCdNm",   	Align:"Left", Edit:1, KeyField:1},
-					{Type:"Text",  Width:150,   SaveName:"comnCdEnnm",	 	Align:"Center", Edit:1, Hidden:0, KeyField:1},
-					
+					{Type:"Text",  Width:150,   SaveName:"comnCdEnnm",	 	Align:"Center", Edit:1, Hidden:0, KeyField:0},
+
 					{Type:"Text",   Width:150,  SaveName:"commCdDesc", 	Align:"Left", Edit:1, Hidden:0, KeyField:0},
 					{Type:"Text",   Width:100,  SaveName:"comnCdDttpNm",   	Align:"Left", Edit:1, KeyField:0}, 
 					{Type:"Int",   Width:80,  SaveName:"comnCdDataLen",	Align:"Left", Edit:1, KeyField:0},
 					
-					{Type:"Text",   Width:100,  SaveName:"commDtlCdNm",	    Align:"Left", Edit:1, Hidden:0, KeyField:1},
-					{Type:"Text",   Width:100,  SaveName:"commDtlCdMn",	    Align:"Left", Edit:1, Hidden:0, KeyField:1},
+					{Type:"Text",   Width:100,  SaveName:"commDtlCdNm",	    Align:"Left", Edit:1, Hidden:0, KeyField:0},
+					{Type:"Text",   Width:100,  SaveName:"commDtlCdMn",	    Align:"Left", Edit:1, Hidden:0, KeyField:0},
 					{Type:"Text",   Width:100,  SaveName:"commDtlCdDesc",	    Align:"Left", Edit:1, Hidden:0, KeyField:0},
 					
-					{Type:"Text",   Width:80,  SaveName:"writDtm",  	Align:"Center", Edit:1, Format:"yyyyMMdd", KeyField:1},
+					{Type:"Text",   Width:80,  SaveName:"writDtm",  	Align:"Center", Edit:1, Format:"yyyyMMdd", KeyField:0},
 					{Type:"Text",   Width:150,  SaveName:"pclrMtr",	    Align:"Left", Edit:1, Hidden:0},
 					{Type:"Text",   Width:100,  SaveName:"uppCommCdId",	    Align:"Left", Edit:1, Hidden:0, KeyField:0},
 					{Type:"Combo",   Width:80,  SaveName:"useYn",	    Align:"Left", Edit:1, Hidden:0},
@@ -144,22 +144,9 @@ function grid_STCD_OnClick(row, col, value, cellx, celly) {
 	//선택한 상세정보를 가져온다...
 	var param =  grid_STCD.GetRowJson(row);
 
-	//선택한 그리드의 row 내용을 보여준다.....
-// 	var tmphtml = '표준단어명 ' + ' : ' +  param.stwdLnm+"["+param.stwdPnm+"]";
-	
-// 	$('#STWD_sel_title').html(tmphtml);
-	
-	//검증결과 검증오류일경우가 아닐경우 RETURN
-// 	if( grid_STCD.GetCellValue(row, "vrfCd") != "2")  return;
-	
-	//var param = grid_STCD.GetRowJson(row);
-
 	var param1 = $("#mstFrm").serialize();
 	param1 += "&rqstSno=" + param.rqstSno;
 
-	//검증결과 조회
-// 	getRqstVrfLst(param1);
-	
 }
 
 
@@ -177,6 +164,24 @@ function grid_STCD_OnSearchEnd(code, message, stCode, stMsg) {
 		return;
 	} else {
 		//조회 성공....
+        <c:if test="${sessionScope.loginVO.usergId eq 'OBJ_00000034586'}">
+        var len = grid_STCD.RowCount();
+        if(frmSearch.chkYn.value == "Y") {
+            if(len > 0) {
+                document.getElementById('btnDecide').disabled = false;
+            }
+        } else {
+            document.getElementById('btnDecide').disabled = true;
+        }
+
+        if(frmSearch.chkYn.value != "" && frmSearch.chkYn.value != "YY") {
+            if(len > 0) {
+                document.getElementById('btnInit').disabled = false;
+            }
+        } else {
+            document.getElementById('btnInit').disabled = true;
+        }
+        </c:if>
 	}
 }
 

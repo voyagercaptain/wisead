@@ -20,15 +20,9 @@
 var grid_name ;
 
 $(document).ready(function() {
-	
-// 	EnterkeyProcess("Search");
-	//탭 초기화....
-	//$( "#tabs" ).tabs();
-	
+
 	$( "#divTabs-rqstvrf" ).tabs();
 	
-	//업무구분상세 초기화...
-	//$("#mstFrm #bizDtlCd").val("${waqMstr.bizDtlCd}");
 	$("#mstFrm #bizDtlCd").val("STWD");
 	
 	$("[id$='-${waqMstr.bizDtlCd}'] a").click();
@@ -36,7 +30,6 @@ $(document).ready(function() {
 	$( "#tab-SDITM a" ).click(function(){
 	      mstFrmReset("SDITM");
 	      var retapproveItem =  grid_SDITM.RowCount();
-// 	      console.log(retapproveItem);
 	      if(retapproveItem <= 0){
 	         setTimeout(function(){doAction("Search")},500);
 	      }
@@ -46,17 +39,13 @@ $(document).ready(function() {
 	      var retapproveDmn  =  grid_DMN.RowCount();
 	      console.log(retapproveDmn);
 	      if(retapproveDmn <= 0){
-// 	         console.log("dd2");
-// 	         console.log(retapproveDmn);
 	         setTimeout(function(){doAction("Search")},500);
 	      }
 	   });
 	   $( "#tab-STWD a" ).click(function(){
 	      mstFrmReset("STWD");
 	      var retapproveWord =  grid_STWD.RowCount();
-// 	      console.log(retapproveWord);
 	      if(retapproveWord <= 0){
-// 	         console.log("dd");
 	         setTimeout(function(){doAction("Search")},500);
 	       }
 	   });	
@@ -86,39 +75,31 @@ $(document).ready(function() {
 	
 	//저장
     $("#btnSave").click( function(){
-    	var bizDtlCd = $("form[name=mstFrm] #bizDtlCd").val();
-    	if(bizDtlCd == "STWD"){
-//         	//표준단어명 중복 저장 확인
-// 			var row = grid_name.ColValueDup("stwdLnm");
-// 			var rows = grid_name.ColValueDupRows("stwdLnm");
-// 			if(row > -1){
-// 			    showMsgBox("CNF", rows+"행에 "+"<s:message code="CNF.DUP.STWDLNM" />"+"</br>","Save");
-// 				return;
-// 			}
-// 			//표준단어 영문약어 중복 저장 확인
-// 			row = grid_name.ColValueDup("stwdPnm");
-// 			rows = grid_name.ColValueDupRows("stwdPnm");
-// 			if(row > -1){
-// 			    showMsgBox("CNF", rows+"행에 "+"<s:message code="CNF.DUP.STWDPNM" />"+"</br>","Save");
-// 				return;
-// 			}
-
-			doAction("Save");
-    	}else{doAction("Save");}
-    	    	
+    	//var bizDtlCd = $("form[name=mstFrm] #bizDtlCd").val();
+		doAction("Save");
     } ).show();
 	
     //삭제
     $("#btnDelete").click( function(){
     	doAction("Delete"); 
     } ).show();
-    
-    
-    
-    //화면리로드
-    $("#btnBlank").click( function(){
-		location.href = '<c:url value="/dq/stnd/stndtot_rqst.do" />';
-    } );
+
+	//검증
+	$("#btnInspect").click( function(){
+		doAction("Inspect");
+	} ).show();
+
+	//확정
+	$("#btnDecide").click( function(){
+		doAction("Decide");
+	} ).show();
+
+	//초기화
+	$("#btnInit").click( function(){
+		if(confirm("초기화 하시겠습니까?")){
+			doAction("Init");
+		}
+	} ).show();
     
 		
  // 결재 Event Bind
@@ -137,7 +118,6 @@ $(document).ready(function() {
 		var retapproveItem =  grid_SDITM.RowCount();
 		if(retapproveWord >= 0 && retapproveDmn >= 0 && retapproveItem >= 0){
 			   
-//				alert("결재진행 업데이트 가능...");
 			var url = "<c:url value="/dq/stnd/approveStndTot.do"/>";
 			var param = $("#mstFrm").serialize();
 			
@@ -157,9 +137,7 @@ $(document).ready(function() {
 							 								
 			var ibsSaveJson = stndInfo;
 			
-			//alert(JSON.stringify(ibsSaveJson));
-							
-			IBSpostJson2(url, ibsSaveJson, param, ibscallback);		
+			IBSpostJson2(url, ibsSaveJson, param, ibscallback);
 		}
 	}).show();
  
@@ -195,15 +173,6 @@ $(window).load(function() {
 	//검토처리 버튼 보여주기....
 	checkApproveYn($("#mstFrm"));
 
-// 	setTimeOut
- 	//doAction("Search");
- 	/*
-    setTimeout(function(){
-    	 $( "#tab-SDITM a" ).click();
-//     	 doAction("Search");
-    },500);
- 	*/
-    	
 });
 
 
@@ -223,7 +192,6 @@ function getMstFrm(){
 	}
 	
 	var param = $('form[name=mstFrm]').serialize();
-// 	ajax2Json(urls, param, setMstFrm);
 }
 
 //재조회 된 요청정보 셋팅
@@ -309,25 +277,75 @@ function doAction(sAction)
 			//프로파일별 url 셋팅
 			var url = "";
 			if(bizDtlCd == "SDITM"){
-// 				url = '<c:url value="/dq/stnd/getitemrqstlist.do"/>';
 				url = '<c:url value="/dq/stnd/getsditmlist.do"/>';
 			}else if(bizDtlCd == "DMN"){
-// 				url = '<c:url value="/dq/stnd/getdmnrqstlist.do"/>';
 				url = '<c:url value="/dq/stnd/getDomainlist.do"/>';
 			}else if(bizDtlCd == "STWD"){
-// 				url = '<c:url value="/dq/stnd/getstwdrqstlist.do"/>';
 				url = '<c:url value="/dq/stnd/getStndWordlist.do"/>';
 			}
 			
-// 			var param = $("#mstFrm").serialize();
 			var param = $("#frmSearch").serialize();
 			grid_name.DoSearch(url, param);
 			
 			//전체 검증결과 조회 (rqstNo, bizDtlCd)
-// 			console.log(param);
-// 			getRqstVrfLst(param);
 			break;
-			
+		case "Inspect":  //검증
+
+			//저장 대상의 데이터를 Json 객체로 반환한다.
+			ibsSaveJson = grid_name.GetSaveJson(0);
+
+			if(ibsSaveJson.data.length == 0){
+				showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
+				return;
+			}
+
+			//프로파일별 url 셋팅
+			var url = "";
+			url = '<c:url value="/dq/stnd/inspectStndItem.do"/>';
+
+			var param = $('form[name=frmSearch]').serialize();
+
+			IBSpostJson2(url, ibsSaveJson, param, ibscallback);
+			break;
+
+		case "Decide":  //확정
+
+			//저장 대상의 데이터를 Json 객체로 반환한다.
+			ibsSaveJson = grid_name.GetSaveJson(0);
+
+			if(ibsSaveJson.data.length == 0){
+				showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
+				return;
+			}
+
+			//프로파일별 url 셋팅
+			var url = "";
+			url = '<c:url value="/dq/stnd/decideStndItem.do"/>';
+
+			var param = $('form[name=frmSearch]').serialize();
+
+			IBSpostJson2(url, ibsSaveJson, param, ibscallback);
+			break;
+
+		case "Init":  //초기화
+
+			//저장 대상의 데이터를 Json 객체로 반환한다.
+			ibsSaveJson = grid_name.GetSaveJson(1);
+
+			if(ibsSaveJson.data.length == 0){
+				showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
+				return;
+			}
+
+			//프로파일별 url 셋팅
+			var url = "";
+			url = '<c:url value="/dq/stnd/initStndItem.do"/>';
+
+			var param = $('form[name=frmSearch]').serialize();
+
+			IBSpostJson2(url, ibsSaveJson, param, ibscallback);
+			break;
+
     	case "Save":  //검증
     		//KeyField 1 인 것 가져오기 orgNm stwdLnm engMean  stwdPnm objDescn  dmnYn
     		var len = grid_name.RowCount();
@@ -432,13 +450,10 @@ function doAction(sAction)
         	
 			var url = "";
 			if(bizDtlCd == "SDITM"){
-// 				url = '<c:url value="/dq/stnd/delSditmrqstlist.do"/>';
 				url = '<c:url value="/dq/stnd/delitemWamlist.do"/>';
 			}else if(bizDtlCd == "DMN"){
-// 				url = '<c:url value="/dq/stnd/deldmnrqstlist.do"/>';
 				url = '<c:url value="/dq/stnd/deldmnWamlist.do"/>';
 			}else if(bizDtlCd == "STWD"){
-// 				url = '<c:url value="/dq/stnd/delstwdrqstlist.do"/>';
 				url = '<c:url value="/dq/stnd/delstwdwamlist.do"/>';
 			}
 			
@@ -576,11 +591,7 @@ function postProcessIBS(res) {
 				
 		//요청서 결재단계별 승인 완료 후처리
 		case "<%=WiseMetaConfig.RqstAction.APPROVE%>":
-// 			var url = '<c:url value="/dq/stnd/stndtot_rqst.do" />';
-// 			var param = $('form[name=mstFrm]').serialize();
-// 			location.href = url+"?"+param;
 			var url = '<c:url value="/dq/stnd/stnd_lst.do" />';
-// 			var param = $('form[name=mstFrm]').serialize();
 			location.href = url;
 			break;
 		
@@ -617,12 +628,12 @@ function postProcessIBS(res) {
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" summary="<s:message code='BFHD.INTG.INQ' />"> <!-- 사전통합조회 -->
                    <caption><s:message code="BFHD.INTG.INQ.FORM" /></caption> <!-- 사전통합 검색폼 -->
                    <colgroup>
-                   <col style="width:20%;" />
-                   <col style="width:30%;" />
-                   <col style="width:20%;" />
-                   <col style="width:30%;" />
-<%--                    <col style="width:8%;" /> --%>
-<%--                    <col style="width:35%;" /> --%>
+				   <col style="width:15%;" />
+				   <col style="width:15%;" />
+				   <col style="width:15%;" />
+				   <col style="width:15%;" />
+				   <col style="width:15%;" />
+				   <col style="width:15%;" />
                    </colgroup>
                    
                    <tbody>      
@@ -631,18 +642,20 @@ function postProcessIBS(res) {
                                 <td >
 									<input type="text" id="orgNm" name="orgNm" class="wd200" value="${orgNm}"
 										   placeholder="기관명을 입력해주세요."/>
-                                 <%--<select id="orgNm" class="" name="orgNm">
-                                	<option value="">전체</option>
-		 							<c:forEach var="userOrgList" items="${userOrgList}" varStatus="status">
-		 							  <option value="${userOrgList.codeLnm}">${userOrgList.codeLnm}</option>
-		 							</c:forEach> 
-	 					 		</select>--%>
-                                
+
 								</td>
                                 <th scope="row"><label for="stndNm">표준단어명</label></th> <!-- 표준사전명 -->
                                 <td><input type="text" id="stndNm" name="stndNm" class="wd98p" value="${stndNm}" /></td>
-<%--                                 <th scope="row"><label for="objDescn"><s:message code="CONTENT.TXT" /></label></th> <!-- 설명 --> --%>
-<!--                                 <td><input type="text" id="objDescn" name="objDescn" class="wd98p"/></td> -->
+
+								<th scope="row"><label for="chkYn">검증여부</label></th>
+								<td><select id="chkYn" name="chkYn" class="wd98p">
+									<option value="">전체</option>
+									<option value="E">검증오류</option>
+									<option value="Y">검증성공</option>
+									<option value="N">미검증</option>
+									<option value="YY">확정</option>
+								</select>
+								</td>
                             </tr>
                    </tbody>
                  </table>   
@@ -663,8 +676,18 @@ function postProcessIBS(res) {
 					    <li class="btn_chang_add" id="btnChangAdd"><a><span class="ui-icon ui-icon-folder-open"></span><s:message code="CHG.TRGT.ADDT" /></a></li> <!-- 변경대상 추가 -->
 					    <li class="btn_excel_load" id="btnExcelLoad"><a><span class="ui-icon ui-icon-document"></span><s:message code="EXCL.UPLOAD" /></a></li> <!-- 엑셀 올리기 -->
 					  </ul>         
-				    <button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="STRG" /></button> <!-- 저장 --> 
+				    <%--<button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="STRG" /></button> <!-- 저장 -->--%>
 				    <button class="btn_delete" id="btnDelete" 	name="btnDelete"><s:message code="DEL" /></button> <!-- 삭제 -->
+
+					<button class="btn_inspect" id="btnInspect" 	name="btnInspect">검증</button>
+					<button class="btn_decide" id="btnDecide" 	name="btnDecide">확정</button>
+					<button class="btn_init" id="btnInit" 	name="btnInit">초기화</button>
+
+					<SCRIPT>
+						document.getElementById('btnDecide').disabled = true;
+						document.getElementById('btnInit').disabled = true;
+					</SCRIPT>
+
 				</c:if>
 				
 			</div>

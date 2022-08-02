@@ -73,14 +73,14 @@ function grid_STWD_init() {
 					{Type:"Text",   Width:150,  SaveName:"engMean", 	Align:"Left", Edit:1, Hidden:0, KeyField:0},
 					{Type:"Text",   Width:100,  SaveName:"stwdPnm",   	Align:"Left", Edit:1, KeyField:1}, 
 					{Type:"Text",   Width:500,  SaveName:"objDescn",	Align:"Left", Edit:1, KeyField:1},
-					{Type:"Combo",  Width:80,   SaveName:"dmnYn",	 	Align:"Center", Edit:1, Hidden:0, KeyField:1},
+					{Type:"Combo",  Width:80,   SaveName:"dmnYn",	 	Align:"Center", Edit:1, Hidden:0, KeyField:0},
 					{Type:"Text",   Width:100,  SaveName:"dmnLnm",	 	Align:"Left", Edit:1, Hidden:0},
 					{Type:"Text",   Width:100,  SaveName:"symnLnm",	    Align:"Left", Edit:1, Hidden:0},
 					{Type:"Text",   Width:100,  SaveName:"fbdnLnm",	    Align:"Left", Edit:1, Hidden:0},
 					
 					
 					{Type:"Text",   Width:100,  SaveName:"ownrOrg",      Align:"Left", Edit:1, Hidden:0, KeyField:0},  // 소관기관명
-					{Type:"Text",   Width:80,  SaveName:"rqstDtm",  	Align:"Center", Edit:1, Format:"yyyyMMdd", KeyField:1},
+					{Type:"Text",   Width:80,  SaveName:"rqstDtm",  	Align:"Center", Edit:1, Format:"yyyyMMdd", KeyField:0},
 					{Type:"Text",   Width:60,  SaveName:"rqstUserId",   Align:"Center", Edit:0, Hidden:0},
 					{Type:"Text",   Width:60,  SaveName:"rqstUserNm",   Align:"Center", Edit:0, Hidden:1},
 					{Type:"Text",   Width:60,  SaveName:"rqstNo",       Align:"Center", Edit:0, Hidden:1}, 
@@ -146,22 +146,8 @@ function grid_STWD_OnClick(row, col, value, cellx, celly) {
 	//선택한 상세정보를 가져온다...
 	var param =  grid_STWD.GetRowJson(row);
 
-	//선택한 그리드의 row 내용을 보여준다.....
-// 	var tmphtml = '표준단어명 ' + ' : ' +  param.stwdLnm+"["+param.stwdPnm+"]";
-	
-// 	$('#STWD_sel_title').html(tmphtml);
-	
-	//검증결과 검증오류일경우가 아닐경우 RETURN
-// 	if( grid_STWD.GetCellValue(row, "vrfCd") != "2")  return;
-	
-	//var param = grid_STWD.GetRowJson(row);
-
 	var param1 = $("#mstFrm").serialize();
 	param1 += "&rqstSno=" + param.rqstSno;
-
-	//검증결과 조회
-// 	getRqstVrfLst(param1);
-	
 }
 
 
@@ -179,6 +165,24 @@ function grid_STWD_OnSearchEnd(code, message, stCode, stMsg) {
 		return;
 	} else {
 		//조회 성공....
+        <c:if test="${sessionScope.loginVO.usergId eq 'OBJ_00000034586'}">
+        var len = grid_STWD.RowCount();
+        if(frmSearch.chkYn.value == "Y") {
+            if(len > 0) {
+                document.getElementById('btnDecide').disabled = false;
+            }
+        } else {
+            document.getElementById('btnDecide').disabled = true;
+        }
+
+        if(frmSearch.chkYn.value != "" && frmSearch.chkYn.value != "YY") {
+            if(len > 0) {
+                document.getElementById('btnInit').disabled = false;
+            }
+        } else {
+            document.getElementById('btnInit').disabled = true;
+        }
+        </c:if>
 	}
 }
 
