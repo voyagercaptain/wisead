@@ -227,11 +227,11 @@ function doAction(sAction)
 <div style="clear:both; height:5px;"><span></span></div>
 <div style="float:left; width:50%">
 	<ul>
-		<li><h2>DB별 등록 현황</h2></li> <!-- 메뉴권한 정보 -->
+		<li><h2>DB별 표준 등록 현황</h2></li> <!-- 메뉴권한 정보 -->
 	</ul>
 	<!-- 그리드 입력 입력 -->
 	<div class="grid_02">
-		<script type="text/javascript">createIBSheet("grid_sheet3", "100%", "110px");</script>
+		<script type="text/javascript">createIBSheet("grid_sheet3", "100%", "130px");</script>
 	</div>
 	<!-- 그리드 입력 입력 -->
 </div>
@@ -242,7 +242,7 @@ function doAction(sAction)
 	</ul>
 	<!-- 그리드 입력 입력 -->
 	<div class="grid_02">
-		<script type="text/javascript">createIBSheet("grid_sheet2", "100%", "110px");</script>
+		<script type="text/javascript">createIBSheet("grid_sheet2", "100%", "130px");</script>
 	</div>
 	<!-- 그리드 입력 입력 -->    
 </div>
