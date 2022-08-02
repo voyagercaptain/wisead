@@ -1334,7 +1334,7 @@ public class StndDmnRqstServiceImpl implements StndDmnRqstService {
 			}
 
 			//제정일자
-			String check5 = ValidationCheck.checkSditmDateDate(checkVo.getRqstDtm());
+			String check5 = ValidationCheck.checkSditmDate(checkVo.getRqstDtm());
 			checkStr += check5;
 			if(!"".equals(check5)) {
 				checkStr += ", ";

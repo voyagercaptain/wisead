@@ -116,35 +116,13 @@ public class ValidationCheck {
      * @param data
      * @return
      */
-    public static String checkSditmDate(String data) {
-        try {
-            if (StringUtils.isEmpty(data)) {
-                return ErrorCode.ERROR_ITEM_DATE_NOTNULL.getMessage();
-            }
-
-            SimpleDateFormat dateFormatParser = new SimpleDateFormat("yyyyMMdd"); //검증할 날짜 포맷 설정
-            dateFormatParser.setLenient(false); //false일경우 처리시 입력한 값이 잘못된 형식일 시 오류가 발생
-            dateFormatParser.parse(data); //대상 값 포맷에 적용되는지 확인
-            return "";
-        }
-        catch (Exception e) {
-            return ErrorCode.ERROR_ITEM_DATE_FORMAT.getMessage();
-        }
-    }
-
-    /**
-     * 표준 용어 제정일자 검증
-     * 필수값 검증,  데이터 형식 검증 (yyyyMMdd)
-     * @param data
-     * @return
-     */
-    public static String checkSditmDateDate(Date data) {
+    public static String checkSditmDate(Date data) {
         try {
             if (data == null) {
                 return ErrorCode.ERROR_ITEM_DATE_NOTNULL.getMessage();
             }
 
-            DateFormat dateFormatParser = new SimpleDateFormat("yyyyMMdd"); //검증할 날짜 포맷 설정
+            SimpleDateFormat dateFormatParser = new SimpleDateFormat("yyyyMMdd"); //검증할 날짜 포맷 설정
             String strData = dateFormatParser.format(data);
             dateFormatParser.setLenient(false); //false일경우 처리시 입력한 값이 잘못된 형식일 시 오류가 발생
             dateFormatParser.parse(strData); //대상 값 포맷에 적용되는지 확인

@@ -857,7 +857,7 @@ public class DbStndTotRqstCtrl {
 					errorList.add(errorMsg);
 				}
 				// 표준 용어 제정일자 검증
-				errorMsg = ValidationCheck.checkSditmDateDate(saveVo.getRqstDtm());
+				errorMsg = ValidationCheck.checkSditmDate(saveVo.getRqstDtm());
 				if(errorMsg != "") {
 					errorList.add(errorMsg);
 				}
