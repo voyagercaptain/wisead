@@ -90,6 +90,16 @@ public class RegistStatCtrl {
 
 		return new IBSheetListVO<WaaUserg>(list, list.size());
 	}
+	
+	/** 종합 등록 현황 > DB별 표준 등록 현황  조회 **/
+	@RequestMapping("RegTotalOrgSelectlist.do")
+	@ResponseBody
+	public IBSheetListVO<WaaUserg> RegTotalOrgSelectlist(@ModelAttribute WaaUserg search) {
+		logger.debug("{}", search);
+		List<WaaUserg> list = service.RegTotalOrgSelectlist(search);
+
+		return new IBSheetListVO<WaaUserg>(list, list.size());
+	}
 
 
 }

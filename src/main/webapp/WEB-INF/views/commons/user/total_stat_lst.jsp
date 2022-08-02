@@ -163,8 +163,8 @@ function initGrid3()
 
 		var cols = [
 			{Type:"Text",  Width : 50, 			   	SaveName:"title",       Align:"Center",  Edit:0}, //등록DB
-			{Type:"Int",   Format:"#,##0",  	    SaveName:"totalOrg",    Align:"Center",  Edit:0}, //전체기관
-			{Type:"Int",   Format:"#,##0",          SaveName:"regOrg",   	Align:"Center",  Edit:0}, //등록기관
+			{Type:"Int",   Format:"#,##0",  	    SaveName:"totalDb",     Align:"Center",  Edit:0}, //전체DB
+			{Type:"Int",   Format:"#,##0",          SaveName:"regDb",   	Align:"Center",  Edit:0}, //등록DB
 
 		];
 
@@ -189,13 +189,15 @@ function doAction(sAction)
         case "Search":
         	grid_sheet.DoSearch('<c:url value="/commons/user/TotalStatSelectlist.do" />');
         	grid_sheet2.DoSearch('<c:url value="/commons/user/TotalStatSubSelectlist.do" />');
+        	grid_sheet3.DoSearch('<c:url value="/commons/user/RegTotalOrgSelectlist.do" />');
         	break;
        
         case "Down2Excel":  //엑셀내려받기
         
         	grid_sheet.Down2ExcelBuffer(true);  
             grid_sheet.Down2Excel({FileName:'종합 등록 현황',SheetName:'기관분류별 등록 현황',HiddenColumn:1, Merge:1});
-            grid_sheet2.Down2Excel({FileName:'종합 등록 현황',SheetName:'종합 등록 현황',HiddenColumn:1, Merge:1});
+            grid_sheet2.Down2Excel({FileName:'종합 등록 현황',SheetName:'기관별 등록 현황',HiddenColumn:1, Merge:1});
+            grid_sheet3.Down2Excel({FileName:'종합 등록 현황',SheetName:'DB별 표준 등록 현황',HiddenColumn:1, Merge:1});
             grid_sheet.Down2ExcelBuffer(false);
             break;
     
@@ -223,25 +225,27 @@ function doAction(sAction)
 </div>
 
 <div style="clear:both; height:5px;"><span></span></div>
+<div style="float:left; width:50%">
 	<ul>
 		<li><h2>DB별 표준 등록 현황</h2></li> <!-- 메뉴권한 정보 -->
 	</ul>
 	<!-- 그리드 입력 입력 -->
 	<div class="grid_02">
-		<script type="text/javascript">createIBSheet("grid_sheet3", "50%", "100px");</script>
+		<script type="text/javascript">createIBSheet("grid_sheet3", "100%", "130px");</script>
 	</div>
 	<!-- 그리드 입력 입력 -->
-
-<div style="clear:both; height:10px;"><span></span></div>
+</div>
+<%-- <div style="clear:both; height:10px;"><span></span></div> --%>
+<div style="float:left; width:50%">
 	<ul>
 		<li><h2>기관별 등록 현황</h2></li> <!-- 메뉴권한 정보 -->
 	</ul>
 	<!-- 그리드 입력 입력 -->
 	<div class="grid_02">
-		<script type="text/javascript">createIBSheet("grid_sheet2", "50%", "130px");</script>
+		<script type="text/javascript">createIBSheet("grid_sheet2", "100%", "130px");</script>
 	</div>
 	<!-- 그리드 입력 입력 -->    
-
+</div>
 <div style="clear:both; height:10px;"><span></span></div>
 	<ul>
 		<li><h2>기관분류별 등록 현황</h2></li> <!-- 메뉴권한 정보 -->

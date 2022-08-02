@@ -24,6 +24,10 @@ public class WaaUserg extends CommonVo {
 	
 	private int regOrg;
 	
+	private int totalDb;
+	
+	private int regDb;
+	
 	private int item;
 	
 	private int word;
@@ -486,6 +490,7 @@ public class WaaUserg extends CommonVo {
 		public void setDbCodeRate(Float dbCodeRate) {
 			this.dbCodeRate = dbCodeRate;
 		}
+		
 
 //    private String objDescn;
 //
@@ -497,7 +502,23 @@ public class WaaUserg extends CommonVo {
 //
 //    private String writUserId;
 
-    public String getUsergId() {
+    public int getTotalDb() {
+			return totalDb;
+		}
+
+		public void setTotalDb(int totalDb) {
+			this.totalDb = totalDb;
+		}
+
+		public int getRegDb() {
+			return regDb;
+		}
+
+		public void setRegDb(int regDb) {
+			this.regDb = regDb;
+		}
+
+	public String getUsergId() {
         return usergId;
     }
 

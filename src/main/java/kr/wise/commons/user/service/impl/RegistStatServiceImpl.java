@@ -47,4 +47,11 @@ public class RegistStatServiceImpl implements RegistStatService{
 		return list;
 	}
 
+	@Override
+	public List<WaaUserg> RegTotalOrgSelectlist(WaaUserg search) {
+		logger.debug("RegTotalOrgSelectlist Start.");
+		List<WaaUserg> list = mapper.RegTotalOrgSelectlist(search);
+		return list;
+	}
+
 }

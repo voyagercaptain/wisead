@@ -33,6 +33,8 @@
     <result column="DB_CODE_YN"    	  property="dbCodeYn"    	jdbcType="VARCHAR" />
     <result column="ORG_TYPE"    	  property="orgType"    	jdbcType="VARCHAR" />
     <result column="TITLE"    	  	  property="title"    		jdbcType="VARCHAR" />
+    <result column="TOTAL_DB"         property="totalDb"        jdbcType="NUMERIC" />
+    <result column="REG_DB"           property="regDb"          jdbcType="NUMERIC" />
     <result column="ORG_ITEM_RATE"    property="orgItemRate"   	jdbcType="FLOAT" />
     <result column="ORG_WORD_RATE"    property="orgWordRate"   	jdbcType="FLOAT" />
     <result column="ORG_DOMAIN_RATE"  property="orgDomainRate" 	jdbcType="FLOAT" />
@@ -310,26 +312,24 @@ SELECT
         DB_CODE,
         ROUND(DB_CODE / (TOTAL_ORG*1.0) *100.0,2) as CODE_RATE
  FROM SUMMARY
-UNION ALL
-SELECT
-    	'등록DB' AS TITLE,
-		(SELECT count(db_nm) FROM waa_org_db ) as TOTAL_ORG,
-		count(a.db_nm) as REG_ORG,
-		'' AS DB_ITEM,
-		'' AS ITEM_RATE,
-		'' AS DB_WORD,
-		'' AS WORD_RATE,
-		'' AS DB_DMN,
-		'' AS DOMAIN_RATE,
-		'' AS DB_CODE,
-		'' AS CODE_RATE
+</select>
+
+
+<select id="RegTotalOrgSelectlist" 
+	parameterType="kr.wise.commons.user.WaaUserg" resultMap="BaseResultMap">
+	
+	SELECT
+    	'등록DB'								   AS TITLE,
+		(SELECT COUNT(DB_NM) FROM WAA_ORG_DB ) AS TOTAL_DB,
+		 COUNT(A.DB_NM) 					   AS REG_DB
   FROM
-	(SELECT db_nm FROM wam_db_sditm
+	(SELECT DB_NM FROM WAM_DB_SDITM
 	 UNION
-	 SELECT db_nm FROM wam_db_dmn
+	 SELECT DB_NM FROM WAM_DB_DMN
 	 UNION
-	 SELECT db_nm FROM wam_db_stwd
+	 SELECT DB_NM FROM WAM_DB_STWD
 	 UNION
-	 SELECT db_nm FROM wam_db_comm_cd) a
+	 SELECT DB_NM FROM WAM_DB_COMM_CD) A
+	
 </select>
 </mapper>
