@@ -153,7 +153,7 @@ function initGrid3()
 		SetMergeSheet(msHeaderOnly);
 
 		var headers = [
-			{Text:"<s:message code='COMMON.HEADER.TOTALSTSTAT.SUB.LST'/>", Align:"Center"},
+			{Text:"|전체DB|등록DB", Align:"Center"},
 			//|전체DB|등록DB
 		];
 
