@@ -35,6 +35,7 @@ $(document).ready(function() {
 $(window).load(function() {
 	initGrid();
 	initGrid2();
+	initGrid3();
 });
 
 
@@ -140,6 +141,45 @@ function initGrid2()
     init_sheet(grid_sheet2);    
     //===========================
 }
+
+function initGrid3()
+{
+
+	with(grid_sheet3){
+
+		var cfg = {SearchMode:2,Page:100};
+		SetConfig(cfg);
+
+		SetMergeSheet(msHeaderOnly);
+
+		var headers = [
+			{Text:"<s:message code='COMMON.HEADER.TOTALSTSTAT.SUB.LST'/>", Align:"Center"},
+			//|전체DB|등록DB
+		];
+
+		var headerInfo = {Sort:1, ColMove:0, ColResize:1, HeaderCheck:1};
+
+		InitHeaders(headers, headerInfo);
+
+		var cols = [
+			{Type:"Text",  Width : 50, 			   	SaveName:"title",       Align:"Center",  Edit:0}, //등록DB
+			{Type:"Int",   Format:"#,##0",  	    SaveName:"totalOrg",    Align:"Center",  Edit:0}, //전체기관
+			{Type:"Int",   Format:"#,##0",          SaveName:"regOrg",   	Align:"Center",  Edit:0}, //등록기관
+
+		];
+
+		InitColumns(cols);
+
+		FitColWidth();
+
+		SetExtendLastCol(1);
+	}
+
+	//==시트설정 후 아래에 와야함===
+	init_sheet(grid_sheet3);
+	//===========================
+}
+
 function doAction(sAction)
 {
 
@@ -183,17 +223,32 @@ function doAction(sAction)
 </div>
 
 <div style="clear:both; height:5px;"><span></span></div>
-    
+	<ul>
+		<li><h2>DB별 표준 등록 현황</h2></li> <!-- 메뉴권한 정보 -->
+	</ul>
 	<!-- 그리드 입력 입력 -->
 	<div class="grid_02">
-	     <script type="text/javascript">createIBSheet("grid_sheet2", "50%", "130px");</script>
+		<script type="text/javascript">createIBSheet("grid_sheet3", "50%", "100px");</script>
+	</div>
+	<!-- 그리드 입력 입력 -->
+
+<div style="clear:both; height:10px;"><span></span></div>
+	<ul>
+		<li><h2>기관별 등록 현황</h2></li> <!-- 메뉴권한 정보 -->
+	</ul>
+	<!-- 그리드 입력 입력 -->
+	<div class="grid_02">
+		<script type="text/javascript">createIBSheet("grid_sheet2", "50%", "130px");</script>
 	</div>
 	<!-- 그리드 입력 입력 -->    
 
 <div style="clear:both; height:10px;"><span></span></div>
+	<ul>
+		<li><h2>기관분류별 등록 현황</h2></li> <!-- 메뉴권한 정보 -->
+	</ul>
 	<!-- 그리드 입력 입력 -->
 	<div class="grid_01">
-	     <script type="text/javascript">createIBSheet("grid_sheet", "100%", "500px");</script>            
+	     <script type="text/javascript">createIBSheet("grid_sheet", "100%", "500px");</script>
 	</div>
 	<!-- 그리드 입력 입력 -->
 
