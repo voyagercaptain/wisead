@@ -1,6 +1,7 @@
 package kr.wise.dq.dbstnd.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import kr.wise.commons.cmm.annotation.Mapper;
@@ -57,4 +58,6 @@ public interface WamDbStcdMapper {
     int bulkUpdate(List<WamDbStcd> updateList);
 
     int bulkDelete(List<WamDbStcd> deleteList);
+    
+    Map<String, String> dupliCheckDbStndStcd(Map<String, String> param);
 }

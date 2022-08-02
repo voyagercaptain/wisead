@@ -3,23 +3,25 @@
 <mapper namespace="kr.wise.dq.dbstnd.service.WamDbStwdMapper" >
   <resultMap id="BaseResultMap" type="kr.wise.dq.dbstnd.service.WamDbStwd" extends="kr.wise.commons.cmm.service.CommonMapper.BaseResultMap">
     <id column="STWD_ID" property="stwdId" jdbcType="VARCHAR" />
-    <result column="STWD_LNM" property="stwdLnm" jdbcType="VARCHAR" />
-    <result column="STWD_PNM" property="stwdPnm" jdbcType="VARCHAR" />
-    <result column="ENG_MEAN" property="engMean" jdbcType="VARCHAR" />
-    <result column="SYMN_LNM" property="symnLnm" jdbcType="VARCHAR" />
-    <result column="STND_NM" property="stndNm" jdbcType="VARCHAR" />
+    <result column="STWD_LNM"   property="stwdLnm"  jdbcType="VARCHAR" />
+    <result column="STWD_PNM"   property="stwdPnm"  jdbcType="VARCHAR" />
+    <result column="ENG_MEAN"   property="engMean"  jdbcType="VARCHAR" />
+    <result column="SYMN_LNM"   property="symnLnm"  jdbcType="VARCHAR" />
+    <result column="STND_NM"    property="stndNm"   jdbcType="VARCHAR" />
     <result column="BIZ_DTL_CD" property="bizDtlCd" jdbcType="VARCHAR" />
-    <result column="DMN_YN" property="dmnYn" jdbcType="VARCHAR" />
-    <result column="DATA_TYPE" property="dataType" jdbcType="VARCHAR" />
-    <result column="DATA_LEN" property="dataLen" jdbcType="VARCHAR" />
-    <result column="DATA_SCAL" property="dataScal" jdbcType="VARCHAR" />
-    <result column="DMN_PNM" property="dmnPnm" jdbcType="VARCHAR" />
-    <result column="DMN_LNM" property="dmnLnm" jdbcType="VARCHAR" />
-    <result column="FBDN_LNM" property="fbdnLnm" jdbcType="VARCHAR" />
-   <result column="DB_NM"          property="dbNm"        jdbcType="VARCHAR" />
-   <result column="OWNR_ORG" property="ownrOrg" jdbcType="VARCHAR"/>
-   <result column="SPCL_NT"          property="spclNt"        jdbcType="VARCHAR" />
-
+    <result column="DMN_YN"     property="dmnYn"    jdbcType="VARCHAR" />
+    <result column="DATA_TYPE"  property="dataType" jdbcType="VARCHAR" />
+    <result column="DATA_LEN"   property="dataLen"  jdbcType="VARCHAR" />
+    <result column="DATA_SCAL"  property="dataScal" jdbcType="VARCHAR" />
+    <result column="DMN_PNM"    property="dmnPnm"   jdbcType="VARCHAR" />
+    <result column="DMN_LNM"    property="dmnLnm"   jdbcType="VARCHAR" />
+    <result column="FBDN_LNM"   property="fbdnLnm"  jdbcType="VARCHAR" />
+    <result column="DB_NM"      property="dbNm"     jdbcType="VARCHAR" />
+    <result column="OWNR_ORG"   property="ownrOrg"  jdbcType="VARCHAR"/>
+    <result column="SPCL_NT"    property="spclNt"   jdbcType="VARCHAR" />
+    <result column="ERR_CHK"    property="errChk"   jdbcType="VARCHAR" />
+    <result column="VALID_YN"   property="validYn"  jdbcType="VARCHAR" />
+    <result column="CONFIRM_YN" property="confirmYn" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     STWD_ID, STWD_LNM, STWD_PNM, ENG_MEAN, RQST_NO, RQST_SNO, OBJ_DESCN, 
@@ -56,8 +58,27 @@
   		   (SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.FRS_RQST_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS FRS_RQST_USER_NM,
     	   (SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.RQST_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS RQST_USER_NM,
     	   (SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.APRV_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS APRV_USER_NM 
+    	   , CASE WHEN A.ERR_CHK IS NOT null AND A.ERR_CHK != '' THEN '#FF0000' ELSE NULL END AS FontColor
    	FROM WAM_DB_STWD A
    	WHERE 1 = 1
+   	<if test="vcWh != null">
+         	<if test='vcWh == "Y"'>
+         	AND A.VALID_YN   ='Y'
+         	AND A.CONFIRM_YN ='N'
+         	</if>
+         	<if test='vcWh == "N"'>
+         	AND A.VALID_YN   ='N'
+         	AND A.CONFIRM_YN ='N'
+         	</if>
+         	<if test='vcWh == "E"'>
+			AND A.VALID_YN   ='E'
+			AND A.CONFIRM_YN ='N'			         	
+         	</if>
+         	<if test='vcWh == "YY"'>
+         	AND A.CONFIRM_YN ='Y'
+         	AND A.VALID_YN   ='Y' 
+         	</if>
+     </if>  
    	<if test='!"2".equals(usergId) and !"3".equals(usergId)' > 
    		AND REPLACE(DB_NM, ' ', '') IN (SELECT REPLACE(DB_NAME, ' ', '') AS DB_NAME FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})
    		AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
@@ -675,7 +696,7 @@
 
   </select>
 
-    <insert id="bulkInsert" parameterType="java.util.List" >
+    <insert id="bulkInsert" parameterType="kr.wise.dq.dbstnd.service.WamDbStwd" >
         insert into WAM_DB_STWD
         (
          STWD_ID,
@@ -700,7 +721,9 @@
          FBDN_LNM,
          DB_NM,
          OWNR_ORG,
-         SPCL_NT
+         SPCL_NT,
+         ERR_CHK,
+         VALID_YN
          )
         values
         <foreach collection="list" item="item" index="index" separator=",">
@@ -727,7 +750,9 @@
         #{item.fbdnLnm,jdbcType=VARCHAR},
         #{item.dbNm,jdbcType=VARCHAR},
         #{item.ownrOrg,jdbcType=VARCHAR},
-        #{item.spclNt,jdbcType=VARCHAR}
+        #{item.spclNt,jdbcType=VARCHAR},
+        #{item.errChk,jdbcType=VARCHAR},
+        #{item.validYn,jdbcType=VARCHAR}
         )
         </foreach>
     </insert>
@@ -757,7 +782,16 @@
                 FBDN_LNM = #{item.fbdnLnm,jdbcType=VARCHAR},
                 DB_NM = #{item.dbNm,jdbcType=VARCHAR},
                 OWNR_ORG = #{item.ownrOrg,jdbcType=VARCHAR},
-                SPCL_NT = #{item.spclNt,jdbcType=VARCHAR}
+                SPCL_NT = #{item.spclNt,jdbcType=VARCHAR},
+               <if test='item.decideYn =="Y" and item.validYn =="Y"'>
+           		CONFIRM_DTM   = SYSDATE,
+           		CONFIRM_YN    = 'Y',
+            	</if>
+            	<if test='item.decideYn =="N" and item.validYn =="E"'>
+            	CONFIRM_YN    = 'N',
+            	</if>
+            	ERR_CHK       = #{item.errChk,jdbcType=VARCHAR},
+            	VALID_YN      = #{item.validYn,jdbcType=VARCHAR}
         where STWD_ID = #{item.stwdId,jdbcType=VARCHAR}
         </foreach>
     </update>
@@ -768,4 +802,13 @@
             where STWD_ID = #{item.stwdId,jdbcType=VARCHAR}
         </foreach>
     </delete>
+    
+    <select id="dupliCheckDbStndStwd" resultType="java.util.Map" parameterType="java.util.Map">
+    SELECT ORG_NM
+    FROM WAM_DB_STWD  
+    WHERE ORG_NM 	 = #{orgNm,jdbcType=VARCHAR}
+    AND DB_NM        = #{dbNm,jdbcType=VARCHAR}
+    AND STWD_LNM 	 = #{stwdLnm,jdbcType=VARCHAR}
+    AND CONFIRM_YN   = 'Y'
+  </select>
 </mapper>

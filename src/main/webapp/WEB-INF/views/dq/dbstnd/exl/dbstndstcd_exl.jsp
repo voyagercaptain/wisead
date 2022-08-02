@@ -11,7 +11,7 @@
 <!-- <head> -->
 <!-- <title></title> -->
 <script type="text/javascript">
-
+var usergId = "${sessionScope.loginVO.usergId}";
 $(document).ready(function(){
 	//그리드 초기화
 	grid_STCD_init();
@@ -47,7 +47,7 @@ function grid_STCD_init() {
 		//No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|STWDID|기관명|DB명|표준단어명|영문약어명|단어영문명|단어설명|형식단어여부|도메인분류명|이음동의어목록|금칙어목록|등록일자|요청자ID|요청자명|요청번호|요청일련번호
 		
  		//var headtext  = "No.|상태|선택|commCdId|기관명|DB명|한글코드명|코드설명|데이터타입|데이터길이|영문코드명|관리부서명|제정일자|특이사항|코드값|코드값의미|코드값설명|상위코드값|사용여부";
- 		var headtext  = "No.|상태|선택|기관명|DB명|관리부서명|commCdId|코드명(한글)|코드명(영문)|코드설명|데이터타입|데이터길이|코드값|코드값의미|코드값설명|제정일자|특이사항|상위코드값|사용여부|필수항목";
+ 		var headtext  = "No.|상태|선택|기관명|DB명|관리부서명|commCdId|코드명(한글)|코드명(영문)|코드설명|데이터타입|데이터길이|코드값|코드값의미|코드값설명|제정일자|특이사항|상위코드값|사용여부|검증내용|확정여부";
  		headerText = headtext.split("|");
  		
 		var headers = [
@@ -59,33 +59,27 @@ function grid_STCD_init() {
 		InitHeaders(headers, headerInfo); 
 
 		var cols = [						
-			{Type:"Seq",	Width:50,   SaveName:"ibsSeq",	    Align:"Center", Edit:0},
-			{Type:"Status", Width:60,   SaveName:"ibsStatus",   Align:"Center", Edit:0, Hidden:1},
-			{Type:"CheckBox", Width:50, SaveName:"ibsCheck",    Align:"Center", Edit:1, Hidden:0, Sort:0},
-			
-			{Type:"Text",   Width:100,  SaveName:"orgNm",   	Align:"Left", Edit:1, KeyField:1},
-			{Type:"Text",   Width:100,  SaveName:"dbNm",     Align:"Left", Edit:1, KeyField:1},
-			
-			{Type:"Text",   Width:100,  SaveName:"mngDeptCd",	 	Align:"Left", Edit:1, Hidden:0},
-			
-			{Type:"Text",   Width:150,  SaveName:"commCdId",   	Align:"Left", Edit:0, KeyField:0, Hidden:1},
-			
-			{Type:"Text",   Width:100,  SaveName:"commCdNm",   	Align:"Left", Edit:1, KeyField:1},
-			{Type:"Text",  Width:150,   SaveName:"comnCdEnnm",	 	Align:"Center", Edit:1, Hidden:0, KeyField:1},
-			
-			{Type:"Text",   Width:150,  SaveName:"commCdDesc", 	Align:"Left", Edit:1, Hidden:0, KeyField:0},
-			{Type:"Text",   Width:100,  SaveName:"comnCdDttpNm",   	Align:"Left", Edit:1, KeyField:0}, 
-			{Type:"Int",   Width:80,  SaveName:"comnCdDataLen",	Align:"Left", Edit:1, KeyField:0},
-			
-			{Type:"Text",   Width:100,  SaveName:"commDtlCdNm",	    Align:"Left", Edit:1, Hidden:0, KeyField:1},
-			{Type:"Text",   Width:100,  SaveName:"commDtlCdMn",	    Align:"Left", Edit:1, Hidden:0, KeyField:1},
-			{Type:"Text",   Width:100,  SaveName:"commDtlCdDesc",	    Align:"Left", Edit:1, Hidden:0, KeyField:0},
-			
-			{Type:"Text",   Width:80,  SaveName:"writDtm",  	Align:"Center", Edit:1, Format:"yyyyMMdd", KeyField:1},
-			{Type:"Text",   Width:150,  SaveName:"pclrMtr",	    Align:"Left", Edit:1, Hidden:0},
-			{Type:"Text",   Width:100,  SaveName:"uppCommCdId",	    Align:"Left", Edit:1, Hidden:0, KeyField:0},
-			{Type:"Combo",   Width:80,  SaveName:"useYn",	    Align:"Left", Edit:1, Hidden:0},
-			{Type:"Text",   Width:150,  SaveName:"errChk",	    Align:"Left", Edit:1, Hidden:0}
+			{Type:"Seq",	  Width:50,   SaveName:"ibsSeq",	   Align:"Center", Edit:0},
+			{Type:"Status",   Width:60,   SaveName:"ibsStatus",    Align:"Center", Edit:0, Hidden:1},
+			{Type:"CheckBox", Width:50,   SaveName:"ibsCheck",     Align:"Center", Edit:1, Hidden:0, Sort:0},
+			{Type:"Text",     Width:100,  SaveName:"orgNm",   	   Align:"Left",   Edit:1, KeyField:1}, 			//기관명
+			{Type:"Text",     Width:100,  SaveName:"dbNm",         Align:"Left",   Edit:1, KeyField:1},				//DB명
+			{Type:"Text",     Width:100,  SaveName:"mngDeptCd",	   Align:"Left",   Edit:1, Hidden:0},
+			{Type:"Text",     Width:150,  SaveName:"commCdId",     Align:"Left",   Edit:0, KeyField:0, Hidden:1},
+			{Type:"Text",     Width:100,  SaveName:"commCdNm",     Align:"Left",   Edit:1, KeyField:1},             //코드명
+			{Type:"Text",     Width:150,  SaveName:"comnCdEnnm",   Align:"Center", Edit:1, Hidden:0, KeyField:1},
+			{Type:"Text",     Width:150,  SaveName:"commCdDesc",   Align:"Left",   Edit:1, Hidden:0, KeyField:0},
+			{Type:"Text",     Width:100,  SaveName:"comnCdDttpNm", Align:"Left",   Edit:1, KeyField:0}, 
+			{Type:"Int",      Width:80,   SaveName:"comnCdDataLen",Align:"Left",   Edit:1, KeyField:0},
+			{Type:"Text",     Width:100,  SaveName:"commDtlCdNm",  Align:"Left",   Edit:1, Hidden:0, KeyField:1},
+			{Type:"Text",     Width:100,  SaveName:"commDtlCdMn",  Align:"Left",   Edit:1, Hidden:0, KeyField:1},
+			{Type:"Text",     Width:100,  SaveName:"commDtlCdDesc",Align:"Left",   Edit:1, Hidden:0, KeyField:0},
+			{Type:"Text",     Width:80,   SaveName:"writDtm",  	   Align:"Center", Edit:1, Format:"yyyyMMdd", KeyField:1},
+			{Type:"Text",     Width:150,  SaveName:"pclrMtr",	   Align:"Left",   Edit:1, Hidden:0},
+			{Type:"Text",     Width:100,  SaveName:"uppCommCdId",  Align:"Left",   Edit:1, Hidden:0, KeyField:0},
+			{Type:"Combo",    Width:80,   SaveName:"useYn",	       Align:"Left",   Edit:1, Hidden:0},
+			{Type:"Text",     Width:150,  SaveName:"errChk",	   Align:"Left",   Edit:1, Hidden:0},
+			{Type:"Text",     Width:150,  SaveName:"confirmYn",	   Align:"Left",   Edit:0, Hidden:1}
 		];
 		
 		colsCount = cols.length;
@@ -169,8 +163,29 @@ function grid_STCD_OnSearchEnd(code, message, stCode, stMsg) {
 		showMsgBox("ERR", "<s:message code="ERR.SEARCH" />");
 		return;
 	} else {
-		//조회 성공....
+		//dquser로 로그인 할 경우 버튼 활성화 비활성화 처리
+	if(usergId == "OBJ_00000034587"){	
+		 var len = grid_STCD.RowCount();
+       if(frmSearch.vcWh.value === "Y") {
+           if(len > 0) {
+               document.getElementById('btnDecide').disabled = false;
+           }else{
+           	document.getElementById('btnDecide').disabled = true;
+           }
+       }else {
+           document.getElementById('btnDecide').disabled = true;
+           document.getElementById('btnInit').disabled = true;
+       }
+       
+       if(frmSearch.vcWh.value === "E"||frmSearch.vcWh.value === "Y"||frmSearch.vcWh.value === "N"){
+          	if(len > 0) {
+                  document.getElementById('btnInit').disabled = false;
+            }else{
+              	document.getElementById('btnInit').disabled = true;
+            }
+      }
 	}
+  }
 }
 
 </script>

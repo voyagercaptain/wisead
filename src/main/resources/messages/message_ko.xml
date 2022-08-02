@@ -73,6 +73,8 @@
   <entry key="MSG.TABLE"><![CDATA[테이블 담당자를 변경하였습니다.]]></entry>
   <entry key="MSG.QUARTZ"><![CDATA[분석실행이 요청되었습니다.]]></entry>
   <entry key="MSG.CONNTEST"><![CDATA[접속테스트가 완료되었습니다.]]></entry>
+  <entry key="MSG.INIT"><![CDATA[초기화 되었습니다.]]></entry>
+  
   
   <!-- 에러 메세지 리스트 -->
   <entry key="ERR.SEARCH"><![CDATA[조회를 실패했습니다.]]></entry>
@@ -104,6 +106,7 @@
   <entry key="ERR.DUP.DBMAP"><![CDATA[ 중복된 권한명이 존재합니다.]]></entry>
   
   <entry key="ERR.CONN.TEST"><![CDATA[접속 테스트할 DBMS를 선택해 주세요.]]></entry>
+  <entry key="ERR.INIT"><![CDATA[초기화 실패했ㅅ급니다.]]></entry>
   
         <!-- 사용자 정의 메시지 -->
   <entry key="ERR.EMPTY"><![CDATA[{0}]]></entry>

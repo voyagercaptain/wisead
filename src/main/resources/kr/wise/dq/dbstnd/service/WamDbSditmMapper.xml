@@ -1066,11 +1066,16 @@ SELECT *
             BSNSS_FLD   	= #{item.bsnssFld,jdbcType=VARCHAR},
             PNM 			= #{item.pnm,jdbcType=VARCHAR},
             ERR_CHK 		= #{item.errChk,jdbcType=VARCHAR},
-            VALID_YN 		= #{item.validYn,jdbcType=VARCHAR},
-            <if test='item.decideYn =="Y" and item.confirmYn =="Y"'>
-            CONFIRM_DTM     = SYSDATE,
-            </if>
-            CONFIRM_YN 		= #{item.confirmYn,jdbcType=VARCHAR}
+           <if test='item.decideYn =="Y" and item.validYn =="Y"'>
+           	CONFIRM_DTM   = SYSDATE,
+           	CONFIRM_YN    = 'Y',
+           </if>
+           <if test='item.decideYn =="N" and item.validYn =="E"'>
+           CONFIRM_YN    = 'N',
+           </if>
+            VALID_YN 		= #{item.validYn,jdbcType=VARCHAR}
+            
+           
         where SDITM_ID = #{item.sditmId,jdbcType=VARCHAR}
     </foreach>
   </update>
@@ -1085,10 +1090,9 @@ SELECT *
   <select id="dupliCheckDbStndItem" resultType="java.util.Map" parameterType="java.util.Map">
     select ORG_NM
     FROM WAM_DB_SDITM  
-    WHERE INFOTP_LNM = #{infotpLnm,jdbcType=VARCHAR}
+    WHERE SDITM_LNM = #{sditmLnm,jdbcType=VARCHAR}
     AND ORG_NM 		 = #{orgNm,jdbcType=VARCHAR}
-    AND SDITM_LNM 	 = #{sditmLnm,jdbcType=VARCHAR}
-    AND SDITM_Pnm 	 = #{sditmPnm,jdbcType=VARCHAR}
+    AND DB_NM        = #{dbNm,jdbcType=VARCHAR}
     AND CONFIRM_YN   = 'Y'
   </select>
 </mapper>

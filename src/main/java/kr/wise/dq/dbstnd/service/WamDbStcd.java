@@ -28,6 +28,16 @@ public class WamDbStcd extends CommonVo  {
     
     private String usergId;
     
+    private String errChk;
+    
+    private String vcWh;
+    
+    private String decideYn;
+    
+    private String validYn;
+    
+    private String confirmYn;
+    
 	public String getUsergId() {
 		return usergId;
 	}
@@ -142,6 +152,36 @@ public class WamDbStcd extends CommonVo  {
 	}
 	public void setDbNm(String dbNm) {
 		this.dbNm = dbNm;
+	}
+	public String getErrChk() {
+		return errChk;
+	}
+	public void setErrChk(String errChk) {
+		this.errChk = errChk;
+	}
+	public String getVcWh() {
+		return vcWh;
+	}
+	public void setVcWh(String vcWh) {
+		this.vcWh = vcWh;
+	}
+	public String getDecideYn() {
+		return decideYn;
+	}
+	public void setDecideYn(String decideYn) {
+		this.decideYn = decideYn;
+	}
+	public String getValidYn() {
+		return validYn;
+	}
+	public void setValidYn(String validYn) {
+		this.validYn = validYn;
+	}
+	public String getConfirmYn() {
+		return confirmYn;
+	}
+	public void setConfirmYn(String confirmYn) {
+		this.confirmYn = confirmYn;
 	}
 	
 	

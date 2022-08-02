@@ -14,10 +14,13 @@
     <result column="COMM_DTL_CD_NM" property="commDtlCdNm" jdbcType="VARCHAR" />
     <result column="COMM_DTL_CD_MN" property="commDtlCdMn" jdbcType="VARCHAR" />
     <result column="COMM_DTL_CD_DESC" property="commDtlCdDesc" jdbcType="VARCHAR" />
-    <result column="USE_YN" property="useYn" jdbcType="VARCHAR" />
-    <result column="ORG_NM" property="orgNm" jdbcType="VARCHAR" />
-   <result column="DB_NM"   property="dbNm"    jdbcType="VARCHAR" />
-   <result column="SPCL_NT" property="spclNt"  jdbcType="VARCHAR" />
+    <result column="USE_YN"     property="useYn" 	  jdbcType="VARCHAR" />
+    <result column="ORG_NM"     property="orgNm" 	  jdbcType="VARCHAR" />
+    <result column="DB_NM"      property="dbNm"       jdbcType="VARCHAR" />
+    <result column="SPCL_NT"    property="spclNt"     jdbcType="VARCHAR" />
+    <result column="ERR_CHK"    property="errChk"     jdbcType="VARCHAR" />
+    <result column="VALID_YN"   property="validYn"    jdbcType="VARCHAR" />
+    <result column="CONFIRM_YN" property="confirmYn"  jdbcType="VARCHAR" />
 
   </resultMap>
   <sql id="Base_Column_List" >
@@ -59,13 +62,32 @@
   	WAM_DB_COMM_CD A
   WHERE A.COMM_CD_ID =  #{commCdId, jdbcType=VARCHAR}
     AND A.REG_TYP_CD IN ('C', 'U')
-
+ 
   </select>
   <select id="selectList" resultMap="BaseResultMap" parameterType="kr.wise.dq.dbstnd.service.WamDbStcd" >
   	SELECT * FROM 
   	(SELECT A.*
+  	, CASE WHEN A.ERR_CHK IS NOT null AND A.ERR_CHK != '' THEN '#FF0000' ELSE NULL END AS FontColor
    	FROM WAM_DB_COMM_CD A
    	WHERE  1 = 1
+   	 <if test="vcWh != null">
+         	<if test='vcWh == "Y"'>
+         	AND A.VALID_YN   ='Y'
+         	AND A.CONFIRM_YN ='N'
+         	</if>
+         	<if test='vcWh == "N"'>
+         	AND A.VALID_YN   ='N'
+         	AND A.CONFIRM_YN ='N'
+         	</if>
+         	<if test='vcWh == "E"'>
+			AND A.VALID_YN   ='E'
+			AND A.CONFIRM_YN ='N'			         	
+         	</if>
+         	<if test='vcWh == "YY"'>
+         	AND A.CONFIRM_YN ='Y'
+         	AND A.VALID_YN   ='Y' 
+         	</if>
+         </if>  
    	<if test='!"2".equals(usergId) and !"3".equals(usergId)' >
    	 AND REPLACE(DB_NM, ' ', '') IN (SELECT REPLACE(DB_NAME, ' ', '') AS DB_NAME FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})
    	 AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
@@ -308,7 +330,7 @@
   </select>
 
 
-    <insert id="bulkInsert" parameterType="java.util.List" >
+    <insert id="bulkInsert" parameterType="kr.wise.dq.dbstnd.service.WamDbStcd" >
         insert into WAM_DB_COMM_CD
         (
         COMM_CD_ID
@@ -327,6 +349,8 @@
         , USE_YN
         , ORG_NM
         , DB_NM
+        , ERR_CHK
+        , VALID_YN
         )
         values
         <foreach collection="list" item="item" index="index" separator=",">
@@ -346,7 +370,9 @@
             #{item.commDtlCdDesc,jdbcType=VARCHAR},
             #{item.useYn,jdbcType=VARCHAR},
             #{item.orgNm,jdbcType=VARCHAR},
-            #{item.dbNm,jdbcType=VARCHAR}
+            #{item.dbNm,jdbcType=VARCHAR},
+            #{item.errChk,jdbcType=VARCHAR},
+            #{item.validYn,jdbcType=VARCHAR}
         )
         </foreach>
     </insert>
@@ -369,6 +395,15 @@
                 , USE_YN = #{item.useYn,jdbcType=VARCHAR}
                 , ORG_NM = #{item.orgNm,jdbcType=VARCHAR}
                 , DB_NM = #{item.dbNm,jdbcType=VARCHAR}
+                <if test='item.decideYn =="Y" and item.validYn =="Y"'>
+           			,CONFIRM_DTM   = SYSDATE
+           			,CONFIRM_YN    = 'Y'
+           		</if>
+           		<if test='item.decideYn =="N" and item.validYn =="E"'>
+           			,CONFIRM_YN    = 'N'
+           		</if>
+           		, ERR_CHK 		= #{item.errChk,jdbcType=VARCHAR}
+           		, VALID_YN 		= #{item.validYn,jdbcType=VARCHAR}
         where COMM_CD_ID = #{item.commCdId,jdbcType=VARCHAR}
         </foreach>
     </update>
@@ -379,5 +414,14 @@
         where COMM_CD_ID = #{item.commCdId,jdbcType=VARCHAR}
         </foreach>
     </delete>
+    
+     <select id="dupliCheckDbStndStcd" resultType="java.util.Map" parameterType="java.util.Map">
+    SELECT ORG_NM
+    FROM WAM_DB_COMM_CD  
+    WHERE ORG_NM 	 = #{orgNm,jdbcType=VARCHAR}
+    AND DB_NM        = #{dbNm,jdbcType=VARCHAR}
+    AND comm_cd_nm 	 = #{commCdNm,jdbcType=VARCHAR}
+    AND CONFIRM_YN   = 'Y'
+  </select>
 
 </mapper>

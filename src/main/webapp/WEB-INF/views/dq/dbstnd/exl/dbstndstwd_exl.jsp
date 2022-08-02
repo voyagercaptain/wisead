@@ -11,7 +11,7 @@
 <!-- <head> -->
 <!-- <title></title> -->
 <script type="text/javascript">
-
+var usergId = "${sessionScope.loginVO.usergId}";
 $(document).ready(function(){
 	//그리드 초기화
 	grid_STWD_init();
@@ -47,7 +47,7 @@ function grid_STWD_init() {
 		//No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|STWDID|기관명|DB명|표준단어명|영문약어명|단어영문명|단어설명|형식단어여부|도메인분류명|이음동의어목록|금칙어목록|등록일자|요청자ID|요청자명|요청번호|요청일련번호
 		
  		//var headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|STWDID|기관명|DB명|표준단어명|영문명|영문약어명|단어설명|형식단어여부|도메인분류명|이음동의어목록|금칙어목록|관리부서명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항";
- 		var headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|STWDID|기관명|DB명|표준단어명|단어영문명|단어영문약어명|단어설명|형식단어여부|도메인분류명|이음동의어목록|금칙어목록|관리부서명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항|필수항목";
+ 		var headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|STWDID|기관명|DB명|표준단어명|단어영문명|단어영문약어명|단어설명|형식단어여부|도메인분류명|이음동의어목록|금칙어목록|관리부서명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항|검증내용|확정여부";
  		headerText = headtext.split("|");
  		
 		var headers = [
@@ -67,30 +67,26 @@ function grid_STWD_init() {
 			{Type:"Combo",  Width:80,   SaveName:"rqstDcd",	    Align:"Center", Edit:1, Hidden:1},						
 			{Type:"Combo",  Width:80,   SaveName:"regTypCd",	Align:"Center", Edit:0, Hidden:1},						
 			{Type:"Combo",  Width:120,  SaveName:"vrfCd",		Align:"Center", Edit:0, Hidden:1},
-			
-			{Type:"Text",   Width:150,  SaveName:"stwdId",   	Align:"Left", Edit:0, KeyField:0, Hidden:1},
-			
-			{Type:"Text",   Width:100,  SaveName:"orgNm",   	Align:"Left", Edit:1, KeyField:1},
-			{Type:"Text",   Width:100,  SaveName:"dbNm",     Align:"Left", Edit:1, KeyField:1},
-			
-			{Type:"Text",   Width:100,  SaveName:"stwdLnm",   	Align:"Left", Edit:1, KeyField:1},
-			{Type:"Text",   Width:150,  SaveName:"engMean", 	Align:"Left", Edit:1, Hidden:0, KeyField:0},
-			{Type:"Text",   Width:100,  SaveName:"stwdPnm",   	Align:"Left", Edit:1, KeyField:1}, 
-			{Type:"Text",   Width:500,  SaveName:"objDescn",	Align:"Left", Edit:1, KeyField:1},
-			{Type:"Combo",  Width:80,   SaveName:"dmnYn",	 	Align:"Center", Edit:1, Hidden:0, KeyField:1},
-			{Type:"Text",   Width:100,  SaveName:"dmnLnm",	 	Align:"Left", Edit:1, Hidden:0},
-			{Type:"Text",   Width:100,  SaveName:"symnLnm",	    Align:"Left", Edit:1, Hidden:0},
-			{Type:"Text",   Width:100,  SaveName:"fbdnLnm",	    Align:"Left", Edit:1, Hidden:0},
-			
-			
-			{Type:"Text",   Width:100,  SaveName:"ownrOrg",      Align:"Left", Edit:1, Hidden:0, KeyField:0},  // 소관기관명
-			{Type:"Text",   Width:80,  SaveName:"rqstDtm",  	Align:"Center", Edit:1, Format:"yyyyMMdd", KeyField:1},
-			{Type:"Text",   Width:60,  SaveName:"rqstUserId",   Align:"Center", Edit:0, Hidden:0},
-			{Type:"Text",   Width:60,  SaveName:"rqstUserNm",   Align:"Center", Edit:0, Hidden:1},
-			{Type:"Text",   Width:60,  SaveName:"rqstNo",       Align:"Center", Edit:0, Hidden:1}, 
-			{Type:"Int",   Width:60,   SaveName:"rqstSno",      Align:"Center", Edit:0, Hidden:1},
-			{Type:"Text",   Width:150,  SaveName:"spclNt",    Align:"Center", Edit:1, Hidden:0},
-			{Type:"Text",   Width:150,  SaveName:"errChk",    Align:"Center", Edit:1, Hidden:0}
+			{Type:"Text",   Width:150,  SaveName:"stwdId",   	Align:"Left",   Edit:0, KeyField:0, Hidden:1},
+			{Type:"Text",   Width:100,  SaveName:"orgNm",   	Align:"Left",   Edit:1, KeyField:1},			//기관명
+			{Type:"Text",   Width:100,  SaveName:"dbNm",        Align:"Left",   Edit:1, KeyField:1},			//db명
+			{Type:"Text",   Width:100,  SaveName:"stwdLnm",   	Align:"Left",   Edit:1, KeyField:1},			//표준단어명
+			{Type:"Text",   Width:150,  SaveName:"engMean", 	Align:"Left",   Edit:1, Hidden:0, KeyField:0},  //단어영문명
+			{Type:"Text",   Width:100,  SaveName:"stwdPnm",   	Align:"Left",   Edit:1, KeyField:1}, 			//단어영문약어명
+			{Type:"Text",   Width:500,  SaveName:"objDescn",	Align:"Left",   Edit:1, KeyField:1},			//단어설명
+			{Type:"Combo",  Width:80,   SaveName:"dmnYn",	 	Align:"Center", Edit:1, Hidden:0, KeyField:1},	//형식단어여부
+			{Type:"Text",   Width:100,  SaveName:"dmnLnm",	 	Align:"Left",   Edit:1, Hidden:0},				//도메인분류명
+			{Type:"Text",   Width:100,  SaveName:"symnLnm",	    Align:"Left",   Edit:1, Hidden:0},				//이음동의어목록
+			{Type:"Text",   Width:100,  SaveName:"fbdnLnm",	    Align:"Left",   Edit:1, Hidden:0},				//금칙어목록
+			{Type:"Text",   Width:100,  SaveName:"ownrOrg",     Align:"Left",   Edit:1, Hidden:0, KeyField:0},  //관리부서명
+			{Type:"Text",   Width:80,   SaveName:"rqstDtm",  	Align:"Center", Edit:1, Format:"yyyyMMdd", KeyField:1},//제정일자
+			{Type:"Text",   Width:60,   SaveName:"rqstUserId",  Align:"Center", Edit:0, Hidden:0},
+			{Type:"Text",   Width:60,   SaveName:"rqstUserNm",  Align:"Center", Edit:0, Hidden:1},
+			{Type:"Text",   Width:60,   SaveName:"rqstNo",      Align:"Center", Edit:0, Hidden:1}, 
+			{Type:"Int",    Width:60,   SaveName:"rqstSno",     Align:"Center", Edit:0, Hidden:1},
+			{Type:"Text",   Width:150,  SaveName:"spclNt",      Align:"Center", Edit:1, Hidden:0},
+			{Type:"Text",   Width:150,  SaveName:"errChk",      Align:"Center", Edit:1, Hidden:0},
+			{Type:"Text",   Width:50,   SaveName:"confirmYn",   Align:"Center", Edit:0, Hidden:1}
 			
 		];
 		
@@ -175,8 +171,31 @@ function grid_STWD_OnSearchEnd(code, message, stCode, stMsg) {
 		showMsgBox("ERR", "<s:message code="ERR.SEARCH" />");
 		return;
 	} else {
-		//조회 성공....
-	}
+	//조회 성공....
+	//dquser로 로그인 할 경우 버튼 활성화 비활성화 처리
+	if(usergId == "OBJ_00000034587"){	
+		 var len = grid_STWD.RowCount();
+		 $("#decideYn").val("N");
+       if(frmSearch.vcWh.value === "Y") {
+           if(len > 0) {
+               document.getElementById('btnDecide').disabled = false;
+           }else{
+           	document.getElementById('btnDecide').disabled = true;
+           }
+       }else {
+           document.getElementById('btnDecide').disabled = true;
+           document.getElementById('btnInit').disabled = true;
+       }
+       
+       if(frmSearch.vcWh.value === "E"||frmSearch.vcWh.value === "Y"||frmSearch.vcWh.value === "N"){
+        	if(len > 0) {
+                document.getElementById('btnInit').disabled = false;
+          }else{
+            	document.getElementById('btnInit').disabled = true;
+          }
+      }
+    }
+  }
 }
 
 </script>
