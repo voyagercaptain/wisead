@@ -1087,8 +1087,8 @@ SELECT *
     </foreach>
   </delete>
   
-  <select id="dupliCheckDbStndItem" resultType="java.util.Map" parameterType="java.util.Map">
-    select ORG_NM
+  <select id="dupliCheckDbStndItem" resultType="Integer" parameterType="java.util.Map">
+    select COUNT(ORG_NM) 
     FROM WAM_DB_SDITM  
     WHERE SDITM_LNM = #{sditmLnm,jdbcType=VARCHAR}
     AND ORG_NM 		 = #{orgNm,jdbcType=VARCHAR}

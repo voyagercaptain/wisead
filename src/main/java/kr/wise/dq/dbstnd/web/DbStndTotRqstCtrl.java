@@ -967,8 +967,8 @@ public class DbStndTotRqstCtrl {
 		    		params.put("orgNm", saveVo.getOrgNm()); 	    // 기관명
 		    		params.put("dbNm", saveVo.getDbNm()); 	    	//DB명
 		    		params.put("sditmLnm", saveVo.getSditmLnm());   //표준용어명
-		    		Map<String, String> map = dbStndService.dupliCheckDbStndItem(params);
-		    		if(map != null) {
+		    		int count = dbStndService.dupliCheckDbStndItem(params);
+		    		if(count > 0) {
 		    			errorMsg = ErrorCode.ERROR_ITEM_DUP.getMessage();
 		    		}else {
 		    			errorMsg = "";
@@ -1042,8 +1042,8 @@ public class DbStndTotRqstCtrl {
 					params.put("orgNm", saveVo.getOrgNm()); 	   		        // 기관명
 					params.put("dbNm", saveVo.getDbNm()); 	    				//DB명
 					params.put("infotpLnm", saveVo.getInfotpLnm()); 	  	    // 도메인명
-					Map<String, String> map = dbStndService.dupliCheckDbStndDmn(params);
-					if(map != null) {
+					int count = dbStndService.dupliCheckDbStndDmn(params);
+					if(count > 0) {
 						errorMsg = ErrorCode.ERROR_ITEM_DUP.getMessage();
 					}else {
 						errorMsg = "";
@@ -1110,8 +1110,8 @@ public class DbStndTotRqstCtrl {
 					params.put("orgNm", saveVo.getOrgNm()); 	// 기관명
 					params.put("dbNm", saveVo.getDbNm()); 	    //DB명
 					params.put("stwdLnm", saveVo.getStwdLnm()); // 표준단어명
-					Map<String, String> map = dbStndService.dupliCheckDbStndStwd(params);
-					if(map != null) {
+					int count = dbStndService.dupliCheckDbStndStwd(params);
+					if(count > 0) {
 						errorMsg = ErrorCode.ERROR_ITEM_DUP.getMessage();
 					}else {
 						errorMsg = "";
@@ -1178,8 +1178,8 @@ public class DbStndTotRqstCtrl {
 					params.put("orgNm", saveVo.getOrgNm()); 	  //기관명
 					params.put("dbNm", saveVo.getDbNm()); 	      //DB명
 					params.put("commCdNm", saveVo.getCommCdNm()); //코드명
-					Map<String, String> map = dbStndService.dupliCheckDbStndStcd(params);
-					if(map != null) {
+					int count = dbStndService.dupliCheckDbStndStcd(params);
+					if(count > 0) {
 						errorMsg = ErrorCode.ERROR_ITEM_DUP.getMessage();
 					}else {
 						errorMsg = "";

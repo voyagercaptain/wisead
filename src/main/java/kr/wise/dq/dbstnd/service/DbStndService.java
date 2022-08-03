@@ -38,13 +38,13 @@ public interface DbStndService {
 	
 	Map<String, String> selectDbDomainDataType(Map<String, String> param);
 	
-	Map<String, String> dupliCheckDbStndItem(Map<String, String> param);
+	int dupliCheckDbStndItem(Map<String, String> param);
 	
-	Map<String, String> dupliCheckDbStndDmn(Map<String, String> param);
+	int dupliCheckDbStndDmn(Map<String, String> param);
 	
-	Map<String, String> dupliCheckDbStndStwd(Map<String, String> param);
+	int dupliCheckDbStndStwd(Map<String, String> param);
 	
-	Map<String, String> dupliCheckDbStndStcd(Map<String, String> param);
+	int dupliCheckDbStndStcd(Map<String, String> param);
 	
 	int initDbStndItem(List<WamDbSditm> reglist, WaqMstr reqmst) throws Exception;
 	

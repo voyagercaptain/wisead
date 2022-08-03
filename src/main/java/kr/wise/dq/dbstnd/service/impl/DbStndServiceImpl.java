@@ -665,23 +665,23 @@ public class DbStndServiceImpl implements DbStndService {
 	}
 
 	@Override
-	public Map<String, String> dupliCheckDbStndItem(Map<String, String> param) {
+	public int dupliCheckDbStndItem(Map<String, String> param) {
 		return wamDbSditmMapper.dupliCheckDbStndItem(param);
 	}
 
 
 	@Override
-	public Map<String, String> dupliCheckDbStndDmn(Map<String, String> param) {
+	public int dupliCheckDbStndDmn(Map<String, String> param) {
 		return wamDbDmnMapper.dupliCheckDbStndDmn(param);
 	}
 
 	@Override
-	public Map<String, String> dupliCheckDbStndStwd(Map<String, String> param) {
+	public int dupliCheckDbStndStwd(Map<String, String> param) {
 		return wamDbStwdMapper.dupliCheckDbStndStwd(param);
 	}
 
 	@Override
-	public Map<String, String> dupliCheckDbStndStcd(Map<String, String> param) {
+	public int dupliCheckDbStndStcd(Map<String, String> param) {
 		return wamDbStcdMapper.dupliCheckDbStndStcd(param);
 	}
 

@@ -803,8 +803,8 @@
         </foreach>
     </delete>
     
-    <select id="dupliCheckDbStndStwd" resultType="java.util.Map" parameterType="java.util.Map">
-    SELECT ORG_NM
+    <select id="dupliCheckDbStndStwd" resultType="Integer" parameterType="java.util.Map">
+    SELECT COUNT(ORG_NM) 
     FROM WAM_DB_STWD  
     WHERE ORG_NM 	 = #{orgNm,jdbcType=VARCHAR}
     AND DB_NM        = #{dbNm,jdbcType=VARCHAR}

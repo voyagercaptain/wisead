@@ -1057,8 +1057,8 @@
     </delete>
     
   
-  <select id="dupliCheckDbStndDmn" resultType="java.util.Map" parameterType="java.util.Map">
-    select ORG_NM
+  <select id="dupliCheckDbStndDmn" resultType="Integer" parameterType="java.util.Map">
+    select COUNT(ORG_NM) 
     FROM WAM_DB_DMN  
     WHERE INFOTP_LNM = #{infotpLnm,jdbcType=VARCHAR}
     AND ORG_NM 		 = #{orgNm,jdbcType=VARCHAR}

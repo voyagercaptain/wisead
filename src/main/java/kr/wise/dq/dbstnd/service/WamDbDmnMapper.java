@@ -43,5 +43,5 @@ public interface WamDbDmnMapper {
 
     int bulkDelete(List<WamDbDmn> deleteList);
     
-    Map<String, String> dupliCheckDbStndDmn(Map<String, String> param);
+    int dupliCheckDbStndDmn(Map<String, String> param);
 }
