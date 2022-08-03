@@ -31,6 +31,7 @@ import kr.wise.dq.dbstnd.service.WapDbDvCanDic;
 import kr.wise.dq.dbstnd.service.WapDbDvCanDicMapper;
 
 
+import kr.wise.dq.stnd.service.WamStwd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,7 @@ public class StndServiceImpl implements StndService {
 	
 	
 	@Inject
-	WamStcdMapper wamStcdMapper;
+	private WamStcdMapper wamStcdMapper;
 	
     @Inject
     private EgovIdGnrService objectIdGnrService;
@@ -167,7 +168,40 @@ public class StndServiceImpl implements StndService {
 
 		return result;
 	}
-	
 
-	
+	/** 표준항목 - 확정 */
+	public int decideStndCode(List<WamDbStcd> reglist, WaqMstr reqmst ) throws Exception {
+		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+		String userid = user.getUniqId();
+		int result = 0;
+
+		for (WamDbStcd saveVo : reglist) {
+			saveVo.setFrsRqstUserId(userid);
+			saveVo.setRqstUserId(userid);
+			saveVo.setRegTypCd("U");
+		}
+
+		for (int id = 0; id < reglist.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamStcdMapper.bulkUpdateConfirm(new ArrayList<WamDbStcd>(reglist.subList(id, min(id + WiseConfig.FETCH_SIZE, reglist.size()))));
+		}
+
+		return result;
+	}
+
+	/** 표준항목 - 초기화 */
+	public int initStndCode(List<WamDbStcd> reglist, WaqMstr reqmst ) throws Exception {
+		//LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+		//String userid = user.getUniqId();
+		int result = 0;
+
+		for (int id = 0; id < reglist.size(); id += WiseConfig.FETCH_SIZE) {
+			result = wamStcdMapper.bulkDelete(new ArrayList<WamDbStcd>(reglist.subList(id, min(id + WiseConfig.FETCH_SIZE, reglist.size()))));
+		}
+
+		return result;
+	}
+
+	public int selectDupSdCodeCount(WamDbStcd data) throws Exception {
+		return wamStcdMapper.selectDupSdCodeCount(data);
+	}
 }

@@ -19,10 +19,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
+import kr.wise.dq.stnd.service.WamStwd;
+import kr.wise.dq.stnd.web.StndWordRqstCtrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -438,9 +442,81 @@ public class DbStndTotRqstCtrl {
 		
 		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
 	}
-    
-    
-    
+
+
+	/** 표준항목 리스트 검증  */
+	@RequestMapping("/dq/stnd/inspectStndCode.do")
+	@ResponseBody
+	public IBSResultVO<WaqMstr> inspectStndDmn(@RequestBody WamDbStcds data, WaqMstr reqmst, Locale locale) throws Exception {
+
+		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+		ArrayList<WamDbStcd> list = data.get("data");
+
+		logger.debug("검증 시작");
+		list = stndStcdValidCheck(list, reqmst.getDecideYn());
+		logger.debug("검증 종료");
+
+		int result = stndService.registerStcdWam(list);
+		String resmsg;
+
+		if(result > 0 ){
+			result = 0;
+			resmsg = message.getMessage("MSG.SAVE", null, locale);
+		} else {
+			result = -1;
+			resmsg = message.getMessage("ERR.SAVE", null, locale);
+		}
+		String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+
+		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+	}
+
+	/** 표준항목 리스트 확정  */
+	@RequestMapping("/dq/stnd/decideStndCode.do")
+	@ResponseBody
+	public IBSResultVO<WaqMstr> decideStndDmn(@RequestBody WamDbStcds data, WaqMstr reqmst, Locale locale) throws Exception {
+
+		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+		ArrayList<WamDbStcd> list = data.get("data");
+
+		int result = stndService.decideStndCode(list, reqmst);
+		String resmsg;
+
+		if(result > 0 ){
+			result = 0;
+			resmsg = message.getMessage("MSG.SAVE", null, locale);
+		} else {
+			result = -1;
+			resmsg = message.getMessage("ERR.SAVE", null, locale);
+		}
+		String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+
+		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+	}
+
+	/** 표준항목 리스트 초기화  */
+	@RequestMapping("/dq/stnd/initStndCode.do")
+	@ResponseBody
+	public IBSResultVO<WaqMstr> initStndDmn(@RequestBody WamDbStcds data, WaqMstr reqmst, Locale locale) throws Exception {
+
+		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+		ArrayList<WamDbStcd> list = data.get("data");
+
+		int result = stndService.initStndCode(list, reqmst);
+		String resmsg;
+
+		if(result > 0 ){
+			result = 0;
+			resmsg = message.getMessage("MSG.SAVE", null, locale);
+		} else {
+			result = -1;
+			resmsg = message.getMessage("ERR.SAVE", null, locale);
+		}
+		String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+
+		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+	}
+
     @RequestMapping("/dq/stnd/regStndCodeWamlist.do")
     @ResponseBody
 	public IBSResultVO<WaqMstr> regOrgStndCodeWamlist(@RequestBody WamDbStcds data, WaqMstr reqmst, Locale locale) throws Exception {
@@ -1133,8 +1209,54 @@ public class DbStndTotRqstCtrl {
 	    	}
 			return reglist;
 	    }
-	   
-	    
+
+	// 기관표준코드 유효성 검사 체크
+	public ArrayList<WamDbStcd> stndStcdValidCheck(ArrayList<WamDbStcd> reglist,String decideYn) throws Exception {
+		Map<String, String> params = new HashMap<String, String>();
+
+		for (WamDbStcd saveVo : reglist) {
+			List<String> errorList = new ArrayList<String>();
+
+			// 코드명 검증
+			errorList.add(ValidationCheck.checkCodeName(saveVo.getCommCdNm()));
+			// 코드 값 검증
+			errorList.add(ValidationCheck.checkCodeValue(saveVo.getCommDtlCdNm()));
+			// 코드 값 의미 검증
+			errorList.add(ValidationCheck.checkCodeValueMean(saveVo.getCommDtlCdMn()));
+			// 표준 코드 제정일자 검증
+			errorList.add(ValidationCheck.checkCodedDate(saveVo.getWritDtm()));
+
+			//기관 표준 코드 중복 확인 기관명+표준단어명+단어영문약어명  중복이 되면 안된다.
+			if("N".equals(saveVo.getConfirmYn()) || "".equals(saveVo.getConfirmYn())) {
+				int count = stndService.selectDupSdCodeCount(saveVo);
+				if(count > 0) {
+					errorList.add(ErrorCode.ERROR_ITEM_DUP.getMessage());
+				}
+			}
+
+			String errorMsg = errorList.stream()
+									.filter(e -> !e.isEmpty())
+									.collect(Collectors.joining(","));
+
+			if(errorMsg.length() > 0) {
+				saveVo.setValidYn("E");
+				saveVo.setConfirmYn("N");
+				saveVo.setErrChk(errorMsg);
+			}else {
+				saveVo.setValidYn("Y");
+				saveVo.setErrChk(errorMsg);
+				if(saveVo.getConfirmYn() == "Y") {
+					saveVo.setConfirmYn("Y");
+				}else {
+					saveVo.setConfirmYn("N");
+				}
+			}
+			//확정여부 구분
+			saveVo.setDecideYn(decideYn);
+
+		}
+		return reglist;
+	}
 	    
 	    /** 표준용어 리스트 초기화 @throws Exception insomnia */
 	    @RequestMapping("/dq/dbstnd/initDbStndItem.do")

@@ -13,39 +13,29 @@
  */
 package kr.wise.dq.stnd.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-
 import kr.wise.commons.WiseConfig;
 import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.cmm.exception.WiseBizException;
 import kr.wise.commons.cmm.service.EgovIdGnrService;
 import kr.wise.commons.code.service.CmcdCodeService;
 import kr.wise.commons.damgmt.approve.service.RequestApproveService;
+import kr.wise.commons.error.ErrorCode;
 import kr.wise.commons.helper.UserDetailHelper;
 import kr.wise.commons.rqstmst.service.RequestMstService;
 import kr.wise.commons.rqstmst.service.WaqMstr;
-//import kr.wise.commons.rqstmst.service.WaqRqstVrfDtls;
-//import kr.wise.commons.rqstmst.service.WaqRqstVrfDtlsMapper;
 import kr.wise.commons.util.UtilString;
-//import kr.wise.dq.app.service.WaqAppStwdMapper;
-import kr.wise.dq.dbstnd.service.WamDbStcd;
-import kr.wise.dq.stnd.service.StndDmnRqstService;
-import kr.wise.dq.stnd.service.StndItemRqstService;
-import kr.wise.dq.stnd.service.StndWordRqstService;
-import kr.wise.dq.stnd.service.WamStwd;
-import kr.wise.dq.stnd.service.WamStwdMapper;
-import kr.wise.dq.stnd.service.WaqStwd;
-//import kr.wise.dq.stnd.service.WaqStwdMapper;
-
+import kr.wise.commons.util.ValidationCheck;
+import kr.wise.dq.stnd.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.lang.Math.min;
 
@@ -70,18 +60,9 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
     @Inject
 	private CmcdCodeService cmcdCodeService;
 
-	//@Inject
-	//private WaqStwdMapper waqmapper;
-	
 	@Inject
 	private WamStwdMapper wammapper;
 	
-//	@Inject
-//	private WaqAppStwdMapper waqappmapper;
-
-	//@Inject
-	//private WaqRqstVrfDtlsMapper waqRqstVrfDtlsMapper;
-
 	@Inject
 	private RequestApproveService requestApproveService;
 
@@ -552,5 +533,82 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
 		return result;
 	}
 
+	/** 검증 */
+	public void registerWamCheck(List<WamStwd> reglist, WaqMstr reqmst ) throws Exception {
+		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+		String userid = user.getUniqId();
 
+		Map<String, String> params = new HashMap<String, String>();
+		String[] dataTypeArr = {"boolean", "date", "time", "timestamp", "datetime", "interval", "datetimeltz", "datetimetz", "timestampltz", "timestamptz", "number", "numeric", "decimal", "smalldatetime", "money", "smallmoney", "long", "bigint", "smallint", "short", "tinyint", "bit", "int", "integer", "double", "double precision", "text", "ntext", "nchar", "nvarchar", "ntext", "binary", "varbinary", "binary_float", "binary_double", "varbinary", "image", "real", "clob", "blob", "nclob", "bfile"};
+		for (WamStwd checkVo : reglist) {
+			List<String> errorList = new ArrayList<String>();
+
+			if(!"Y".equals(checkVo.getConfirmYn())) {
+				//중복체크
+				String check1_1 = "";
+				int dupCnt = wammapper.selectDupSdWordCount(checkVo);
+				if (dupCnt > 0) {
+					errorList.add(ErrorCode.ERROR_ITEM_DUP.getMessage());
+				}
+			}
+
+			// 표준 단어명 체크
+			errorList.add(ValidationCheck.checkWordName(checkVo.getStwdLnm()));
+
+			// 단어 영문 약어명
+			errorList.add(ValidationCheck.checkWordEngName(checkVo.getStwdPnm()));
+
+			// 형식 단어 체크
+			errorList.add(ValidationCheck.checkWordFormat(checkVo.getDmnYn()));
+
+			//제정일자
+			errorList.add(ValidationCheck.checkWordDate(checkVo.getRqstDtm()));
+
+			String errorMsg = errorList.stream()
+					.filter(e -> !e.isEmpty())
+					.collect(Collectors.joining (","));
+
+			if (errorMsg.length() > 0) {
+				checkVo.setErrChk(errorMsg);
+				checkVo.setValidYn("E");
+				checkVo.setConfirmYn("N");
+			} else {
+				checkVo.setErrChk("");
+				checkVo.setValidYn("Y");
+			}
+		}
+	}
+
+
+	/** 표준항목 - 확정 */
+	public int decideStndWord(List<WamStwd> reglist, WaqMstr reqmst ) throws Exception {
+		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+		String userid = user.getUniqId();
+		int result = 0;
+
+		for (WamStwd saveVo : reglist) {
+			saveVo.setFrsRqstUserId(userid);
+			saveVo.setRqstUserId(userid);
+			saveVo.setRegTypCd("U");
+		}
+
+		for (int id = 0; id < reglist.size(); id += WiseConfig.FETCH_SIZE){
+			result = wammapper.bulkUpdateConfirm(new ArrayList<WamStwd>(reglist.subList(id, min(id + WiseConfig.FETCH_SIZE, reglist.size()))));
+		}
+
+		return result;
+	}
+
+	/** 표준항목 - 초기화 */
+	public int initStndWord(List<WamStwd> reglist, WaqMstr reqmst ) throws Exception {
+		//LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+		//String userid = user.getUniqId();
+		int result = 0;
+
+		for (int id = 0; id < reglist.size(); id += WiseConfig.FETCH_SIZE) {
+			result = wammapper.bulkDelete(new ArrayList<WamStwd>(reglist.subList(id, min(id + WiseConfig.FETCH_SIZE, reglist.size()))));
+		}
+
+		return result;
+	}
 }

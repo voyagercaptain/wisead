@@ -55,9 +55,12 @@ public interface WamStwdMapper {
 	//사전비교 리스트
 	List<WamStwd> selectStndWordComparisonList(String stwdId);
 
+    int selectDupSdWordCount(WamStwd data);
+
     int bulkInsert(List<WamStwd> insertList);
 
     int bulkUpdate(List<WamStwd> updateList);
+    int bulkUpdateConfirm(List<WamStwd> updateList);
 
     int bulkDelete(List<WamStwd> deleteList);
 }

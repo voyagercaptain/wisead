@@ -267,7 +267,7 @@ function doAction(sAction)
 
 			//프로파일별 url 셋팅
 			var url = "";
-			url = '<c:url value="/dq/stnd/inspectStndItem.do"/>';
+			url = '<c:url value="/dq/stnd/inspectStndCode.do"/>';
 
 			var param = $('form[name=frmSearch]').serialize();
 			//var chkYn = $('input:checkbox[id="chkYn"]:checked').val();
@@ -288,7 +288,7 @@ function doAction(sAction)
 
 			//프로파일별 url 셋팅
 			var url = "";
-			url = '<c:url value="/dq/stnd/decideStndItem.do"/>';
+			url = '<c:url value="/dq/stnd/decideStndCode.do"/>';
 
 			var param = $('form[name=frmSearch]').serialize();
 			//var chkYn = $('input:checkbox[id="chkYn"]:checked').val();
@@ -309,7 +309,7 @@ function doAction(sAction)
 
 			//프로파일별 url 셋팅
 			var url = "";
-			url = '<c:url value="/dq/stnd/initStndItem.do"/>';
+			url = '<c:url value="/dq/stnd/initStndCode.do"/>';
 
 			var param = $('form[name=frmSearch]').serialize();
 			//var chkYn = $('input:checkbox[id="chkYn"]:checked').val();
@@ -356,74 +356,11 @@ function doAction(sAction)
 			}
 
 			//프로파일별 url 셋팅
-			var url = "";
-			if(bizDtlCd == "SDITM"){
-				var row = grid_name.ColValueDup("orgNm|dbNm|sditmLnm|sditmPnm");
-				var rows = grid_name.ColValueDupRows("orgNm|dbNm|sditmLnm|sditmPnm");
-				
-				if(row>0){
-				    showMsgBox("INF","<s:message code="ERR.DUP" />"+"(용어명)"+"</br>"+rows+"행");
-				    var rowsArr = rows.split(",");
-				    for(var i=0 ; i< rowsArr.length; i++){
-				        grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
-				        grid_name.SetCellValue(rowsArr[i],"vrfRmk","중복데이터");
-				    }
-					return;
-				}
-				url = '<c:url value="/dq/dbstnd/regitemWamlist.do"/>';
-				
-			}else if(bizDtlCd == "DMN"){
-				
-				var row = grid_name.ColValueDup("orgNm|dbNm|infotpLnm");
-				var rows = grid_name.ColValueDupRows("orgNm|dbNm|infotpLnm");
-				if(row>0){
-				    showMsgBox("INF","<s:message code="ERR.DUP" />"+"</br>"+rows+"행");
-				    var rowsArr = rows.split(",");
-				    for(var i=0 ; i< rowsArr.length; i++){
-				        grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
-// 				        grid_name.SetCellValue(rowsArr[i],"vrfRmk","중복데이터");
-				    }
-					return;
-				}
-				url = '<c:url value="/dq/dbstnd/regdmnWamlist.do"/>';
-			}else if(bizDtlCd == "STWD"){
-				var row = grid_name.ColValueDup("dbNm|stwdLnm|stwdPnm");
-				var rows = grid_name.ColValueDupRows("dbNm|stwdLnm|stwdPnm");
-				
-				if(row>0){
-				    showMsgBox("INF","<s:message code="ERR.DUP" />"+"</br>"+rows+"행");
-				    var rowsArr = rows.split(",");
-				    for(var i=0 ; i< rowsArr.length; i++){
-				        grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
-// 				        grid_name.SetCellValue(rowsArr[i],"vrfRmk","중복데이터");
-				    }
-					return;
-				}				
+			url = '<c:url value="/dq/stnd/regStndCodeWamlist.do"/>';
 
-				url = '<c:url value="/dq/dbstnd/regStndWordWamlist.do"/>';
-			}else if(bizDtlCd == "STCD"){
-				/*
-				var row = grid_name.ColValueDup("dbNm|commCdNm|commDtlCdNm");
-				var rows = grid_name.ColValueDupRows("dbNm|commCdNm|commDtlCdNm");
-				
-				if(row>0){
-				    showMsgBox("INF","<s:message code="ERR.DUP" />"+"</br>"+rows+"행");
-				    var rowsArr = rows.split(",");
-				    for(var i=0 ; i< rowsArr.length; i++){
-				        grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
-// 				        grid_name.SetCellValue(rowsArr[i],"vrfRmk","중복데이터");
-				    }
-					return;
-				}
-				*/
-				url = '<c:url value="/dq/stnd/regStndCodeWamlist.do"/>';
-			}
-			
-			
 			var param = $('form[name=mstFrm]').serialize();
 	        IBSpostJson2(url, ibsSaveJson, param, ibscallback);
-	        
-// 	        $("#BTNREGRQST").show();
+
         	break;
         	
     	case "Delete" :

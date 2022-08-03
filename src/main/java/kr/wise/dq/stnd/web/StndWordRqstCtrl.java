@@ -13,30 +13,6 @@
  */
 package kr.wise.dq.stnd.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import kr.wise.commons.WiseMetaConfig;
 import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.cmm.service.EgovIdGnrService;
@@ -52,16 +28,21 @@ import kr.wise.commons.rqstmst.service.WaqMstr;
 import kr.wise.commons.user.service.UserService;
 import kr.wise.commons.util.UtilJson;
 import kr.wise.commons.util.UtilString;
-import kr.wise.dq.stnd.service.StndCommWordRqstService;
-import kr.wise.dq.stnd.service.StndWordAbrService;
-import kr.wise.dq.stnd.service.StndWordRqstService;
-import kr.wise.dq.stnd.service.WamStwd;
-import kr.wise.dq.stnd.service.WamStwdAbr;
-import kr.wise.dq.stnd.service.WapDvCanAsm;
-import kr.wise.dq.stnd.service.WapWordDv;
-import kr.wise.dq.stnd.service.WaqStwd;
-import kr.wise.dq.stnd.web.StndItemRqstCtrl.WapDvCanAsms;
+import kr.wise.dq.stnd.service.*;
 import kr.wise.dq.stnd.web.StndWordCtrl.WamStwdAbrs;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 
 /**
  * <PRE>
@@ -421,8 +402,80 @@ public class StndWordRqstCtrl {
 
     	return "/dq/stnd/worddiv_lst";
     }
-    
-    
+
+	/** 표준항목 리스트 검증  */
+	@RequestMapping("/dq/stnd/inspectStndWord.do")
+	@ResponseBody
+	public IBSResultVO<WaqMstr> inspectStndDmn(@RequestBody WamStwds data, WaqMstr reqmst, Locale locale) throws Exception {
+
+		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+		ArrayList<WamStwd> list = data.get("data");
+
+		logger.debug("검증 시작");
+		stndWordRqstService.registerWamCheck(list, reqmst);
+		logger.debug("검증 종료");
+
+		int result = stndWordRqstService.registerWam(list);
+		String resmsg;
+
+		if(result > 0 ){
+			result = 0;
+			resmsg = message.getMessage("MSG.SAVE", null, locale);
+		} else {
+			result = -1;
+			resmsg = message.getMessage("ERR.SAVE", null, locale);
+		}
+		String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+
+		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+	}
+
+	/** 표준항목 리스트 확정  */
+	@RequestMapping("/dq/stnd/decideStndWord.do")
+	@ResponseBody
+	public IBSResultVO<WaqMstr> decideStndDmn(@RequestBody WamStwds data, WaqMstr reqmst, Locale locale) throws Exception {
+
+		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+		ArrayList<WamStwd> list = data.get("data");
+
+		int result = stndWordRqstService.decideStndWord(list, reqmst);
+		String resmsg;
+
+		if(result > 0 ){
+			result = 0;
+			resmsg = message.getMessage("MSG.SAVE", null, locale);
+		} else {
+			result = -1;
+			resmsg = message.getMessage("ERR.SAVE", null, locale);
+		}
+		String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+
+		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+	}
+
+	/** 표준항목 리스트 초기화  */
+	@RequestMapping("/dq/stnd/initStndWord.do")
+	@ResponseBody
+	public IBSResultVO<WaqMstr> initStndDmn(@RequestBody WamStwds data, WaqMstr reqmst, Locale locale) throws Exception {
+
+		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+		ArrayList<WamStwd> list = data.get("data");
+
+		int result = stndWordRqstService.initStndWord(list, reqmst);
+		String resmsg;
+
+		if(result > 0 ){
+			result = 0;
+			resmsg = message.getMessage("MSG.SAVE", null, locale);
+		} else {
+			result = -1;
+			resmsg = message.getMessage("ERR.SAVE", null, locale);
+		}
+		String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
+
+		return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+	}
+
     /** 표준단어 요청 저장 - IBSheet JSON @return insomnia
 	 * @throws Exception */
 	@RequestMapping("/dq/stnd/regStndWordWamlist.do")

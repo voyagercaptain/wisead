@@ -113,6 +113,34 @@ public class WamStwd extends CommonVo  {
 
 	private String discardYn;
 
+	public String getErrChk() {
+		return errChk;
+	}
+
+	public void setErrChk(String errChk) {
+		this.errChk = errChk;
+	}
+
+	public String getConfirmYn() {
+		return confirmYn;
+	}
+
+	public void setConfirmYn(String confirmYn) {
+		this.confirmYn = confirmYn;
+	}
+
+	public String getValidYn() {
+		return validYn;
+	}
+
+	public void setValidYn(String validYn) {
+		this.validYn = validYn;
+	}
+
+	private String errChk;
+	private String confirmYn;
+	private String validYn;
+
 	public String getRevisionDescn() {
 		return revisionDescn;
 	}

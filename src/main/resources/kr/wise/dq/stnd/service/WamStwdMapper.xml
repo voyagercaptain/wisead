@@ -31,6 +31,9 @@
 	<result column="OWNR_ORG" property="ownrOrg" jdbcType="VARCHAR"/>
     <result column="SPCL_NT"          property="spclNt"        jdbcType="VARCHAR" />
 
+    <result column="ERR_CHK"        property="errChk"      jdbcType="VARCHAR" />
+    <result column="VALID_YN"        property="validYn"      jdbcType="VARCHAR" />
+    <result column="CONFIRM_YN"        property="confirmYn"      jdbcType="VARCHAR" />
 <!--     <result column="FRS_RQST_USER_NM" property="frsRqstUserNm" jdbcType="VARCHAR" /> -->
 <!--     <result column="RQST_USER_NM" property="rqstUserNm" jdbcType="VARCHAR" /> -->
 <!--     <result column="APRV_USER_NM" property="aprvUserNm" jdbcType="VARCHAR" /> -->
@@ -63,9 +66,21 @@
     AND A.REG_TYP_CD IN ('C', 'U')
 
   </select>
+
+    <select id="selectDupSdWordCount" parameterType="kr.wise.dq.stnd.service.WamStwd" resultType="java.lang.Integer">
+        SELECT
+            COUNT(STWD_LNM)
+        FROM WAM_STWD
+        WHERE 1 = 1
+          AND ORG_NM = #{orgNm,jdbcType=VARCHAR}
+          AND STWD_LNM = #{stwdLnm,jdbcType=VARCHAR}
+          AND CONFIRM_YN = 'Y'
+    </select>
+
   <select id="selectList" resultMap="BaseResultMap" parameterType="kr.wise.dq.stnd.service.WamStwd" >
-  	SELECT * FROM 
-  	
+  	SELECT *
+            , CASE WHEN ERR_CHK IS NOT NULL AND ERR_CHK != '' THEN '#FF0000' ELSE NULL END AS FontColor
+  	  FROM
   	(SELECT A.*,
   		   (SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.FRS_RQST_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS FRS_RQST_USER_NM,
     	   (SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.RQST_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS RQST_USER_NM,
@@ -84,6 +99,20 @@
         	 OR STWD_LNM LIKE CONCAT('%' , UPPER(#{stwdLnm,jdbcType=VARCHAR}) , '%')
         	 OR STWD_PNM LIKE CONCAT('%' , UPPER(#{stwdLnm,jdbcType=VARCHAR}) , '%'))
       </if>
+
+        <if test="chkYn eq 'E'.toString()" >
+            AND VALID_YN = 'E'
+        </if>
+        <if test="chkYn eq 'Y'.toString()" >
+            AND VALID_YN = 'Y'
+        </if>
+        <if test="chkYn eq 'N'.toString()" >
+            AND (VALID_YN IS NULL OR VALID_YN = 'N')
+        </if>
+        <if test="chkYn eq 'YY'.toString()" >
+            AND CONFIRM_YN = 'Y'
+        </if>
+
       <if test="stwdId != null" >
         AND STWD_ID = #{stwdId,jdbcType=VARCHAR}
       </if>
@@ -698,7 +727,10 @@
          SYMN_LNM,
          FBDN_LNM,
          OWNR_ORG,
-         SPCL_NT
+         SPCL_NT,
+         ERR_CHK,
+         VALID_YN,
+         CONFIRM_YN
          )
         values
         <foreach collection="list" item="item" index="index" separator=",">
@@ -724,7 +756,10 @@
                 #{item.symnLnm,jdbcType=VARCHAR},
                 #{item.fbdnLnm,jdbcType=VARCHAR},
                 #{item.ownrOrg,jdbcType=VARCHAR},
-                #{item.spclNt,jdbcType=VARCHAR}
+                #{item.spclNt,jdbcType=VARCHAR},
+                #{item.errChk,jdbcType=VARCHAR},
+                #{item.validYn,jdbcType=VARCHAR},
+                #{item.confirmYn,jdbcType=VARCHAR}
             )
         </foreach>
     </insert>
@@ -754,8 +789,23 @@
             FBDN_LNM = #{item.fbdnLnm,jdbcType=VARCHAR},
             SYMN_LNM = #{item.symnLnm,jdbcType=VARCHAR},
             OWNR_ORG = #{item.ownrOrg,jdbcType=VARCHAR},
-            SPCL_NT = #{item.spclNt,jdbcType=VARCHAR}
+            SPCL_NT = #{item.spclNt,jdbcType=VARCHAR},
+            ERR_CHK = #{item.errChk,jdbcType=VARCHAR},
+            VALID_YN = #{item.validYn,jdbcType=VARCHAR},
+            <if test="item.confirmYn eq 'Y'.toString()" >
+                CONFIRM_DTM = sys_datetime,
+            </if>
+            CONFIRM_YN =  #{item.confirmYn,jdbcType=VARCHAR}
         where STWD_ID = #{item.stwdId,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
+    <update id="bulkUpdateConfirm" parameterType="java.util.List" >
+        <foreach collection="list" item="item" index="index">
+            update WAM_STWD
+            set CONFIRM_DTM = sys_datetime,
+            CONFIRM_YN =  'Y'
+            where STWD_ID = #{item.stwdId,jdbcType=VARCHAR}
         </foreach>
     </update>
 

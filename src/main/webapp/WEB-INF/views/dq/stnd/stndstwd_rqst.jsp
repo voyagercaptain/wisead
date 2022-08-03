@@ -301,7 +301,7 @@ function doAction(sAction)
 
 			//프로파일별 url 셋팅
 			var url = "";
-			url = '<c:url value="/dq/stnd/inspectStndItem.do"/>';
+			url = '<c:url value="/dq/stnd/inspectStndWord.do"/>';
 
 			var param = $('form[name=frmSearch]').serialize();
 
@@ -320,7 +320,7 @@ function doAction(sAction)
 
 			//프로파일별 url 셋팅
 			var url = "";
-			url = '<c:url value="/dq/stnd/decideStndItem.do"/>';
+			url = '<c:url value="/dq/stnd/decideStndWord.do"/>';
 
 			var param = $('form[name=frmSearch]').serialize();
 
@@ -339,7 +339,7 @@ function doAction(sAction)
 
 			//프로파일별 url 셋팅
 			var url = "";
-			url = '<c:url value="/dq/stnd/initStndItem.do"/>';
+			url = '<c:url value="/dq/stnd/initStndWord.do"/>';
 
 			var param = $('form[name=frmSearch]').serialize();
 
