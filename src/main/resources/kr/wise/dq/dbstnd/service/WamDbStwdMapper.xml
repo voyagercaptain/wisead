@@ -762,7 +762,7 @@
         update WAM_DB_STWD
            set
                 STWD_LNM = #{item.stwdLnm,jdbcType=VARCHAR},
-                STWD_PNM = UPPER(#{item.stwdPnm,jdbcType=VARCHAR}),
+                STWD_PNM = #{item.stwdPnm,jdbcType=VARCHAR},
                 ENG_MEAN = #{item.engMean,jdbcType=VARCHAR},
                 RQST_NO = #{item.rqstNo,jdbcType=VARCHAR},
                 RQST_SNO = #{item.rqstSno,jdbcType=DECIMAL},
