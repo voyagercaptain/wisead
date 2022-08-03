@@ -730,7 +730,7 @@
         (
         concat('I_', db_serial.next_value),
         #{item.stwdLnm,jdbcType=VARCHAR},
-        UPPER(#{item.stwdPnm,jdbcType=VARCHAR}),
+        #{item.stwdPnm,jdbcType=VARCHAR},
         #{item.engMean,jdbcType=VARCHAR},
         #{item.rqstNo,jdbcType=VARCHAR},
         #{item.rqstSno,jdbcType=DECIMAL},
