@@ -1022,7 +1022,7 @@ SELECT *
         ERR_CHK = #{item.errChk,jdbcType=VARCHAR},
         VALID_YN = #{item.validYn,jdbcType=VARCHAR},
       <if test="item.confirmYn eq 'Y'.toString()" >
-        CONFIRM_DTM = SYSDATE,
+        CONFIRM_DTM = sys_datetime,
       </if>
         CONFIRM_YN =  #{item.confirmYn,jdbcType=VARCHAR}
     where SDITM_ID = #{item.sditmId,jdbcType=VARCHAR}
@@ -1032,7 +1032,7 @@ SELECT *
   <update id="bulkUpdateConfirm" parameterType="java.util.List" >
     <foreach collection="list" item="item" index="index">
       update WAM_SDITM
-      set CONFIRM_DTM = SYSDATE,
+      set CONFIRM_DTM = sys_datetime,
       CONFIRM_YN =  'Y'
       where SDITM_ID = #{item.sditmId,jdbcType=VARCHAR}
     </foreach>
@@ -1042,6 +1042,7 @@ SELECT *
     <foreach collection="list" item="item" index="index">
     delete from WAM_SDITM
     where SDITM_ID = #{item.sditmId,jdbcType=VARCHAR}
+      and CONFIRM_YN = 'N'
     </foreach>
   </delete>
 

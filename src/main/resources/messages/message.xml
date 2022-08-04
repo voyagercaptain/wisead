@@ -4667,4 +4667,9 @@
 <entry key="BR.EXAM.ANA.SQL">SELECT 컬럼명1, 컬럼명2, ...&#10;  FROM 스키마명.테이블명&#10; WHERE 오류 조건식</entry>
 <entry key="USER.REG.STS"><![CDATA[기관별 등록 현황]]></entry>
 <entry key="USER.DB.REG.STS"><![CDATA[DB별 등록 현황]]></entry>
+<entry key="MSG.CONFIRM"><![CDATA[확정후에는 수정이 불가능합니다.<br>확정 하시겠습니까?]]></entry>
+<entry key="BTN.TEMP.SAVE"><![CDATA[임시저장]]></entry>
+<entry key="BTN.CONFIRM"><![CDATA[확정]]></entry>
+<entry key="BTN.INSPECT"><![CDATA[검증]]></entry>
+
 </properties> 

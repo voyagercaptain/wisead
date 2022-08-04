@@ -432,23 +432,7 @@ function doAction(sAction)
 				return;
 			}
 
-			//grid상 중복데이터 검사 (기관명|표준용어명)
-			var row  = grid_name.ColValueDup("orgNm|sditmLnm");
-			var rows = grid_name.ColValueDupRows("orgNm|sditmLnm");
-
-			if(row>0){
-				showMsgBox("INF","<s:message code="ERR.DUP" />"+"(표준용어명)"+"</br>"+rows+"행");
-				var rowsArr = rows.split(",");
-				for(var i=0 ; i< rowsArr.length; i++){
-					grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
-					grid_name.SetCellValue(rowsArr[i],"errChk","중복데이터");
-				}
-				return;
-			}
-
-			//프로파일별 url 셋팅
-			var url = "";
-			url = '<c:url value="/dq/stnd/inspectStndItem.do"/>';
+			var url = '<c:url value="/dq/stnd/inspectStndItem.do"/>';
 
 			var param = $('form[name=frmSearch]').serialize();
 			//var chkYn = $('input:checkbox[id="chkYn"]:checked').val();
@@ -467,15 +451,16 @@ function doAction(sAction)
 				return;
 			}
 
-			//프로파일별 url 셋팅
-			var url = "";
-			url = '<c:url value="/dq/stnd/decideStndItem.do"/>';
+			showMsgBox("CNF", "<s:message code="MSG.CONFIRM" />", function (code) {
 
-			var param = $('form[name=frmSearch]').serialize();
-			//var chkYn = $('input:checkbox[id="chkYn"]:checked').val();
-			//param = param + "&chkYn="+chkYn;
+				var url = '<c:url value="/dq/stnd/decideStndItem.do"/>';
+				var param = $('form[name=frmSearch]').serialize();
+				//var chkYn = $('input:checkbox[id="chkYn"]:checked').val();
+				//param = param + "&chkYn="+chkYn;
 
-			IBSpostJson2(url, ibsSaveJson, param, ibscallback);
+				IBSpostJson2(url, ibsSaveJson, param, ibscallback);
+			});
+
 			break;
 
 		case "Init":  //초기화
@@ -499,67 +484,10 @@ function doAction(sAction)
 			IBSpostJson2(url, ibsSaveJson, param, ibscallback);
 			break;
 
-		case "Save":   //저장
-    		
-    		var len = grid_name.RowCount();
+		case "Save":   //임시저장
 
-    		//KeyField 1 인 것 가져오기 => 변경
-    		for(var i=0; i < len; i++) {
-    			var str = "";
-    			for(var j=0; j < colsCount; j++) {
-    				//var KeyField = grid_name.GetCellProperty(i+1, j+1, "KeyField");
-    				var SaveName = grid_name.GetCellProperty(i+1, j+1, "SaveName");
-
-    				//if(KeyField == "1") {
-					if(arrayKeyField.indexOf(SaveName) > -1) {
-    					var SaveNameValue = grid_name.GetCellValue(i+1, SaveName);
-    					if(str == "") {
-    						str += SaveNameValue == "" ? headerText[j+1]:"";
-    					} else {
-    						str += SaveNameValue == "" ? ", " + headerText[j+1]:"";
-    					}
-    				}
-    			}
-
-    			var errChk = grid_name.GetCellValue(i+1, "errChk");
-    			if(str != "") {
-    				if(errChk != "") {
-    					str = errChk + ", " + str +  " 누락";
-    				} else {
-    					str += " 누락";
-    				}
-    				grid_name.SetCellValue(i+1,"errChk", str);
-    				grid_name.SetRowFontColor(i+1,"#FF0000");
-    			}
-    		}
-    		
     		//저장 대상의 데이터를 Json 객체로 반환한다.
     		ibsSaveJson = grid_name.GetSaveJson(0);
-
-    		//2. 필수입력 누락인 경우
-    		if (ibsSaveJson.Code == "IBS010") return;
-    		
-    		if(ibsSaveJson.data.length == 0){
-    			showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
-    			return;
-    		}
-
-			//grid상 중복데이터 검사 (기관명|표준용어명)
-			var row  = grid_name.ColValueDup("orgNm|sditmLnm");
-			var rows = grid_name.ColValueDupRows("orgNm|sditmLnm");
-
-			if(row>0){
-				showMsgBox("INF","<s:message code="ERR.DUP" />"+"(표준용어명)"+"</br>"+rows+"행");
-				var rowsArr = rows.split(",");
-				for(var i=0 ; i< rowsArr.length; i++){
-					grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
-					grid_name.SetCellValue(rowsArr[i],"errChk","중복데이터");
-				}
-				return;
-			}
-
-    		//프로파일별 url 셋팅
-    		var url = "";
     		
     		url = '<c:url value="/dq/stnd/regitemWamlist.do"/>';
     					
@@ -828,27 +756,25 @@ function postProcessIBS(res) {
 					    <li class="btn_excel_load" id="btnExcelLoad"><a><span class="ui-icon ui-icon-document"></span><s:message code="EXCL.UPLOAD" /></a></li> <!-- 엑셀 올리기 -->
 					  </ul>
 
-                    <!--
-				    <button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="STRG" /></button>
-                    -->
+				    <button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="BTN.TEMP.SAVE" /></button>
 				    <button class="btn_delete" id="btnDelete" 	name="btnDelete"><s:message code="DEL" /></button>
 
-					<button class="btn_inspect" id="btnInspect" 	name="btnInspect">검증</button>
-					<button class="btn_decide" id="btnDecide" 	name="btnDecide">확정</button>
-					<button class="btn_init" id="btnInit" 	name="btnInit">초기화</button>
+					<button class="btn_inspect" id="btnInspect" 	name="btnInspect"><s:message code="BTN.INSPECT" /></button>
+					<%--<button class="btn_init" id="btnInit" 	name="btnInit">초기화</button>--%>
 
-					<SCRIPT>
-						document.getElementById('btnDecide').disabled = true;
-						document.getElementById('btnInit').disabled = true;
-					</SCRIPT>
 
 				</c:if>
 
 			</div>
-			<div class="bt02"> 
-	          <button class="btn_excel_down"  id="btnExcelDown"  name="btnExcelDown"><s:message code="EXCL.DOWNLOAD" /></button> <!-- 엑셀 내리기 -->                       
+			<div class="bt02">
+				<button class="btn_decide" id="btnDecide" 	name="btnDecide"><s:message code="BTN.CONFIRM" /></button>
+	          	<button class="btn_excel_down"  id="btnExcelDown"  name="btnExcelDown"><s:message code="EXCL.DOWNLOAD" /></button> <!-- 엑셀 내리기 -->
+				<SCRIPT>
+					document.getElementById('btnDecide').disabled = true;
+					document.getElementById('btnInit').disabled = true;
+				</SCRIPT>
 	    	</div>
-        </div>	
+        </div>
         
 <div style="clear:both; height:5px;"><span></span></div>
 

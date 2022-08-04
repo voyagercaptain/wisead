@@ -299,22 +299,7 @@ function doAction(sAction)
 				return;
 			}
 
-			var row = grid_name.ColValueDup("stwdLnm|stwdPnm");
-			var rows = grid_name.ColValueDupRows("stwdLnm|stwdPnm");
-
-			if(row>0){
-				showMsgBox("INF","<s:message code="ERR.DUP" />"+"(단어명)"+"</br>"+rows+"행");
-				var rowsArr = rows.split(",");
-				for(var i=0 ; i< rowsArr.length; i++){
-					grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
-					grid_name.SetCellValue(rowsArr[i],"errChk","중복데이터");
-				}
-				return;
-			}
-
-			//프로파일별 url 셋팅
-			var url = "";
-			url = '<c:url value="/dq/stnd/inspectStndWord.do"/>';
+			var url = '<c:url value="/dq/stnd/inspectStndWord.do"/>';
 
 			var param = $('form[name=frmSearch]').serialize();
 
@@ -331,13 +316,14 @@ function doAction(sAction)
 				return;
 			}
 
-			//프로파일별 url 셋팅
-			var url = "";
-			url = '<c:url value="/dq/stnd/decideStndWord.do"/>';
+			showMsgBox("CNF", "<s:message code="MSG.CONFIRM" />", function (code) {
+				var url = '<c:url value="/dq/stnd/decideStndWord.do"/>';
 
-			var param = $('form[name=frmSearch]').serialize();
+				var param = $('form[name=frmSearch]').serialize();
 
-			IBSpostJson2(url, ibsSaveJson, param, ibscallback);
+				IBSpostJson2(url, ibsSaveJson, param, ibscallback);
+			});
+
 			break;
 
 		case "Init":  //초기화
@@ -360,63 +346,14 @@ function doAction(sAction)
 			break;
 
     	case "Save":  //검증
-			debugger
-    		//KeyField 1 인 것 가져오기 orgNm stwdLnm engMean  stwdPnm objDescn  dmnYn
-    		var len = grid_name.RowCount();
-			for(var i=0; i < len; i++) {
-				var str = ""; 
-				for(var j=0; j < colsCount; j++) {
-				
-					var KeyField = grid_name.GetCellProperty(i+1, j+1, "KeyField");
-					var SaveName = grid_name.GetCellProperty(i+1, j+1, "SaveName");
-					
-					if(KeyField == "1") {
-						var SaveNameValue = grid_name.GetCellValue(i+1, SaveName);
-						if(str == "") {
-							str += SaveNameValue == "" ? headerText[j+1]:"";
-						} else {
-							str += SaveNameValue == "" ? ", " + headerText[j+1]:"";
-						}
-					}
-				}
-				if(str != "") {
-					str += " 누락";
-					grid_name.SetCellValue(i+1,"errChk", str);
-					grid_name.SetRowFontColor(i+1,"#FF0000");
-				}
-			}
-			
+
     		//저장 대상의 데이터를 Json 객체로 반환한다.
 			ibsSaveJson = grid_name.GetSaveJson(0);
-    	
-    		//2. 필수입력 누락인 경우
-			if (ibsSaveJson.Code == "IBS010") return;
-			
-			if(ibsSaveJson.data.length == 0){
-				showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
-				return;
-			}
 
-			//프로파일별 url 셋팅
-			var row = grid_name.ColValueDup("stwdLnm|stwdPnm");
-			var rows = grid_name.ColValueDupRows("stwdLnm|stwdPnm");
-
-			if(row>0){
-				showMsgBox("INF","<s:message code="ERR.DUP" />"+"(단어명)"+"</br>"+rows+"행");
-				var rowsArr = rows.split(",");
-				for(var i=0 ; i< rowsArr.length; i++){
-					grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
-					grid_name.SetCellValue(rowsArr[i],"errChk","중복데이터");
-				}
-				return;
-			}
-
-			url = '<c:url value="/dq/stnd/regStndWordWamlist.do"/>';
-
+			var url = '<c:url value="/dq/stnd/regStndWordWamlist.do"/>';
 			var param = $('form[name=mstFrm]').serialize();
 	        IBSpostJson2(url, ibsSaveJson, param, ibscallback);
 	        
-// 	        $("#BTNREGRQST").show();
         	break;
         	
     	case "Delete" :
@@ -650,30 +587,32 @@ function postProcessIBS(res) {
 			    <button class="btn_search" id="btnSearch" 	name="btnSearch"><s:message code="BTN.READ" /></button> <!-- 전체조회 -->
 			    
 			    <c:if test="${sessionScope.loginVO.usergId eq 'OBJ_00000034586'}">
-    				<button class="btn_rqst_new" id="btnRqstNew" name="btnRqstNew"><s:message code="ADDT" /></button> <!-- 추가 -->                                                         
-					  <ul class="add_button_menu" id="addButtonMenu">
-					    <li class="btn_new" id="btnNew"><a><span class="ui-icon ui-icon-pencil"></span><s:message code="NEW.ADDT" /></a></li> <!-- 신규 추가 -->
-					    <li class="btn_chang_add" id="btnChangAdd"><a><span class="ui-icon ui-icon-folder-open"></span><s:message code="CHG.TRGT.ADDT" /></a></li> <!-- 변경대상 추가 -->
-					    <li class="btn_excel_load" id="btnExcelLoad"><a><span class="ui-icon ui-icon-document"></span><s:message code="EXCL.UPLOAD" /></a></li> <!-- 엑셀 올리기 -->
-					  </ul>         
-				    <%--<button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="STRG" /></button> <!-- 저장 -->--%>
-				    <button class="btn_delete" id="btnDelete" 	name="btnDelete"><s:message code="DEL" /></button> <!-- 삭제 -->
+					<button class="btn_rqst_new" id="btnRqstNew" name="btnRqstNew"><s:message code="ADDT" /></button> <!-- 추가 -->
+					<ul class="add_button_menu" id="addButtonMenu">
+						<li class="btn_new" id="btnNew"><a><span class="ui-icon ui-icon-pencil"></span><s:message code="NEW.ADDT" /></a></li> <!-- 신규 추가 -->
+						<li class="btn_chang_add" id="btnChangAdd"><a><span class="ui-icon ui-icon-folder-open"></span><s:message code="CHG.TRGT.ADDT" /></a></li> <!-- 변경대상 추가 -->
+						<li class="btn_excel_load" id="btnExcelLoad"><a><span class="ui-icon ui-icon-document"></span><s:message code="EXCL.UPLOAD" /></a></li> <!-- 엑셀 올리기 -->
+					</ul>
+					<!--
+					<button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="STRG" /></button>
+					-->
+					<button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="BTN.TEMP.SAVE" /></button> <!-- 임시저장 -->
+					<button class="btn_delete" id="btnDelete" 	name="btnDelete"><s:message code="DEL" /></button> <!-- 삭제 -->
 
-					<button class="btn_inspect" id="btnInspect" 	name="btnInspect">검증</button>
-					<button class="btn_decide" id="btnDecide" 	name="btnDecide">확정</button>
-					<button class="btn_init" id="btnInit" 	name="btnInit">초기화</button>
-
-					<SCRIPT>
-						document.getElementById('btnDecide').disabled = true;
-						document.getElementById('btnInit').disabled = true;
-					</SCRIPT>
+					<button class="btn_inspect" id="btnInspect" 	name="btnInspect"><s:message code="BTN.INSPECT" /></button>
+					<%--<button class="btn_init" id="btnInit" 	name="btnInit">초기화</button>--%>
 
 				</c:if>
 				
 			</div>
-			<div class="bt02"> 
-	          <button class="btn_excel_down"  id="btnExcelDown"  name="btnExcelDown"><s:message code="EXCL.DOWNLOAD" /></button> <!-- 엑셀 내리기 -->                       
-	    	</div>
+			<div class="bt02">
+				<button class="btn_decide" id="btnDecide" 	name="btnDecide"><s:message code="BTN.CONFIRM" /></button>
+				<button class="btn_excel_down"  id="btnExcelDown"  name="btnExcelDown"><s:message code="EXCL.DOWNLOAD" /></button> <!-- 엑셀 내리기 -->
+				<SCRIPT>
+					document.getElementById('btnDecide').disabled = true;
+					document.getElementById('btnInit').disabled = true;
+				</SCRIPT>
+			</div>
         </div>	
 <div style="clear:both; height:5px;"><span></span></div>
 

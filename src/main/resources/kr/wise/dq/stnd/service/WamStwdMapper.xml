@@ -551,14 +551,14 @@
       <if test="fbdnLnm != null" >
         #{fbdnLnm,jdbcType=VARCHAR},
       </if>
-      
+
        <if test="ownrOrg != null" >
          #{ownrOrg,jdbcType=VARCHAR},
       </if>
       <if test="spclNt != null" >
          #{spclNt,jdbcType=VARCHAR},
       </if>
-      
+
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="kr.wise.dq.stnd.service.WamStwd" >
@@ -813,6 +813,7 @@
         <foreach collection="list" index="index" item="item">
         delete from WAM_STWD
         where STWD_ID = #{item.stwdId,jdbcType=VARCHAR}
+          and CONFIRM_YN =  'Y'
         </foreach>
     </delete>
 </mapper>
