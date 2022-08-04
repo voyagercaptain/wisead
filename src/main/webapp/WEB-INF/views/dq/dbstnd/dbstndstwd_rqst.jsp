@@ -327,8 +327,21 @@ function doAction(sAction)
 				showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
 				return;
 			}
-
-				
+			
+			//grid상 중복데이터 검사 (기관명|DB명|표준단어명)
+			var row  = grid_name.ColValueDup("orgNm|dbNm|stwdLnm");
+			var rows = grid_name.ColValueDupRows("orgNm|dbNm|stwdLnm");
+								
+			if(row>0){
+				showMsgBox("INF","<s:message code="ERR.DUP" />"+"(단어명)"+"</br>"+rows+"행");
+				var rowsArr = rows.split(",");
+				for(var i=0 ; i< rowsArr.length; i++){
+					grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
+					grid_name.SetCellValue(rowsArr[i],"errChk","중복데이터");
+				}
+			return;
+			}
+			
 			var url = '<c:url value="/dq/dbstnd/regStndWordWamlist.do"/>';
 			
 			

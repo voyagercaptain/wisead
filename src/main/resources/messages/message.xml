@@ -96,7 +96,7 @@
   <entry key="ERR.OBJSEL"><![CDATA[설정된 내역이 없습니다.]]></entry>
   <entry key="ERR.DDL.NODATA"><![CDATA[DDL 테이블과 관련된 컬럼정보 또는 DB정보가 없습니다.]]></entry>
   <entry key="ERR.BSCLVL"><![CDATA[{0} 레벨은 {1}을(를) 넘을 수 없습니다.<br> {0} 레벨은 기본정보레벨관리 페이지에서 변경하세요.]]></entry>
-  <entry key="ERR.DUP"><![CDATA[저장에 실패했습니다.<br>동일한 데이터가 존재합니다.]]></entry>
+  <entry key="ERR.DUP"><![CDATA[동일한 데이터가 존재합니다.]]></entry>
   <entry key="ERR.DUP.INFO"><![CDATA[ 행에 중복된 인포타입명이 존재합니다.<br>중복된 행을 제거해 주십시요.]]></entry>
   <entry key="ERR.DUP.INFOMAP"><![CDATA[ 행에 중복된 [도메인그룹+인포타입]이 존재합니다.<br>중복된 행을 제거해 주십시요.]]></entry>
   <entry key="ERR.DUP.DBMAP"><![CDATA[ 중복된 권한명이 존재합니다.]]></entry>
