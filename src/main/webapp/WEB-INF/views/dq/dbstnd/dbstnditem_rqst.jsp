@@ -18,7 +18,7 @@
 <script type="text/javascript">
 
 var grid_name ;
-var INIT;
+var init;
 //쿠키 불러오기
 function getCookie(name)
 {
@@ -414,7 +414,6 @@ function doAction(sAction)
 			//grid상 중복데이터 검사 (기관명|DB명|표준용어명)
 			var row  = grid_name.ColValueDup("orgNm|dbNm|sditmLnm");
 			var rows = grid_name.ColValueDupRows("orgNm|dbNm|sditmLnm");
-								
 			if(row>0){
 				showMsgBox("INF","<s:message code="ERR.DUP" />"+"(용어명)"+"</br>"+rows+"행");
 				var rowsArr = rows.split(",");
@@ -456,7 +455,6 @@ function doAction(sAction)
         	break;
         
     	case "Delete" :
-    		
     		//초기화 버튼 클릭시
     		if(init ==="Y"){
     			init ="";
