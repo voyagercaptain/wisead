@@ -265,6 +265,19 @@ function doAction(sAction)
 				return;
 			}
 
+			var row  = grid_name.ColValueDup("orgNm|commCdNm|commDtlCdNm|commDtlCdMn");
+			var rows = grid_name.ColValueDupRows("orgNm|commCdNm|commDtlCdNm|commDtlCdMn");
+
+			if(row>0){
+				showMsgBox("INF","<s:message code="ERR.DUP" />"+"(코드명)"+"</br>"+rows+"행");
+				var rowsArr = rows.split(",");
+				for(var i=0 ; i< rowsArr.length; i++){
+					grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
+					grid_name.SetCellValue(rowsArr[i],"errChk","중복데이터");
+				}
+				return;
+			}
+
 			//프로파일별 url 셋팅
 			var url = "";
 			url = '<c:url value="/dq/stnd/inspectStndCode.do"/>';
@@ -346,7 +359,21 @@ function doAction(sAction)
 			
     		//저장 대상의 데이터를 Json 객체로 반환한다.
 			ibsSaveJson = grid_name.GetSaveJson(0);
-    	
+
+			//grid상 중복데이터 검사 (기관명|표준용어명)
+			var row  = grid_name.ColValueDup("orgNm|commCdNm");
+			var rows = grid_name.ColValueDupRows("orgNm|commCdNm");
+
+			if(row>0){
+				showMsgBox("INF","<s:message code="ERR.DUP" />"+"(코드명)"+"</br>"+rows+"행");
+				var rowsArr = rows.split(",");
+				for(var i=0 ; i< rowsArr.length; i++){
+					grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
+					grid_name.SetCellValue(rowsArr[i],"errChk","중복데이터");
+				}
+				return;
+			}
+
     		//2. 필수입력 누락인 경우
 			if (ibsSaveJson.Code == "IBS010") return;
 			
@@ -509,9 +536,9 @@ function postProcessIBS(res) {
 	    		if ($("#mstFrm #rqstStepCd").val() == "S")  {
 //   					$("#btnRegRqst").show();
 	    		} 
-  				doAction("Search"); 
-	    	} 
-			
+	    	}
+  				doAction("Search");
+
 			break;
 				
 	

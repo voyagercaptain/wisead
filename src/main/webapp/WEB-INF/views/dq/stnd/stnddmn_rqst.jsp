@@ -336,6 +336,18 @@ function doAction(sAction)
 				return;
 			}
 
+			var row  = grid_name.ColValueDup("orgNm|infotpLnm");
+			var rows = grid_name.ColValueDupRows("orgNm|infotpLnm");
+
+			if(row>0){
+				showMsgBox("INF","<s:message code="ERR.DUP" />"+"(도메인명)"+"</br>"+rows+"행");
+				var rowsArr = rows.split(",");
+				for(var i=0 ; i< rowsArr.length; i++){
+					grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
+					grid_name.SetCellValue(rowsArr[i],"errChk","중복데이터");
+				}
+				return;
+			}
 			//프로파일별 url 셋팅
 			var url = "";
 			url = '<c:url value="/dq/stnd/inspectStndDmn.do"/>';
@@ -459,19 +471,19 @@ function doAction(sAction)
 
 			//프로파일별 url 셋팅
 			var url = "";
-				/*
-				var row = grid_name.ColValueDup("orgNm|infotpLnm");
-				var rows = grid_name.ColValueDupRows("infotpLnm");
-				if(row>0){
-				    showMsgBox("INF","<s:message code="ERR.DUP" />"+"</br>"+rows+"행");
-				    var rowsArr = rows.split(",");
-				    for(var i=0 ; i< rowsArr.length; i++){
-				        grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
-// 				        grid_name.SetCellValue(rowsArr[i],"vrfRmk","중복데이터");
-				    }
-					return;
+			//grid상 중복데이터 검사 (기관명|표준용어명)
+			var row  = grid_name.ColValueDup("orgNm|infotpLnm");
+			var rows = grid_name.ColValueDupRows("orgNm|infotpLnm");
+
+			if(row>0){
+				showMsgBox("INF","<s:message code="ERR.DUP" />"+"(도메인명)"+"</br>"+rows+"행");
+				var rowsArr = rows.split(",");
+				for(var i=0 ; i< rowsArr.length; i++){
+					grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
+					grid_name.SetCellValue(rowsArr[i],"errChk","중복데이터");
 				}
-				*/
+				return;
+			}
 
 			url = '<c:url value="/dq/stnd/regdmnWamlist.do"/>';
 
@@ -628,9 +640,9 @@ function postProcessIBS(res) {
 	    		if ($("#mstFrm #rqstStepCd").val() == "S")  {
 //   					$("#btnRegRqst").show();
 	    		} 
-  				doAction("Search"); 
-	    	} 
-			
+	    	}
+  				doAction("Search");
+
 			break;
 				
 		//요청서 결재단계별 승인 완료 후처리

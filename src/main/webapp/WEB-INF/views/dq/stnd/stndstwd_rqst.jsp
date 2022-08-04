@@ -299,6 +299,19 @@ function doAction(sAction)
 				return;
 			}
 
+			var row = grid_name.ColValueDup("stwdLnm|stwdPnm");
+			var rows = grid_name.ColValueDupRows("stwdLnm|stwdPnm");
+
+			if(row>0){
+				showMsgBox("INF","<s:message code="ERR.DUP" />"+"(단어명)"+"</br>"+rows+"행");
+				var rowsArr = rows.split(",");
+				for(var i=0 ; i< rowsArr.length; i++){
+					grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
+					grid_name.SetCellValue(rowsArr[i],"errChk","중복데이터");
+				}
+				return;
+			}
+
 			//프로파일별 url 셋팅
 			var url = "";
 			url = '<c:url value="/dq/stnd/inspectStndWord.do"/>';
@@ -347,6 +360,7 @@ function doAction(sAction)
 			break;
 
     	case "Save":  //검증
+			debugger
     		//KeyField 1 인 것 가져오기 orgNm stwdLnm engMean  stwdPnm objDescn  dmnYn
     		var len = grid_name.RowCount();
 			for(var i=0; i < len; i++) {
@@ -384,56 +398,21 @@ function doAction(sAction)
 			}
 
 			//프로파일별 url 셋팅
-			var url = "";
-			if(bizDtlCd == "SDITM"){
-				var row = grid_name.ColValueDup("orgNm|sditmLnm|sditmPnm");
-				var rows = grid_name.ColValueDupRows("orgNm|sditmLnm|sditmPnm");
-				
-				
-				if(row>0){
-				    showMsgBox("INF","<s:message code="ERR.DUP" />"+"(용어명)"+"</br>"+rows+"행");
-				    var rowsArr = rows.split(",");
-				    for(var i=0 ; i< rowsArr.length; i++){
-				        grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
-				        grid_name.SetCellValue(rowsArr[i],"vrfRmk","중복데이터");
-				    }
-					return;
+			var row = grid_name.ColValueDup("stwdLnm|stwdPnm");
+			var rows = grid_name.ColValueDupRows("stwdLnm|stwdPnm");
+
+			if(row>0){
+				showMsgBox("INF","<s:message code="ERR.DUP" />"+"(단어명)"+"</br>"+rows+"행");
+				var rowsArr = rows.split(",");
+				for(var i=0 ; i< rowsArr.length; i++){
+					grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
+					grid_name.SetCellValue(rowsArr[i],"errChk","중복데이터");
 				}
-				url = '<c:url value="/dq/stnd/regitemWamlist.do"/>';
-				
-			}else if(bizDtlCd == "DMN"){
-				
-				var row = grid_name.ColValueDup("orgNm|infotpLnm");
-				var rows = grid_name.ColValueDupRows("infotpLnm");
-				if(row>0){
-				    showMsgBox("INF","<s:message code="ERR.DUP" />"+"</br>"+rows+"행");
-				    var rowsArr = rows.split(",");
-				    for(var i=0 ; i< rowsArr.length; i++){
-				        grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
-// 				        grid_name.SetCellValue(rowsArr[i],"vrfRmk","중복데이터");
-				    }
-					return;
-				}
-				url = '<c:url value="/dq/stnd/regdmnWamlist.do"/>';
-			}else if(bizDtlCd == "STWD"){
-				/*
-				var row = grid_name.ColValueDup("stwdLnm|stwdPnm");
-				var rows = grid_name.ColValueDupRows("stwdLnm|stwdPnm");
-				
-				if(row>0){
-				    showMsgBox("INF","<s:message code="ERR.DUP" />"+"</br>"+rows+"행");
-				    var rowsArr = rows.split(",");
-				    for(var i=0 ; i< rowsArr.length; i++){
-				        grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
-// 				        grid_name.SetCellValue(rowsArr[i],"vrfRmk","중복데이터");
-				    }
-					return;
-				}				
-				*/
-				url = '<c:url value="/dq/stnd/regStndWordWamlist.do"/>';
+				return;
 			}
-			
-			
+
+			url = '<c:url value="/dq/stnd/regStndWordWamlist.do"/>';
+
 			var param = $('form[name=mstFrm]').serialize();
 	        IBSpostJson2(url, ibsSaveJson, param, ibscallback);
 	        
@@ -549,7 +528,7 @@ function doAction(sAction)
 /*======================================================================*/
 //IBS 리스트 저장, 단건 저장, 삭제 상태에 따라 후처리 하는 함수...
 function postProcessIBS(res) {
-	
+	debugger
 	switch(res.action) {
 		//요청서 삭제 후처리...
 		case "<%=WiseMetaConfig.IBSAction.DEL%>" :
@@ -585,8 +564,8 @@ function postProcessIBS(res) {
 //   					$("#btnRegRqst").show();
 	    		} 
   				doAction("Search"); 
-	    	} 
-			
+	    	}
+			doAction("Search");
 			break;
 				
 		//요청서 결재단계별 승인 완료 후처리
@@ -595,7 +574,8 @@ function postProcessIBS(res) {
 			location.href = url;
 			break;
 		
-		default : 
+		default :
+			doAction("Search");
 			// 아무 작업도 하지 않는다...
 			break;
 			

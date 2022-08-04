@@ -432,6 +432,20 @@ function doAction(sAction)
 				return;
 			}
 
+			//grid상 중복데이터 검사 (기관명|표준용어명)
+			var row  = grid_name.ColValueDup("orgNm|sditmLnm");
+			var rows = grid_name.ColValueDupRows("orgNm|sditmLnm");
+
+			if(row>0){
+				showMsgBox("INF","<s:message code="ERR.DUP" />"+"(표준용어명)"+"</br>"+rows+"행");
+				var rowsArr = rows.split(",");
+				for(var i=0 ; i< rowsArr.length; i++){
+					grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
+					grid_name.SetCellValue(rowsArr[i],"errChk","중복데이터");
+				}
+				return;
+			}
+
 			//프로파일별 url 셋팅
 			var url = "";
 			url = '<c:url value="/dq/stnd/inspectStndItem.do"/>';
@@ -488,23 +502,6 @@ function doAction(sAction)
 		case "Save":   //저장
     		
     		var len = grid_name.RowCount();
-			/* 데이터 타입, 길이 - 도메인에서 가져오기
-    		for(var i = 0; i < len; i++) {
-    			var dataType = grid_name.GetCellValue(i+1,"dataType");
-        		var dataLen = grid_name.GetCellValue(i+1,"dataLen");
-        		var orgNm = "${userOrg.orgNm}";
-        		var sditmLnm = grid_name.GetCellValue(i+1,"sditmLnm"); //표준용어명
-        		var infotpLnm = grid_name.GetCellValue(i+1,"infotpLnm"); //표준도메인명
-
-        		console.log("dataType:" + dataType + ", dataLen:" + dataLen);
-        		
-        		if(infotpLnm != "" && (dataLen == "" || dataType == "")) {
-	        		//도메인 조회
-	        		var param = {"orgNm":orgNm, "domainNm":infotpLnm, "dataType":dataType, "dataLen":dataLen};
-	        		getDomainDataType(param, i+1);
-        		}
-    		}
-    		*/
 
     		//KeyField 1 인 것 가져오기 => 변경
     		for(var i=0; i < len; i++) {
@@ -546,6 +543,20 @@ function doAction(sAction)
     			showMsgBox("INF", "<s:message code="ERR.CHKSAVE" />");
     			return;
     		}
+
+			//grid상 중복데이터 검사 (기관명|표준용어명)
+			var row  = grid_name.ColValueDup("orgNm|sditmLnm");
+			var rows = grid_name.ColValueDupRows("orgNm|sditmLnm");
+
+			if(row>0){
+				showMsgBox("INF","<s:message code="ERR.DUP" />"+"(표준용어명)"+"</br>"+rows+"행");
+				var rowsArr = rows.split(",");
+				for(var i=0 ; i< rowsArr.length; i++){
+					grid_name.SetRowFontColor(rowsArr[i],"#FF0000");
+					grid_name.SetCellValue(rowsArr[i],"errChk","중복데이터");
+				}
+				return;
+			}
 
     		//프로파일별 url 셋팅
     		var url = "";
@@ -679,18 +690,18 @@ function postProcessIBS(res) {
 	    		json2formmapping ($("#mstFrm"), res.resultVO);
 	    		//업무상세코드는 마스터에 없으므로 강제로 셋팅한다.
 	    		$("#mstFrm #bizDtlCd").val(res.resultVO.bizDtlCd);
-	    		
+
 	    		if ($("#mstFrm #rqstStepCd").val() == "S")  {
 // 	    			$("#btnRegRqst").show();
 	    		}
-	    		//doAction("Search"); 		
-	    	} 
+	    		//doAction("Search");
+	    	}
 			break;
-			
+
 		//요청서 단건 등록 후처리...
 		case "<%=WiseMetaConfig.IBSAction.REG%>" :
 			break;
-		
+
 		//요청서 여러건 등록 후처리...
 		case "<%=WiseMetaConfig.RqstAction.REGISTER%>" :
 			//저장완료시 마스터 정보 셋팅...
@@ -698,19 +709,19 @@ function postProcessIBS(res) {
 
 // 	    		alert(res.resultVO.rqstNo);
 	    		json2formmapping ($("#mstFrm"), res.resultVO);
-	    		
+
 	    		//업무상세코드는 마스터에 없으므로 강제로 셋팅한다.
 	    		$("#mstFrm #bizDtlCd").val(res.resultVO.bizDtlCd);
-	    		
+
 	    		//등록요청 버튼 활성화
 	    		if ($("#mstFrm #rqstStepCd").val() == "S")  {
 //   					$("#btnRegRqst").show();
-	    		} 
-  				doAction("Search"); 
-	    	} 
-			
+	    		}
+	    	}
+  				doAction("Search");
+
 			break;
-				
+
 		//요청서 결재단계별 승인 완료 후처리
 		case "<%=WiseMetaConfig.RqstAction.APPROVE%>":
 // 			var url = '<c:url value="/dq/stnd/stndtot_rqst.do" />';

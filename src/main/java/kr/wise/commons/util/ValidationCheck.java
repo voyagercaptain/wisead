@@ -48,7 +48,7 @@ public class ValidationCheck {
         }
 
         //문자열 대문자가 아닌경우 입력된 경우
-        String pattern = "^[A-Z]*$";
+        String pattern = "^[0-9|A-Z_|\\s]*$";
         if(!Pattern.matches(pattern, data)){
             return ErrorCode.ERROR_ITEM_UPPER.getMessage();
         }
@@ -71,7 +71,7 @@ public class ValidationCheck {
         }
 
         //문자열 대문자가 아닌경우 입력된 경우
-        String pattern = "^[A-Z_]*$";
+        String pattern = "^[0-9|A-Z_]*$";
         if(!Pattern.matches(pattern, data)){
             return ErrorCode.ERROR_ITEM_ENG_REGEX_NOT_MATCH.getMessage();
         }
