@@ -36,7 +36,6 @@ import java.util.Date;
  * 6. 작성일   : 2014. 6. 16. 오후 4:55:30
  * </PRE>
  */
-@Component
 public class QuartzJob extends QuartzJobBean {
 
 	Logger logger = LoggerFactory.getLogger(getClass());

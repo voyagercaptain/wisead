@@ -21,6 +21,15 @@
 
 	<bean id="totSearchTask" class="kr.wise.commons.schedule.task.TotalSearchTask" />
 
+	<bean name="totSearchJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="kr.wise.commons.schedule.job.QuartzJob" />
+	</bean>
+
+	<bean id="totSearchTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="totSearchJob" />
+		<property name="cronExpression" value="0 0 * * * ?" />
+	</bean>
+
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
@@ -36,20 +45,6 @@
 				<prop key="org.quartz.jobStore.misfireThreshold">60000</prop>
 			</props>
 		</property>
-	</bean>
-
-	<bean name="totSearchJob" class="org.springframework.scheduling.quartz.JobDetailBean">
-		<property name="jobClass" value="kr.wise.commons.schedule.job.QuartzJob" />
-		<property name="jobDataAsMap">
-			<map>
-				<entry key="totSearchTask" value-ref="totSearchTask" />
-			</map>
-		</property>
-	</bean>
-
-	<bean id="totSearchTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-		<property name="jobDetail" ref="totSearchJob" />
-		<property name="cronExpression" value="0 0/1 * * * *" />
 	</bean>
 
 </beans>
