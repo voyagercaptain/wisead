@@ -109,6 +109,8 @@ public class WamDbStwd extends CommonVo  {
     private String decideYn;
     
     private String vcWh;
+    
+    private String stwdDtm;
 
     public String getUsergId() {
 		return usergId;
@@ -493,6 +495,14 @@ public class WamDbStwd extends CommonVo  {
 
 	public void setVcWh(String vcWh) {
 		this.vcWh = vcWh;
+	}
+
+	public String getStwdDtm() {
+		return stwdDtm;
+	}
+
+	public void setStwdDtm(String stwdDtm) {
+		this.stwdDtm = stwdDtm;
 	}
 	
 	

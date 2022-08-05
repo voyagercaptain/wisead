@@ -117,26 +117,7 @@ $(document).ready(function() {
 	
 	//저장
     $("#btnSave").click( function(){
-    	var bizDtlCd = $("form[name=mstFrm] #bizDtlCd").val();
-    	if(bizDtlCd == "STWD"){
-//         	//표준단어명 중복 저장 확인
-// 			var row = grid_name.ColValueDup("stwdLnm");
-// 			var rows = grid_name.ColValueDupRows("stwdLnm");
-// 			if(row > -1){
-// 			    showMsgBox("CNF", rows+"행에 "+"<s:message code="CNF.DUP.STWDLNM" />"+"</br>","Save");
-// 				return;
-// 			}
-// 			//표준단어 영문약어 중복 저장 확인
-// 			row = grid_name.ColValueDup("stwdPnm");
-// 			rows = grid_name.ColValueDupRows("stwdPnm");
-// 			if(row > -1){
-// 			    showMsgBox("CNF", rows+"행에 "+"<s:message code="CNF.DUP.STWDPNM" />"+"</br>","Save");
-// 				return;
-// 			}
-
 			doAction("Save");
-    	}else{doAction("Save");}
-    	    	
     } ).show();
 	//검증
     $("#btnInspect").click( function(){
@@ -412,7 +393,7 @@ function doAction(sAction)
 			
 			
 			//grid상 중복데이터 검사 (기관명|DB명|표준용어명)
-			var row  = grid_name.ColValueDup("orgNm|dbNm|sditmLnm");
+			/* var row  = grid_name.ColValueDup("orgNm|dbNm|sditmLnm");
 			var rows = grid_name.ColValueDupRows("orgNm|dbNm|sditmLnm");
 			if(row>0){
 				showMsgBox("INF","<s:message code="ERR.DUP" />"+"(용어명)"+"</br>"+rows+"행");
@@ -422,7 +403,7 @@ function doAction(sAction)
 					grid_name.SetCellValue(rowsArr[i],"errChk","중복데이터");
 				}
 			return;
-			}
+			} */
 			//프로파일별 url 셋팅
 			var url = "";
 			
@@ -722,15 +703,15 @@ function postProcessIBS(res) {
 					    <li class="btn_chang_add" id="btnChangAdd"><a><span class="ui-icon ui-icon-folder-open"></span><s:message code="CHG.TRGT.ADDT" /></a></li> <!-- 변경대상 추가 -->
 					    <li class="btn_excel_load" id="btnExcelLoad"><a><span class="ui-icon ui-icon-document"></span><s:message code="EXCL.UPLOAD" /></a></li> <!-- 엑셀 올리기 -->
 					  </ul>         
-				    <%-- <button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="STRG" /></button> --%> <!-- 저장 --> 
+				    <button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="TMPR.STRG" /></button>  <!-- 저장 --> 
 				    <button class="btn_delete"  id="btnDelete" 	name="btnDelete"><s:message code="DEL" /></button> <!-- 삭제 -->
-					<button class="btn_inspect" id="btnInspect" name="btnInspect" >검증</button>
-					<button class="btn_decide"  id="btnDecide" 	name="btnDecide" disabled>확정</button>
-					<button class="btn_init"    id="btnInit" 	name="btnInit" disabled>초기화</button>
+					<!-- <button class="btn_inspect" id="btnInspect" name="btnInspect" >검증</button> -->
+					<!-- <button class="btn_init"    id="btnInit" 	name="btnInit" disabled>초기화</button> -->
 				</c:if>
 				
 			</div>
 			<div class="bt02"> 
+			  <button class="btn_decide"  id="btnDecide" name="btnDecide" disabled>확정</button>
 	          <button class="btn_excel_down"  id="btnExcelDown"  name="btnExcelDown"><s:message code="EXCL.DOWNLOAD" /></button> <!-- 엑셀 내리기 -->                       
 	    	</div>
         </div>	

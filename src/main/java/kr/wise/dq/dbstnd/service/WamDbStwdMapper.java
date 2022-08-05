@@ -63,4 +63,8 @@ public interface WamDbStwdMapper {
     int bulkDelete(List<WamDbStwd> deleteList);
     
     int dupliCheckDbStndStwd(Map<String, String> param);
+    
+    List<WamDbStwd> selectDbStwdList();
+    
+    int updateDbStwdSchedule(List<WamDbStwd> updateList);
 }

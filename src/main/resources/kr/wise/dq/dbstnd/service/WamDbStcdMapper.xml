@@ -21,6 +21,7 @@
     <result column="ERR_CHK"    property="errChk"     jdbcType="VARCHAR" />
     <result column="VALID_YN"   property="validYn"    jdbcType="VARCHAR" />
     <result column="CONFIRM_YN" property="confirmYn"  jdbcType="VARCHAR" />
+    <result column="STCD_DTM"   property="stcdDtm"    jdbcType="VARCHAR" />
 
   </resultMap>
   <sql id="Base_Column_List" >
@@ -412,6 +413,7 @@
         <foreach collection="list" item="item" index="index" separator=",">
         delete from WAM_DB_COMM_CD
         where COMM_CD_ID = #{item.commCdId,jdbcType=VARCHAR}
+        AND CONFIRM_YN = 'N'
         </foreach>
     </delete>
     
@@ -423,5 +425,28 @@
     AND comm_cd_nm 	 = #{commCdNm,jdbcType=VARCHAR}
     AND CONFIRM_YN   = 'Y'
   </select>
-
+	<select id="selectDbStcdList" resultMap="BaseResultMap" >
+	SELECT 
+		COMM_CD_ID ,
+		DB_NM ,
+		ORG_NM,
+		NVL(COMN_CD_ENNM  ,'')    AS COMN_CD_ENNM,
+		NVL(COMM_DTL_CD_NM  ,'')  AS COMM_DTL_CD_NM,
+		NVL(COMM_DTL_CD_MN  ,'')  AS COMM_DTL_CD_MN,
+		TO_CHAR (WRIT_DTM,'YYYY-MM-DD') AS STCD_DTM
+	FROM WAM_DB_COMM_CD  
+	WHERE CONFIRM_YN = 'N'
+	AND VALID_YN    != 'Y'
+	</select>
+	
+	
+	<update id="updateDbStcdSchedule" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index">
+        update WAM_DB_COMM_CD
+            set 
+           		  ERR_CHK 		= #{item.errChk,jdbcType=VARCHAR}
+           		, VALID_YN 		= #{item.validYn,jdbcType=VARCHAR}
+        where COMM_CD_ID = #{item.commCdId,jdbcType=VARCHAR}
+    </foreach>
+  </update>
 </mapper>

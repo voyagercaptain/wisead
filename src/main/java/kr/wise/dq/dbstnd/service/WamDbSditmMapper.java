@@ -56,4 +56,7 @@ public interface WamDbSditmMapper {
 	int bulkDelete(List<WamDbSditm> deleteList);
 	
 	 int dupliCheckDbStndItem(Map<String, String> param);
+	 
+	 List<WamDbSditm> selectDbSditmList();
+	 int updateDbSdimSchedule(List<WamDbSditm> updateList);
 }

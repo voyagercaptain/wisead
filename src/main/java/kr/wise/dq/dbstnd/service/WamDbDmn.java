@@ -101,7 +101,7 @@ public class WamDbDmn extends CommonVo{
     private String spclNt;
     
     private String usergId;
-    
+    private String dmnDtm;
        
 
     public String getUsergId() {
@@ -629,6 +629,15 @@ public class WamDbDmn extends CommonVo{
 	public void setDecideYn(String decideYn) {
 		this.decideYn = decideYn;
 	}
+	
+	
+	public String getDmnDtm() {
+		return dmnDtm;
+	}
+
+	public void setDmnDtm(String dmnDtm) {
+		this.dmnDtm = dmnDtm;
+	}
 
 	@Override
 	public String toString() {
@@ -643,15 +652,14 @@ public class WamDbDmn extends CommonVo{
 				+ strgFrm + ", saveFrm=" + saveFrm + ", exprsnFrm=" + exprsnFrm + ", unit=" + unit + ", admnStndCd="
 				+ admnStndCd + ", userId=" + userId + ", validYn=" + validYn + ", confirmYn=" + confirmYn + ", errChk="
 				+ errChk + ", vcWh=" + vcWh + ", decideYn=" + decideYn + ", ownrOrg=" + ownrOrg + ", spclNt=" + spclNt
-				+ ", usergId=" + usergId + ", dataType=" + dataType + ", dataLen=" + dataLen + ", dataScal=" + dataScal
-				+ ", lnmCriDs=" + lnmCriDs + ", pnmCriDs=" + pnmCriDs + ", frsRqstUserNm=" + frsRqstUserNm
-				+ ", rqstUserNm=" + rqstUserNm + ", aprvUserNm=" + aprvUserNm + ", uppDmngId=" + uppDmngId
-				+ ", dmngLnm=" + dmngLnm + ", uppDmngLnm=" + uppDmngLnm + ", infotpLnm=" + infotpLnm + ", encYn="
-				+ encYn + ", dmnDscd=" + dmnDscd + ", transYn=" + transYn + ", dmnMinVal=" + dmnMinVal + ", dmnMaxVal="
-				+ dmnMaxVal + ", subCdYn=" + subCdYn + "]";
+				+ ", usergId=" + usergId + ", dmnDtm=" + dmnDtm + ", dataType=" + dataType + ", dataLen=" + dataLen
+				+ ", dataScal=" + dataScal + ", lnmCriDs=" + lnmCriDs + ", pnmCriDs=" + pnmCriDs + ", frsRqstUserNm="
+				+ frsRqstUserNm + ", rqstUserNm=" + rqstUserNm + ", aprvUserNm=" + aprvUserNm + ", uppDmngId="
+				+ uppDmngId + ", dmngLnm=" + dmngLnm + ", uppDmngLnm=" + uppDmngLnm + ", infotpLnm=" + infotpLnm
+				+ ", encYn=" + encYn + ", dmnDscd=" + dmnDscd + ", transYn=" + transYn + ", dmnMinVal=" + dmnMinVal
+				+ ", dmnMaxVal=" + dmnMaxVal + ", subCdYn=" + subCdYn + "]";
 	}
 
-		
 	
 
 	

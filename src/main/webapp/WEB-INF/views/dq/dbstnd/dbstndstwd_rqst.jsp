@@ -314,9 +314,6 @@ function doAction(sAction)
 			
     	case "Save":  //검증
     	
-    		//KeyField 1 인 것 가져오기 orgNm sditmLnm  pnm sditmPnm  objDescn 
-    		var len = grid_name.RowCount();
-    	
     		//저장 대상의 데이터를 Json 객체로 반환한다.
 			ibsSaveJson = grid_name.GetSaveJson(0);
     	
@@ -329,7 +326,7 @@ function doAction(sAction)
 			}
 			
 			//grid상 중복데이터 검사 (기관명|DB명|표준단어명)
-			var row  = grid_name.ColValueDup("orgNm|dbNm|stwdLnm");
+			/* var row  = grid_name.ColValueDup("orgNm|dbNm|stwdLnm");
 			var rows = grid_name.ColValueDupRows("orgNm|dbNm|stwdLnm");
 								
 			if(row>0){
@@ -340,7 +337,7 @@ function doAction(sAction)
 					grid_name.SetCellValue(rowsArr[i],"errChk","중복데이터");
 				}
 			return;
-			}
+			} */
 			
 			var url = '<c:url value="/dq/dbstnd/regStndWordWamlist.do"/>';
 			
@@ -646,15 +643,15 @@ function postProcessIBS(res) {
 					    <li class="btn_chang_add" id="btnChangAdd"><a><span class="ui-icon ui-icon-folder-open"></span><s:message code="CHG.TRGT.ADDT" /></a></li> <!-- 변경대상 추가 -->
 					    <li class="btn_excel_load" id="btnExcelLoad"><a><span class="ui-icon ui-icon-document"></span><s:message code="EXCL.UPLOAD" /></a></li> <!-- 엑셀 올리기 -->
 					  </ul>         
-				    <%-- <button class="btn_save"    id="btnSave" 	name="btnSave"><s:message code="STRG" /></button> <!-- 저장 --> --%> 
+				    <button class="btn_save"    id="btnSave" 	name="btnSave"><s:message code="TMPR.STRG" /></button> <!-- 저장 --> 
 				    <button class="btn_delete"  id="btnDelete" 	name="btnDelete"><s:message code="DEL" /></button> <!-- 삭제 -->
-				    <button class="btn_inspect" id="btnInspect" name="btnInspect" >검증</button>
-					<button class="btn_decide"  id="btnDecide" 	name="btnDecide" disabled>확정</button>
-					<button class="btn_init"    id="btnInit" 	name="btnInit" disabled>초기화</button>
+				   <!--  <button class="btn_inspect" id="btnInspect" name="btnInspect" >검증</button>
+					<button class="btn_init"    id="btnInit" 	name="btnInit" disabled>초기화</button> -->
 				</c:if>
 				
 			</div>
 			<div class="bt02"> 
+			  <button class="btn_decide"  id="btnDecide" 	name="btnDecide" disabled>확정</button>
 	          <button class="btn_excel_down"  id="btnExcelDown"  name="btnExcelDown"><s:message code="EXCL.DOWNLOAD" /></button> <!-- 엑셀 내리기 -->                       
 	    	</div>
         </div>	

@@ -341,7 +341,7 @@ function doAction(sAction)
 			
 			
 			//grid상 중복데이터 검사 (기관명|DB명|도메인명)
-			var row  = grid_name.ColValueDup("orgNm|dbNm|infotpLnm");
+		/* 	var row  = grid_name.ColValueDup("orgNm|dbNm|infotpLnm");
 			var rows = grid_name.ColValueDupRows("orgNm|dbNm|infotpLnm");
 								
 			if(row>0){
@@ -352,7 +352,7 @@ function doAction(sAction)
 					grid_name.SetCellValue(rowsArr[i],"errChk","중복데이터");
 				}
 			return;
-			}
+			} */
 			
 			//프로파일별 url 셋팅
 			var url = "";
@@ -658,15 +658,15 @@ function postProcessIBS(res) {
 					    <li class="btn_chang_add" id="btnChangAdd"><a><span class="ui-icon ui-icon-folder-open"></span><s:message code="CHG.TRGT.ADDT" /></a></li> <!-- 변경대상 추가 -->
 					    <li class="btn_excel_load" id="btnExcelLoad"><a><span class="ui-icon ui-icon-document"></span><s:message code="EXCL.UPLOAD" /></a></li> <!-- 엑셀 올리기 -->
 					  </ul>         
-				    <%-- <button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="STRG" /></button> <!-- 저장 --> --%> 
+				     <button class="btn_save" id="btnSave" 	name="btnSave"><s:message code="TMPR.STRG" /></button> <!-- 저장 --> 
 				    <button class="btn_delete" id="btnDelete" 	name="btnDelete"><s:message code="DEL" /></button> <!-- 삭제 -->
-				    <button class="btn_inspect" id="btnInspect" 	name="btnInspect" >검증</button>
-					<button class="btn_decide" id="btnDecide" 	name="btnDecide" disabled>확정</button>
-					<button class="btn_init" id="btnInit" 	name="btnInit" disabled>초기화</button>
+				    <!-- <button class="btn_inspect" id="btnInspect" 	name="btnInspect" >검증</button> -->
+					<!-- <button class="btn_init" id="btnInit" 	name="btnInit" disabled>초기화</button> -->
 				</c:if>
 				
 			</div>
-			<div class="bt02"> 
+			<div class="bt02">
+			  <button class="btn_decide" id="btnDecide" 	name="btnDecide" disabled>확정</button> 
 	          <button class="btn_excel_down"  id="btnExcelDown"  name="btnExcelDown"><s:message code="EXCL.DOWNLOAD" /></button> <!-- 엑셀 내리기 -->                       
 	    	</div>
         </div>	

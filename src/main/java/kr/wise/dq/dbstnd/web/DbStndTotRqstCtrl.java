@@ -19,14 +19,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import kr.wise.dq.stnd.service.WamStwd;
-import kr.wise.dq.stnd.web.StndWordRqstCtrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -384,7 +381,7 @@ public class DbStndTotRqstCtrl {
 		String decideYn =reqmst.getDecideYn();
 
 		long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
-		list = itemValidCheck(list,decideYn);
+		//list = itemValidCheck(list,decideYn);
 		int result = dbStndService.registerItemWam(list, reqmst);
 
 		
@@ -415,7 +412,7 @@ public class DbStndTotRqstCtrl {
 		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
 		ArrayList<WamDbStcd> list = data.get("data");
 		String decideYn = reqmst.getDecideYn();
-		list = stcdValidCheck(list, decideYn);
+		//list = stcdValidCheck(list, decideYn);
 		long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
         
 		int result = 0;
@@ -595,7 +592,7 @@ public class DbStndTotRqstCtrl {
 		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
 		ArrayList<WamDbDmn> list = data.get("data");
 		String decideYn = reqmst.getDecideYn();
-			list   = dmnValidCheck(list,decideYn);
+			//list   = dmnValidCheck(list,decideYn);
 		int result = dbStndService.registerDmnWam(list);
 
 
@@ -1151,7 +1148,7 @@ public class DbStndTotRqstCtrl {
 			String errorMsg = "";
 	    	for (WamDbStcd saveVo : reglist) {
 	    		// 코드명 검증
-				errorMsg = ValidationCheck.checkCodeName(saveVo.getComnCdEnnm());
+				errorMsg = ValidationCheck.checkCodeName(saveVo.getCommCdNm());
 				if(errorMsg != "") {
 					errorList.add(errorMsg);
 				}

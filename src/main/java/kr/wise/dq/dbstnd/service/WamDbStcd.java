@@ -38,6 +38,8 @@ public class WamDbStcd extends CommonVo  {
     
     private String confirmYn;
     
+    private String stcdDtm;
+    
 	public String getUsergId() {
 		return usergId;
 	}
@@ -182,6 +184,12 @@ public class WamDbStcd extends CommonVo  {
 	}
 	public void setConfirmYn(String confirmYn) {
 		this.confirmYn = confirmYn;
+	}
+	public String getStcdDtm() {
+		return stcdDtm;
+	}
+	public void setStcdDtm(String stcdDtm) {
+		this.stcdDtm = stcdDtm;
 	}
 	
 	

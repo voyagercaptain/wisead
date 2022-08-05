@@ -216,7 +216,7 @@ public class WamDbSditm extends CommonVo {
     
     private String persInfoYn;
     
-    
+    private String sditmDtm;
     
     public String getSaveFrm() {
 		return saveFrm;
@@ -613,6 +613,15 @@ public class WamDbSditm extends CommonVo {
 	public void setDecideYn(String decideYn) {
 		this.decideYn = decideYn;
 	}
+	
+	
+	public String getSditmDtm() {
+		return sditmDtm;
+	}
+
+	public void setSditmDtm(String sditmDtm) {
+		this.sditmDtm = sditmDtm;
+	}
 
 	@Override
 	public String toString() {
@@ -630,7 +639,7 @@ public class WamDbSditm extends CommonVo {
 				+ ", uppDmngLnm=" + uppDmngLnm + ", fullEngMean=" + fullEngMean + ", transYn=" + transYn + ", reqStr="
 				+ reqStr + ", testDataCnvYn=" + testDataCnvYn + ", persInfoCnvYn=" + persInfoCnvYn + ", persInfoGrd="
 				+ persInfoGrd + ", oraDataType=" + oraDataType + ", msDataType=" + msDataType + ", myDataType="
-				+ myDataType + ", dupYn=" + dupYn + ", persInfoYn=" + persInfoYn + "]";
+				+ myDataType + ", dupYn=" + dupYn + ", persInfoYn=" + persInfoYn + ", sditmDtm=" + sditmDtm + "]";
 	}
 
 	

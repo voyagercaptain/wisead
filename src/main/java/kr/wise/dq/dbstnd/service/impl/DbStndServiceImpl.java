@@ -737,4 +737,35 @@ public class DbStndServiceImpl implements DbStndService {
 		return result;
 	}
 
+	@Override
+	public List<WamDbSditm> selectDbSditmList() {
+		return wamDbSditmMapper.selectDbSditmList();
+	}
+
+	@Override
+	public List<WamDbDmn> selectDbDmnList() {
+		return wamDbDmnMapper.selectDbDmnList();
+	}
+
+	@Override
+	public List<WamDbStwd> selectDbStwdList() {
+		return wamDbStwdMapper.selectDbStwdList();
+	}
+
+	@Override
+	public List<WamDbStcd> selectDbStcdList() {
+		return wamDbStcdMapper.selectDbStcdList();
+	}
+
+	@Override
+	public void updateDbStndTotInspect(List<WamDbSditm> sditmList, List<WamDbDmn> dmnList, List<WamDbStwd> stwdList,
+			List<WamDbStcd> stcdList) throws Exception {
+		logger.debug("DB표준 검증결과 UPDATE START!!!!!!");
+		wamDbSditmMapper.updateDbSdimSchedule(sditmList);
+		wamDbDmnMapper.updateDbDmnSchedule(dmnList);
+		wamDbStwdMapper.updateDbStwdSchedule(stwdList);
+		wamDbStcdMapper.updateDbStcdSchedule(stcdList);
+		
+	}
+
 }

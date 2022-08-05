@@ -54,4 +54,10 @@ public interface DbStndService {
 	
 	int initDbStndStcd(List<WamDbStcd> reglist, WaqMstr reqmst) throws Exception;
 	
+	List<WamDbSditm> selectDbSditmList();
+	List<WamDbDmn>   selectDbDmnList();
+	List<WamDbStwd>  selectDbStwdList();
+	List<WamDbStcd>  selectDbStcdList();
+	void updateDbStndTotInspect(List<WamDbSditm> sditmList,List<WamDbDmn> dmnList,List<WamDbStwd> stwdList,List<WamDbStcd> stcdList) throws Exception;
+	
 }
