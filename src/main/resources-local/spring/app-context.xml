@@ -27,7 +27,7 @@
  	<import resource="mapper-context.xml" /> 
 
 	<!-- 배치 스케줄 설정... -->
-  	<!-- <import resource="schedule-context.xml" />  --> 
+  	<import resource="schedule-context.xml" />
 
 	<!-- datasource 설정 부분 profile 적용함... -->
 	<import resource="datasource-context.xml"/>

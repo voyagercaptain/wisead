@@ -17,6 +17,13 @@ import kr.wise.commons.schedule.task.TotalSearchTask;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
 //import org.springframework.scheduling.quartz.QuartzJobBean;
 
 /**
@@ -29,7 +36,10 @@ import org.quartz.JobExecutionException;
  * 6. 작성일   : 2014. 6. 16. 오후 4:55:30
  * </PRE>
  */
-public class QuartzJob {//extends QuartzJobBean {
+@Component
+public class QuartzJob extends QuartzJobBean {
+
+	Logger logger = LoggerFactory.getLogger(getClass());
 
 	private TotalSearchTask totSearchTask;
 
@@ -44,8 +54,8 @@ public class QuartzJob {//extends QuartzJobBean {
 	/** insomnia */
 	protected void executeInternal(JobExecutionContext context)
 			throws JobExecutionException {
-		totSearchTask.sayHello();
-
+		//totSearchTask.sayHello();
+		logger.debug("this is test");
 	}
 
 
