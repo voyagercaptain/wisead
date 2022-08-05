@@ -350,8 +350,6 @@
         , USE_YN
         , ORG_NM
         , DB_NM
-        , ERR_CHK
-        , VALID_YN
         )
         values
         <foreach collection="list" item="item" index="index" separator=",">
@@ -371,9 +369,7 @@
             #{item.commDtlCdDesc,jdbcType=VARCHAR},
             #{item.useYn,jdbcType=VARCHAR},
             #{item.orgNm,jdbcType=VARCHAR},
-            #{item.dbNm,jdbcType=VARCHAR},
-            #{item.errChk,jdbcType=VARCHAR},
-            #{item.validYn,jdbcType=VARCHAR}
+            #{item.dbNm,jdbcType=VARCHAR}
         )
         </foreach>
     </insert>

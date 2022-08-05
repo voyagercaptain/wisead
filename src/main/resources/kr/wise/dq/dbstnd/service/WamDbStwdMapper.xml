@@ -722,9 +722,7 @@
          FBDN_LNM,
          DB_NM,
          OWNR_ORG,
-         SPCL_NT,
-         ERR_CHK,
-         VALID_YN
+         SPCL_NT
          )
         values
         <foreach collection="list" item="item" index="index" separator=",">
@@ -751,9 +749,7 @@
         #{item.fbdnLnm,jdbcType=VARCHAR},
         #{item.dbNm,jdbcType=VARCHAR},
         #{item.ownrOrg,jdbcType=VARCHAR},
-        #{item.spclNt,jdbcType=VARCHAR},
-        #{item.errChk,jdbcType=VARCHAR},
-        #{item.validYn,jdbcType=VARCHAR}
+        #{item.spclNt,jdbcType=VARCHAR}
         )
         </foreach>
     </insert>

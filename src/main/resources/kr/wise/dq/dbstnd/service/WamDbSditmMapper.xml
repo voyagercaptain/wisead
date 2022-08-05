@@ -977,9 +977,7 @@ SELECT *
         STND_CD,
         SPCL_NT,
         BSNSS_FLD,
-        PNM,
-        ERR_CHK,
-        VALID_YN
+        PNM
         )
     values
         <foreach collection="list" item="item" index="index" separator=",">
@@ -1020,9 +1018,7 @@ SELECT *
           #{item.stndCd,jdbcType=VARCHAR},
           #{item.spclNt,jdbcType=VARCHAR},
           #{item.bsnssFld,jdbcType=VARCHAR},
-          #{item.pnm,jdbcType=VARCHAR},
-          #{item.errChk,jdbcType=VARCHAR},
-          #{item.validYn,jdbcType=VARCHAR}
+          #{item.pnm,jdbcType=VARCHAR}
         )
         </foreach>
   </insert>
