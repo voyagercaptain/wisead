@@ -379,7 +379,12 @@ public class DbStndTotRqstCtrl {
 		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
 		ArrayList<WamDbSditm> list = data.get("data");
 		String decideYn =reqmst.getDecideYn();
-
+		if("Y".equals(decideYn)) {
+			for (WamDbSditm saveVo : list) {
+				saveVo.setDecideYn("Y");
+				saveVo.setConfirmYn("Y");
+			}
+		}
 		long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
 		//list = itemValidCheck(list,decideYn);
 		int result = dbStndService.registerItemWam(list, reqmst);
@@ -412,6 +417,12 @@ public class DbStndTotRqstCtrl {
 		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
 		ArrayList<WamDbStcd> list = data.get("data");
 		String decideYn = reqmst.getDecideYn();
+		if("Y".equals(decideYn)) {
+			for (WamDbStcd saveVo : list) {
+				saveVo.setDecideYn("Y");
+				saveVo.setConfirmYn("Y");
+			}
+		}
 		//list = stcdValidCheck(list, decideYn);
 		long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
         
@@ -591,7 +602,13 @@ public class DbStndTotRqstCtrl {
 
 		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
 		ArrayList<WamDbDmn> list = data.get("data");
-		String decideYn = reqmst.getDecideYn();
+		String decideYn =reqmst.getDecideYn();
+		if("Y".equals(decideYn)) {
+			for (WamDbDmn saveVo : list) {
+				saveVo.setDecideYn("Y");
+				saveVo.setConfirmYn("Y");
+			}
+		}
 			//list   = dmnValidCheck(list,decideYn);
 		int result = dbStndService.registerDmnWam(list);
 
@@ -656,7 +673,13 @@ public class DbStndTotRqstCtrl {
 
 			ArrayList<WamDbStwd> list = data.get("data");
 			String decideYn = reqmst.getDecideYn();
-			list = stwdValidCheck(list, decideYn);
+			if("Y".equals(decideYn)) {
+				for (WamDbStwd saveVo : list) {
+					saveVo.setDecideYn("Y");
+					saveVo.setConfirmYn("Y");
+				}
+			}
+			//list = stwdValidCheck(list, decideYn);
 			int result = dbStndService.registerStwdWam(list);
 	
 			String resmsg;

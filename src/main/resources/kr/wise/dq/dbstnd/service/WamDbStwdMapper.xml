@@ -779,16 +779,12 @@
                 FBDN_LNM = #{item.fbdnLnm,jdbcType=VARCHAR},
                 DB_NM = #{item.dbNm,jdbcType=VARCHAR},
                 OWNR_ORG = #{item.ownrOrg,jdbcType=VARCHAR},
-                SPCL_NT = #{item.spclNt,jdbcType=VARCHAR},
-               <if test='item.decideYn =="Y" and item.validYn =="Y"'>
+                <if test='item.decideYn =="Y" and item.confirmYn =="Y"'>
            		CONFIRM_DTM   = SYSDATE,
            		CONFIRM_YN    = 'Y',
             	</if>
-            	<if test='item.decideYn =="N" and item.validYn =="E"'>
-            	CONFIRM_YN    = 'N',
-            	</if>
-            	ERR_CHK       = #{item.errChk,jdbcType=VARCHAR},
-            	VALID_YN      = #{item.validYn,jdbcType=VARCHAR}
+                SPCL_NT = #{item.spclNt,jdbcType=VARCHAR}
+              
         where STWD_ID = #{item.stwdId,jdbcType=VARCHAR}
         </foreach>
     </update>
