@@ -925,7 +925,7 @@ SELECT *
 		 		wot.org_nm,
 		 		wod.db_nm as DB_NM
 		 FROM waa_org wot inner join waa_org_db wod 
-		 	on (wot.org_cd = wod.org_cd)
+		 	on (wod.org_cd = wot.org_cd OR wod.org_cd = wot.upper_org_cd)
 		<where>
   			<if test="orgNm != null" >
       			wot.org_nm = #{orgNm}
