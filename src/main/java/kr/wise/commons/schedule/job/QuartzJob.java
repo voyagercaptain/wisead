@@ -13,16 +13,16 @@
  */
 package kr.wise.commons.schedule.job;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import kr.wise.commons.WiseConfig;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -74,15 +74,35 @@ public class QuartzJob extends QuartzJobBean {
 		this.totSearchTask = totSearchTask;
 	}
 
-	//String result = null;
-    //try {
-	//	result = InetAddress.getLocalHost().getHostAddress();
-	//} catch (UnknownHostException e) {
-	//	result = "";
-	//}
+	private String getLocalServerIp() {
+
+		try {
+			for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+				NetworkInterface intf = en.nextElement();
+
+				for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+					InetAddress inetAddress = enumIpAddr.nextElement();
+					if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
+						return inetAddress.getHostAddress().toString();
+					}
+				}
+			}
+		}
+		catch (SocketException ex) {}
+		return null;
+	}
 
 	protected void executeInternal(JobExecutionContext context)
 			throws JobExecutionException {
+
+		String serverIp = getLocalServerIp();
+
+		logger.info("LOG_TRACE BATCH SERVER IP {}", serverIp);
+		if (!serverIp.equals(WiseConfig.BATCH_SERVER_IP)) {
+			logger.info("LOG_TRACE BATCH SERVER IP NOT MATCH");
+			return;
+		}
+
 		logger.info("LOG_TRACE DB표준관리 검증시작!!!");
 		List<WamDbSditm> dbSditmList = dbStndService.selectDbSditmList(); //DB표준용어
 		List<WamDbDmn>   dbDmnList   = dbStndService.selectDbDmnList();   //DB표준도메인
@@ -140,7 +160,7 @@ public class QuartzJob extends QuartzJobBean {
 			String orgNm     = saveVo.getOrgNm();
 			String domainNm  = saveVo.getInfotpLnm();
 	    	errorMsg         = "";
-	    	
+
 	    	if(!"".equals(orgNm) && !"".equals(domainNm)) {
 	    		
 		    	params.put("domainNm", domainNm);
