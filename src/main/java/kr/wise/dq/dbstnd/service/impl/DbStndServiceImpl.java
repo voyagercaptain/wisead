@@ -761,7 +761,7 @@ public class DbStndServiceImpl implements DbStndService {
 	@Override
 	public void updateDbStndTotInspect(List<WamDbSditm> sditmList, List<WamDbDmn> dmnList, List<WamDbStwd> stwdList,
 			List<WamDbStcd> stcdList) throws Exception {
-		logger.debug("LOG_TRACE DB표준 검증결과 UPDATE START!!!!!!");
+		logger.info("LOG_TRACE DB표준 검증결과 UPDATE START!!!!!!");
 
 		if (sditmList.size() > 0) {
 			for (int id = 0; id < sditmList.size(); id += WiseConfig.FETCH_SIZE){
@@ -790,6 +790,8 @@ public class DbStndServiceImpl implements DbStndService {
 			}
 			//wamDbStcdMapper.updateDbStcdSchedule(stcdList);
 		}
+
+		logger.info("LOG_TRACE DB표준 검증결과 UPDATE END!!!!!!");
 	}
 
 }

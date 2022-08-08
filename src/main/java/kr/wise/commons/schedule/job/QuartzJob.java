@@ -83,7 +83,7 @@ public class QuartzJob extends QuartzJobBean {
 
 	protected void executeInternal(JobExecutionContext context)
 			throws JobExecutionException {
-		logger.debug("LOG_TRACE DB표준관리 검증시작!!!");
+		logger.info("LOG_TRACE DB표준관리 검증시작!!!");
 		List<WamDbSditm> dbSditmList = dbStndService.selectDbSditmList(); //DB표준용어
 		List<WamDbDmn>   dbDmnList   = dbStndService.selectDbDmnList();   //DB표준도메인
 		List<WamDbStwd>  dbStwdList  = dbStndService.selectDbStwdList();  //DB표준단어
