@@ -122,7 +122,7 @@ $(document).ready(function() {
     } ).show();
     
     document.getElementById('btnDecide').disabled = true;
-    document.getElementById('btnInit').disabled = true;
+
     
     //화면리로드
     $("#btnBlank").click( function(){
