@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import kr.wise.dq.stnd.service.WamStwd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -688,14 +689,14 @@ public class DbStndServiceImpl implements DbStndService {
 	@Override
 	public int initDbStndItem(List<WamDbSditm> reglist, WaqMstr reqmst) throws Exception {
 		//LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
-				//String userid = user.getUniqId();
-				int result = 0;
+		//String userid = user.getUniqId();
+		int result = 0;
 
-				for (int id = 0; id < reglist.size(); id += WiseConfig.FETCH_SIZE){
-					result = wamDbSditmMapper.bulkDelete(new ArrayList<WamDbSditm>(reglist.subList(id, min(id + WiseConfig.FETCH_SIZE, reglist.size()))));
-				}
+		for (int id = 0; id < reglist.size(); id += WiseConfig.FETCH_SIZE){
+			result = wamDbSditmMapper.bulkDelete(new ArrayList<WamDbSditm>(reglist.subList(id, min(id + WiseConfig.FETCH_SIZE, reglist.size()))));
+		}
 
-				return result;
+		return result;
 	}
 
 	@Override
@@ -760,12 +761,35 @@ public class DbStndServiceImpl implements DbStndService {
 	@Override
 	public void updateDbStndTotInspect(List<WamDbSditm> sditmList, List<WamDbDmn> dmnList, List<WamDbStwd> stwdList,
 			List<WamDbStcd> stcdList) throws Exception {
-		logger.debug("DB표준 검증결과 UPDATE START!!!!!!");
-		wamDbSditmMapper.updateDbSdimSchedule(sditmList);
-		wamDbDmnMapper.updateDbDmnSchedule(dmnList);
-		wamDbStwdMapper.updateDbStwdSchedule(stwdList);
-		wamDbStcdMapper.updateDbStcdSchedule(stcdList);
-		
+		logger.debug("LOG_TRACE DB표준 검증결과 UPDATE START!!!!!!");
+
+		if (sditmList.size() > 0) {
+			for (int id = 0; id < sditmList.size(); id += WiseConfig.FETCH_SIZE){
+				wamDbSditmMapper.updateDbSdimSchedule(new ArrayList<WamDbSditm>(sditmList.subList(id, min(id + WiseConfig.FETCH_SIZE, sditmList.size()))));
+			}
+			//wamDbSditmMapper.updateDbSdimSchedule(sditmList);
+		}
+
+		if (dmnList.size() > 0) {
+			for (int id = 0; id < dmnList.size(); id += WiseConfig.FETCH_SIZE){
+				wamDbDmnMapper.updateDbDmnSchedule(new ArrayList<WamDbDmn>(dmnList.subList(id, min(id + WiseConfig.FETCH_SIZE, dmnList.size()))));
+			}
+			//wamDbDmnMapper.updateDbDmnSchedule(dmnList);
+		}
+
+		if (stwdList.size() > 0) {
+			for (int id = 0; id < stwdList.size(); id += WiseConfig.FETCH_SIZE){
+				wamDbStwdMapper.updateDbStwdSchedule(new ArrayList<WamDbStwd>(stwdList.subList(id, min(id + WiseConfig.FETCH_SIZE, stwdList.size()))));
+			}
+			//wamDbStwdMapper.updateDbStwdSchedule(stwdList);
+		}
+
+		if (stcdList.size() > 0) {
+			for (int id = 0; id < stcdList.size(); id += WiseConfig.FETCH_SIZE){
+				wamDbStcdMapper.updateDbStcdSchedule(new ArrayList<WamDbStcd>(stcdList.subList(id, min(id + WiseConfig.FETCH_SIZE, stcdList.size()))));
+			}
+			//wamDbStcdMapper.updateDbStcdSchedule(stcdList);
+		}
 	}
 
 }

@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -45,9 +46,7 @@ import kr.wise.dq.dbstnd.service.WamDbStwd;
  * 1. ClassName :
  * 2. FileName  : QuartzJob.java
  * 3. Package  : kr.wise.commons.schedule.job
- * 4. Comment  :
- * 5. �ۼ���   : insomnia
- * 6. �ۼ���   : 2014. 6. 16. ���� 4:55:30
+ * 4. Comment  : DB 표준 검증 스케줄러
  * </PRE>
  */
 @Controller
@@ -75,11 +74,16 @@ public class QuartzJob extends QuartzJobBean {
 		this.totSearchTask = totSearchTask;
 	}
 
+	//String result = null;
+    //try {
+	//	result = InetAddress.getLocalHost().getHostAddress();
+	//} catch (UnknownHostException e) {
+	//	result = "";
+	//}
 
-	/** insomnia */
 	protected void executeInternal(JobExecutionContext context)
 			throws JobExecutionException {
-		logger.debug("DB표준관리 검증시작!!!");
+		logger.debug("LOG_TRACE DB표준관리 검증시작!!!");
 		List<WamDbSditm> dbSditmList = dbStndService.selectDbSditmList(); //DB표준용어
 		List<WamDbDmn>   dbDmnList   = dbStndService.selectDbDmnList();   //DB표준도메인
 		List<WamDbStwd>  dbStwdList  = dbStndService.selectDbStwdList();  //DB표준단어
@@ -100,11 +104,11 @@ public class QuartzJob extends QuartzJobBean {
 	
 	 //표준용어 유효성 검사 체크
     public List<WamDbSditm> itemValidCheck(List<WamDbSditm> reglist) throws ParseException {
-    	List<String> errorList = new ArrayList<>();
     	Map<String, String> params = new HashMap<String, String>();
 		String errorMsg = "";
-    	for (WamDbSditm saveVo : reglist) {
-    		// 표준용어 검증
+		for (WamDbSditm saveVo : reglist) {
+			List<String> errorList = new ArrayList<>();
+			// 표준용어 검증
 			errorMsg = ValidationCheck.checkSditmName(saveVo.getSditmLnm());
 			if(errorMsg != "") {
 				errorList.add(errorMsg);
@@ -137,7 +141,6 @@ public class QuartzJob extends QuartzJobBean {
 			String domainNm  = saveVo.getInfotpLnm();
 	    	errorMsg         = "";
 	    	
-	    	
 	    	if(!"".equals(orgNm) && !"".equals(domainNm)) {
 	    		
 		    	params.put("domainNm", domainNm);
@@ -155,25 +158,26 @@ public class QuartzJob extends QuartzJobBean {
 				errorList.add(errorMsg);
 			}
 	    	
-	    	    //DB표준용어 중복 확인 기관명+표준용어명+영문약어명+표준도메인명이 중복이 되면 안된다.
-	    		params = new HashMap<String, String>();
-	    		params.put("orgNm", saveVo.getOrgNm()); 	    // 기관명
-	    		params.put("dbNm", saveVo.getDbNm()); 	    	//DB명
-	    		params.put("sditmLnm", saveVo.getSditmLnm());   //표준용어명
-	    		int count = dbStndService.dupliCheckDbStndItem(params);
-	    		if(count > 0) {
-	    			errorMsg = ErrorCode.ERROR_ITEM_DUP.getMessage();
-	    		}else {
-	    			errorMsg = "";
-	    		}
-	    	
-	    		if(errorMsg != "") {
-	    			errorList.add(errorMsg);
-	    		}
+			//DB표준용어 중복 확인 기관명+표준용어명+영문약어명+표준도메인명이 중복이 되면 안된다.
+			params = new HashMap<String, String>();
+			params.put("orgNm", saveVo.getOrgNm()); 	    // 기관명
+			params.put("dbNm", saveVo.getDbNm()); 	    	//DB명
+			params.put("sditmLnm", saveVo.getSditmLnm());   //표준용어명
+			int count = dbStndService.dupliCheckDbStndItem(params);
+			if(count > 0) {
+				errorMsg = ErrorCode.ERROR_ITEM_DUP.getMessage();
+			}else {
+				errorMsg = "";
+			}
+
+			if(errorMsg != "") {
+				errorList.add(errorMsg);
+			}
 	    	
 	    	if(errorList.size() > 0) {
 	    		saveVo.setValidYn("E");
-	    		saveVo.setErrChk(errorList.toString().replaceAll("\\[", "").replaceAll("\\]", ""));
+	    		saveVo.setErrChk(errorList.stream()
+						.collect(Collectors.joining (",")));
 	    	}else {
 	    		saveVo.setValidYn("Y");
 	    		saveVo.setErrChk(errorMsg);
@@ -187,11 +191,11 @@ public class QuartzJob extends QuartzJobBean {
     
     //표준도메인 유효성 검사 체크
     public List<WamDbDmn> dmnValidCheck(List<WamDbDmn> reglist) throws ParseException {
-    	List<String> errorList = new ArrayList<>();
     	Map<String, String> params = new HashMap<String, String>();
     	String[] dataTypeArr = {"boolean", "date", "time", "timestamp", "datetime", "interval", "datetimeltz", "datetimetz", "timestampltz", "timestamptz", "number", "numeric", "decimal", "smalldatetime", "money", "smallmoney", "long", "bigint", "smallint", "short", "tinyint", "bit", "int", "integer", "double", "double precision", "text", "ntext", "nchar", "nvarchar", "ntext", "binary", "varbinary", "binary_float", "binary_double", "varbinary", "image", "real", "clob", "blob", "nclob", "bfile"};
 		String errorMsg = "";
     	for (WamDbDmn saveVo : reglist) {
+    		List<String> errorList = new ArrayList<>();
     		// 표준도메인 검증
 			errorMsg = ValidationCheck.checkDmnName(saveVo.getInfotpLnm());
 			if(errorMsg != "") {
@@ -239,7 +243,7 @@ public class QuartzJob extends QuartzJobBean {
 	    	
 	    	if(errorList.size() > 0) {
 	    		saveVo.setValidYn("E");
-	    		saveVo.setErrChk(errorList.toString().replaceAll("\\[", "").replaceAll("\\]", ""));
+	    		saveVo.setErrChk(errorList.stream().collect(Collectors.joining(",")));
 	    	}else {
 	    		saveVo.setValidYn("Y");
 	    		saveVo.setErrChk(errorMsg);
@@ -252,10 +256,10 @@ public class QuartzJob extends QuartzJobBean {
     
   //DB표준단어 유효성 검사 체크
     public List<WamDbStwd> stwdValidCheck(List<WamDbStwd> reglist) throws ParseException {
-    	List<String> errorList = new ArrayList<>();
     	Map<String, String> params = new HashMap<String, String>();
 		String errorMsg = "";
     	for (WamDbStwd saveVo : reglist) {
+    		List<String> errorList = new ArrayList<>();
     		// 표준단어명 검증
 			errorMsg = ValidationCheck.checkWordName(saveVo.getStwdLnm());
 			if(errorMsg != "") {
@@ -298,7 +302,7 @@ public class QuartzJob extends QuartzJobBean {
 	    	
 	    	if(errorList.size() > 0) {
 	    		saveVo.setValidYn("E");
-	    		saveVo.setErrChk(errorList.toString().replaceAll("\\[", "").replaceAll("\\]", ""));
+	    		saveVo.setErrChk(errorList.stream().collect(Collectors.joining(",")));
 	    	}else {
 	    		saveVo.setValidYn("Y");
 	    		saveVo.setErrChk(errorMsg);
@@ -310,10 +314,10 @@ public class QuartzJob extends QuartzJobBean {
     
     //DB표준코드 유효성 검사 체크
     public List<WamDbStcd> stcdValidCheck(List<WamDbStcd> reglist) throws ParseException {
-    	List<String> errorList = new ArrayList<>();
     	Map<String, String> params = new HashMap<String, String>();
 		String errorMsg = "";
     	for (WamDbStcd saveVo : reglist) {
+    		List<String> errorList = new ArrayList<>();
     		// 코드명 검증
 			errorMsg = ValidationCheck.checkCodeName(saveVo.getCommCdNm());
 			if(errorMsg != "") {
@@ -358,7 +362,7 @@ public class QuartzJob extends QuartzJobBean {
 	    	
 	    	if(errorList.size() > 0) {
 	    		saveVo.setValidYn("E");
-	    		saveVo.setErrChk(errorList.toString().replaceAll("\\[", "").replaceAll("\\]", ""));
+	    		saveVo.setErrChk(errorList.stream().collect(Collectors.joining(",")));
 	    	}else {
 	    		saveVo.setValidYn("Y");
 	    		saveVo.setErrChk(errorMsg);
