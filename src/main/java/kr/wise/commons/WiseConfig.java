@@ -91,7 +91,7 @@ public class WiseConfig {
 
 	public static Integer FETCH_SIZE = 1000;
 
-	public static String BATCH_SERVER_IP = "10.175.135.20";
+	public static String BATCH_SERVER_IP = "10.175.252.13";
 
 	//메일발송요청 XML파일경로
 //	public static final String MAIL_REQUEST_PATH = EgovProperties.getPathProperty("Globals.MailRequestPath");
