@@ -375,7 +375,7 @@
     </insert>
 
     <update id="bulkUpdate" parameterType="java.util.List" >
-        <foreach collection="list" item="item" index="index" separator=",">
+        <foreach collection="list" item="item" index="index">
         update WAM_DB_COMM_CD
             set COMM_CD_NM = #{item.commCdNm,jdbcType=VARCHAR}
                 , COMM_CD_DESC = #{item.commCdDesc,jdbcType=VARCHAR}
@@ -396,7 +396,6 @@
            			,CONFIRM_YN    = 'Y'
            		</if>
                 , DB_NM = #{item.dbNm,jdbcType=VARCHAR}
-               
         where COMM_CD_ID = #{item.commCdId,jdbcType=VARCHAR}
         </foreach>
     </update>
@@ -418,17 +417,23 @@
     AND CONFIRM_YN   = 'Y'
   </select>
 	<select id="selectDbStcdList" resultMap="BaseResultMap" >
-	SELECT 
-		COMM_CD_ID ,
-		DB_NM ,
-		ORG_NM,
-		NVL(COMN_CD_ENNM  ,'')    AS COMN_CD_ENNM,
-		NVL(COMM_DTL_CD_NM  ,'')  AS COMM_DTL_CD_NM,
-		NVL(COMM_DTL_CD_MN  ,'')  AS COMM_DTL_CD_MN,
-		TO_CHAR (WRIT_DTM,'YYYY-MM-DD') AS STCD_DTM
-	FROM WAM_DB_COMM_CD  
-	WHERE CONFIRM_YN = 'N'
-	AND VALID_YN    != 'Y'
+        <![CDATA[
+        SELECT * FROM
+            (SELECT
+                COMM_CD_ID ,
+                DB_NM ,
+                ORG_NM,
+                NVL(COMN_CD_ENNM  ,'')    AS COMN_CD_ENNM,
+                NVL(COMM_DTL_CD_NM  ,'')  AS COMM_DTL_CD_NM,
+                NVL(COMM_DTL_CD_MN  ,'')  AS COMM_DTL_CD_MN,
+                TO_CHAR (WRIT_DTM,'YYYY-MM-DD') AS STCD_DTM
+            FROM WAM_DB_COMM_CD
+            WHERE CONFIRM_YN = 'N'
+            AND VALID_YN    != 'Y'
+            AND VALID_YN != 'E'
+            ORDER BY COMM_CD_ID ASC
+        ) T1 where ROWNUM <= 1000
+        ]]>
 	</select>
 	
 	

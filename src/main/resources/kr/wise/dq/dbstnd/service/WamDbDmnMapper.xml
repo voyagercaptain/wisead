@@ -1062,17 +1062,23 @@
 
 
   <select id="selectDbDmnList" resultMap="BaseResultMap" >
-  SELECT 
-	DMN_ID,
-	DB_NM ,
-	ORG_NM,
-	INFOTP_LNM,
-	DATA_TYPE,
-	DATA_LEN,
-	TO_CHAR (RQST_DTM,'YYYY-MM-DD') AS DMN_DTM
-  FROM WAM_DB_DMN 
-  WHERE CONFIRM_YN ='N'
-  AND VALID_YN != 'Y'
+      <![CDATA[
+      SELECT * FROM
+          ( SELECT
+            DMN_ID,
+            DB_NM ,
+            ORG_NM,
+            INFOTP_LNM,
+            DATA_TYPE,
+            DATA_LEN,
+            TO_CHAR (RQST_DTM,'YYYY-MM-DD') AS DMN_DTM
+          FROM WAM_DB_DMN
+          WHERE CONFIRM_YN ='N'
+            AND VALID_YN != 'Y'
+            AND VALID_YN != 'E'
+            ORDER BY DMN_ID ASC
+          ) T1 where ROWNUM <= 1000
+      ]]>
   </select>
   
   

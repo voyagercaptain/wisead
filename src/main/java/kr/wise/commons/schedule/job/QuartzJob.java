@@ -92,7 +92,7 @@ public class QuartzJob extends QuartzJobBean {
 		return null;
 	}
 
-	protected void executeInternal(JobExecutionContext context)
+	protected void executeInternal_ori(JobExecutionContext context)
 			throws JobExecutionException {
 
 		String serverIp = getLocalServerIp();
@@ -120,6 +120,60 @@ public class QuartzJob extends QuartzJobBean {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+	}
+
+	protected void executeInternal(JobExecutionContext context)
+			throws JobExecutionException {
+
+		String serverIp = getLocalServerIp();
+
+		logger.info("LOG_TRACE BATCH SERVER IP {}", serverIp);
+		/*
+		if (!serverIp.equals(WiseConfig.BATCH_SERVER_IP)) {
+			logger.info("LOG_TRACE BATCH SERVER IP NOT MATCH");
+			return;
+		}
+		*/
+
+		long startRunTime = System.currentTimeMillis();
+
+		logger.info("LOG_TRACE DB표준관리 검증시작!!!");
+
+		while (true) {
+			List<WamDbSditm> dbSditmList = dbStndService.selectDbSditmList(); //DB표준용어
+			List<WamDbDmn>   dbDmnList   = dbStndService.selectDbDmnList();   //DB표준도메인
+			List<WamDbStwd>  dbStwdList  = dbStndService.selectDbStwdList();  //DB표준단어
+			List<WamDbStcd>  dbStcdList  = dbStndService.selectDbStcdList();  //DB표준코드
+
+			logger.info("폴링 검증 건 수 - 용어:" + dbSditmList.size() + "건, 도메인:" + dbDmnList.size() + "건, 단어:" +  dbStwdList.size() + "건, 코드:" + dbStcdList.size() + "건");
+
+			if(dbSditmList.size() == 0 && dbDmnList.size() == 0 &&  dbStwdList.size() == 0 && dbStcdList.size() == 0) {
+				logger.info("검증배치 모두 완료!!");
+				break;
+			}
+
+			//검증결과 업데이트
+			try {
+				dbSditmList = itemValidCheck(dbSditmList);  //DB표준용어 검증
+				dbDmnList   = dmnValidCheck(dbDmnList);	   //DB표준도메인 검증
+				dbStwdList  = stwdValidCheck(dbStwdList);  //DB표준단어 검증
+				dbStcdList  = stcdValidCheck(dbStcdList);  //DB표준코드 검증
+				dbStndService.updateDbStndTotInspect(dbSditmList,dbDmnList,dbStwdList,dbStcdList);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			long endRunTime = System.currentTimeMillis();
+			double diffRunTime = (endRunTime - startRunTime) * 0.001;
+			if(diffRunTime > 60 * 60 * 6) {
+				logger.info("6시간 초과 검증배치 작업 중단!!");
+				break;
+			}
+		}
+
+		logger.info("LOG_TRACE DB표준관리 검증 종료!!!");
+
 	}
 	
 	 //표준용어 유효성 검사 체크

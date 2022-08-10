@@ -42,9 +42,10 @@ public class ValidationCheck {
      */
     public static String checkSditmEng(String data) {
 
-        // 문자열 비어있는 경우
+        // 문자열 비어있는 경우 - 영문명 필수 아님.
         if (StringUtils.isEmpty(data)) {
-            return ErrorCode.ERROR_ITEM_ENG_NOTNULL.getMessage();
+            //return ErrorCode.ERROR_ITEM_ENG_NOTNULL.getMessage();
+            return "";
         }
 
         //문자열 대문자가 아닌경우 입력된 경우
@@ -98,6 +99,10 @@ public class ValidationCheck {
      * @return
      */
     public static String checkSditmDmnNm(String data) {
+        // 문자열 비어있는 경우
+        if (StringUtils.isEmpty(data)) {
+            return ErrorCode.ERROR_ITEM_DMN_NOTNULL.getMessage();
+        }
         return "";
     }
 

@@ -763,32 +763,36 @@ public class DbStndServiceImpl implements DbStndService {
 			List<WamDbStcd> stcdList) throws Exception {
 		logger.info("LOG_TRACE DB표준 검증결과 UPDATE START!!!!!!");
 
-		if (sditmList.size() > 0) {
-			for (int id = 0; id < sditmList.size(); id += WiseConfig.FETCH_SIZE){
-				wamDbSditmMapper.updateDbSdimSchedule(new ArrayList<WamDbSditm>(sditmList.subList(id, min(id + WiseConfig.FETCH_SIZE, sditmList.size()))));
-			}
-			//wamDbSditmMapper.updateDbSdimSchedule(sditmList);
+		if (sditmList != null && sditmList.size() > 0) {
+			//for (int id = 0; id < sditmList.size(); id += WiseConfig.FETCH_SIZE){
+			//	wamDbSditmMapper.updateDbSdimSchedule(new ArrayList<WamDbSditm>(sditmList.subList(id, min(id + WiseConfig.FETCH_SIZE, sditmList.size()))));
+			//}
+			wamDbSditmMapper.updateDbSdimSchedule(sditmList);
+			logger.info("LOG_TRACE updateDbSdimSchedule UPDATE END!!!!!!");
 		}
 
-		if (dmnList.size() > 0) {
-			for (int id = 0; id < dmnList.size(); id += WiseConfig.FETCH_SIZE){
-				wamDbDmnMapper.updateDbDmnSchedule(new ArrayList<WamDbDmn>(dmnList.subList(id, min(id + WiseConfig.FETCH_SIZE, dmnList.size()))));
-			}
-			//wamDbDmnMapper.updateDbDmnSchedule(dmnList);
+		if (dmnList != null && dmnList.size() > 0) {
+			//for (int id = 0; id < dmnList.size(); id += WiseConfig.FETCH_SIZE){
+			//	wamDbDmnMapper.updateDbDmnSchedule(new ArrayList<WamDbDmn>(dmnList.subList(id, min(id + WiseConfig.FETCH_SIZE, dmnList.size()))));
+			//}
+			wamDbDmnMapper.updateDbDmnSchedule(dmnList);
+			logger.info("LOG_TRACE updateDbDmnSchedule UPDATE END!!!!!!");
 		}
 
-		if (stwdList.size() > 0) {
-			for (int id = 0; id < stwdList.size(); id += WiseConfig.FETCH_SIZE){
-				wamDbStwdMapper.updateDbStwdSchedule(new ArrayList<WamDbStwd>(stwdList.subList(id, min(id + WiseConfig.FETCH_SIZE, stwdList.size()))));
-			}
-			//wamDbStwdMapper.updateDbStwdSchedule(stwdList);
+		if (stwdList != null && stwdList.size() > 0) {
+			//for (int id = 0; id < stwdList.size(); id += WiseConfig.FETCH_SIZE){
+			//	wamDbStwdMapper.updateDbStwdSchedule(new ArrayList<WamDbStwd>(stwdList.subList(id, min(id + WiseConfig.FETCH_SIZE, stwdList.size()))));
+			//}
+			wamDbStwdMapper.updateDbStwdSchedule(stwdList);
+			logger.info("LOG_TRACE updateDbStwdSchedule UPDATE END!!!!!!");
 		}
 
-		if (stcdList.size() > 0) {
-			for (int id = 0; id < stcdList.size(); id += WiseConfig.FETCH_SIZE){
-				wamDbStcdMapper.updateDbStcdSchedule(new ArrayList<WamDbStcd>(stcdList.subList(id, min(id + WiseConfig.FETCH_SIZE, stcdList.size()))));
-			}
-			//wamDbStcdMapper.updateDbStcdSchedule(stcdList);
+		if (stcdList != null && stcdList.size() > 0) {
+			//for (int id = 0; id < stcdList.size(); id += WiseConfig.FETCH_SIZE){
+			//	wamDbStcdMapper.updateDbStcdSchedule(new ArrayList<WamDbStcd>(stcdList.subList(id, min(id + WiseConfig.FETCH_SIZE, stcdList.size()))));
+			//}
+			wamDbStcdMapper.updateDbStcdSchedule(stcdList);
+			logger.info("LOG_TRACE updateDbStcdSchedule UPDATE END!!!!!!");
 		}
 
 		logger.info("LOG_TRACE DB표준 검증결과 UPDATE END!!!!!!");

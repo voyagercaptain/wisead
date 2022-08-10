@@ -1088,7 +1088,7 @@ SELECT *
   </select>
   
   
-  <select id="selectDbSditmList"  resultMap="BaseResultMap">
+  <select id="selectDbSditmList_ORI"  resultMap="BaseResultMap">
   
   SELECT 
 	SDITM_ID,
@@ -1104,7 +1104,28 @@ SELECT *
   WHERE CONFIRM_YN ='N' 
   AND VALID_YN != 'Y'
   </select>
-  
+
+  <select id="selectDbSditmList"  resultMap="BaseResultMap">
+    <![CDATA[
+    select * from
+      (SELECT
+        SDITM_ID,
+        DB_NM ,
+        ORG_NM,
+        NVL(SDITM_LNM,'')  AS SDITM_LNM,
+        NVL(SDITM_PNM,'')  AS SDITM_PNM,
+        NVL(PNM,'')  	   AS PNM,
+        NVL(OBJ_DESCN,'')  AS OBJ_DESCN,
+        TO_CHAR (RQST_DTM,'YYYY-MM-DD') AS SDITM_DTM,
+        NVL(INFOTP_LNM,'') AS INFOTP_LNM
+        FROM WAM_DB_SDITM
+        WHERE CONFIRM_YN ='N'
+         AND VALID_YN != 'Y'
+         AND VALID_YN != 'E'
+        order by SDITM_ID asc
+      ) T1 where ROWNUM <= 1000
+    ]]>
+  </select>
   
   
   <update id="updateDbSdimSchedule" parameterType="java.util.List">

@@ -15,8 +15,9 @@ public enum ErrorCode {
 
     ERROR_ITEM_DUP("1009", "데이터 중복 오류"),
 
-    ERROR_ITEM_ORG_NM_NOTNULL("1009", "기관명 누락"),
+    ERROR_ITEM_ORG_NM_NOTNULL("1010", "기관명 누락"),
 
+    ERROR_ITEM_DMN_NOTNULL("1011", "표준도메인명 누락"),
 
 
     // 2000~ 도메인 오류

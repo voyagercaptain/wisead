@@ -1194,17 +1194,28 @@ public class StndItemRqstServiceImpl implements StndItemRqstService {
 					checkStr += ", ";
 				}
 
-				//데이터 타입, 길이 조회
-				params.put("domainNm", checkVo.getInfotpLnm());
-				params.put("orgNm", checkVo.getOrgNm());
-				Map result = wamDbDmnMapper.selectDomainDataType(params);
-				if(result == null || result.get("DATA_TYPE") == null || result.get("DATA_LEN") == null) {
-					if (!"".equals(checkStr)) {
-						checkStr += ErrorCode.ERROR_DMN_TYPE_LENGTH_ERROR.getMessage();
+
+
+				//표준도메인명
+				String check6 = ValidationCheck.checkSditmDmnNm(checkVo.getInfotpLnm());
+				checkStr += check6;
+				if(!"".equals(check6)) {
+					checkStr += ", ";
+				}
+
+				if (!StringUtils.isEmpty(checkVo.getInfotpLnm())) {
+					//데이터 타입, 길이 조회
+					params.put("domainNm", checkVo.getInfotpLnm());
+					params.put("orgNm", checkVo.getOrgNm());
+					Map result = wamDbDmnMapper.selectDomainDataType(params);
+					if (result == null || result.get("DATA_TYPE") == null || result.get("DATA_LEN") == null) {
+						if (!"".equals(checkStr)) {
+							checkStr += ErrorCode.ERROR_DMN_TYPE_LENGTH_ERROR.getMessage();
+						}
+					} else {
+						checkVo.setDataType((String) result.get("DATA_TYPE"));
+						checkVo.setDataLen((Integer) result.get("DATA_LEN"));
 					}
-				} else {
-					checkVo.setDataType((String)result.get("DATA_TYPE"));
-					checkVo.setDataLen((Integer)result.get("DATA_LEN"));
 				}
 
 				checkStr = checkStr.trim();
