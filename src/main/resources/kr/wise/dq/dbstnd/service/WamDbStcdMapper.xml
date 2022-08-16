@@ -423,7 +423,7 @@
                 COMM_CD_ID ,
                 DB_NM ,
                 ORG_NM,
-                NVL(COMN_CD_ENNM  ,'')    AS COMN_CD_ENNM,
+                NVL(COMM_CD_NM  ,'')    AS COMM_CD_NM,
                 NVL(COMM_DTL_CD_NM  ,'')  AS COMM_DTL_CD_NM,
                 NVL(COMM_DTL_CD_MN  ,'')  AS COMM_DTL_CD_MN,
                 TO_CHAR (WRIT_DTM,'YYYY-MM-DD') AS STCD_DTM
