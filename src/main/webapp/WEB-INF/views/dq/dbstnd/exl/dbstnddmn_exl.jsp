@@ -83,7 +83,7 @@ function grid_DMN_init() {
 		{Type:"Text",       Width:100,  SaveName:"infotpLnm",	Align:"Left", 	Edit:1, Hidden:0, KeyField:1}, //도메인명
 		{Type:"Text",       Width:150,  SaveName:"objDescn",	Align:"Left", 	Edit:1, KeyField:0},		   //도메인설명
 		{Type:"Text",       Width:120,  SaveName:"dataType",	Align:"Left", 	Edit:1, Hidden:0, KeyField:1}, //데이터타입
-		{Type:"Int",        Width:100,  SaveName:"dataLen",	 	Align:"Left", 	Edit:1, Hidden:0, KeyField:1}, //데이터길이
+		{Type:"Int",        Width:100,  SaveName:"dataLen",	 	Align:"Left", 	Edit:1, Hidden:0}, 			   //데이터길이 (2022.08.16 고객 요구로 필수 값 제외)
 		{Type:"Int",        Width:100,  SaveName:"dataScal",	Align:"Left", 	Edit:1, Hidden:0},			   //소수점길이
 		{Type:"Text",       Width:100,  SaveName:"saveFrm", 	Align:"Left", 	Edit:1, Hidden:0, KeyField:0}, //저장형식
 		{Type:"Text",       Width:100,  SaveName:"exprsnFrm",	Align:"Left", 	Edit:1, Hidden:0},			   //표현형식
