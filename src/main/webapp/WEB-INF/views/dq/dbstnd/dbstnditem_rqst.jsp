@@ -47,10 +47,11 @@ $(document).ready(function() {
 	//$( "#tabs" ).tabs();
 
 	$( "#divTabs-rqstvrf" ).tabs();
-
+	/*
 	if(getCookie("divpop1") !="Y"){
 		openLayerPop("<c:url value='/commons/user/goNoticePop.do' />", 550, 190);
 	}
+	*/
 
 	//정보변경 처리...
 	var	flag = '${sessionScope.loginVO.chgPwd}';

@@ -105,6 +105,92 @@ SELECT
   	
 </select>
 
+<select id="getTotalDbCountList1" resultType="java.util.Map" parameterType="java.util.Map">
+	WITH db_count AS (SELECT
+	db_info.instt_id,
+	count(db_info.id) as cnt,
+	CASE
+	WHEN count(db_info.id)!=0 THEN 'has'
+	END AS type
+	FROM
+	tb_qev_db_info db_info
+	WHERE
+	db_info.yr = 2022
+	AND db_info.evl_trgt_candidate_yn='Y'
+	GROUP BY
+	db_info.instt_id     ) SELECT
+	states.trgt_instt_yn AS is_target,
+	count(distinct instt.id) AS cnt,
+	'institution' AS type
+	FROM
+	tb_qev_instt instt
+	JOIN
+	tb_qev_instt_states states
+	ON states.instt_id = instt.id
+	WHERE
+	states.evl_schd_id = 41
+	GROUP BY
+	states.trgt_instt_yn
+	UNION
+	SELECT
+	states.trgt_instt_yn AS is_target,
+	count(distinct instt.id) AS cnt,
+	states.db_slctn_sttus AS type
+	FROM
+	tb_qev_instt_states states
+	JOIN
+	tb_qev_instt instt
+	ON states.instt_id = instt.id
+	WHERE
+	states.evl_schd_id =   41
+	GROUP BY
+	states.trgt_instt_yn,
+	db_slctn_sttus
+	UNION
+	SELECT
+	instt_states.trgt_instt_yn AS is_target,
+	CASE
+	WHEN db_count.cnt IS NULL THEN count(distinct instt_states.instt_id)
+	ELSE sum(db_count.cnt)
+	END AS cnt,
+	IFNULL(db_count.type,
+	'has_not') AS type
+	FROM
+	tb_qev_instt_states instt_states
+	JOIN
+	tb_qev_evl_schedule schd
+	ON schd.id = instt_states.evl_schd_id
+	AND schd.evl_yr=2022
+	LEFT JOIN
+	db_count
+	ON instt_states.instt_id = db_count.instt_id
+	GROUP BY
+	instt_states.trgt_instt_yn,
+	type
+	ORDER BY
+	is_target
+</select>
+
+<select id="getTotalDbCount2" resultType="java.util.Map" parameterType="java.util.Map">
+	select
+		count(*) CNT
+	from
+		tb_qev_db_info d
+	where
+		yr = 2022
+	  and evl_trgt_candidate_yn = 'N'
+</select>
+
+	<select id="getTotalOrgCount" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT SUM(`count`) CNT
+		FROM (SELECT 'D'            as type,
+					 db_slctn_sttus as state,
+					 count(*)       as `count`
+			  FROM tb_qev_instt_states
+			  WHERE evl_schd_id = 41
+				AND trgt_instt_yn = 'Y'
+			  GROUP BY db_slctn_sttus)
+	</select>
 
 <!-- 종합 등록 현황 조회 -->
 <select id="getTotalStatList" 
@@ -176,6 +262,8 @@ SELECT
 
 <select id="getTotalStatSubList" 
 	parameterType="kr.wise.commons.user.WaaUserg" resultMap="BaseResultMap">
+
+
 
 WITH SUMMARY AS (
 SELECT
@@ -320,7 +408,7 @@ SELECT
 	
 	SELECT
     	'등록DB'								   AS TITLE,
-		(SELECT COUNT(DB_NM) FROM WAA_ORG_DB ) AS TOTAL_DB,
+		(SELECT COUNT(*) FROM WAA_ORG_DB ) AS TOTAL_DB,
 		 COUNT(A.DB_NM) 					   AS REG_DB
   FROM
 	(SELECT DB_NM FROM WAM_DB_SDITM

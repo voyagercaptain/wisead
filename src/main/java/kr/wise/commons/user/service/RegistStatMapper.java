@@ -1,6 +1,7 @@
 package kr.wise.commons.user.service;
 
 import java.util.List;
+import java.util.Map;
 
 import kr.wise.commons.cmm.annotation.Mapper;
 import kr.wise.commons.user.WaaUserg;
@@ -12,4 +13,9 @@ public interface RegistStatMapper {
 	 List<WaaUserg> getTotalStatList(WaaUserg param);
 	 List<WaaUserg> getTotalStatSubList(WaaUserg param);
 	 List<WaaUserg> RegTotalOrgSelectlist(WaaUserg param);
+
+	 List<Map> getTotalDbCountList1(Map map);
+	 Map getTotalDbCount2(Map map);
+	 Map getTotalOrgCount(Map map);
+
 }
