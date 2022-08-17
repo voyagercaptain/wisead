@@ -61,24 +61,6 @@ public class RegistStatServiceImpl implements RegistStatService{
 	public List<WaaUserg> RegTotalOrgSelectlist(WaaUserg search) {
 		logger.debug("RegTotalOrgSelectlist Start.");
 		List<WaaUserg> list = mapper.RegTotalOrgSelectlist(search);
-
-
-		List<Map> list2 = mapper.getTotalDbCountList1(new HashMap());
-		int TotalCount = 0;
-		for(Map thismap : list2) {
-			if("has".equals(thismap.get("type"))) {
-				TotalCount = (Integer)thismap.get("cnt");
-				break;
-			}
-		}
-
-		Map map = mapper.getTotalDbCount2(new HashMap());
-		TotalCount += (Integer)map.get("CNT");
-
-		for(WaaUserg thiswaa : list) {
-			thiswaa.setTotalDb(TotalCount);
-		}
-
 		return list;
 	}
 
