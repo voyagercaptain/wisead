@@ -436,9 +436,8 @@
                  NVL(COMM_DTL_CD_MN  ,'')  AS COMM_DTL_CD_MN,
                  TO_CHAR (WRIT_DTM,'YYYY-MM-DD') AS STCD_DTM
              FROM WAM_COMM_CD
-             WHERE CONFIRM_YN = 'N'
-               AND VALID_YN    != 'Y'
-               AND VALID_YN != 'E'
+             WHERE (CONFIRM_YN = 'N' OR CONFIRM_YN = '' OR CONFIRM_YN IS NULL)
+               AND (VALID_YN = 'N' OR VALID_YN = '' OR VALID_YN IS NULL)
              ORDER BY COMM_CD_ID ASC
             ) T1 where ROWNUM <= 1000
         ]]>
