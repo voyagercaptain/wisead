@@ -41,6 +41,7 @@ public class ValidationCheck {
      * @return
      */
     public static String checkSditmEng(String data) {
+/*
 
         // 문자열 비어있는 경우 - 영문명 필수 아님.
         if (StringUtils.isEmpty(data)) {
@@ -53,6 +54,7 @@ public class ValidationCheck {
         if(!Pattern.matches(pattern, data)){
             return ErrorCode.ERROR_ITEM_UPPER.getMessage();
         }
+*/
 
         return "";
     }
@@ -88,8 +90,8 @@ public class ValidationCheck {
      * @return
      */
     public static String checkSditmDesc(String source, String target) {
-        if (source.equals(target))
-            return ErrorCode.ERROR_ITEM_DESC_EQUAL.getMessage();
+        /*if (source.equals(target))
+            return ErrorCode.ERROR_ITEM_DESC_EQUAL.getMessage();*/
         return "";
     }
 
