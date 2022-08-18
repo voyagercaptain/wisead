@@ -113,6 +113,16 @@ public class WamStwd extends CommonVo  {
 
 	private String discardYn;
 
+	private String stwdDtm;
+
+	public String getStwdDtm() {
+		return stwdDtm;
+	}
+
+	public void setStwdDtm(String stwdDtm) {
+		this.stwdDtm = stwdDtm;
+	}
+
 	public String getErrChk() {
 		return errChk;
 	}

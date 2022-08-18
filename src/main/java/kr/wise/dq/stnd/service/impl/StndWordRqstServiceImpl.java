@@ -31,10 +31,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.lang.Math.min;
@@ -535,8 +533,8 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
 
 	/** 검증 */
 	public void registerWamCheck(List<WamStwd> reglist, WaqMstr reqmst ) throws Exception {
-		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
-		String userid = user.getUniqId();
+		//LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+		//String userid = user.getUniqId();
 
 		Map<String, String> params = new HashMap<String, String>();
 		String[] dataTypeArr = {"boolean", "date", "time", "timestamp", "datetime", "interval", "datetimeltz", "datetimetz", "timestampltz", "timestamptz", "number", "numeric", "decimal", "smalldatetime", "money", "smallmoney", "long", "bigint", "smallint", "short", "tinyint", "bit", "int", "integer", "double", "double precision", "text", "ntext", "nchar", "nvarchar", "ntext", "binary", "varbinary", "binary_float", "binary_double", "varbinary", "image", "real", "clob", "blob", "nclob", "bfile"};
@@ -561,8 +559,13 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
 			// 형식 단어 체크
 			errorList.add(ValidationCheck.checkWordFormat(checkVo.getDmnYn()));
 
+
 			//제정일자
-			errorList.add(ValidationCheck.checkWordDate(checkVo.getRqstDtm()));
+			if(reqmst == null) { // 배치로 들어온 경우
+				errorList.add(ValidationCheck.checkWordDate(checkVo.getStwdDtm()));
+			} else {
+				errorList.add(ValidationCheck.checkWordDate(checkVo.getRqstDtm()));
+			}
 
 			String errorMsg = errorList.stream()
 					.filter(e -> !e.isEmpty())

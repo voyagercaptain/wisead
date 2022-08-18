@@ -13,6 +13,7 @@
  */
 package kr.wise.dq.stnd.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -1270,8 +1271,8 @@ public class StndDmnRqstServiceImpl implements StndDmnRqstService {
 
 	/** 검증 */
 	public void registerWamCheck(List<WamDmn> reglist, WaqMstr reqmst ) throws Exception {
-		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
-		String userid = user.getUniqId();
+		//LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+		//String userid = user.getUniqId();
 
 		Map<String, String> params = new HashMap<String, String>();
 		String[] dataTypeArr = {"boolean", "date", "time", "timestamp", "datetime", "interval", "datetimeltz", "datetimetz", "timestampltz", "timestamptz", "number", "numeric", "decimal", "smalldatetime", "money", "smallmoney", "long", "bigint", "smallint", "short", "tinyint", "bit", "int", "integer", "double", "double precision", "text", "ntext", "nchar", "nvarchar", "ntext", "binary", "varbinary", "binary_float", "binary_double", "varbinary", "image", "real", "clob", "blob", "nclob", "bfile"};
@@ -1334,7 +1335,12 @@ public class StndDmnRqstServiceImpl implements StndDmnRqstService {
 			}
 
 			//제정일자
-			String check5 = ValidationCheck.checkSditmDate(checkVo.getRqstDtm());
+			String check5 = "";
+			if(reqmst == null) { // 배치로 들어온 경우
+				check5 = ValidationCheck.checkSditmDate(checkVo.getDmnDtm());
+			} else {
+				check5 = ValidationCheck.checkSditmDate(checkVo.getRqstDtm());
+			}
 			checkStr += check5;
 			if(!"".equals(check5)) {
 				checkStr += ", ";

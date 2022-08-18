@@ -138,6 +138,22 @@ public class ValidationCheck {
         }
     }
 
+    public static String checkSditmDate(String data) {
+        try {
+            if (data == null) {
+                return ErrorCode.ERROR_ITEM_DATE_NOTNULL.getMessage();
+            }
+            SimpleDateFormat dateFormatParser = new SimpleDateFormat("yyyyMMdd"); //검증할 날짜 포맷 설정
+            String strData = dateFormatParser.format(data);
+            dateFormatParser.setLenient(false); //false일경우 처리시 입력한 값이 잘못된 형식일 시 오류가 발생
+            dateFormatParser.parse(strData); //대상 값 포맷에 적용되는지 확인
+            return "";
+        }
+        catch (Exception e) {
+            return ErrorCode.ERROR_ITEM_DATE_FORMAT.getMessage();
+        }
+    }
+
     /**
      * 도메인명 검증
      * 필수입력 체크
@@ -196,6 +212,24 @@ public class ValidationCheck {
          catch (Exception e) {
              return ErrorCode.ERROR_DMN_DATE_FORMAT.getMessage();
          }
+    }
+
+
+    public static String checkDmnDate(String data) {
+        try {
+            if (data == null) {
+                return ErrorCode.ERROR_DMN_DATE_NOTNULL.getMessage();
+            }
+
+            DateFormat dateFormatParser = new SimpleDateFormat("yyyyMMdd"); //검증할 날짜 포맷 설정
+            String strData = dateFormatParser.format(data);
+            dateFormatParser.setLenient(false); //false일경우 처리시 입력한 값이 잘못된 형식일 시 오류가 발생
+            dateFormatParser.parse(strData); //대상 값 포맷에 적용되는지 확인
+            return "";
+        }
+        catch (Exception e) {
+            return ErrorCode.ERROR_DMN_DATE_FORMAT.getMessage();
+        }
     }
 
     /**
@@ -259,6 +293,23 @@ public class ValidationCheck {
          }
     }
 
+    public static String checkWordDate(String data) {
+        try {
+            if (data == null) {
+                return ErrorCode.ERROR_WORD_DATE_NOTNULL.getMessage();
+            }
+
+            DateFormat dateFormatParser = new SimpleDateFormat("yyyyMMdd"); //검증할 날짜 포맷 설정
+            String strData = dateFormatParser.format(data);
+            dateFormatParser.setLenient(false); //false일경우 처리시 입력한 값이 잘못된 형식일 시 오류가 발생
+            dateFormatParser.parse(strData); //대상 값 포맷에 적용되는지 확인
+            return "";
+        }
+        catch (Exception e) {
+            return ErrorCode.ERROR_WORD_DATE_FORMAT.getMessage();
+        }
+    }
+
     /**
      * 코드명 검증
      * @param data
@@ -315,5 +366,22 @@ public class ValidationCheck {
          catch (Exception e) {
              return ErrorCode.ERROR_CODE_DATE_FORMAT.getMessage();
          }
+    }
+
+    public static String checkCodedDate(String data) {
+        try {
+            if (data == null) {
+                return ErrorCode.ERROR_CODE_DATE_NOTNULL.getMessage();
+            }
+
+            DateFormat dateFormatParser = new SimpleDateFormat("yyyyMMdd"); //검증할 날짜 포맷 설정
+            String strData = dateFormatParser.format(data);
+            dateFormatParser.setLenient(false); //false일경우 처리시 입력한 값이 잘못된 형식일 시 오류가 발생
+            dateFormatParser.parse(strData); //대상 값 포맷에 적용되는지 확인
+            return "";
+        }
+        catch (Exception e) {
+            return ErrorCode.ERROR_CODE_DATE_FORMAT.getMessage();
+        }
     }
 }

@@ -2,6 +2,7 @@ package kr.wise.dq.stnd.service;
 
 import java.util.List;
 
+import kr.wise.dq.dbstnd.service.WamDbStcd;
 import org.apache.ibatis.annotations.Param;
 import kr.wise.commons.cmm.annotation.Mapper;
 
@@ -63,4 +64,9 @@ public interface WamStwdMapper {
     int bulkUpdateConfirm(List<WamStwd> updateList);
 
     int bulkDelete(List<WamStwd> deleteList);
+
+
+    List<WamStwd>  selectBatchStwdList();
+
+    int updateStwdSchedule(List<WamStwd> updateList);
 }

@@ -52,4 +52,9 @@ public interface WamDmnMapper {
     int bulkDelete(List<WamDmn> deleteList);
 
     int selectDupSdDmnCount(WamDmn data);
+
+
+    List<WamDmn> selectBatchDmnList();
+
+    int updateDmnSchedule(List<WamDmn> updateList);
 }

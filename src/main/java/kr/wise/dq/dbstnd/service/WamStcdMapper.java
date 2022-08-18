@@ -2,6 +2,9 @@ package kr.wise.dq.dbstnd.service;
 
 import java.util.List;
 
+import kr.wise.dq.stnd.service.WamDmn;
+import kr.wise.dq.stnd.service.WamSditm;
+import kr.wise.dq.stnd.service.WamStwd;
 import org.apache.ibatis.annotations.Param;
 import kr.wise.commons.cmm.annotation.Mapper;
 
@@ -61,5 +64,11 @@ public interface WamStcdMapper {
     int bulkDelete(List<WamDbStcd> deleteList);
 
     int selectDupSdCodeCount(WamDbStcd data);
+
+
+    List<WamDbStcd> selectBatchStcdList();
+
+    int updateStcdSchedule(List<WamDbStcd> updateList);
+
 
 }

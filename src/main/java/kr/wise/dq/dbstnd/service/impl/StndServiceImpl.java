@@ -31,7 +31,7 @@ import kr.wise.dq.dbstnd.service.WapDbDvCanDic;
 import kr.wise.dq.dbstnd.service.WapDbDvCanDicMapper;
 
 
-import kr.wise.dq.stnd.service.WamStwd;
+import kr.wise.dq.stnd.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -55,6 +55,15 @@ public class StndServiceImpl implements StndService {
 	
 	@Inject
 	private WamStcdMapper wamStcdMapper;
+
+	@Inject
+	private WamStwdMapper wamStwdMapper;
+
+	@Inject
+	private WamSditmMapper wamSditmMapper;
+
+	@Inject
+	private WamDmnMapper wamDmnMapper;
 	
     @Inject
     private EgovIdGnrService objectIdGnrService;
@@ -203,5 +212,63 @@ public class StndServiceImpl implements StndService {
 
 	public int selectDupSdCodeCount(WamDbStcd data) throws Exception {
 		return wamStcdMapper.selectDupSdCodeCount(data);
+	}
+
+
+	//배치관련
+	public List<WamSditm> selectBatchSditmList() { //표준용어
+		return wamSditmMapper.selectBatchSditmList();
+	}
+	public List<WamDmn>   selectBatchDmnList() {   //표준도메인
+		return wamDmnMapper.selectBatchDmnList();
+	}
+
+	public List<WamStwd>  selectBatchStwdList() {  //표준단어
+		return wamStwdMapper.selectBatchStwdList();
+	}
+
+	public List<WamDbStcd>  selectBatchStcdList()  {  //표준코드
+		return wamStcdMapper.selectBatchStcdList();
+	}
+
+
+	@Override
+	public void updateStndTotInspect(List<WamSditm> sditmList, List<WamDmn> dmnList, List<WamStwd> stwdList,
+									   List<WamDbStcd> stcdList) throws Exception {
+		logger.info("LOG_TRACE 기관 표준 검증결과 UPDATE START!!!!!!");
+
+		if (sditmList != null && sditmList.size() > 0) {
+			//for (int id = 0; id < sditmList.size(); id += WiseConfig.FETCH_SIZE){
+			//	wamDbSditmMapper.updateDbSdimSchedule(new ArrayList<WamDbSditm>(sditmList.subList(id, min(id + WiseConfig.FETCH_SIZE, sditmList.size()))));
+			//}
+			wamSditmMapper.updateSditmSchedule(sditmList);
+			logger.info("LOG_TRACE updateSdimSchedule UPDATE END!!!!!!");
+		}
+
+		if (dmnList != null && dmnList.size() > 0) {
+			//for (int id = 0; id < dmnList.size(); id += WiseConfig.FETCH_SIZE){
+			//	wamDbDmnMapper.updateDbDmnSchedule(new ArrayList<WamDbDmn>(dmnList.subList(id, min(id + WiseConfig.FETCH_SIZE, dmnList.size()))));
+			//}
+			wamDmnMapper.updateDmnSchedule(dmnList);
+			logger.info("LOG_TRACE updateDmnSchedule UPDATE END!!!!!!");
+		}
+
+		if (stwdList != null && stwdList.size() > 0) {
+			//for (int id = 0; id < stwdList.size(); id += WiseConfig.FETCH_SIZE){
+			//	wamDbStwdMapper.updateDbStwdSchedule(new ArrayList<WamDbStwd>(stwdList.subList(id, min(id + WiseConfig.FETCH_SIZE, stwdList.size()))));
+			//}
+			wamStwdMapper.updateStwdSchedule(stwdList);
+			logger.info("LOG_TRACE updateStwdSchedule UPDATE END!!!!!!");
+		}
+
+		if (stcdList != null && stcdList.size() > 0) {
+			//for (int id = 0; id < stcdList.size(); id += WiseConfig.FETCH_SIZE){
+			//	wamDbStcdMapper.updateDbStcdSchedule(new ArrayList<WamDbStcd>(stcdList.subList(id, min(id + WiseConfig.FETCH_SIZE, stcdList.size()))));
+			//}
+			wamStcdMapper.updateStcdSchedule(stcdList);
+			logger.info("LOG_TRACE updateStcdSchedule UPDATE END!!!!!!");
+		}
+
+		logger.info("LOG_TRACE 기관표준 검증결과 UPDATE END!!!!!!");
 	}
 }

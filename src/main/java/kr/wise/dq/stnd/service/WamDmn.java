@@ -70,6 +70,16 @@ public class WamDmn extends CommonVo{
 
 	private String discardYn;
 
+	private String dmnDtm;
+
+	public String getDmnDtm() {
+		return dmnDtm;
+	}
+
+	public void setDmnDtm(String dmnDtm) {
+		this.dmnDtm = dmnDtm;
+	}
+
 	public String getDiscardYn() {
 		return discardYn;
 	}

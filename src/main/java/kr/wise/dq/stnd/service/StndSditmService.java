@@ -1,5 +1,10 @@
 package kr.wise.dq.stnd.service;
 
+import kr.wise.dq.dbstnd.service.WamDbDmn;
+import kr.wise.dq.dbstnd.service.WamDbSditm;
+import kr.wise.dq.dbstnd.service.WamDbStcd;
+import kr.wise.dq.dbstnd.service.WamDbStwd;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,5 +35,5 @@ public interface StndSditmService {
 	int saveSditmTransYnPrc(ArrayList<WamSditm> list);
 	
 	List<WamSditm> selectSditmComparisonList(String sditmId);
-	
+
 }

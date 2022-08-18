@@ -94,6 +94,16 @@ public class WamSditm extends CommonVo {
 
 	private String discardYn;
 
+	private String sditmDtm;
+
+	public String getSditmDtm() {
+		return sditmDtm;
+	}
+
+	public void setSditmDtm(String sditmDtm) {
+		this.sditmDtm = sditmDtm;
+	}
+
 	public String getSynonym() {
 		return synonym;
 	}

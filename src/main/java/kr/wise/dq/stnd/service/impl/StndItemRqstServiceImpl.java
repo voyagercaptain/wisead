@@ -13,10 +13,9 @@
  */
 package kr.wise.dq.stnd.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -1122,13 +1121,14 @@ public class StndItemRqstServiceImpl implements StndItemRqstService {
 			return waqmapper.selectUnuseStndItemList(data);
 		}
 
+
+
 		/** 검증 */
 		public void registerWamCheck(List<WamSditm> reglist, WaqMstr reqmst ) throws Exception {
-			LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
-			String userid = user.getUniqId();
+			//LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
+			//String userid = user.getUniqId();
 
 			Map<String, String> params = new HashMap<String, String>();
-			//var arrayKeyField = ["orgNm", "sditmLnm", "sditmPnm", "infotpLnm", "rqstDtm"];
 			String checkStr = "";
 			for (WamSditm checkVo : reglist) {
 				checkStr = "";
@@ -1188,13 +1188,16 @@ public class StndItemRqstServiceImpl implements StndItemRqstService {
 				}
 				
 				//제정일자
-				String check5 = ValidationCheck.checkSditmDate(checkVo.getRqstDtm());
+				String check5 = "";
+				if(reqmst == null) { // 배치로 들어온 경우
+					check5 = ValidationCheck.checkSditmDate(checkVo.getSditmDtm());
+				} else {
+					check5 = ValidationCheck.checkSditmDate(checkVo.getRqstDtm());
+				}
 				checkStr += check5;
 				if(!"".equals(check5)) {
 					checkStr += ", ";
 				}
-
-
 
 				//표준도메인명
 				String check6 = ValidationCheck.checkSditmDmnNm(checkVo.getInfotpLnm());

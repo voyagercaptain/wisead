@@ -21,6 +21,8 @@
       <result column="ERR_CHK"        property="errChk"      jdbcType="VARCHAR" />
       <result column="VALID_YN"        property="validYn"      jdbcType="VARCHAR" />
       <result column="CONFIRM_YN"        property="confirmYn"      jdbcType="VARCHAR" />
+      <result column="STCD_DTM"        property="stcdDtm"      jdbcType="VARCHAR" />
+
   </resultMap>
   <sql id="Base_Column_List" >
 	COMM_CD_ID
@@ -420,4 +422,37 @@
           and CONFIRM_YN =  'Y'
         </foreach>
     </delete>
+
+
+
+    <select id="selectBatchStcdList" resultMap="BaseResultMap" >
+        <![CDATA[
+        SELECT * FROM
+            (SELECT
+                 COMM_CD_ID ,
+                 ORG_NM,
+                 NVL(COMM_CD_NM  ,'')    AS COMM_CD_NM,
+                 NVL(COMM_DTL_CD_NM  ,'')  AS COMM_DTL_CD_NM,
+                 NVL(COMM_DTL_CD_MN  ,'')  AS COMM_DTL_CD_MN,
+                 TO_CHAR (WRIT_DTM,'YYYY-MM-DD') AS STCD_DTM
+             FROM WAM_COMM_CD
+             WHERE CONFIRM_YN = 'N'
+               AND VALID_YN    != 'Y'
+               AND VALID_YN != 'E'
+             ORDER BY COMM_CD_ID ASC
+            ) T1 where ROWNUM <= 1000
+        ]]>
+	</select>
+
+
+    <update id="updateStcdSchedule" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index">
+            update WAM_COMM_CD
+            set
+            ERR_CHK 		= #{item.errChk,jdbcType=VARCHAR}
+            , VALID_YN 		= #{item.validYn,jdbcType=VARCHAR}
+            where COMM_CD_ID = #{item.commCdId,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
 </mapper>

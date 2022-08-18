@@ -53,6 +53,7 @@
     <result column="ERR_CHK"        property="errChk"      jdbcType="VARCHAR" />
     <result column="VALID_YN"        property="validYn"      jdbcType="VARCHAR" />
     <result column="CONFIRM_YN"        property="confirmYn"      jdbcType="VARCHAR" />
+    <result column="DMN_DTM"        property="dmnDtm"      jdbcType="VARCHAR" />
   </resultMap>
   
   <sql id="Base_Column_List" >
@@ -1276,5 +1277,38 @@
         and CONFIRM_YN = 'N'
         </foreach>
     </delete>
+
+
+
+    <select id="selectBatchDmnList" resultMap="BaseResultMap" >
+      <![CDATA[
+        SELECT * FROM
+            ( SELECT
+                  DMN_ID,
+                  ORG_NM,
+                  INFOTP_LNM,
+                  DATA_TYPE,
+                  DATA_LEN,
+                  TO_CHAR (RQST_DTM,'YYYY-MM-DD') AS DMN_DTM
+              FROM WAM_DMN
+              WHERE CONFIRM_YN ='N'
+                AND VALID_YN != 'Y'
+            AND VALID_YN != 'E'
+              ORDER BY DMN_ID ASC
+            ) T1 where ROWNUM <= 1000
+        ]]>
+  </select>
+
+
+    <update id="updateDmnSchedule" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index">
+            update WAM_DMN
+            set
+            ERR_CHK 		= #{item.errChk,jdbcType=VARCHAR},
+            VALID_YN 		= #{item.validYn,jdbcType=VARCHAR}
+            where DMN_ID = #{item.dmnId,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
 
 </mapper>

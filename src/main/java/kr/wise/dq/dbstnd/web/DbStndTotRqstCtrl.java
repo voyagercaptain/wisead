@@ -13,12 +13,8 @@
  */
 package kr.wise.dq.dbstnd.web;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -1244,7 +1240,13 @@ public class DbStndTotRqstCtrl {
 			// 코드 값 의미 검증
 			errorList.add(ValidationCheck.checkCodeValueMean(saveVo.getCommDtlCdMn()));
 			// 표준 코드 제정일자 검증
-			errorList.add(ValidationCheck.checkCodedDate(saveVo.getWritDtm()));
+
+			if("".equals(decideYn)) { //배치로 들어온 경우
+				errorList.add(ValidationCheck.checkCodedDate(saveVo.getStcdDtm()));
+			} else {
+				errorList.add(ValidationCheck.checkCodedDate(saveVo.getWritDtm()));
+			}
+
 
 			//기관 표준 코드 중복 확인 기관명+표준단어명+단어영문약어명  중복이 되면 안된다.
 			if("N".equals(saveVo.getConfirmYn()) || "".equals(saveVo.getConfirmYn())) {

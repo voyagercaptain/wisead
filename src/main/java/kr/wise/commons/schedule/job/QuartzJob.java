@@ -16,13 +16,15 @@ package kr.wise.commons.schedule.job;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import kr.wise.commons.WiseConfig;
+import kr.wise.dq.dbstnd.service.*;
+import kr.wise.dq.dbstnd.web.DbStndTotRqstCtrl;
+import kr.wise.dq.stnd.service.*;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -35,11 +37,6 @@ import kr.wise.commons.ApplicationContextProvider;
 import kr.wise.commons.error.ErrorCode;
 import kr.wise.commons.schedule.task.TotalSearchTask;
 import kr.wise.commons.util.ValidationCheck;
-import kr.wise.dq.dbstnd.service.DbStndService;
-import kr.wise.dq.dbstnd.service.WamDbDmn;
-import kr.wise.dq.dbstnd.service.WamDbSditm;
-import kr.wise.dq.dbstnd.service.WamDbStcd;
-import kr.wise.dq.dbstnd.service.WamDbStwd;
 
 /**
  * <PRE>
@@ -57,6 +54,16 @@ public class QuartzJob extends QuartzJobBean {
 	private TotalSearchTask totSearchTask;
 	
 	private final DbStndService dbStndService;
+
+	private final StndService stndService;
+
+	private final StndItemRqstService stndItemRqstService;
+
+	private final StndDmnRqstService stndDmnRqstService;
+
+	private final StndWordRqstService stndWordRqstService;
+
+	private final DbStndTotRqstCtrl dbStndTotRqstCtrl;
 	
 	public QuartzJob() {
 		ApplicationContext applicationContext = ApplicationContextProvider.getApplicationContext();
@@ -66,6 +73,11 @@ public class QuartzJob extends QuartzJobBean {
 		}
 		
 		dbStndService = (DbStndService)applicationContext.getBean("dbStndService");
+		stndService = (StndService)applicationContext.getBean("stndService");
+		stndItemRqstService = (StndItemRqstService)applicationContext.getBean("stndItemRqstService");
+		stndDmnRqstService  = (StndDmnRqstService)applicationContext.getBean("stndDmnRqstService");
+		stndWordRqstService  = (StndWordRqstService)applicationContext.getBean("stndWordRqstService");
+		dbStndTotRqstCtrl = (DbStndTotRqstCtrl)applicationContext.getBean("dbStndTotRqstCtrl");
 	}
 	/**
 	 * @param totSearchTask the totSearchTask to set
@@ -123,8 +135,15 @@ public class QuartzJob extends QuartzJobBean {
 
 	}
 
+
 	protected void executeInternal(JobExecutionContext context)
 			throws JobExecutionException {
+		orgStndInspectJob();
+		dbStndInspectJob();
+	}
+
+
+	protected void dbStndInspectJob() {
 
 		String serverIp = getLocalServerIp();
 
@@ -161,7 +180,8 @@ public class QuartzJob extends QuartzJobBean {
 				dbStcdList  = stcdValidCheck(dbStcdList);  //DB표준코드 검증
 				dbStndService.updateDbStndTotInspect(dbSditmList,dbDmnList,dbStwdList,dbStcdList);
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error("LOG_TRACE DB표준관리 검증 중 에러!!!", e);
+				break;
 			}
 
 			long endRunTime = System.currentTimeMillis();
@@ -175,7 +195,52 @@ public class QuartzJob extends QuartzJobBean {
 		logger.info("LOG_TRACE DB표준관리 검증 종료!!!");
 
 	}
-	
+
+
+	protected void orgStndInspectJob() {
+
+		long startRunTime = System.currentTimeMillis();
+
+		logger.info("LOG_TRACE 기관 표준관리 검증시작!!!");
+
+		while (true) {
+			List<WamSditm> sditmList = stndService.selectBatchSditmList(); //표준용어
+			List<WamDmn>   dmnList   = stndService.selectBatchDmnList();   //표준도메인
+			List<WamStwd>  stwdList  = stndService.selectBatchStwdList();  //표준단어
+			List<WamDbStcd>  stcdList  = stndService.selectBatchStcdList();  //표준코드
+
+			logger.info("폴링 검증 건 수 - 용어:" + sditmList.size() + "건, 도메인:" + dmnList.size() + "건, 단어:" +  stwdList.size() + "건, 코드:" + stcdList.size() + "건");
+
+			if(sditmList.size() == 0 && dmnList.size() == 0 &&  stwdList.size() == 0 && stcdList.size() == 0) {
+				logger.info("검증배치 모두 완료!!");
+				break;
+			}
+
+			//검증결과 업데이트
+			try {
+				stndItemRqstService.registerWamCheck(sditmList, null);  //표준용어 검증
+				stndDmnRqstService.registerWamCheck(dmnList, null);	  //표준도메인 검증
+				stndWordRqstService.registerWamCheck(stwdList, null);  //표준단어 검증
+				dbStndTotRqstCtrl.stndStcdValidCheck((ArrayList<WamDbStcd>) stcdList, "");  //표준코드 검증
+				stndService.updateStndTotInspect(sditmList, dmnList, stwdList, stcdList);
+			} catch (Exception e) {
+				logger.error("LOG_TRACE 기관 표준관리 검증 중 에러!!!", e);
+				break;
+			}
+
+			long endRunTime = System.currentTimeMillis();
+			double diffRunTime = (endRunTime - startRunTime) * 0.001;
+			if(diffRunTime > 60 * 60 * 6) {
+				logger.info("6시간 초과 검증배치 작업 중단!!");
+				break;
+			}
+		}
+
+		logger.info("LOG_TRACE 기관 표준관리 검증 종료!!!");
+
+	}
+
+
 	 //표준용어 유효성 검사 체크
     public List<WamDbSditm> itemValidCheck(List<WamDbSditm> reglist) throws ParseException {
     	Map<String, String> params = new HashMap<String, String>();
@@ -203,9 +268,7 @@ public class QuartzJob extends QuartzJobBean {
 				errorList.add(errorMsg);
 			}
 			// 표준 용어 제정일자 검증
-			Date date=new SimpleDateFormat("yyyyMMdd").parse(saveVo.getSditmDtm());  
-			saveVo.setRqstDtm(date);
-			errorMsg = ValidationCheck.checkSditmDate(saveVo.getRqstDtm());
+			errorMsg = ValidationCheck.checkSditmDate(saveVo.getSditmDtm());
 			if(errorMsg != "") {
 				errorList.add(errorMsg);
 			}
@@ -293,9 +356,7 @@ public class QuartzJob extends QuartzJobBean {
 			}
 			
 			// 표준 도메인 제정일자 검증
-			Date date=new SimpleDateFormat("yyyyMMdd").parse(saveVo.getDmnDtm());  
-			saveVo.setRqstDtm(date);
-			errorMsg = ValidationCheck.checkDmnDate(saveVo.getRqstDtm());
+			errorMsg = ValidationCheck.checkDmnDate(saveVo.getDmnDtm());
 			if(errorMsg != "") {
 				errorList.add(errorMsg);
 			}
@@ -351,9 +412,7 @@ public class QuartzJob extends QuartzJobBean {
 			}
 			
 			// 표준 단어 제정일장 검증
-			Date date=new SimpleDateFormat("yyyyMMdd").parse(saveVo.getStwdDtm());  
-			saveVo.setRqstDtm(date);
-			errorMsg = ValidationCheck.checkWordDate(saveVo.getRqstDtm());
+			errorMsg = ValidationCheck.checkWordDate(saveVo.getStwdDtm());
 			if(errorMsg != "") {
 				errorList.add(errorMsg);
 			}
@@ -409,9 +468,7 @@ public class QuartzJob extends QuartzJobBean {
 			}
 			
 			// 표준 코드 제정일자 검증
-			Date date=new SimpleDateFormat("yyyyMMdd").parse(saveVo.getStcdDtm());  
-			saveVo.setWritDtm(date);
-			errorMsg = ValidationCheck.checkCodedDate(saveVo.getWritDtm());
+			errorMsg = ValidationCheck.checkCodedDate(saveVo.getStcdDtm());
 			if(errorMsg != "") {
 				errorList.add(errorMsg);
 			}
