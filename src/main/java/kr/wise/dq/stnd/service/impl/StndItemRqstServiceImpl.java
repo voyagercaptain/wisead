@@ -1211,7 +1211,7 @@ public class StndItemRqstServiceImpl implements StndItemRqstService {
 					params.put("domainNm", checkVo.getInfotpLnm());
 					params.put("orgNm", checkVo.getOrgNm());
 					Map result = wamDbDmnMapper.selectDomainDataType(params);
-					if (result == null || result.get("DATA_TYPE") == null || result.get("DATA_LEN") == null) {
+					if (result == null || result.get("DATA_TYPE") == null) {
 						if (!"".equals(checkStr)) {
 							checkStr += ErrorCode.ERROR_DMN_TYPE_LENGTH_ERROR.getMessage();
 						}

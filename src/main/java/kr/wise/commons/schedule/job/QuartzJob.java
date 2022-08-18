@@ -286,7 +286,11 @@ public class QuartzJob extends QuartzJobBean {
 				
 		    	if(domainResult != null) {
 		    		saveVo.setDataType(domainResult.get("DATA_TYPE"));
-		    		saveVo.setDataLen(Integer.parseInt(String.valueOf(domainResult.get("DATA_LEN"))));
+					try {
+						saveVo.setDataLen(Integer.parseInt(String.valueOf(domainResult.get("DATA_LEN"))));
+					} catch (Exception e) {
+						saveVo.setDataLen(null);
+					}
 		    	}else {
 		    		errorMsg = ErrorCode.ERROR_DMN_TYPE_LENGTH_ERROR.getMessage();
 		    	}

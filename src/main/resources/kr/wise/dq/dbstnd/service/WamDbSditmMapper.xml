@@ -1119,9 +1119,8 @@ SELECT *
         TO_CHAR (RQST_DTM,'YYYY-MM-DD') AS SDITM_DTM,
         NVL(INFOTP_LNM,'') AS INFOTP_LNM
         FROM WAM_DB_SDITM
-        WHERE CONFIRM_YN ='N'
-         AND VALID_YN != 'Y'
-         AND VALID_YN != 'E'
+       WHERE (CONFIRM_YN = 'N' OR CONFIRM_YN = '' OR CONFIRM_YN IS NULL)
+         AND (VALID_YN = 'N' OR VALID_YN = '' OR VALID_YN IS NULL)
         order by SDITM_ID asc
       ) T1 where ROWNUM <= 1000
     ]]>
