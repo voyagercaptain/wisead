@@ -578,8 +578,8 @@
 							, RQST_USER_ID
 			  			)
 			          VALUES 
-			          <foreach collection="list" item="item" separator=" , " >
-					        ('${item.userId}', '${item.dbName}', now(), 'admin')
+			          <foreach collection="list" item="item" index="index" separator="," >
+					        (#{item.userId}, #{item.dbName}, now(), 'systemMaster')
 					  </foreach>
 	</insert>
 	
