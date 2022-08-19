@@ -333,7 +333,10 @@ function doAction(sAction)
 				url = '<c:url value="/dq/dbstnd/getStndCodelist.do"/>';
 			
 			var param = $("#frmSearch").serialize();
-			grid_name.DoSearch(url, param);
+			//2022.09.19 페이징 처리 기능 추가
+			//searchMode : 4 인경우 DoSearchPaging 사용 pageNum = 페이지 인덱스 값 
+			var info = {PageParam: "pageNum",  Param: param};
+			grid_name.DoSearchPaging(url, info);
 			
 			break;
 			

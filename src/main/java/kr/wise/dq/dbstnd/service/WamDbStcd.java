@@ -39,6 +39,8 @@ public class WamDbStcd extends CommonVo  {
     private String confirmYn;
     
     private String stcdDtm;
+    private Integer startNum;
+    private Integer endNum;
     
 	public String getUsergId() {
 		return usergId;
@@ -190,6 +192,18 @@ public class WamDbStcd extends CommonVo  {
 	}
 	public void setStcdDtm(String stcdDtm) {
 		this.stcdDtm = stcdDtm;
+	}
+	public Integer getStartNum() {
+		return startNum;
+	}
+	public void setStartNum(Integer startNum) {
+		this.startNum = startNum;
+	}
+	public Integer getEndNum() {
+		return endNum;
+	}
+	public void setEndNum(Integer endNum) {
+		this.endNum = endNum;
 	}
 	
 	

@@ -314,7 +314,9 @@ function doAction(sAction)
 			var url = "";
 				url = '<c:url value="/dq/dbstnd/getStndWordlist.do"/>';
 			var param = $("#frmSearch").serialize();
-			grid_name.DoSearch(url, param);
+			//2022.09.19 페이징 처리 기능 추가
+			var info = {PageParam: "pageNum",  Param: param};
+			grid_name.DoSearchPaging(url, info);
 			
 			break;
 			

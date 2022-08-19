@@ -48,4 +48,6 @@ public interface WamDbDmnMapper {
     List<WamDbDmn> selectDbDmnList();
     
     int updateDbDmnSchedule(List<WamDbDmn> updateList);
+    
+    Integer selectDmnTotalCnt(WamDbDmn data);
 }

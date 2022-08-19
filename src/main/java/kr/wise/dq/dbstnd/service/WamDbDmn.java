@@ -74,6 +74,9 @@ public class WamDbDmn extends CommonVo{
     private String vcWh;
     
     private String decideYn;
+    
+    private Integer startNum;
+    private Integer endNum;
 //    private String rqstNo;
 //
 //    private Integer rqstSno;
@@ -639,6 +642,22 @@ public class WamDbDmn extends CommonVo{
 		this.dmnDtm = dmnDtm;
 	}
 
+	public Integer getStartNum() {
+		return startNum;
+	}
+
+	public void setStartNum(Integer startNum) {
+		this.startNum = startNum;
+	}
+
+	public Integer getEndNum() {
+		return endNum;
+	}
+
+	public void setEndNum(Integer endNum) {
+		this.endNum = endNum;
+	}
+
 	@Override
 	public String toString() {
 		return "WamDbDmn [dmnId=" + dmnId + ", dmnLnm=" + dmnLnm + ", dmnPnm=" + dmnPnm + ", dmngId=" + dmngId
@@ -651,13 +670,14 @@ public class WamDbDmn extends CommonVo{
 				+ ", msDataType=" + msDataType + ", myDataType=" + myDataType + ", dupYn=" + dupYn + ", strgFrm="
 				+ strgFrm + ", saveFrm=" + saveFrm + ", exprsnFrm=" + exprsnFrm + ", unit=" + unit + ", admnStndCd="
 				+ admnStndCd + ", userId=" + userId + ", validYn=" + validYn + ", confirmYn=" + confirmYn + ", errChk="
-				+ errChk + ", vcWh=" + vcWh + ", decideYn=" + decideYn + ", ownrOrg=" + ownrOrg + ", spclNt=" + spclNt
-				+ ", usergId=" + usergId + ", dmnDtm=" + dmnDtm + ", dataType=" + dataType + ", dataLen=" + dataLen
-				+ ", dataScal=" + dataScal + ", lnmCriDs=" + lnmCriDs + ", pnmCriDs=" + pnmCriDs + ", frsRqstUserNm="
-				+ frsRqstUserNm + ", rqstUserNm=" + rqstUserNm + ", aprvUserNm=" + aprvUserNm + ", uppDmngId="
-				+ uppDmngId + ", dmngLnm=" + dmngLnm + ", uppDmngLnm=" + uppDmngLnm + ", infotpLnm=" + infotpLnm
-				+ ", encYn=" + encYn + ", dmnDscd=" + dmnDscd + ", transYn=" + transYn + ", dmnMinVal=" + dmnMinVal
-				+ ", dmnMaxVal=" + dmnMaxVal + ", subCdYn=" + subCdYn + "]";
+				+ errChk + ", vcWh=" + vcWh + ", decideYn=" + decideYn + ", startNum=" + startNum + ", endNum=" + endNum
+				+ ", ownrOrg=" + ownrOrg + ", spclNt=" + spclNt + ", usergId=" + usergId + ", dmnDtm=" + dmnDtm
+				+ ", dataType=" + dataType + ", dataLen=" + dataLen + ", dataScal=" + dataScal + ", lnmCriDs="
+				+ lnmCriDs + ", pnmCriDs=" + pnmCriDs + ", frsRqstUserNm=" + frsRqstUserNm + ", rqstUserNm="
+				+ rqstUserNm + ", aprvUserNm=" + aprvUserNm + ", uppDmngId=" + uppDmngId + ", dmngLnm=" + dmngLnm
+				+ ", uppDmngLnm=" + uppDmngLnm + ", infotpLnm=" + infotpLnm + ", encYn=" + encYn + ", dmnDscd="
+				+ dmnDscd + ", transYn=" + transYn + ", dmnMinVal=" + dmnMinVal + ", dmnMaxVal=" + dmnMaxVal
+				+ ", subCdYn=" + subCdYn + "]";
 	}
 
 	

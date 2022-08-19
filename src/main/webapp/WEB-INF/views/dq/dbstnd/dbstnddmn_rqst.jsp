@@ -310,24 +310,13 @@ function doAction(sAction)
 
 			//프로파일별 url 셋팅
 			var url = "";
-			if(bizDtlCd == "SDITM"){
-// 				url = '<c:url value="/dq/dbstnd/getitemrqstlist.do"/>';
-				url = '<c:url value="/dq/dbstnd/getsditmlist.do"/>';
-			}else if(bizDtlCd == "DMN"){
-// 				url = '<c:url value="/dq/dbstnd/getdmnrqstlist.do"/>';
 				url = '<c:url value="/dq/dbstnd/getDomainlist.do"/>';
-			}else if(bizDtlCd == "STWD"){
-// 				url = '<c:url value="/dq/dbstnd/getstwdrqstlist.do"/>';
-				url = '<c:url value="/dq/dbstnd/getStndWordlist.do"/>';
-			}
-			
-// 			var param = $("#mstFrm").serialize();
+			//2022.09.19 페이징 처리 기능 추가
+			//searchMode : 4 인경우 DoSearchPaging 사용 pageNum = 페이지 인덱스 값 
 			var param = $("#frmSearch").serialize();
-			grid_name.DoSearch(url, param);
+			var info = {PageParam: "pageNum",  Param: param};
+			grid_name.DoSearchPaging(url, info);
 			
-			//전체 검증결과 조회 (rqstNo, bizDtlCd)
-// 			console.log(param);
-// 			getRqstVrfLst(param);
 			break;
 			
     	case "Save":  //검증

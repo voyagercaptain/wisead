@@ -299,12 +299,15 @@ public class DbStndTotRqstCtrl {
 		
 		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
 		data.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
-		
+		/**2022.08.19 페이징 처리 추가*/
+		Integer endNum   = data.getPageNum()*300;
+		Integer startNum = endNum - 299;
+		data.setEndNum(endNum);
+		data.setStartNum(startNum);
+		Integer totalCnt 	= dbStndService.getDomainTotalCnt(data);
 		List<WamDbDmn> list = dbStndService.getDomainList(data);
 
-//		ibsJson.MESSAGE = message.getMessage("MSG.SAVE", null, locale);
-
-		return new IBSheetListVO<WamDbDmn>(list, list.size());
+		return new IBSheetListVO<WamDbDmn>(list, totalCnt);
 
 	}
 	
@@ -317,17 +320,23 @@ public class DbStndTotRqstCtrl {
 		
 		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
 		data.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
-		
+		/**2022.08.19 페이징 처리 추가*/
+		Integer endNum   = data.getPageNum()*300;
+		Integer startNum = endNum - 299;
+		data.setEndNum(endNum);
+		data.setStartNum(startNum);
 		List<WamDbStcd> list = null;
+		Integer totalCnt = 0; 
 		try {
-			list = dbStndService.getStndCodelist(data);
+			  totalCnt = dbStndService.getStndCodeTotalCnt(data);
+			  list 	   = dbStndService.getStndCodelist(data);
 		} catch(Exception e) {
 			logger.error("", e);
 		}
 
 //		ibsJson.MESSAGE = message.getMessage("MSG.SAVE", null, locale);
 
-		return new IBSheetListVO<WamDbStcd>(list, list.size());
+		return new IBSheetListVO<WamDbStcd>(list, totalCnt);
 
 	}
 	
@@ -360,13 +369,15 @@ public class DbStndTotRqstCtrl {
 		
 		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
 		data.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
-		
+		/**2022.08.19 페이징 처리 추가*/
+		Integer endNum   = data.getPageNum()*300;
+		Integer startNum = endNum - 299;
+		data.setEndNum(endNum);
+		data.setStartNum(startNum);
+		Integer totalCnt 	= dbStndService.getStndWordTotalCnt(data);
 		List<WamDbStwd> list = dbStndService.getStndWordList(data);
 
-
-//		ibsJson.MESSAGE = message.getMessage("MSG.SAVE", null, locale);
-
-		return new IBSheetListVO<WamDbStwd>(list, list.size());
+		return new IBSheetListVO<WamDbStwd>(list, totalCnt);
 
 	}
 	

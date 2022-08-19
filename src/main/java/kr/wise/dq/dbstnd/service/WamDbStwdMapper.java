@@ -67,4 +67,6 @@ public interface WamDbStwdMapper {
     List<WamDbStwd> selectDbStwdList();
     
     int updateDbStwdSchedule(List<WamDbStwd> updateList);
+    
+    Integer selectStwdTotalCnt(WamDbStwd record);
 }
