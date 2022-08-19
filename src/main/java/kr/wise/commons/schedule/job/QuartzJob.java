@@ -1,27 +1,9 @@
-/**
- * 0. Project  : WISE DA ������Ʈ
- *
- * 1. FileName : QuartzJob.java
- * 2. Package : kr.wise.commons.schedule.job
- * 3. Comment :
- * 4. �ۼ���  : insomnia
- * 5. �ۼ���  : 2014. 6. 16. ���� 4:55:30
- * 6. �����̷� :
- *                    �̸�     : ����          : �ٰ��ڷ�   : ���泻��
- *                   ------------------------------------------------------
- *                    insomnia : 2014. 6. 16. :            : �ű� ����.
- */
 package kr.wise.commons.schedule.job;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import kr.wise.commons.WiseConfig;
 import kr.wise.dq.dbstnd.service.*;
 import kr.wise.dq.dbstnd.web.DbStndTotRqstCtrl;
 import kr.wise.dq.stnd.service.*;
@@ -86,74 +68,18 @@ public class QuartzJob extends QuartzJobBean {
 		this.totSearchTask = totSearchTask;
 	}
 
-	private String getLocalServerIp() {
-
-		try {
-			for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
-				NetworkInterface intf = en.nextElement();
-
-				for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
-					InetAddress inetAddress = enumIpAddr.nextElement();
-					if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
-						return inetAddress.getHostAddress().toString();
-					}
-				}
-			}
-		}
-		catch (SocketException ex) {}
-		return null;
-	}
-
-	protected void executeInternal_ori(JobExecutionContext context)
-			throws JobExecutionException {
-
-		String serverIp = getLocalServerIp();
-
-		logger.info("LOG_TRACE BATCH SERVER IP {}", serverIp);
-		if (!serverIp.equals(WiseConfig.BATCH_SERVER_IP)) {
-			logger.info("LOG_TRACE BATCH SERVER IP NOT MATCH");
-			return;
-		}
-
-		logger.info("LOG_TRACE DB표준관리 검증시작!!!");
-		List<WamDbSditm> dbSditmList = dbStndService.selectDbSditmList(); //DB표준용어
-		List<WamDbDmn>   dbDmnList   = dbStndService.selectDbDmnList();   //DB표준도메인
-		List<WamDbStwd>  dbStwdList  = dbStndService.selectDbStwdList();  //DB표준단어
-		List<WamDbStcd>  dbStcdList  = dbStndService.selectDbStcdList();  //DB표준코드
-		
-		//검증결과 업데이트 
-		try {
-			dbSditmList = itemValidCheck(dbSditmList);  //DB표준용어 검증
-			dbDmnList   = dmnValidCheck(dbDmnList);	   //DB표준도메인 검증
-			dbStwdList  = stwdValidCheck(dbStwdList);  //DB표준단어 검증
-			dbStcdList  = stcdValidCheck(dbStcdList);  //DB표준코드 검증
-			dbStndService.updateDbStndTotInspect(dbSditmList,dbDmnList,dbStwdList,dbStcdList);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-
 	protected void executeInternal(JobExecutionContext context)
 			throws JobExecutionException {
+
+		String batchServer = System.getProperty("batch.server");
+		if (!"Y".equals(batchServer))
+			return;
 		orgStndInspectJob();
 		dbStndInspectJob();
 	}
 
 
 	protected void dbStndInspectJob() {
-
-		String serverIp = getLocalServerIp();
-
-		logger.info("LOG_TRACE BATCH SERVER IP {}", serverIp);
-		/*
-		if (!serverIp.equals(WiseConfig.BATCH_SERVER_IP)) {
-			logger.info("LOG_TRACE BATCH SERVER IP NOT MATCH");
-			return;
-		}
-		*/
 
 		long startRunTime = System.currentTimeMillis();
 
