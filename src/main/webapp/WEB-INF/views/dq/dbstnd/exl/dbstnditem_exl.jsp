@@ -34,13 +34,15 @@ var headerText = [];
 function grid_SDITM_init() {
 
     with(grid_SDITM){
-    	
-     	var cfg = {SearchMode:1,Page:300,UseHeaderSortCancel:1};
+    	//2022.09.19 페이징 처리 기능 추가
+    	//searchMode가 4인경우 페이지 인덱스 방식으로 실시간 서버 처리
+     	var cfg = {SearchMode:4,Page:300,UseHeaderSortCancel:1};
         SetConfig(cfg);
         //merge 설정
         SetMergeSheet(0);
-        SetCountPosition(1);
-        SetPagingPosition(2);
+        //총 건수 미표시
+        SetCountPosition(0);
+        SetPagingPosition(1);
         /*
 		var headtext  = "<s:message code='META.HEADER.STNDITEM.RQST.IFM.1'/>";
 		headtext += "<s:message code='META.HEADER.STNDITEM.RQST.IFM.4'/>";

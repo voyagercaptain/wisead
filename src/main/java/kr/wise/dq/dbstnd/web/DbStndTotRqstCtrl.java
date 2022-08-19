@@ -275,12 +275,17 @@ public class DbStndTotRqstCtrl {
 		
 		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
 		data.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
-
-		List<WamDbSditm> list = dbStndService.getStndItemList(data);
+		/**2022.08.19 페이징 처리 추가*/
+		Integer endNum   = data.getPageNum()*300;
+		Integer startNum = endNum - 299;
+		data.setEndNum(endNum);
+		data.setStartNum(startNum);
+		Integer totalCnt 		= dbStndService.getStndItemTotalCnt(data);
+		List<WamDbSditm> list   = dbStndService.getStndItemList(data);
 
 //		ibsJson.MESSAGE = message.getMessage("MSG.SAVE", null, locale);
 
-		return new IBSheetListVO<WamDbSditm>(list, list.size());
+		return new IBSheetListVO<WamDbSditm>(list, totalCnt);
 
 	}
 	

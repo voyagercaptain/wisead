@@ -798,4 +798,9 @@ public class DbStndServiceImpl implements DbStndService {
 		logger.info("LOG_TRACE DB표준 검증결과 UPDATE END!!!!!!");
 	}
 
+	@Override
+	public Integer getStndItemTotalCnt(WamDbSditm data) {
+		return wamDbSditmMapper.selectSditmTotalCnt(data);
+	}
+
 }

@@ -59,4 +59,6 @@ public interface WamDbSditmMapper {
 	 
 	 List<WamDbSditm> selectDbSditmList();
 	 int updateDbSdimSchedule(List<WamDbSditm> updateList);
+	 
+	 Integer selectSditmTotalCnt(WamDbSditm data);
 }
