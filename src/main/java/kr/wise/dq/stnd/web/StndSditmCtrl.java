@@ -77,12 +77,16 @@ public class StndSditmCtrl {
 		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
 		data.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
 
+		/**2022.08.19 페이징 처리 추가*/
+		Integer endNum   = data.getPageNum()*300;
+		Integer startNum = endNum - 299;
+		data.setEndNum(endNum);
+		data.setStartNum(startNum);
+		Integer totalCnt 		= stndSditmService.getStndItemTotalCnt(data);
 		List<WamSditm> list = stndSditmService.getStndItemList(data);
 
 //		ibsJson.MESSAGE = message.getMessage("MSG.SAVE", null, locale);
-
-		return new IBSheetListVO<WamSditm>(list, list.size());
-
+		return new IBSheetListVO<WamSditm>(list, totalCnt);
 	}
 	
 	

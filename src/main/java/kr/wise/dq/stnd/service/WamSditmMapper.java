@@ -51,4 +51,9 @@ public interface WamSditmMapper {
 	List<WamSditm> selectBatchSditmList();
 
 	int updateSditmSchedule(List<WamSditm> updateList);
+
+
+	Integer selectStndItemTotalCnt(WamSditm data);
+
+	Integer selectSditmTotalCnt(WamSditm data);
 }

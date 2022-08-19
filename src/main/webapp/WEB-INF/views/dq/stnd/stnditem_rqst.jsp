@@ -399,27 +399,17 @@ function doAction(sAction)
 				return;
 			}
 
-
 			//프로파일별 url 셋팅
 			var url = "";
-			if(bizDtlCd == "SDITM"){
-// 				url = '<c:url value="/dq/stnd/getitemrqstlist.do"/>';
-				url = '<c:url value="/dq/stnd/getsditmlist.do"/>';
-			}else if(bizDtlCd == "DMN"){
-// 				url = '<c:url value="/dq/stnd/getdmnrqstlist.do"/>';
-				url = '<c:url value="/dq/stnd/getDomainlist.do"/>';
-			}else if(bizDtlCd == "STWD"){
-// 				url = '<c:url value="/dq/stnd/getstwdrqstlist.do"/>';
-				url = '<c:url value="/dq/stnd/getStndWordlist.do"/>';
-			}
-			
+			url = '<c:url value="/dq/stnd/getsditmlist.do"/>';
+
 // 			var param = $("#mstFrm").serialize();
 			var param = $("#frmSearch").serialize();
-			grid_name.DoSearch(url, param);
-			
-			//전체 검증결과 조회 (rqstNo, bizDtlCd)
-// 			console.log(param);
-// 			getRqstVrfLst(param);
+			//2022.09.19 페이징 처리 기능 추가
+			//searchMode : 4 인경우 DoSearchPaging 사용 pageNum = 페이지 인덱스 값
+			var info = {PageParam: "pageNum",  Param: param};
+			grid_name.DoSearchPaging(url, info);
+
 			break;
 
 		case "Inspect":  //검증

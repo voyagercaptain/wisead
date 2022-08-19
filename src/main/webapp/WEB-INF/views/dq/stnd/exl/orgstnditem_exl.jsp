@@ -35,15 +35,25 @@ var arrayKeyField = ["orgNm", "sditmLnm", "sditmPnm", "infotpLnm", "rqstDtm"];
 function grid_SDITM_init() {
 
     with(grid_SDITM){
-    	
-        var cfg = {SearchMode:1,Page:300,UseHeaderSortCancel:1};
+
+        //2022.09.19 페이징 처리 기능 추가
+        //searchMode가 4인경우 페이지 인덱스 방식으로 실시간 서버 처리
+        var cfg = {SearchMode:4,Page:300,UseHeaderSortCancel:1};
         SetConfig(cfg);
-
-        SetCountPosition(1);
-        SetPagingPosition(2);
-
         //merge 설정
         SetMergeSheet(0);
+        //총 건수 미표시
+        SetCountPosition(0);
+        SetPagingPosition(1);
+
+        /*
+        var cfg = {SearchMode:1,Page:300,UseHeaderSortCancel:1};
+        SetConfig(cfg);
+        //merge 설정
+        SetMergeSheet(0);
+        SetCountPosition(1);
+        SetPagingPosition(2);
+        */
 
  		var headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|";
  		headtext += "용어ID|기관명|표준용어명|영문명|영문약어명|용어설명|표준도메인명|허용값|관리부서명|표준코드명|업무분야|데이터타입|데이터길이|소수점길이|저장형식|표현형식|단위|행정표준코드명";

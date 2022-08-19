@@ -504,6 +504,61 @@ SELECT *
         AND CONFIRM_YN = 'Y'
   </select>
 
+
+  <select id="selectSditmTotalCnt" parameterType="kr.wise.dq.stnd.service.WamSditm" resultType="Integer">
+    SELECT COUNT(*)
+    FROM WAM_SDITM A
+    WHERE 1 = 1
+    <if test='!"2".equals(usergId) and !"3".equals(usergId)' >
+      AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
+    </if>
+    <if test="chkYn eq 'E'.toString()" >
+      AND VALID_YN = 'E'
+    </if>
+    <if test="chkYn eq 'Y'.toString()" >
+      AND VALID_YN = 'Y'
+    </if>
+    <if test="chkYn eq 'N'.toString()" >
+      AND (VALID_YN IS NULL OR VALID_YN = '' OR VALID_YN = 'N')
+    </if>
+    <if test="chkYn eq 'YY'.toString()" >
+      AND CONFIRM_YN = 'Y'
+    </if>
+
+      <if test="sditmId != null" >
+        AND SDITM_ID = #{sditmId,jdbcType=VARCHAR}
+      </if>
+      <if test="sditmLnm != null" >
+        AND (SDITM_LNM LIKE CONCAT('%' , #{sditmLnm,jdbcType=VARCHAR} , '%' )
+        OR SDITM_PNM LIKE CONCAT('%' , #{sditmLnm,jdbcType=VARCHAR} , '%' )
+        OR SDITM_LNM LIKE CONCAT('%' , UPPER(#{sditmLnm,jdbcType=VARCHAR}) , '%' )
+        OR SDITM_PNM LIKE CONCAT('%' , UPPER(#{sditmLnm,jdbcType=VARCHAR}) , '%' ))
+      </if>
+      <if test="dmnLnm != null" >
+        AND (DMN_LNM LIKE CONCAT('%' , #{dmnLnm,jdbcType=VARCHAR} , '%' )
+        OR DMN_PNM LIKE CONCAT('%' , #{dmnLnm,jdbcType=VARCHAR} , '%' )
+        OR DMN_LNM LIKE CONCAT('%' , UPPER(#{dmnLnm,jdbcType=VARCHAR}) , '%' )
+        OR DMN_PNM LIKE CONCAT('%' , UPPER(#{dmnLnm,jdbcType=VARCHAR}) , '%' ))
+      </if>
+      <if test="infotpId != null" >
+        AND INFOTP_ID = #{infotpId,jdbcType=VARCHAR}
+      </if>
+      <if test="objDescn != null" >
+        AND OBJ_DESCN LIKE CONCAT('%' , #{objDescn,jdbcType=VARCHAR} , '%')
+      </if>
+
+      <if test="orgNm != null" >
+        AND ORG_NM LIKE CONCAT('%',#{orgNm,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="stndNm != null" >
+        AND (   SDITM_LNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        OR SDITM_PNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        OR SDITM_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')
+        OR SDITM_PNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
+      </if>
+  </select>
+
+
   <select id="selectSditmList" parameterType="kr.wise.dq.stnd.service.WamSditm" resultMap="BaseResultMap">
   SELECT * 
   FROM
@@ -556,101 +611,47 @@ SELECT *
             AND VALID_YN = 'Y'
           </if>
           <if test="chkYn eq 'N'.toString()" >
-            AND (VALID_YN IS NULL OR VALID_YN = 'N')
+            AND (VALID_YN IS NULL OR VALID_YN = '' OR VALID_YN = 'N')
           </if>
           <if test="chkYn eq 'YY'.toString()" >
             AND CONFIRM_YN = 'Y'
           </if>
 
-          ) FSQ -- 임시 Alias
-  <where>
-  <trim prefix="" suffix="" suffixOverrides="," >
 
-  	<if test="sditmId != null" >
-      AND SDITM_ID = #{sditmId,jdbcType=VARCHAR}
-    </if>
-    <if test="sditmLnm != null" >
-      AND (SDITM_LNM LIKE CONCAT('%' , #{sditmLnm,jdbcType=VARCHAR} , '%' ) 
-           OR SDITM_PNM LIKE CONCAT('%' , #{sditmLnm,jdbcType=VARCHAR} , '%' )
-           OR SDITM_LNM LIKE CONCAT('%' , UPPER(#{sditmLnm,jdbcType=VARCHAR}) , '%' )
-           OR SDITM_PNM LIKE CONCAT('%' , UPPER(#{sditmLnm,jdbcType=VARCHAR}) , '%' ))
-    </if>
-    <if test="dmnLnm != null" >
-      AND (DMN_LNM LIKE CONCAT('%' , #{dmnLnm,jdbcType=VARCHAR} , '%' ) 
-           OR DMN_PNM LIKE CONCAT('%' , #{dmnLnm,jdbcType=VARCHAR} , '%' )
-           OR DMN_LNM LIKE CONCAT('%' , UPPER(#{dmnLnm,jdbcType=VARCHAR}) , '%' )
-           OR DMN_PNM LIKE CONCAT('%' , UPPER(#{dmnLnm,jdbcType=VARCHAR}) , '%' ))
-    </if>
-    <if test="lnmCriDs != null" >
-      AND LNM_CRI_DS = #{lnmCriDs,jdbcType=VARCHAR}
-    </if>
-    <if test="dmnId != null" >
-      AND DMN_ID = #{dmnId,jdbcType=VARCHAR}
-    </if>
-    <if test="dmngId != null" >
-      AND DMNG_ID = #{dmngId,jdbcType=VARCHAR}
-    </if>
-    <if test="uppDmngId != null" >
-      AND UPP_DMNG_ID = #{uppDmngId,jdbcType=VARCHAR}
-    </if>
-    <if test="infotpId != null" >
-      AND INFOTP_ID = #{infotpId,jdbcType=VARCHAR}
-    </if>
-    <if test="infotpChgYn != null" >
-      AND INFOTP_CHG_YN = #{infotpChgYn,jdbcType=VARCHAR}
-    </if>
-    <if test="encYn != null" >
-      AND ENC_YN = #{encYn,jdbcType=VARCHAR}
-    </if>
-    <if test="objDescn != null" >
-      AND OBJ_DESCN LIKE CONCAT('%' , #{objDescn,jdbcType=VARCHAR} , '%')
-    </if>
-    <if test="objVers != null" >
-      AND OBJ_VERS = #{objVers,jdbcType=DECIMAL}
-    </if>
-    <if test="regTypCd != null" >
-      AND REG_TYP_CD = #{regTypCd,jdbcType=VARCHAR}
-    </if>
-    <if test="frsRqstDtm != null" >
-      AND FRS_RQST_DTM = #{frsRqstDtm,jdbcType=TIMESTAMP}
-    </if>
-    <if test="frsRqstUserId != null" >
-      AND FRS_RQST_USER_ID = #{frsRqstUserId,jdbcType=VARCHAR}
-    </if>
-    <if test="rqstDtm != null" >
-      AND RQST_DTM = #{rqstDtm,jdbcType=TIMESTAMP}
-    </if>
-    <if test="rqstUserId != null" >
-      AND RQST_USER_ID = #{rqstUserId,jdbcType=VARCHAR}
-    </if>
-    <if test="aprvDtm != null" >
-      AND APRV_DTM = #{aprvDtm,jdbcType=TIMESTAMP}
-    </if>
-    <if test="aprvUserId != null" >
-      AND APRV_USER_ID = #{aprvUserId,jdbcType=VARCHAR}
-    </if>
-    <if test="dataType != null" >
-      AND DATA_TYPE = #{dataType,jdbcType=VARCHAR}
-    </if>
-    <if test="searchBgnDe !=null and searchBgnDe !=''">
-	  <![CDATA[ AND DATE_FORMAT(APRV_DTM, '%Y-%m-%d') >= #{searchBgnDe} ]]>
-    </if>
-    <if test="searchEndDe !=null and searchEndDe !=''">
-	  <![CDATA[ AND DATE_FORMAT(APRV_DTM, '%Y-%m-%d') <= #{searchEndDe} ]]>
-    </if>
-    <if test="orgNm != null" >
-        AND ORG_NM LIKE CONCAT('%',#{orgNm,jdbcType=VARCHAR},'%')
-      </if>
-       <if test="stndNm != null" >
-        AND (   SDITM_LNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
-        	 OR SDITM_PNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
-        	 OR SDITM_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')
-        	 OR SDITM_PNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
-      </if>
-      
-    </trim>
-  </where>
-  ORDER BY SDITM_LNM
+        <if test="sditmId != null" >
+          AND SDITM_ID = #{sditmId,jdbcType=VARCHAR}
+        </if>
+        <if test="sditmLnm != null" >
+          AND (SDITM_LNM LIKE CONCAT('%' , #{sditmLnm,jdbcType=VARCHAR} , '%' )
+               OR SDITM_PNM LIKE CONCAT('%' , #{sditmLnm,jdbcType=VARCHAR} , '%' )
+               OR SDITM_LNM LIKE CONCAT('%' , UPPER(#{sditmLnm,jdbcType=VARCHAR}) , '%' )
+               OR SDITM_PNM LIKE CONCAT('%' , UPPER(#{sditmLnm,jdbcType=VARCHAR}) , '%' ))
+        </if>
+        <if test="dmnLnm != null" >
+          AND (DMN_LNM LIKE CONCAT('%' , #{dmnLnm,jdbcType=VARCHAR} , '%' )
+               OR DMN_PNM LIKE CONCAT('%' , #{dmnLnm,jdbcType=VARCHAR} , '%' )
+               OR DMN_LNM LIKE CONCAT('%' , UPPER(#{dmnLnm,jdbcType=VARCHAR}) , '%' )
+               OR DMN_PNM LIKE CONCAT('%' , UPPER(#{dmnLnm,jdbcType=VARCHAR}) , '%' ))
+        </if>
+        <if test="infotpId != null" >
+          AND INFOTP_ID = #{infotpId,jdbcType=VARCHAR}
+        </if>
+        <if test="objDescn != null" >
+          AND OBJ_DESCN LIKE CONCAT('%' , #{objDescn,jdbcType=VARCHAR} , '%')
+        </if>
+
+        <if test="orgNm != null" >
+            AND ORG_NM LIKE CONCAT('%',#{orgNm,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="stndNm != null" >
+            AND (   SDITM_LNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+                 OR SDITM_PNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+                 OR SDITM_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')
+                 OR SDITM_PNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
+        </if>
+        AND ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
+        ) FSQ
+    ORDER BY SDITM_LNM
   </select>
   <select id="selectSditmChangeList" resultMap="BaseResultMap" parameterType="java.lang.String" >
     SELECT A.SDITM_ID         

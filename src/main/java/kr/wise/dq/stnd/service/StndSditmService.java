@@ -36,4 +36,6 @@ public interface StndSditmService {
 	
 	List<WamSditm> selectSditmComparisonList(String sditmId);
 
+	Integer getStndItemTotalCnt(WamSditm data);
+
 }

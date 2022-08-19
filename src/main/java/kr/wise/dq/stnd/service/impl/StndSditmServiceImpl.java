@@ -103,4 +103,9 @@ public class StndSditmServiceImpl implements StndSditmService {
 		
 		return mapper.selectSditmComparisonList(sditmId);
 	}
+
+	@Override
+	public Integer getStndItemTotalCnt(WamSditm data) {
+		return mapper.selectSditmTotalCnt(data);
+	}
 }
