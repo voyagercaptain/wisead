@@ -93,7 +93,19 @@
    	<if test='!"2".equals(usergId) and !"3".equals(usergId)' >
    	 AND REPLACE(DB_NM, ' ', '') IN (SELECT REPLACE(DB_NAME, ' ', '') AS DB_NAME FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})
    	 AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
-   	</if> 
+   	</if>
+   	 <if test="orgNm != null" >
+        AND A.ORG_NM LIKE CONCAT('%',#{orgNm,jdbcType=VARCHAR},'%')
+     </if>
+     <if test="dbNm != null" >
+        AND REPLACE(A.DB_NM, ' ', '') LIKE CONCAT('%',REPLACE(#{dbNm,jdbcType=VARCHAR}, ' ', ''),'%')
+     </if>
+     <if test="stndNm != null" >
+       AND (A.COMM_CD_NM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.COMM_CD_DESC LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.COMN_CD_ENNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.COMN_CD_ENNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
+      </if> 
    	) FSQ -- 임시 Alias
   	<where>
 		/* AND REG_TYP_CD IN ('C', 'U') */
@@ -101,20 +113,6 @@
       <if test="commCdId != null" >
         AND COMM_CD_ID = #{commCdId,jdbcType=VARCHAR}
       </if>
-
-	  <if test="orgNm != null" >
-        AND ORG_NM LIKE CONCAT('%',#{orgNm,jdbcType=VARCHAR},'%')
-      </if>
-       <if test="dbNm != null" >
-        AND REPLACE(DB_NM, ' ', '') LIKE CONCAT('%',REPLACE(#{dbNm,jdbcType=VARCHAR}, ' ', ''),'%')
-      </if>
-      <if test="stndNm != null" >
-        AND (COMM_CD_NM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
-        	 OR COMM_CD_DESC LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
-        	 OR COMN_CD_ENNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
-        	 OR COMN_CD_ENNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
-      </if>
-      
   	</where>
   	ORDER BY COMM_CD_NM
   </select>
@@ -474,7 +472,13 @@
      </if>
      <if test="dbNm != null" >
         AND REPLACE(A.DB_NM, ' ', '') LIKE CONCAT('%',REPLACE(#{dbNm,jdbcType=VARCHAR}, ' ', ''),'%')
-     </if>     
+     </if>
+      <if test="stndNm != null" >
+        AND (A.COMM_CD_NM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.COMM_CD_DESC LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.COMN_CD_ENNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.COMN_CD_ENNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
+      </if>      
    	<if test='!"2".equals(usergId) and !"3".equals(usergId)' >
    	 AND REPLACE(A.DB_NM, ' ', '') IN (SELECT REPLACE(DB_NAME, ' ', '') AS DB_NAME FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})
    	 AND A.ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))

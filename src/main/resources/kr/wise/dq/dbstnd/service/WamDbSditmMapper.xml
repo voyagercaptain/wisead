@@ -562,7 +562,12 @@ SELECT *
        <if test="dbNm != null" >
         AND replace(A.DB_NM, ' ','') LIKE CONCAT('%',replace(#{dbNm,jdbcType=VARCHAR}, ' ',''),'%') 
       </if>
-      
+       <if test="stndNm != null" >
+        AND (   A.SDITM_LNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.SDITM_PNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.SDITM_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')
+        	 OR A.SDITM_PNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
+      </if>
        AND ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
    ) FSQ 
   ORDER BY DB_NM,SDITM_LNM
@@ -1080,6 +1085,12 @@ SELECT *
  
        <if test="dbNm != null" >
         AND replace(A.DB_NM, ' ','') LIKE CONCAT('%',replace(#{dbNm,jdbcType=VARCHAR}, ' ',''),'%') 
+      </if>
+        <if test="stndNm != null" >
+       AND (   A.SDITM_LNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.SDITM_PNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.SDITM_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')
+        	 OR A.SDITM_PNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
       </if>
   </select>
 </mapper>
