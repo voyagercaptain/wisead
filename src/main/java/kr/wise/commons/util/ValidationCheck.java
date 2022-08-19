@@ -145,10 +145,7 @@ public class ValidationCheck {
             if (data == null) {
                 return ErrorCode.ERROR_ITEM_DATE_NOTNULL.getMessage();
             }
-            SimpleDateFormat dateFormatParser = new SimpleDateFormat("yyyyMMdd"); //검증할 날짜 포맷 설정
-            String strData = dateFormatParser.format(data);
-            dateFormatParser.setLenient(false); //false일경우 처리시 입력한 값이 잘못된 형식일 시 오류가 발생
-            dateFormatParser.parse(strData); //대상 값 포맷에 적용되는지 확인
+            Date date=new SimpleDateFormat("yyyyMMdd").parse(data);
             return "";
         }
         catch (Exception e) {
@@ -222,14 +219,11 @@ public class ValidationCheck {
             if (data == null) {
                 return ErrorCode.ERROR_DMN_DATE_NOTNULL.getMessage();
             }
-
-            DateFormat dateFormatParser = new SimpleDateFormat("yyyyMMdd"); //검증할 날짜 포맷 설정
-            String strData = dateFormatParser.format(data);
-            dateFormatParser.setLenient(false); //false일경우 처리시 입력한 값이 잘못된 형식일 시 오류가 발생
-            dateFormatParser.parse(strData); //대상 값 포맷에 적용되는지 확인
+            Date date=new SimpleDateFormat("yyyyMMdd").parse(data);
             return "";
         }
         catch (Exception e) {
+            e.printStackTrace();
             return ErrorCode.ERROR_DMN_DATE_FORMAT.getMessage();
         }
     }
@@ -301,10 +295,7 @@ public class ValidationCheck {
                 return ErrorCode.ERROR_WORD_DATE_NOTNULL.getMessage();
             }
 
-            DateFormat dateFormatParser = new SimpleDateFormat("yyyyMMdd"); //검증할 날짜 포맷 설정
-            String strData = dateFormatParser.format(data);
-            dateFormatParser.setLenient(false); //false일경우 처리시 입력한 값이 잘못된 형식일 시 오류가 발생
-            dateFormatParser.parse(strData); //대상 값 포맷에 적용되는지 확인
+            Date date=new SimpleDateFormat("yyyyMMdd").parse(data);
             return "";
         }
         catch (Exception e) {
@@ -376,10 +367,7 @@ public class ValidationCheck {
                 return ErrorCode.ERROR_CODE_DATE_NOTNULL.getMessage();
             }
 
-            DateFormat dateFormatParser = new SimpleDateFormat("yyyyMMdd"); //검증할 날짜 포맷 설정
-            String strData = dateFormatParser.format(data);
-            dateFormatParser.setLenient(false); //false일경우 처리시 입력한 값이 잘못된 형식일 시 오류가 발생
-            dateFormatParser.parse(strData); //대상 값 포맷에 적용되는지 확인
+            Date date=new SimpleDateFormat("yyyyMMdd").parse(data);
             return "";
         }
         catch (Exception e) {
