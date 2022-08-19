@@ -36,11 +36,12 @@ function grid_STWD_init() {
 
     with(grid_STWD){
     	
-		//var cfg = {SearchMode:2,Page:100};
-        var cfg = {SearchMode:1,Page:300,UseHeaderSortCancel:1};
+    	//2022.09.19 페이징 처리 기능 추가
+    	//searchMode가 4인경우 페이지 인덱스 방식으로 실시간 서버 처리
+        var cfg = {SearchMode:4,Page:300,UseHeaderSortCancel:1};
 		SetConfig(cfg);
-        SetCountPosition(1);
-        SetPagingPosition(2);
+		SetCountPosition(0);
+	    SetPagingPosition(1);
 		/*
 		var headtext  = "<s:message code='META.HEADER.STNDWORD.RQST'/>";
  		*/
@@ -54,7 +55,7 @@ function grid_STWD_init() {
 					{Text:headtext, Align:"Center"}
 				];
 		
-		var headerInfo = {Sort:1, ColMove:1, ColResize:1, HeaderCheck:1};
+		var headerInfo = {Sort:0, ColMove:1, ColResize:1, HeaderCheck:1};
 		
 		InitHeaders(headers, headerInfo); 
 		
@@ -184,16 +185,16 @@ function grid_STWD_OnSearchEnd(code, message, stCode, stMsg) {
            }
        }else {
            document.getElementById('btnDecide').disabled = true;
-           document.getElementById('btnInit').disabled = true;
+           //document.getElementById('btnInit').disabled = true;
        }
        
-       if(frmSearch.vcWh.value === "E"||frmSearch.vcWh.value === "Y"||frmSearch.vcWh.value === "N"){
+       /* if(frmSearch.vcWh.value === "E"||frmSearch.vcWh.value === "Y"||frmSearch.vcWh.value === "N"){
         	if(len > 0) {
                 document.getElementById('btnInit').disabled = false;
           }else{
             	document.getElementById('btnInit').disabled = true;
           }
-      }
+      } */
     }
   }
 }

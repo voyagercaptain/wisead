@@ -71,6 +71,7 @@
   	, CASE WHEN A.ERR_CHK IS NOT null AND A.ERR_CHK != '' THEN '#FF0000' ELSE NULL END AS FontColor
    	FROM WAM_DB_COMM_CD A
    	WHERE  1 = 1
+   	 AND ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
    	 <if test="vcWh != null">
          	<if test='vcWh == "Y"'>
          	AND A.VALID_YN   ='Y'
@@ -445,4 +446,38 @@
         where COMM_CD_ID = #{item.commCdId,jdbcType=VARCHAR}
     </foreach>
   </update>
+  
+  <select id="selectStcdTotalCnt" resultType="Integer" parameterType="kr.wise.dq.dbstnd.service.WamDbStcd" >
+  	SELECT COUNT(*)
+   	FROM WAM_DB_COMM_CD A
+   	WHERE  1 = 1
+   	 <if test="vcWh != null">
+         	<if test='vcWh == "Y"'>
+         	AND A.VALID_YN   ='Y'
+         	AND A.CONFIRM_YN ='N'
+         	</if>
+         	<if test='vcWh == "N"'>
+         	AND A.VALID_YN   ='N'
+         	AND A.CONFIRM_YN ='N'
+         	</if>
+         	<if test='vcWh == "E"'>
+			AND A.VALID_YN   ='E'
+			AND A.CONFIRM_YN ='N'			         	
+         	</if>
+         	<if test='vcWh == "YY"'>
+         	AND A.CONFIRM_YN ='Y'
+         	AND A.VALID_YN   ='Y' 
+         	</if>
+         </if> 
+     <if test="orgNm != null" >
+        AND A.ORG_NM LIKE CONCAT('%',#{orgNm,jdbcType=VARCHAR},'%')
+     </if>
+     <if test="dbNm != null" >
+        AND REPLACE(A.DB_NM, ' ', '') LIKE CONCAT('%',REPLACE(#{dbNm,jdbcType=VARCHAR}, ' ', ''),'%')
+     </if>     
+   	<if test='!"2".equals(usergId) and !"3".equals(usergId)' >
+   	 AND REPLACE(A.DB_NM, ' ', '') IN (SELECT REPLACE(DB_NAME, ' ', '') AS DB_NAME FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})
+   	 AND A.ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
+   	</if> 
+  </select>
 </mapper>

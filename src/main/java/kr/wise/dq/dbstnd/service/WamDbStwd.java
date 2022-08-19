@@ -111,7 +111,10 @@ public class WamDbStwd extends CommonVo  {
     private String vcWh;
     
     private String stwdDtm;
-
+    
+    private Integer startNum;
+    private Integer endNum;
+    
     public String getUsergId() {
 		return usergId;
 	}
@@ -503,6 +506,22 @@ public class WamDbStwd extends CommonVo  {
 
 	public void setStwdDtm(String stwdDtm) {
 		this.stwdDtm = stwdDtm;
+	}
+
+	public Integer getStartNum() {
+		return startNum;
+	}
+
+	public void setStartNum(Integer startNum) {
+		this.startNum = startNum;
+	}
+
+	public Integer getEndNum() {
+		return endNum;
+	}
+
+	public void setEndNum(Integer endNum) {
+		this.endNum = endNum;
 	}
 	
 	

@@ -803,4 +803,19 @@ public class DbStndServiceImpl implements DbStndService {
 		return wamDbSditmMapper.selectSditmTotalCnt(data);
 	}
 
+	@Override
+	public Integer getDomainTotalCnt(WamDbDmn data) {
+		return wamDbDmnMapper.selectDmnTotalCnt(data);
+	}
+
+	@Override
+	public Integer getStndWordTotalCnt(WamDbStwd data) {
+		return wamDbStwdMapper.selectStwdTotalCnt(data);
+	}
+
+	@Override
+	public Integer getStndCodeTotalCnt(WamDbStcd data) {
+		return wamDbStcdMapper.selectStcdTotalCnt(data);
+	}
+
 }

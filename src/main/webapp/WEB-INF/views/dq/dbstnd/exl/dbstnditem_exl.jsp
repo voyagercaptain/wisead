@@ -62,7 +62,7 @@ function grid_SDITM_init() {
 					{Text:headtext, Align:"Center"}
 				];
 		
-		var headerInfo = {Sort:1, ColMove:1, ColResize:1, HeaderCheck:1};
+		var headerInfo = {Sort:0, ColMove:1, ColResize:1, HeaderCheck:1};
 		
 		InitHeaders(headers, headerInfo); 
 
@@ -196,16 +196,16 @@ function grid_SDITM_OnSearchEnd(code, message, stCode, stMsg) {
             }
         }else {
             document.getElementById('btnDecide').disabled = true;
-            document.getElementById('btnInit').disabled = true;
+            //document.getElementById('btnInit').disabled = true;
         }
         
-        if(frmSearch.vcWh.value === "E"||frmSearch.vcWh.value === "Y"||frmSearch.vcWh.value === "N"){
+        /* if(frmSearch.vcWh.value === "E"||frmSearch.vcWh.value === "Y"||frmSearch.vcWh.value === "N"){
          	if(len > 0) {
                  document.getElementById('btnInit').disabled = false;
            }else{
              	document.getElementById('btnInit').disabled = true;
            }
-       }
+       } */
 	}
   }	
 }
