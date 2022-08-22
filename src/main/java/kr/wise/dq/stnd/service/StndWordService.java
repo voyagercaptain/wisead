@@ -44,6 +44,9 @@ public interface StndWordService {
 	String generateAbrList(ArrayList<WamStwdAbr> list) throws Exception;
 	
 	List<WamStwd> selectStndWordComparisonList(String stwdId);
-	
+
+
+	Integer getStndWordTotalCnt(WamStwd data);
+
 
 }

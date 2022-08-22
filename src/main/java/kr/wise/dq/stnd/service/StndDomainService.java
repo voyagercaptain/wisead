@@ -1,5 +1,7 @@
 package kr.wise.dq.stnd.service;
 
+import kr.wise.dq.dbstnd.service.WamDbStcd;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,5 +46,7 @@ public interface StndDomainService {
 	List<WamCdVal> selectDmnValueListMsgPop(WamCdVal data);
 	
 	List<WamDmn> selectDmnComparisonList(String dmnId);
+
+	Integer getStndDomainTotalCnt(WamDmn data);
 	
 }

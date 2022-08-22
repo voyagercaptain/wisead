@@ -106,11 +106,16 @@ public class StndDomainCtrl {
 		
 		logger.debug("data:{}", data);
 
+		/**2022.08.19 페이징 처리 추가*/
+		Integer endNum   = data.getPageNum()*300;
+		Integer startNum = endNum - 299;
+		data.setEndNum(endNum);
+		data.setStartNum(startNum);
+		Integer totalCnt 		= stndDomainService.getStndDomainTotalCnt(data);
 		List<WamDmn> list = stndDomainService.getDomainList(data);
 
 //		ibsJson.MESSAGE = message.getMessage("MSG.SAVE", null, locale);
-
-		return new IBSheetListVO<WamDmn>(list, list.size());
+		return new IBSheetListVO<WamDmn>(list, totalCnt);
 
 	}
 	

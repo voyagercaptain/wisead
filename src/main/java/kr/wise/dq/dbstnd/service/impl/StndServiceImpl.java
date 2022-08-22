@@ -13,7 +13,6 @@ import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.cmm.service.EgovIdGnrService;
 import kr.wise.commons.helper.UserDetailHelper;
 import kr.wise.commons.rqstmst.service.WaqMstr;
-import kr.wise.commons.user.service.WaaUserMapper;
 import kr.wise.commons.util.UtilString;
 import kr.wise.dq.dbstnd.service.DbStndService;
 import kr.wise.dq.dbstnd.service.StndService;
@@ -274,6 +273,11 @@ public class StndServiceImpl implements StndService {
 		}
 
 		logger.info("LOG_TRACE 기관표준 검증결과 UPDATE END!!!!!!");
+	}
+
+
+	public Integer getStndCodeTotalCnt(WamDbStcd data) {
+		return wamStcdMapper.selectStndCodeTotalCnt(data);
 	}
 
 	/**

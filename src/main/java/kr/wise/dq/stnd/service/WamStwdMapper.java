@@ -39,34 +39,39 @@ public interface WamStwdMapper {
 
     int deleteWamStwd(String rqstNo);
 
-	List<WamStwd> selectListTop30(WamStwd record);
-	
-	List<WamStwd> selectWordChangeList(String stwdId);
+    List<WamStwd> selectListTop30(WamStwd record);
+
+    List<WamStwd> selectWordChangeList(String stwdId);
 
 
-	WamStwd selectWordDetail(String stwdId);
+    WamStwd selectWordDetail(String stwdId);
 
-	//사전 변경 이력
-	List<WamStwd> selectAltHistoryList(WamStwd data);
+    //사전 변경 이력
+    List<WamStwd> selectAltHistoryList(WamStwd data);
 
-	
-	/** yeonho */
-	List<WamStwd> selectByLnmPnm(@Param("sbswdLnm") String sbswdLnm, @Param("sbswdPnm") String sbswdPnm);
-	
-	//사전비교 리스트
-	List<WamStwd> selectStndWordComparisonList(String stwdId);
+
+    /**
+     * yeonho
+     */
+    List<WamStwd> selectByLnmPnm(@Param("sbswdLnm") String sbswdLnm, @Param("sbswdPnm") String sbswdPnm);
+
+    //사전비교 리스트
+    List<WamStwd> selectStndWordComparisonList(String stwdId);
 
     int selectDupSdWordCount(WamStwd data);
 
     int bulkInsert(List<WamStwd> insertList);
 
     int bulkUpdate(List<WamStwd> updateList);
+
     int bulkUpdateConfirm(List<WamStwd> updateList);
 
     int bulkDelete(List<WamStwd> deleteList);
 
 
-    List<WamStwd>  selectBatchStwdList();
+    List<WamStwd> selectBatchStwdList();
 
     int updateStwdSchedule(List<WamStwd> updateList);
+
+    Integer selectStndWordTotalCnt(WamStwd data);
 }

@@ -29,6 +29,8 @@ public interface StndService {
 
 	void updateStndTotInspect(List<WamSditm> sditmList,List<WamDmn> dmnList,List<WamStwd> stwdList,List<WamDbStcd> stcdList) throws Exception;
 
+	Integer getStndCodeTotalCnt(WamDbStcd data);
+
 	int regTargetOrg();
 
 	int regTargetDb();

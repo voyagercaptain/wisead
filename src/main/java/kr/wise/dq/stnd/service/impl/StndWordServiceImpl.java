@@ -171,6 +171,8 @@ public class StndWordServiceImpl implements StndWordService {
 		return mapper.selectStndWordComparisonList(stwdId);
 	}
 
-	
+	public Integer getStndWordTotalCnt(WamStwd data) {
+		return mapper.selectStndWordTotalCnt(data);
+	}
 
 }

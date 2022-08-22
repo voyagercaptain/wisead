@@ -21,15 +21,7 @@ import javax.inject.Inject;
 import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.helper.UserDetailHelper;
 import kr.wise.commons.util.UtilString;
-import kr.wise.dq.stnd.service.StndDomainService;
-import kr.wise.dq.stnd.service.WamCdVal;
-import kr.wise.dq.stnd.service.WamCdValMapper;
-import kr.wise.dq.stnd.service.WamDmn;
-import kr.wise.dq.stnd.service.WamDmnMapper;
-import kr.wise.dq.stnd.service.WamStwdCnfg;
-import kr.wise.dq.stnd.service.WamStwdCnfgMapper;
-import kr.wise.dq.stnd.service.WamWhereUsed;
-import kr.wise.dq.stnd.service.WamWhereUsedMapper;
+import kr.wise.dq.stnd.service.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -149,9 +141,14 @@ public class StndDomainServiceImpl implements StndDomainService {
 		return result;
 	}
 
-		@Override
-		public List<WamDmn> selectDmnComparisonList(String dmnId) {
+	@Override
+	public List<WamDmn> selectDmnComparisonList(String dmnId) {
 			return wamDmnMapper.selectDmnComparisonList(dmnId);
-		}	
-		
+		}
+
+
+	public Integer getStndDomainTotalCnt(WamDmn data) {
+		return wamDmnMapper.selectStndDomainTotalCnt(data);
+	}
+
 }

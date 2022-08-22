@@ -273,6 +273,7 @@ function doAction(sAction)
         	break;
         
 		case "Search":
+
 			if(frmSearch.orgNm.value == '') {
 				showMsgBox("INF", "기관명을 입력하고 검색해 주세요.");
 				return;
@@ -280,16 +281,11 @@ function doAction(sAction)
 
 			//프로파일별 url 셋팅
 			var url = "";
-			if(bizDtlCd == "SDITM"){
-				url = '<c:url value="/dq/stnd/getsditmlist.do"/>';
-			}else if(bizDtlCd == "DMN"){
-				url = '<c:url value="/dq/stnd/getDomainlist.do"/>';
-			}else if(bizDtlCd == "STWD"){
-				url = '<c:url value="/dq/stnd/getStndWordlist.do"/>';
-			}
-			
+			url = '<c:url value="/dq/stnd/getStndWordlist.do"/>';
+
 			var param = $("#frmSearch").serialize();
-			grid_name.DoSearch(url, param);
+			var info = {PageParam: "pageNum",  Param: param};
+			grid_name.DoSearchPaging(url, info);
 			
 			//전체 검증결과 조회 (rqstNo, bizDtlCd)
 			break;

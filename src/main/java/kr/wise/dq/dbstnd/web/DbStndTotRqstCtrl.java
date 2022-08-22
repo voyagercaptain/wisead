@@ -348,16 +348,17 @@ public class DbStndTotRqstCtrl {
 		logger.debug("reqvo:{}", data);
 		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
 		data.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
-		
-		List<WamDbStcd> list = null;
-		try {
-			list = stndService.getStndCodelist(data);
-		} catch(Exception e) {
-			logger.error("", e);
-		}
+
+		/**2022.08.19 페이징 처리 추가*/
+		Integer endNum   = data.getPageNum()*300;
+		Integer startNum = endNum - 299;
+		data.setEndNum(endNum);
+		data.setStartNum(startNum);
+		Integer totalCnt 		= stndService.getStndCodeTotalCnt(data);
+		List<WamDbStcd> list = stndService.getStndCodelist(data);
 
 //		ibsJson.MESSAGE = message.getMessage("MSG.SAVE", null, locale);
-		return new IBSheetListVO<WamDbStcd>(list, list.size());
+		return new IBSheetListVO<WamDbStcd>(list, totalCnt);
 	}
 	
 

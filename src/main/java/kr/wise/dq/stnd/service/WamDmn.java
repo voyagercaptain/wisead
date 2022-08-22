@@ -72,6 +72,27 @@ public class WamDmn extends CommonVo{
 
 	private String dmnDtm;
 
+
+	private Integer startNum;
+
+	private Integer endNum;
+
+	public Integer getStartNum() {
+		return startNum;
+	}
+
+	public void setStartNum(Integer startNum) {
+		this.startNum = startNum;
+	}
+
+	public Integer getEndNum() {
+		return endNum;
+	}
+
+	public void setEndNum(Integer endNum) {
+		this.endNum = endNum;
+	}
+
 	public String getDmnDtm() {
 		return dmnDtm;
 	}
