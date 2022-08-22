@@ -528,18 +528,6 @@ SELECT *
       <if test="sditmId != null" >
         AND SDITM_ID = #{sditmId,jdbcType=VARCHAR}
       </if>
-      <if test="sditmLnm != null" >
-        AND (SDITM_LNM LIKE CONCAT('%' , #{sditmLnm,jdbcType=VARCHAR} , '%' )
-        OR SDITM_PNM LIKE CONCAT('%' , #{sditmLnm,jdbcType=VARCHAR} , '%' )
-        OR SDITM_LNM LIKE CONCAT('%' , UPPER(#{sditmLnm,jdbcType=VARCHAR}) , '%' )
-        OR SDITM_PNM LIKE CONCAT('%' , UPPER(#{sditmLnm,jdbcType=VARCHAR}) , '%' ))
-      </if>
-      <if test="dmnLnm != null" >
-        AND (DMN_LNM LIKE CONCAT('%' , #{dmnLnm,jdbcType=VARCHAR} , '%' )
-        OR DMN_PNM LIKE CONCAT('%' , #{dmnLnm,jdbcType=VARCHAR} , '%' )
-        OR DMN_LNM LIKE CONCAT('%' , UPPER(#{dmnLnm,jdbcType=VARCHAR}) , '%' )
-        OR DMN_PNM LIKE CONCAT('%' , UPPER(#{dmnLnm,jdbcType=VARCHAR}) , '%' ))
-      </if>
       <if test="infotpId != null" >
         AND INFOTP_ID = #{infotpId,jdbcType=VARCHAR}
       </if>
@@ -620,18 +608,6 @@ SELECT *
 
         <if test="sditmId != null" >
           AND SDITM_ID = #{sditmId,jdbcType=VARCHAR}
-        </if>
-        <if test="sditmLnm != null" >
-          AND (SDITM_LNM LIKE CONCAT('%' , #{sditmLnm,jdbcType=VARCHAR} , '%' )
-               OR SDITM_PNM LIKE CONCAT('%' , #{sditmLnm,jdbcType=VARCHAR} , '%' )
-               OR SDITM_LNM LIKE CONCAT('%' , UPPER(#{sditmLnm,jdbcType=VARCHAR}) , '%' )
-               OR SDITM_PNM LIKE CONCAT('%' , UPPER(#{sditmLnm,jdbcType=VARCHAR}) , '%' ))
-        </if>
-        <if test="dmnLnm != null" >
-          AND (DMN_LNM LIKE CONCAT('%' , #{dmnLnm,jdbcType=VARCHAR} , '%' )
-               OR DMN_PNM LIKE CONCAT('%' , #{dmnLnm,jdbcType=VARCHAR} , '%' )
-               OR DMN_LNM LIKE CONCAT('%' , UPPER(#{dmnLnm,jdbcType=VARCHAR}) , '%' )
-               OR DMN_PNM LIKE CONCAT('%' , UPPER(#{dmnLnm,jdbcType=VARCHAR}) , '%' ))
         </if>
         <if test="infotpId != null" >
           AND INFOTP_ID = #{infotpId,jdbcType=VARCHAR}

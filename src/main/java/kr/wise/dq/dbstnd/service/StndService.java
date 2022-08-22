@@ -27,6 +27,9 @@ public interface StndService {
 	List<WamStwd>  selectBatchStwdList();  //표준단어
 	List<WamDbStcd>  selectBatchStcdList();  //표준코드
 
+
 	void updateStndTotInspect(List<WamSditm> sditmList,List<WamDmn> dmnList,List<WamStwd> stwdList,List<WamDbStcd> stcdList) throws Exception;
+
+	Integer getStndCodeTotalCnt(WamDbStcd data);
 
 }

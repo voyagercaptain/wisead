@@ -57,4 +57,7 @@ public interface WamDmnMapper {
     List<WamDmn> selectBatchDmnList();
 
     int updateDmnSchedule(List<WamDmn> updateList);
+
+
+    Integer selectStndDomainTotalCnt(WamDmn data);
 }

@@ -33,13 +33,7 @@ import kr.wise.commons.util.UtilJson;
 import kr.wise.commons.util.UtilObject;
 import kr.wise.dq.dbstnd.service.StndService;
 import kr.wise.dq.dbstnd.service.WamDbStcd;
-import kr.wise.dq.stnd.service.StndCommWordService;
-import kr.wise.dq.stnd.service.StndWordAbrService;
-import kr.wise.dq.stnd.service.StndWordService;
-import kr.wise.dq.stnd.service.WamStwd;
-import kr.wise.dq.stnd.service.WamStwdAbr;
-import kr.wise.dq.stnd.service.WamWhereUsed;
-import kr.wise.dq.stnd.service.WapDvCanAsm;
+import kr.wise.dq.stnd.service.*;
 import kr.wise.dq.stnd.web.StndItemRqstCtrl.WapDvCanAsms;
 
 import org.slf4j.Logger;
@@ -108,12 +102,17 @@ public class StndWordCtrl {
 		data.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
 		data.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
 
+
+		/**2022.08.19 페이징 처리 추가*/
+		Integer endNum   = data.getPageNum()*300;
+		Integer startNum = endNum - 299;
+		data.setEndNum(endNum);
+		data.setStartNum(startNum);
+		Integer totalCnt 		= stndWordService.getStndWordTotalCnt(data);
 		List<WamStwd> list = stndWordService.getStndWordList(data);
 
-
 //		ibsJson.MESSAGE = message.getMessage("MSG.SAVE", null, locale);
-
-		return new IBSheetListVO<WamStwd>(list, list.size());
+		return new IBSheetListVO<WamStwd>(list, totalCnt);
 
 	}
 	

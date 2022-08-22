@@ -399,6 +399,7 @@ function doAction(sAction)
 				return;
 			}
 
+
 			//프로파일별 url 셋팅
 			var url = "";
 			url = '<c:url value="/dq/stnd/getsditmlist.do"/>';

@@ -271,4 +271,9 @@ public class StndServiceImpl implements StndService {
 
 		logger.info("LOG_TRACE 기관표준 검증결과 UPDATE END!!!!!!");
 	}
+
+
+	public Integer getStndCodeTotalCnt(WamDbStcd data) {
+		return wamStcdMapper.selectStndCodeTotalCnt(data);
+	}
 }

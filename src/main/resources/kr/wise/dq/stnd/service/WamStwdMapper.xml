@@ -81,8 +81,44 @@
           AND CONFIRM_YN = 'Y'
     </select>
 
+    <select id="selectStndWordTotalCnt" parameterType="kr.wise.dq.stnd.service.WamStwd" resultType="Integer">
+        SELECT COUNT(*)
+        FROM WAM_STWD A
+        WHERE 1 = 1
+        <if test='!"2".equals(usergId) and !"3".equals(usergId)' >
+            AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
+        </if>
+
+        <if test="chkYn eq 'E'.toString()" >
+            AND VALID_YN = 'E'
+        </if>
+        <if test="chkYn eq 'Y'.toString()" >
+            AND VALID_YN = 'Y'
+        </if>
+        <if test="chkYn eq 'N'.toString()" >
+            AND (VALID_YN IS NULL OR VALID_YN = 'N')
+        </if>
+        <if test="chkYn eq 'YY'.toString()" >
+            AND CONFIRM_YN = 'Y'
+        </if>
+
+        <if test="stwdId != null" >
+            AND STWD_ID = #{stwdId,jdbcType=VARCHAR}
+        </if>
+
+        <if test="orgNm != null" >
+            AND ORG_NM LIKE CONCAT('%',#{orgNm,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="stndNm != null" >
+            AND (STWD_LNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+            OR STWD_PNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+            OR STWD_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')
+            OR STWD_PNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
+        </if>
+    </select>
+
   <select id="selectList" resultMap="BaseResultMap" parameterType="kr.wise.dq.stnd.service.WamStwd" >
-  	SELECT *
+  	 SELECT *
             , CASE WHEN ERR_CHK IS NOT NULL AND ERR_CHK != '' THEN '#FF0000' ELSE NULL END AS FontColor
   	  FROM
   	(SELECT A.*,
@@ -91,18 +127,9 @@
     	   (SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.APRV_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS APRV_USER_NM 
    	FROM WAM_STWD A
    	WHERE 1 = 1
-   	 <if test='!"2".equals(usergId) and !"3".equals(usergId)' >
+   	  <if test='!"2".equals(usergId) and !"3".equals(usergId)' >
    	 	AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
-   	 </if>
-   	) FSQ -- 임시 Alias
-  	<where>
-		AND REG_TYP_CD IN ('C', 'U')
-      <if test="stwdLnm != null" >
-        AND (STWD_LNM LIKE CONCAT('%' , #{stwdLnm,jdbcType=VARCHAR} , '%')
-        	 OR STWD_PNM LIKE CONCAT('%' , #{stwdLnm,jdbcType=VARCHAR} , '%')
-        	 OR STWD_LNM LIKE CONCAT('%' , UPPER(#{stwdLnm,jdbcType=VARCHAR}) , '%')
-        	 OR STWD_PNM LIKE CONCAT('%' , UPPER(#{stwdLnm,jdbcType=VARCHAR}) , '%'))
-      </if>
+   	  </if>
 
         <if test="chkYn eq 'E'.toString()" >
             AND VALID_YN = 'E'
@@ -120,57 +147,7 @@
       <if test="stwdId != null" >
         AND STWD_ID = #{stwdId,jdbcType=VARCHAR}
       </if>
-      <if test="wdDcd != null" >
-        AND WD_DCD = #{wdDcd,jdbcType=VARCHAR}
-      </if>
-      <if test="engMean != null" >
-        AND ENG_MEAN LIKE CONCAT('%' , #{engMean,jdbcType=VARCHAR} , '%')
-      </if>
-      <if test="dmnLnm != null" >
-        AND DMN_LNM LIKE CONCAT('%' ,  #{dmnLnm,jdbcType=VARCHAR} , '%')
-      </if>
-<!--       <if test="symnLnm != null" > -->
-<!--         AND SYMN_LNM = #{symnLnm,jdbcType=VARCHAR} -->
-<!--       </if> -->
-<!--       <if test="rqstNo != null" > -->
-<!--         AND RQST_NO = #{rqstNo,jdbcType=VARCHAR} -->
-<!--       </if> -->
-<!--       <if test="rqstSno != null" > -->
-<!--         AND RQST_SNO = #{rqstSno,jdbcType=DECIMAL} -->
-<!--       </if> -->
-      <if test="objDescn != null" >
-        AND OBJ_DESCN LIKE CONCAT('%' , #{objDescn,jdbcType=VARCHAR} , '%')
-      </if>
-      <if test="objVers != null" >
-        AND OBJ_VERS = #{objVers,jdbcType=DECIMAL}
-      </if>
-      <if test="regTypCd != null" >
-        AND REG_TYP_CD = #{regTypCd,jdbcType=VARCHAR}
-      </if>
-      <if test="frsRqstDtm != null" >
-        AND FRS_RQST_DTM = #{frsRqstDtm,jdbcType=DATE}
-      </if>
-      <if test="frsRqstUserId != null" >
-        AND FRS_RQST_USER_ID = #{frsRqstUserId,jdbcType=VARCHAR}
-      </if>
-      <if test="rqstDtm != null" >
-        AND RQST_DTM = #{rqstDtm,jdbcType=DATE}
-      </if>
-      <if test="rqstUserId != null" >
-        AND RQST_USER_ID = #{rqstUserId,jdbcType=VARCHAR}
-      </if>
-      <if test="aprvDtm != null" >
-        AND APRV_DTM = #{aprvDtm,jdbcType=DATE}
-      </if>
-      <if test="aprvUserId != null" >
-        AND APRV_USER_ID = #{aprvUserId,jdbcType=VARCHAR}
-      </if>
-      <if test="searchBgnDe !=null and searchBgnDe !=''">
-		<![CDATA[ AND DATE_FORMAT(APRV_DTM, '%Y-%m-%d') >= #{searchBgnDe} ]]>
-	  </if>
-	  <if test="searchEndDe !=null and searchEndDe !=''">
-		<![CDATA[ AND DATE_FORMAT(APRV_DTM, '%Y-%m-%d') <= #{searchEndDe} ]]>
-	  </if>
+
 	  <if test="orgNm != null" >
         AND ORG_NM LIKE CONCAT('%',#{orgNm,jdbcType=VARCHAR},'%')
       </if>
@@ -180,7 +157,8 @@
         	 OR STWD_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')
         	 OR STWD_PNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
       </if>
-  	</where>
+      AND ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
+    ) FSQ
   	ORDER BY STWD_LNM
   </select>
   <select id="selectStndList" resultMap="BaseResultMap" parameterType="kr.wise.dq.stnd.service.WamStwd" >

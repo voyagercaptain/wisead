@@ -74,23 +74,59 @@
           AND CONFIRM_YN = 'Y'
     </select>
 
+   <select id="selectStndCodeTotalCnt" parameterType="kr.wise.dq.stnd.service.WamSditm" resultType="Integer">
+       SELECT COUNT(*)
+       FROM WAM_COMM_CD A
+       WHERE 1 = 1
+       <if test='!"2".equals(usergId) and !"3".equals(usergId)' >
+           AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
+       </if>
+       <if test="commCdId != null" >
+           AND COMM_CD_ID = #{commCdId,jdbcType=VARCHAR}
+       </if>
+
+       <if test="chkYn eq 'E'.toString()" >
+           AND VALID_YN = 'E'
+       </if>
+       <if test="chkYn eq 'Y'.toString()" >
+           AND VALID_YN = 'Y'
+       </if>
+       <if test="chkYn eq 'N'.toString()" >
+           AND (VALID_YN IS NULL OR VALID_YN = '' OR VALID_YN = 'N')
+       </if>
+       <if test="chkYn eq 'YY'.toString()" >
+           AND CONFIRM_YN = 'Y'
+       </if>
+
+       <if test="orgNm != null" >
+           AND ORG_NM LIKE CONCAT('%',#{orgNm,jdbcType=VARCHAR},'%')
+       </if>
+       <if test="dbNm != null" >
+           AND DB_NM LIKE CONCAT('%',#{dbNm,jdbcType=VARCHAR},'%')
+       </if>
+       <if test="stndNm != null" >
+           AND (COMM_CD_NM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+           OR COMM_CD_DESC LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+           OR COMN_CD_ENNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+           OR COMN_CD_ENNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
+       </if>
+   </select>
+
   <select id="selectList" resultMap="BaseResultMap" parameterType="kr.wise.dq.dbstnd.service.WamDbStcd" >
   	SELECT *
       , CASE WHEN ERR_CHK IS NOT NULL AND ERR_CHK != '' THEN '#FF0000' ELSE NULL END AS FontColor
   	  FROM
   	(SELECT A.*
-   	FROM WAM_COMM_CD A
-   	 WHERE 1 = 1
-   	 <if test='!"2".equals(usergId) and !"3".equals(usergId)' >
-   	  AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
-   	 </if>
-   	) FSQ -- 임시 Alias
-  	<where>
-		/* AND REG_TYP_CD IN ('C', 'U') */
-     	1 = 1
-      <if test="commCdId != null" >
-        AND COMM_CD_ID = #{commCdId,jdbcType=VARCHAR}
-      </if>
+   	   FROM WAM_COMM_CD A
+   	   WHERE 1 = 1
+         <if test='!"2".equals(usergId) and !"3".equals(usergId)' >
+          AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
+         </if>
+
+
+        <if test="commCdId != null" >
+            AND COMM_CD_ID = #{commCdId,jdbcType=VARCHAR}
+        </if>
 
         <if test="chkYn eq 'E'.toString()" >
             AND VALID_YN = 'E'
@@ -117,9 +153,9 @@
         	 OR COMN_CD_ENNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
         	 OR COMN_CD_ENNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
       </if>
-
-  	</where>
-  	ORDER BY COMM_CD_NM
+      AND ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
+      ) FSQ
+  	  ORDER BY COMM_CD_NM
   </select>
 
 

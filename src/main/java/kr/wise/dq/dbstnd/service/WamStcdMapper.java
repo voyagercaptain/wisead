@@ -70,5 +70,5 @@ public interface WamStcdMapper {
 
     int updateStcdSchedule(List<WamDbStcd> updateList);
 
-
+    public Integer selectStndCodeTotalCnt(WamDbStcd data);
 }
