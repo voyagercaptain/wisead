@@ -29,4 +29,7 @@ public interface StndService {
 
 	void updateStndTotInspect(List<WamSditm> sditmList,List<WamDmn> dmnList,List<WamStwd> stwdList,List<WamDbStcd> stcdList) throws Exception;
 
+	int regTargetOrg();
+
+	int regTargetDb();
 }

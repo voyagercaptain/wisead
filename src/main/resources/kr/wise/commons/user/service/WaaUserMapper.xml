@@ -642,4 +642,105 @@
                chg_pwd = 'N'
          where user_id = #{userId}
     </update>
+
+    <insert id="regTargetOrg">
+        insert into waa_org (org_cd, org_nm, rqst_dtm, rqst_user_id, org_type, target_yn)
+        select b.INSTT_CD,
+               b.INSTT_NM,
+               now(),
+               'systemMaster',
+               '기타',
+               b.TRGT_INSTT_YN
+        from (select org_cd , org_nm, target_yn  from waa_org) a
+                 right outer join (
+                    select
+                        INSTT_CD ,
+                        INSTT_NM ,
+                        TRGT_INSTT_YN
+                        --SLCTN_STBLT_YN
+                    from tb_qev_instt_states a ,tb_qev_instt b
+                    where b.id =a.instt_id
+                      and b.del_yn='N'
+                      and a.trgt_instt_yn = 'Y'
+                      and a.evl_schd_id = '41'
+                ) b on (a.org_cd = b.INSTT_CD)
+        where a.target_yn is null
+    </insert>
+
+    <select id="selectTargetOrg" resultType="java.util.Map">
+        SELECT
+            instt.instt_cd as orgCd,
+            count(instt.instt_cd) AS orgCount
+        FROM
+            tb_qev_instt_states states
+                JOIN
+            tb_qev_instt instt
+            ON states.instt_id = instt.id
+                JOIN
+            tb_qev_evl_schedule schd
+            ON states.evl_schd_id = schd.id
+                JOIN
+            tb_qev_db_info db
+            ON states.instt_id = db.instt_id
+        WHERE
+            states.trgt_instt_yn='Y'
+          AND schd.evl_yr= '2022'
+          AND db.yr = '2022'
+          AND db.evl_trgt_db_id is not null
+        group by instt.instt_cd
+    </select>
+
+    <delete id="deleteTargetOrgDb" parameterType="java.util.List" >
+        <foreach collection="list" item="item" index="index" >
+        DELETE FROM WAA_ORG_DB
+        WHERE ORG_CD = #{item.orgCd, jdbcType=VARCHAR}
+        </foreach>
+    </delete>
+
+    <update id="updateTargetDbYn">
+        UPDATE WAA_ORG_DB SET target_yn = 'N'
+    </update>
+
+    <insert id="regTargetOrgDb">
+        INSERT INTO waa_org_db(org_cd, db_nm, rqst_dtm, rqst_user_id, target_yn)
+        SELECT
+            instt.instt_cd as org_cd,
+            db.db_nm  as db_nm,
+            now(),
+            'systemMaster',
+            'Y'
+        FROM
+            tb_qev_instt_states states
+                JOIN
+            tb_qev_instt instt
+            ON states.instt_id = instt.id
+                JOIN
+            tb_qev_evl_schedule schd
+            ON states.evl_schd_id = schd.id
+                JOIN
+            tb_qev_db_info db
+            ON states.instt_id = db.instt_id
+        WHERE
+            states.trgt_instt_yn='Y'
+          AND schd.evl_yr= '2022'
+          AND db.yr = '2022'
+          AND db.evl_trgt_db_id is not null
+          and instt.instt_ty  in (
+                                  'CENTRAL',
+                                  'CITY_DEV_PUBLIC_CORP',
+                                  'CITY_RAILROAD_PUBLIC_CORP',
+                                  'CONSIGNMENT_SEMI_GOV',
+                                  'ECO_PUBLIC_SERVICE',
+                                  'ETC',
+                                  'ETC_PUBLIC_ORG',
+                                  'FACILITY_PUBLIC_SERVICE',
+                                  'FUND_MANAGE_SEMI_GOV',
+                                  'MARKET_PUBLIC_ENTERPRISE',
+                                  'SEMI_MARKET_PUBLIC_ENTERPRISE',
+                                  'SIDO',
+                                  'SIGUNGU',
+                                  'SPECIAL_PUBLIC_SERVICE',
+                                  'TOUR_PUBLIC_CORP'
+            )
+    </insert>
 </mapper>

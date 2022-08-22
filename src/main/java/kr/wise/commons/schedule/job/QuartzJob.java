@@ -76,8 +76,15 @@ public class QuartzJob extends QuartzJobBean {
 			return;
 		orgStndInspectJob();
 		dbStndInspectJob();
+		orgDbSyncJob();
 	}
 
+	protected void orgDbSyncJob() {
+		// 대상 기관 동기화
+		stndService.regTargetOrg();
+		// 대상 DB 동기화
+		stndService.regTargetDb();
+	}
 
 	protected void dbStndInspectJob() {
 

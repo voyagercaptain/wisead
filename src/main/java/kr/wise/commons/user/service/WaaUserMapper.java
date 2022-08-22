@@ -68,4 +68,14 @@ public interface WaaUserMapper {
     int regOrgList(WaaOrg record);
 
     int initPwd(WaaUser waaUser);
+
+    int regTargetOrg();
+
+    List<Map> selectTargetOrg();
+
+    int deleteTargetOrgDb(List<Map> orgList);
+
+    int regTargetOrgDb();
+
+    int updateTargetDbYn();
 }

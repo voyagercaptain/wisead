@@ -13,6 +13,7 @@ import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.cmm.service.EgovIdGnrService;
 import kr.wise.commons.helper.UserDetailHelper;
 import kr.wise.commons.rqstmst.service.WaqMstr;
+import kr.wise.commons.user.service.WaaUserMapper;
 import kr.wise.commons.util.UtilString;
 import kr.wise.dq.dbstnd.service.DbStndService;
 import kr.wise.dq.dbstnd.service.StndService;
@@ -64,7 +65,10 @@ public class StndServiceImpl implements StndService {
 
 	@Inject
 	private WamDmnMapper wamDmnMapper;
-	
+
+	@Inject
+	private WaaUserMapper waaUserMapper;
+
     @Inject
     private EgovIdGnrService objectIdGnrService;
 
@@ -270,5 +274,43 @@ public class StndServiceImpl implements StndService {
 		}
 
 		logger.info("LOG_TRACE 기관표준 검증결과 UPDATE END!!!!!!");
+	}
+
+	/**
+	 * 수준평가시스템에 등록된 기간 조회 후 등록
+	 * @return 처리건수
+	 */
+	public int regTargetOrg() {
+
+		int regCount = waaUserMapper.regTargetOrg();
+		logger.info("LOG_TRACE 검증대상 기관 현행화 {} 건 완료}", regCount);
+		return regCount;
+
+	}
+
+	/**
+	 * 수준평가시스템에 등록된 대상 DB조회
+	 * 표준관리시스템에 등록된 DB삭제 후 재등록
+	 * @return 처리건수
+	 */
+	public int regTargetDb() {
+
+		// 대상 DB가 있는 기관 조회
+		List<Map> targetOrgList = waaUserMapper.selectTargetOrg();
+
+		// 해당 기관의 DB 삭제
+		for (int idx = 0; idx < targetOrgList.size(); idx += WiseConfig.FETCH_SIZE){
+			waaUserMapper.deleteTargetOrgDb(new ArrayList<Map>(targetOrgList.subList(idx, min(idx + WiseConfig.FETCH_SIZE, targetOrgList.size()))));
+		}
+
+		// WAA_ORG_DB 테이블 TARGET_YN 컬럼 전체 N 으로 업데이트
+		waaUserMapper.updateTargetDbYn();
+
+		// 수준평가시스템 등록 DB로 재등록
+		int regCount = waaUserMapper.regTargetOrgDb();
+
+		logger.info("LOG_TRACE 검증대상 DB현행화 {} 건 완료}", regCount);
+
+		return regCount;
 	}
 }
