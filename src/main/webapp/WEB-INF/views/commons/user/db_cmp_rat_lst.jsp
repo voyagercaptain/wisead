@@ -58,15 +58,15 @@ function initGrid()
 
         var cols = [                        
         	{Type:"Text",  Width : 60,  	  SaveName:"orgNm",            Align:"Left",  Edit:0}, //기관명
-        	{Type:"Int",   Format:"#,##0",    SaveName:"commItemCount",    Align:"Left",   Edit:0}, //용어  > 공통표준
-        	{Type:"Int",   Format:"#,##0",    SaveName:"orgItemCount",     Align:"Left",   Edit:0}, //용어  > 기관표준
-        	{Type:"Int",   Format:"#,##0",    SaveName:"dbItemCount",      Align:"Left",   Edit:0}, //용어  > db표준
-        	{Type:"Int",   Format:"#,##0",    SaveName:"commDomainCount",  Align:"Left",   Edit:0}, //도메인 > 공통표준 
-        	{Type:"Int",   Format:"#,##0",    SaveName:"orgDomainCount",   Align:"Left",   Edit:0}, //도메인 > 기관표준
-        	{Type:"Int",   Format:"#,##0",    SaveName:"dbDomainCount",    Align:"Left",   Edit:0}, //도메인 > db표준
-        	{Type:"Int",   Format:"#,##0",    SaveName:"commWordCount",    Align:"Left",   Edit:0}, //단어  > 공통표준
-        	{Type:"Int",   Format:"#,##0",    SaveName:"orgWordCount",     Align:"Left",   Edit:0}, //단어  > 기관표준
-        	{Type:"Int",   Format:"#,##0",    SaveName:"dbWordCount",      Align:"Left",   Edit:0}, //단어  > db표준
+        	{Type:"Text",   Format:"",    SaveName:"commItemCount",    Align:"Left",   Edit:0}, //용어  > 공통표준
+        	{Type:"Text",   Format:"",    SaveName:"orgItemCount",     Align:"Left",   Edit:0}, //용어  > 기관표준
+        	{Type:"Text",   Format:"",    SaveName:"dbItemCount",      Align:"Left",   Edit:0}, //용어  > db표준
+        	{Type:"Text",   Format:"",    SaveName:"commDomainCount",  Align:"Left",   Edit:0}, //도메인 > 공통표준
+        	{Type:"Text",   Format:"",    SaveName:"orgDomainCount",   Align:"Left",   Edit:0}, //도메인 > 기관표준
+        	{Type:"Text",   Format:"",    SaveName:"dbDomainCount",    Align:"Left",   Edit:0}, //도메인 > db표준
+        	{Type:"Text",   Format:"",    SaveName:"commWordCount",    Align:"Left",   Edit:0}, //단어  > 공통표준
+        	{Type:"Text",   Format:"",    SaveName:"orgWordCount",     Align:"Left",   Edit:0}, //단어  > 기관표준
+        	{Type:"Text",   Format:"",    SaveName:"dbWordCount",      Align:"Left",   Edit:0}, //단어  > db표준
         	
         ];
                     
@@ -91,7 +91,7 @@ function doAction(sAction)
         case "Search":
         	var param = $('#frmSearch').serialize();
         	//alert(param);
-        	grid_sheet.DoSearch('<c:url value="/commons/user/DbCmpRatSelectlist.do" />', param);
+        	grid_sheet.DoSearch('<c:url value="/commons/user/DbCmpRatSelectlist.do" />', param, ibscallback);
         	
         	break;
        
@@ -104,8 +104,95 @@ function doAction(sAction)
     
     }       
 }
- 
 
+function grid_sheet_OnSearchEnd(code, message, stCode, stMsg) {
+    var datalist = grid_sheet.GetSaveJson(1);
+    for (var i = 0; i <  datalist.data.length; i++) {
+        var data = datalist.data[i];
+        // 용어
+        if (data.commItemCount > 0 && data.dbItemCount > 0) {
+            data.commItemCount = data.commItemCount + "(" + parseFloat((data.commItemCount/data.dbItemCount) * 100.0).toFixed(2) + "%)";
+        }
+        if (data.orgItemCount > 0 && data.dbItemCount > 0) {
+            data.orgItemCount = data.orgItemCount + "(" + parseFloat((data.orgItemCount/data.dbItemCount) * 100.0).toFixed(2) + "%)";
+        }
+
+        // 도메인
+        if (data.commDomainCount > 0 && data.dbDomainCount > 0) {
+            data.commDomainCount = data.commDomainCount + "(" + parseFloat((data.commDomainCount/data.dbDomainCount) * 100.0).toFixed(2) + "%)";
+        }
+        if (data.orgDomainCount > 0 && data.dbItemCount > 0) {
+            data.orgDomainCount = data.orgDomainCount + "(" + parseFloat((data.orgDomainCount/data.dbDomainCount) * 100.0).toFixed(2) + "%)";
+        }
+
+        // 단어
+        if (data.commItemCount > 0 && data.dbWordCount > 0) {
+            data.commItemCount = data.commItemCount + "(" + parseFloat((data.commItemCount/data.dbWordCount) * 100.0).toFixed(2) + "%)";
+        }
+        if (data.orgWordCount > 0 && data.dbWordCount > 0) {
+            data.orgWordCount = data.orgWordCount + "(" + parseFloat((data.orgWordCount/data.dbWordCount) * 100.0).toFixed(2) + "%)";
+        }
+
+        grid_sheet.SetRowData(i+2, data);
+    }
+}
+
+//IBS 그리드 리스트 저장(삭제) 처리 후 콜백함수...
+function ibscallback(res){
+    var result = res.RESULT.CODE;
+    if(result == 0) {
+        postProcessIBS(res);
+
+    } else {
+        //공통메시지 팝업 : 실패 메세지...
+        shotMsgBox("ERR", res.RESULT.MESSAGE);
+    }
+}
+
+
+function postProcessIBS(res) {
+
+    debugger
+    switch(res.action) {
+        case "<%=WiseMetaConfig.IBSAction.SEARCH%>" :
+            var datalist = grid_sheet.GetSaveJson(1);
+            for (var i = 0; i <  datalist.data.length; i++) {
+                var data = datalist.data[i];
+                // 용어
+                if (data.commItemCount > 0 && data.dbItemCount > 0) {
+                    data.commItemCount = data.commItemCount + "(" + parseFloat((data.commItemCount/data.dbItemCount) * 100.0).toFixed(2) + "%)";
+                }
+                if (data.orgItemCount > 0 && data.dbItemCount > 0) {
+                    data.orgItemCount = data.orgItemCount + "(" + parseFloat((data.orgItemCount/data.dbItemCount) * 100.0).toFixed(2) + "%)";
+                }
+
+                // 도메인
+                if (data.commDomainCount > 0 && data.dbDomainCount > 0) {
+                    data.commDomainCount = data.commDomainCount + "(" + parseFloat((data.commDomainCount/data.dbDomainCount) * 100.0).toFixed(2) + "%)";
+                }
+                if (data.orgDomainCount > 0 && data.dbItemCount > 0) {
+                    data.orgDomainCount = data.orgDomainCount + "(" + parseFloat((data.orgDomainCount/data.dbDomainCount) * 100.0).toFixed(2) + "%)";
+                }
+
+                // 단어
+                if (data.commItemCount > 0 && data.dbWordCount > 0) {
+                    data.commItemCount = data.commItemCount + "(" + parseFloat((data.commItemCount/data.dbWordCount) * 100.0).toFixed(2) + "%)";
+                }
+                if (data.orgWordCount > 0 && data.dbWordCount > 0) {
+                    data.orgWordCount = data.orgWordCount + "(" + parseFloat((data.orgWordCount/data.dbWordCount) * 100.0).toFixed(2) + "%)";
+                }
+
+                grid_sheet.SetRowData(i+2, data);
+            }
+
+            break;
+
+        default :
+            // 아무 작업도 하지 않는다...
+            break;
+
+    }
+}
 </script>
 </head>
 
