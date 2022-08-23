@@ -60,7 +60,7 @@
   				driverClassName="cubrid.jdbc.driver.CUBRIDDriver" 
   				username="dba" 
   				password="wise12#"
-  				url="jdbc:cubrid:220.72.22.220:33000:wise:::?charset=utf8" 
+  				url="jdbc:cubrid:220.72.22.200:33000:wise:::?charset=utf8"
   				maxIdle="10" 
   				maxWait="20000" 
   				maxActive="10"
