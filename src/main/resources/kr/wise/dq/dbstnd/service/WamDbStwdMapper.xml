@@ -730,7 +730,7 @@
         <foreach collection="list" item="item" index="index">
             delete from WAM_DB_STWD
             where STWD_ID = #{item.stwdId,jdbcType=VARCHAR}
-            AND CONFIRM_YN = 'N'
+             /* AND CONFIRM_YN = 'N' */
         </foreach>
     </delete>
     

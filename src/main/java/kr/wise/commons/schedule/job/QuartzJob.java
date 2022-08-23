@@ -266,7 +266,7 @@ public class QuartzJob extends QuartzJobBean {
     //표준도메인 유효성 검사 체크
     public List<WamDbDmn> dmnValidCheck(List<WamDbDmn> reglist) throws ParseException {
     	Map<String, String> params = new HashMap<String, String>();
-    	String[] dataTypeArr = {"boolean", "date", "time", "timestamp", "datetime", "interval", "datetimeltz", "datetimetz", "timestampltz", "timestamptz", "number", "numeric", "decimal", "smalldatetime", "money", "smallmoney", "long", "bigint", "smallint", "short", "tinyint", "bit", "int", "integer", "double", "double precision", "text", "ntext", "nchar", "nvarchar", "ntext", "binary", "varbinary", "binary_float", "binary_double", "varbinary", "image", "real", "clob", "blob", "nclob", "bfile"};
+		String[] dataTypeArr = ValidationCheck.dataTypeArr;
 		String errorMsg = "";
     	for (WamDbDmn saveVo : reglist) {
     		List<String> errorList = new ArrayList<>();
@@ -325,7 +325,7 @@ public class QuartzJob extends QuartzJobBean {
     }
 
     
-    
+
   //DB표준단어 유효성 검사 체크
     public List<WamDbStwd> stwdValidCheck(List<WamDbStwd> reglist) throws ParseException {
     	Map<String, String> params = new HashMap<String, String>();

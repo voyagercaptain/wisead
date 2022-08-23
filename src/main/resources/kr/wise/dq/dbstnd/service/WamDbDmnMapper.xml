@@ -938,7 +938,7 @@
         <foreach collection="list" item="item" index="index">
         delete from WAM_DB_DMN
         where DMN_ID = #{item.dmnId,jdbcType=VARCHAR}
-        AND CONFIRM_YN = 'N'   
+         /* AND CONFIRM_YN = 'N' */
         </foreach>
     </delete>
     

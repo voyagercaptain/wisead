@@ -10,6 +10,9 @@ import java.util.regex.Pattern;
 
 public class ValidationCheck {
 
+
+    public static String[] dataTypeArr = {"geometry", "st_geometry", "sdo_geometry", "boolean", "date", "time", "timestamp", "datetime", "interval", "datetimeltz", "datetimetz", "timestampltz", "timestamptz", "number", "numeric", "decimal", "smalldatetime", "money", "smallmoney", "long", "bigint", "smallint", "short", "tinyint", "bit", "int", "integer", "double", "double precision", "text", "ntext", "nchar", "nvarchar", "ntext", "binary", "varbinary", "binary_float", "binary_double", "varbinary", "image", "real", "clob", "blob", "nclob", "bfile"};
+
     /**
      * 표준 용어 검증
      * 필수값 누락 검증 : 데이터 누락 불가

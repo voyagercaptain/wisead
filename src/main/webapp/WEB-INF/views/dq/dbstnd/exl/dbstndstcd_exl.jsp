@@ -68,7 +68,7 @@ function grid_STCD_init() {
 			{Type:"Text",     Width:100,  SaveName:"mngDeptCd",	   Align:"Left",   Edit:1, Hidden:0},
 			{Type:"Text",     Width:150,  SaveName:"commCdId",     Align:"Left",   Edit:0, KeyField:0, Hidden:1},
 			{Type:"Text",     Width:100,  SaveName:"commCdNm",     Align:"Left",   Edit:1, KeyField:1},             //코드명
-			{Type:"Text",     Width:150,  SaveName:"comnCdEnnm",   Align:"Center", Edit:1, Hidden:0, KeyField:1},
+			{Type:"Text",     Width:150,  SaveName:"comnCdEnnm",   Align:"Center", Edit:1, Hidden:0, KeyField:0},
 			{Type:"Text",     Width:150,  SaveName:"commCdDesc",   Align:"Left",   Edit:1, Hidden:0, KeyField:0},
 			{Type:"Text",     Width:100,  SaveName:"comnCdDttpNm", Align:"Left",   Edit:1, KeyField:0}, 
 			{Type:"Int",      Width:80,   SaveName:"comnCdDataLen",Align:"Left",   Edit:1, KeyField:0},

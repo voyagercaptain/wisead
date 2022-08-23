@@ -455,7 +455,7 @@
         <foreach collection="list" item="item" index="index">
         delete from WAM_COMM_CD
         where COMM_CD_ID = #{item.commCdId,jdbcType=VARCHAR}
-          and CONFIRM_YN =  'Y'
+          /* and CONFIRM_YN = 'Y' */
         </foreach>
     </delete>
 

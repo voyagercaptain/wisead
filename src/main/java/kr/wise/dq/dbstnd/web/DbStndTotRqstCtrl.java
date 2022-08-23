@@ -1042,7 +1042,7 @@ public class DbStndTotRqstCtrl {
 	    public ArrayList<WamDbDmn> dmnValidCheck(ArrayList<WamDbDmn> reglist,String decideYn) {
 	    	ArrayList<String> errorList = new ArrayList<>();
 	    	Map<String, String> params = new HashMap<String, String>();
-	    	String[] dataTypeArr = {"boolean", "date", "time", "timestamp", "datetime", "interval", "datetimeltz", "datetimetz", "timestampltz", "timestamptz", "number", "numeric", "decimal", "smalldatetime", "money", "smallmoney", "long", "bigint", "smallint", "short", "tinyint", "bit", "int", "integer", "double", "double precision", "text", "ntext", "nchar", "nvarchar", "ntext", "binary", "varbinary", "binary_float", "binary_double", "varbinary", "image", "real", "clob", "blob", "nclob", "bfile"};
+			String[] dataTypeArr = ValidationCheck.dataTypeArr;
 			String errorMsg = "";
 	    	for (WamDbDmn saveVo : reglist) {
 	    		// 표준도메인 검증
