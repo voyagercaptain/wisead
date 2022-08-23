@@ -393,12 +393,12 @@ function doAction(sAction)
         	break;
         
 		case "Search":
-
+			/*
 			if(frmSearch.orgNm.value == '') {
 				showMsgBox("INF", "기관명을 입력하고 검색해 주세요.");
 				return;
 			}
-
+			*/
 
 			//프로파일별 url 셋팅
 			var url = "";
@@ -497,19 +497,10 @@ function doAction(sAction)
 				showMsgBox("ERR", "<s:message code="ERR.CHKDEL" />");
 				return;
 			}
-        	
+
 			var url = "";
-			if(bizDtlCd == "SDITM"){
-// 				url = '<c:url value="/dq/stnd/delSditmrqstlist.do"/>';
-				url = '<c:url value="/dq/stnd/delitemWamlist.do"/>';
-			}else if(bizDtlCd == "DMN"){
-// 				url = '<c:url value="/dq/stnd/deldmnrqstlist.do"/>';
-				url = '<c:url value="/dq/stnd/deldmnWamlist.do"/>';
-			}else if(bizDtlCd == "STWD"){
-// 				url = '<c:url value="/dq/stnd/delstwdrqstlist.do"/>';
-				url = '<c:url value="/dq/stnd/delstwdwamlist.do"/>';
-			}
-			
+			url = '<c:url value="/dq/stnd/delitemWamlist.do"/>';
+
 			//삭제로직 김경택
 			//모든 Row에서 Check 된 것을 저장한 뒤에
 			//(if)체크 된 것 중 입력중인 내용만 있으면 Row만 삭제하고 BackEnd 타지않음
@@ -558,7 +549,19 @@ function doAction(sAction)
 				
 				empty_Row_Location.clear
 				vrfed_Row_Location.clear
-				IBSpostJson2(url, DelJson, param, ibscallback)
+
+
+				var arrDelTarget =  DelJson.data;
+				var newArray = new Array();
+				arrDelTarget.forEach(function(data, idx){
+					newArray.push({"sditmId":data.sditmId})
+				});
+				var totalJson = new Object();
+				totalJson.data = newArray;
+				//alert(JSON.stringify(totalJson));
+
+				//IBSpostJson2(url, DelJson, param, ibscallback)
+				IBSpostJson2(url, totalJson, param, ibscallback)
 				
 			}else{
 				var delete_Row = '' 
@@ -590,7 +593,18 @@ function doAction(sAction)
 				
 				empty_Row_Location.clear
 				vrfed_Row_Location.clear
-				IBSpostJson2(url, DelJson, param, ibscallback);
+
+
+				var arrDelTarget =  DelJson.data;
+				var newArray = new Array();
+				arrDelTarget.forEach(function(data, idx){
+					newArray.push({"sditmId":data.sditmId})
+				});
+				var totalJson = new Object();
+				totalJson.data = newArray;
+
+				//IBSpostJson2(url, DelJson, param, ibscallback)
+				IBSpostJson2(url, totalJson, param, ibscallback)
 			}
     }       
 }

@@ -990,7 +990,7 @@ SELECT *
     <foreach collection="list" item="item" index="index">
     delete from WAM_DB_SDITM
     where SDITM_ID = #{item.sditmId,jdbcType=VARCHAR}
-     AND CONFIRM_YN   = 'N'
+      /* AND CONFIRM_YN = 'N' */
     </foreach>
   </delete>
   

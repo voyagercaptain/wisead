@@ -1021,7 +1021,7 @@ SELECT *
     <foreach collection="list" item="item" index="index">
     delete from WAM_SDITM
     where SDITM_ID = #{item.sditmId,jdbcType=VARCHAR}
-      and CONFIRM_YN = 'N'
+      /* and CONFIRM_YN = 'N' */
     </foreach>
   </delete>
 

@@ -235,12 +235,12 @@ function doAction(sAction)
         	break;
         
 		case "Search":
-
+			/*
 			if(frmSearch.orgNm.value == '') {
 				showMsgBox("INF", "기관명을 입력하고 검색해 주세요.");
 				return;
 			}
-
+			*/
 			//프로파일별 url 셋팅
 			var url = "";
 			url = '<c:url value="/dq/stnd/getStndCodelist.do"/>';
@@ -330,16 +330,8 @@ function doAction(sAction)
 			}
         	
 			var url = "";
-			if(bizDtlCd == "SDITM"){
-				url = '<c:url value="/dq/stnd/delitemWamlist.do"/>';
-			}else if(bizDtlCd == "DMN"){
-				url = '<c:url value="/dq/stnd/deldmnWamlist.do"/>';
-			}else if(bizDtlCd == "STWD"){
-				url = '<c:url value="/dq/stnd/delstwdwamlist.do"/>';
-			}else if(bizDtlCd == "STCD"){
-				url = '<c:url value="/dq/stnd/delstcdwamlist.do"/>';
-			}
-			
+			url = '<c:url value="/dq/stnd/delstcdwamlist.do"/>';
+
 			//삭제로직 김경택
 			//모든 Row에서 Check 된 것을 저장한 뒤에
 			//(if)체크 된 것 중 입력중인 내용만 있으면 Row만 삭제하고 BackEnd 타지않음
@@ -389,6 +381,7 @@ function doAction(sAction)
 				
 				empty_Row_Location.clear
 				vrfed_Row_Location.clear
+
 				IBSpostJson2(url, DelJson, param, ibscallback)
 				
 			}else{

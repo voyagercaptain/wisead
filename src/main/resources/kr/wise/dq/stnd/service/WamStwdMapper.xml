@@ -795,7 +795,7 @@
         <foreach collection="list" index="index" item="item">
         delete from WAM_STWD
         where STWD_ID = #{item.stwdId,jdbcType=VARCHAR}
-          and CONFIRM_YN =  'Y'
+          /* and CONFIRM_YN = 'Y' */
         </foreach>
     </delete>
 

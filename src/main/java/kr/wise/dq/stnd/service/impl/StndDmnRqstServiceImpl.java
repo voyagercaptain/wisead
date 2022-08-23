@@ -1275,7 +1275,7 @@ public class StndDmnRqstServiceImpl implements StndDmnRqstService {
 		//String userid = user.getUniqId();
 
 		Map<String, String> params = new HashMap<String, String>();
-		String[] dataTypeArr = {"boolean", "date", "time", "timestamp", "datetime", "interval", "datetimeltz", "datetimetz", "timestampltz", "timestamptz", "number", "numeric", "decimal", "smalldatetime", "money", "smallmoney", "long", "bigint", "smallint", "short", "tinyint", "bit", "int", "integer", "double", "double precision", "text", "ntext", "nchar", "nvarchar", "ntext", "binary", "varbinary", "binary_float", "binary_double", "varbinary", "image", "real", "clob", "blob", "nclob", "bfile"};
+		String[] dataTypeArr = ValidationCheck.dataTypeArr;
 		String checkStr = "";
 		for (WamDmn checkVo : reglist) {
 			checkStr = "";
