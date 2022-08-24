@@ -843,14 +843,13 @@ SELECT *
 		 		wod.db_nm as DB_NM
 		 FROM waa_org wot inner join waa_org_db wod 
 		 	on (wod.org_cd = wot.org_cd OR wod.org_cd = wot.upper_org_cd)
-		<where>
+		WHERE wod.target_yn = 'Y'
   			<if test="orgNm != null" >
-      			wot.org_nm = #{orgNm}
+      			AND wot.org_nm = #{orgNm}
       		</if>
       		<if test="orgCd != null" >
-      			wot.org_cd = #{orgCd}
+      			AND wot.org_cd = #{orgCd}
       		</if>
-      	</where>
 	</select>
 
 
