@@ -56,9 +56,27 @@ where (T.COMM_ITEM_COUNT >0 or T.COMM_DOMAIN_COUNT or T.COMM_WORD_COUNT)
 </select>
 
 
+<select id="getDbCmpRateOrgItemList"
+		parameterType="kr.wise.commons.user.WaaUserg" resultMap="BaseResultMap">
+	select T.org_nm,
+		   count(itemCount) AS ORG_ITEM_COUNT,
+		   (SELECT COUNT(*) FROM WAM_DB_SDITM WHERE ORG_NM=T.ORG_NM)  AS DB_ITEM_COUNT    --DB표준 단어 수
+	from (select
+			  A.org_nm
+			   ,count(*) as itemCount
+			   , a.sditm_lnm
+			   , a.sditm_pnm
+			   , a.infotp_lnm
+		  from wam_sditm a inner join wam_db_sditm B on (a.sditm_lnm = B.sditm_lnm and a.sditm_pnm = B.sditm_pnm and a.infotp_lnm = B.infotp_lnm and a.org_nm = B.org_nm)
+						   inner join waa_org C on (C.target_yn='Y' and a.org_nm = C.org_nm)
+--where a.confirm_yn ='Y'
+--  and b.confirm_yn ='Y'
+		  group by a.org_nm , a.sditm_lnm , a.sditm_pnm , a.infotp_lnm
+		 ) T
+	group by T.org_nm
+</select>
 
-
-<select id="getDbCmpRateList" 
+<select id="getDbCmpRateList"
 	parameterType="kr.wise.commons.user.WaaUserg" resultMap="BaseResultMap">
 SELECT T.*
 FROM (
@@ -70,9 +88,6 @@ SELECT
 	(SELECT COUNT(*) FROM COMM_SDITM A INNER JOIN (SELECT SDITM_LNM,SDITM_PNM,INFOTP_LNM FROM WAM_DB_SDITM WHERE ORG_NM = WO.ORG_NM) B
 	ON (A.SDITM_LNM =B.SDITM_LNM AND A.SDITM_PNM = B.SDITM_PNM AND A.INFOTP_LNM =B.INFOTP_LNM)
 	) 														  AS COMM_ITEM_COUNT,   --공통표준 용어 일치 수
-	(SELECT COUNT(*) FROM WAM_SDITM  A INNER JOIN (SELECT ORG_NM, SDITM_LNM,SDITM_PNM,INFOTP_LNM FROM WAM_DB_SDITM WHERE ORG_NM = WO.ORG_NM) B
-	ON (A.SDITM_LNM =B.SDITM_LNM AND A.SDITM_PNM = B.SDITM_PNM AND A.INFOTP_LNM =B.INFOTP_LNM and A.org_nm = B.org_nm)
-	) 														  AS ORG_ITEM_COUNT,    --기관표준 용어 일치 수
 	(SELECT COUNT(*) FROM COMM_DMN  A INNER JOIN (SELECT INFOTP_LNM,DATA_LEN,DATA_TYPE FROM WAM_DB_DMN  WHERE ORG_NM = WO.ORG_NM) B
 	ON (A.INFOTP_LNM=B.INFOTP_LNM AND A.DATA_LEN = B.DATA_LEN AND A.DATA_TYPE = B.DATA_TYPE)
 	) 														  AS COMM_DOMAIN_COUNT, --공통표준 도메인 일치 수

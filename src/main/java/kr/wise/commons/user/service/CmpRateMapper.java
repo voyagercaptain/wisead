@@ -1,3 +1,4 @@
+
 package kr.wise.commons.user.service;
 
 import java.util.List;
@@ -9,4 +10,5 @@ import kr.wise.commons.user.WaaUserg;
 public interface CmpRateMapper {
 	 List<WaaUserg> getOrgCmpRateList(WaaUserg param);
 	 List<WaaUserg> getDbCmpRateList(WaaUserg param);
+	 List<WaaUserg> getDbCmpRateOrgItemList(WaaUserg param);
 }

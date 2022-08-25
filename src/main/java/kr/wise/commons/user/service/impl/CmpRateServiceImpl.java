@@ -30,6 +30,22 @@ public class CmpRateServiceImpl implements CmpRateService{
 	public List<WaaUserg> getDbCmpRateList(WaaUserg search) {
 		logger.debug("getDbCmpRateList Start.");
 		List<WaaUserg> list = mapper.getDbCmpRateList(search);
+		List<WaaUserg> list2 = mapper.getDbCmpRateOrgItemList(search);
+
+		Boolean isContains = false;
+
+		for (WaaUserg orgItem : list2) {
+			for (WaaUserg full : list) {
+				if (full.getOrgNm().equals(orgItem.getOrgNm())) {
+					isContains = true;
+					full.setOrgItemCount(orgItem.getOrgItemCount());
+				}
+			}
+			if (!isContains)
+				list.add(orgItem);
+
+			isContains = false;
+		}
 		return list;
 	}
 

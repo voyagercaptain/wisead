@@ -209,7 +209,7 @@ function setsubmenu(idx, menuid) {
 	
 	var cnt = submenulist.length;
 	$("li#topmenu_"+menuid).append('<center><ul class="n4gnb_sub" style="display:none;"></ul></center>');
-		
+
 	 for(i=0;i<cnt;i++) {
 		
 		 var url = "#";
@@ -218,84 +218,95 @@ function setsubmenu(idx, menuid) {
 		 if(!isBlankStr(tmpurl) && tmpurl != "link" && tmpurl != "dir") {
 			 url =  containerPath+tmpurl;
 		 }
-		 
-		if(submenulist[i].menuLvl == 1) {
-			$("li#topmenu_"+menuid+" ul.n4gnb_sub").append('<li id="menuid_'+submenulist[i].menuId+'" onclick="subClick(this,\''+i+'\')"><a href="'+url+'">'+submenulist[i].menuNm+'</a><ul class="n2menu_c"></ul></li>');
-		} else if (submenulist[i].menuLvl == 2) {
-			$("li#menuid_"+submenulist[i].uppMenuId+" ul.n2menu_c").append('<li><a href="'+url+'">'+submenulist[i].menuNm+'</a></li>');
-		}
 
-	 }
-	 $(".n2menu_c").hide();
+		 if(submenulist[i].menuLvl == 1) {
+			if ('기관표준 준수율' == submenulist[i].menuNm || 'DB표준 준수율' == submenulist[i].menuNm) {
+				<c:if test="${sessionScope.loginVO.id == 'meta' }">
+					$("li#topmenu_"+menuid+" ul.n4gnb_sub").append('<li id="menuid_'+submenulist[i].menuId+'" onclick="subClick(this,\''+i+'\')"><a href="'+url+'">'+
+						submenulist[i].menuNm+'</a><ul class="n2menu_c"></ul></li>');
+				</c:if>
+			}
+			else {
+				$("li#topmenu_"+menuid+" ul.n4gnb_sub").append('<li id="menuid_'+submenulist[i].menuId+'" onclick="subClick(this,\''+i+'\')"><a href="'+url+'">'+
+						submenulist[i].menuNm+'</a><ul class="n2menu_c"></ul></li>');
+			}
+
+        //$("li#topmenu_"+menuid+" ul.n4gnb_sub").append('<li id="menuid_'+submenulist[i].menuId+'" onclick="subClick(this,\''+i+'\')"><a href="'+url+'">'+submenulist[i].menuNm+'</a><ul class="n2menu_c"></ul></li>');
+    } else if (submenulist[i].menuLvl == 2) {
+        $("li#menuid_"+submenulist[i].uppMenuId+" ul.n2menu_c").append('<li><a href="'+url+'">'+submenulist[i].menuNm+'</a></li>');
+    }
+
+ }
+ $(".n2menu_c").hide();
 
 }
 
 function subClick(obj,index){
 
-	if($(obj).find(".n2menu_c>li").length == 0){
-		return;
-	}
+if($(obj).find(".n2menu_c>li").length == 0){
+    return;
+}
 
-	if(subToggle == 0){//나타내기
-		$(".n2menu_c").hide();
-		$(".subsub").remove();
+if(subToggle == 0){//나타내기
+    $(".n2menu_c").hide();
+    $(".subsub").remove();
 
 
-		//중메뉴 넓이 구하기
-		var cnttopmenu = $("li[id^=topmenu_]").length;
-		var totwidth = $("ul.n4gnb_menu").width()-30;
-		var submenuwidth = Math.floor(totwidth / cnttopmenu);
-		var totheight = $("ul.n4gnb_menu").height();
-		var parent = $(obj).offset();
-		var height = $(obj).height();
-		var left = parent.left+submenuwidth-10;
-		var top = parent.top-(height)+(index*0.5);
-		
-		$(obj).find(".n2menu_c").css('background', '#264b7b');
-		$(obj).find(".n2menu_c").css('border-left', '1px solid #264b7b');
-		$(obj).find(".n2menu_c").css('padding', '10px 5px');
-		$(obj).find(".n2menu_c").css('height', 'auto');
-		$(obj).find(".n2menu_c").css('left',left);
-		$(obj).find(".n2menu_c").css('top',top);
-		$(obj).find(".n2menu_c").css('text-align','left');
-		$(obj).find(".n2menu_c").css('font-size','14px');
+    //중메뉴 넓이 구하기
+    var cnttopmenu = $("li[id^=topmenu_]").length;
+    var totwidth = $("ul.n4gnb_menu").width()-30;
+    var submenuwidth = Math.floor(totwidth / cnttopmenu);
+    var totheight = $("ul.n4gnb_menu").height();
+    var parent = $(obj).offset();
+    var height = $(obj).height();
+    var left = parent.left+submenuwidth-10;
+    var top = parent.top-(height)+(index*0.5);
+
+    $(obj).find(".n2menu_c").css('background', '#264b7b');
+    $(obj).find(".n2menu_c").css('border-left', '1px solid #264b7b');
+    $(obj).find(".n2menu_c").css('padding', '10px 5px');
+    $(obj).find(".n2menu_c").css('height', 'auto');
+    $(obj).find(".n2menu_c").css('left',left);
+    $(obj).find(".n2menu_c").css('top',top);
+    $(obj).find(".n2menu_c").css('text-align','left');
+    $(obj).find(".n2menu_c").css('font-size','14px');
 
 //	 	$(obj).find(".n2menu_c").fadeIn('fast');
-		$(obj).find(".n2menu_c").show();
+    $(obj).find(".n2menu_c").show();
 
-		subToggle = 1;
-	}else{//숨기기
-		$(".n2menu_c").hide();
-		$(".subsub").remove();
+    subToggle = 1;
+}else{//숨기기
+    $(".n2menu_c").hide();
+    $(".subsub").remove();
 
-		subToggle = 0;
-	}
+    subToggle = 0;
+}
 
 
 }
- 
+
 function setlocationmenu(topmenuid, uppmenuid) {
-	var submenulist = submenujson[topmenuid];
-	if (submenulist == null) return;
-	var cnt = submenulist.length;
-	 for(i=0;i<cnt;i++) {
-		 
-		 var url = "#";
-		 var tmpurl = submenulist[i].filePath;
-		 
-		 if(!isBlankStr(tmpurl) && tmpurl != "link" && tmpurl != "dir") {
-			 url =  containerPath+tmpurl;
-		 }
-		 
-		 if(submenulist[i].menuLvl == 1) {
-			 $("ul.n2info_loca_menu").eq(submenulist[i].menuLvl).append('<li><a href="'+url+'">'+submenulist[i].menuNm+'</a></li>');
-		 } 
-		 else if (submenulist[i].menuLvl == 2 && uppmenuid == submenulist[i].uppMenuId) {
-			 $("ul.n2info_loca_menu").eq(submenulist[i].menuLvl).append('<li><a href="'+url+'">'+submenulist[i].menuNm+'</a></li>');
-		 }
-		 
-		 
-	 }
+var submenulist = submenujson[topmenuid];
+if (submenulist == null) return;
+var cnt = submenulist.length;
+ for(i=0;i<cnt;i++) {
+
+     var url = "#";
+     var tmpurl = submenulist[i].filePath;
+
+     if(!isBlankStr(tmpurl) && tmpurl != "link" && tmpurl != "dir") {
+         url =  containerPath+tmpurl;
+     }
+
+     if(submenulist[i].menuLvl == 1) {
+         $("ul.n2info_loca_menu").eq(submenulist[i].menuLvl).append('<li><a href="'+url+'">'+submenulist[i].menuNm+'</a></li>');
+     }
+     else if (submenulist[i].menuLvl == 2 && uppmenuid == submenulist[i].uppMenuId) {
+         $("ul.n2info_loca_menu").eq(submenulist[i].menuLvl).append('<li><a href="'+url+'">'+submenulist[i].menuNm+'</a></li>');
+     }
+
+
+ }
 }
 </c:if>
 </script>
@@ -303,9 +314,9 @@ function setlocationmenu(topmenuid, uppmenuid) {
 <!-- 상단메뉴 시작 -->
 <div class="n4top">
 
-	<div class="n4sys">
-		<ul>
-			<%-- 			<li><a href="<c:url value="/helpDown.jsp"/>" target="_self">Help</a></li> --%>
+<div class="n4sys">
+    <ul>
+        <%-- 			<li><a href="<c:url value="/helpDown.jsp"/>" target="_self">Help</a></li> --%>
 			<!-- <li><a href="<c:url value="/main.do"/>" target="_blank"><img src="<c:url value="/images/nball_quick_meta.png"/>" alt=""><s:message code="META.DATA.SYS" /></a></a></li>  -->
 			<!--  <li><a href="<c:url value="/dqmain.do"/>" target="_blank"><img src="<c:url value="/images/nball_quick_dq.png"/>" alt=""><s:message code="DATA.QLTY.SYS" /></a></a></li> -->
 
