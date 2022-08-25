@@ -295,7 +295,7 @@ SELECT
 		(SELECT 
 			COUNT(WO.ORG_NM) 
 		 FROM (SELECT A.ORG_CD, A.ORG_NM, B.DB_NM FROM  WAA_ORG A INNER JOIN WAA_ORG_DB B ON (A.ORG_CD = B.ORG_CD) WHERE A.TARGET_YN = 'Y' AND B.TARGET_YN = 'Y') WO
-		 LEFT OUTER JOIN (SELECT ORG_NM, DB_NM, COUNT(DB_NM) AS DB_ITEM_COUNT FROM WAM_DB_SDITM WHERE DB_NM != '' GROUP BY ORG_NM, DB_NM ) F 
+		 LEFT OUTER JOIN (SELECT ORG_NM, DB_NM, COUNT(ORG_NM) AS DB_ITEM_COUNT FROM WAM_DB_SDITM WHERE DB_NM != '' GROUP BY ORG_NM, DB_NM ) F 
 		 ON (WO.ORG_NM = F.ORG_NM AND WO.DB_NM = F.DB_NM)
 		 WHERE F.DB_ITEM_COUNT IS NOT NULL) AS DB_ITEM, --DB 용어
 		(SELECT 
@@ -350,27 +350,27 @@ SELECT
                                                                                         )
                                                                          GROUP BY ORG_NM
                                                                 )) AS ORG_STND, --등록기관 수
-        (SELECT COUNT(ORG_NM) FROM (
-                                                                SELECT ORG_NM
+        (SELECT COUNT(*) FROM (
+                                                                SELECT ORG_NM,DB_NM
                                                                           FROM
                                                                                         (
-                                                                                        SELECT WO.ORG_NM FROM (SELECT A.ORG_CD, A.ORG_NM, B.DB_NM FROM  WAA_ORG A INNER JOIN WAA_ORG_DB B ON (A.ORG_CD = B.ORG_CD) WHERE A.TARGET_YN='Y' AND B.TARGET_YN = 'Y') WO
+                                                                                        SELECT WO.ORG_NM,WO.DB_NM FROM (SELECT A.ORG_CD, A.ORG_NM, B.DB_NM FROM  WAA_ORG A INNER JOIN WAA_ORG_DB B ON (A.ORG_CD = B.ORG_CD) WHERE A.TARGET_YN='Y' AND B.TARGET_YN = 'Y') WO
                                                                                         LEFT OUTER JOIN (SELECT ORG_NM, DB_NM, COUNT(ORG_NM) AS DB_ITEM_COUNT FROM WAM_DB_SDITM WHERE DB_NM != '' GROUP BY ORG_NM, DB_NM ) F ON (WO.ORG_NM = F.ORG_NM AND WO.DB_NM = F.DB_NM)
                                                                                         WHERE F.DB_ITEM_COUNT IS NOT NULL
                                                                                         UNION ALL
-                                                                                        SELECT WO.ORG_NM FROM (SELECT A.ORG_CD, A.ORG_NM, B.DB_NM FROM  WAA_ORG A INNER JOIN WAA_ORG_DB B ON (A.ORG_CD = B.ORG_CD) WHERE A.TARGET_YN='Y' AND B.TARGET_YN = 'Y') WO
+                                                                                        SELECT WO.ORG_NM,WO.DB_NM FROM (SELECT A.ORG_CD, A.ORG_NM, B.DB_NM FROM  WAA_ORG A INNER JOIN WAA_ORG_DB B ON (A.ORG_CD = B.ORG_CD) WHERE A.TARGET_YN='Y' AND B.TARGET_YN = 'Y') WO
                                                                                         LEFT OUTER JOIN (SELECT ORG_NM, DB_NM, COUNT(DB_NM) AS DB_WORD_COUNT FROM WAM_DB_STWD WHERE DB_NM != ''  GROUP BY ORG_NM, DB_NM ) G ON (WO.ORG_NM = G.ORG_NM AND WO.DB_NM = G.DB_NM)
                                                                                         WHERE G.DB_WORD_COUNT IS NOT NULL
                                                                                         UNION ALL
-                                                                                        SELECT WO.ORG_NM FROM (SELECT A.ORG_CD, A.ORG_NM, B.DB_NM FROM  WAA_ORG A INNER JOIN WAA_ORG_DB B ON (A.ORG_CD = B.ORG_CD) WHERE A.TARGET_YN='Y' AND B.TARGET_YN = 'Y') WO
+                                                                                        SELECT WO.ORG_NM,WO.DB_NM FROM (SELECT A.ORG_CD, A.ORG_NM, B.DB_NM FROM  WAA_ORG A INNER JOIN WAA_ORG_DB B ON (A.ORG_CD = B.ORG_CD) WHERE A.TARGET_YN='Y' AND B.TARGET_YN = 'Y') WO
                                                                                         LEFT OUTER JOIN (SELECT ORG_NM, DB_NM, COUNT(DB_NM) AS DB_DOMAIN_COUNT FROM WAM_DB_DMN WHERE DB_NM != '' GROUP BY ORG_NM, DB_NM ) H ON (WO.ORG_NM = H.ORG_NM AND WO.DB_NM = H.DB_NM)
                                                                                         WHERE H.DB_DOMAIN_COUNT IS NOT NULL
                                                                                         UNION ALL
-                                                                                        SELECT WO.ORG_NM FROM (SELECT A.ORG_CD, A.ORG_NM, B.DB_NM FROM  WAA_ORG A INNER JOIN WAA_ORG_DB B ON (A.ORG_CD = B.ORG_CD) WHERE A.TARGET_YN='Y' AND B.TARGET_YN = 'Y') WO
+                                                                                        SELECT WO.ORG_NM,WO.DB_NM FROM (SELECT A.ORG_CD, A.ORG_NM, B.DB_NM FROM  WAA_ORG A INNER JOIN WAA_ORG_DB B ON (A.ORG_CD = B.ORG_CD) WHERE A.TARGET_YN='Y' AND B.TARGET_YN = 'Y') WO
                                                                                         LEFT OUTER JOIN (SELECT ORG_NM, DB_NM, COUNT(DB_NM) AS DB_CODE_COUNT FROM WAM_DB_COMM_CD WHERE DB_NM != '' GROUP BY ORG_NM, DB_NM ) I ON (WO.ORG_NM = I.ORG_NM AND WO.DB_NM = I.DB_NM)
                                                                                         WHERE I.DB_CODE_COUNT IS NOT NULL
                                                                                         )
-                                                                        GROUP BY ORG_NM
+                                                                        GROUP BY ORG_NM,DB_NM
                                                                 )) AS DB_STND --등록DB기관 수
 )
 SELECT
@@ -400,6 +400,7 @@ SELECT
         DB_CODE,
         ROUND(DB_CODE / (TOTAL_ORG*1.0) *100.0,2) as CODE_RATE
  FROM SUMMARY
+
 </select>
 
 
