@@ -60,6 +60,8 @@ public interface WamDbStwdMapper {
 
     int bulkUpdate(List<WamDbStwd> updateList);
 
+    int bulkUpdateConfirm2(WamDbStwd data);
+
     int bulkDelete(List<WamDbStwd> deleteList);
     
     int dupliCheckDbStndStwd(Map<String, String> param);

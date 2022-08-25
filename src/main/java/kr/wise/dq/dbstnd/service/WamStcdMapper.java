@@ -61,6 +61,8 @@ public interface WamStcdMapper {
 
     int bulkUpdateConfirm(List<WamDbStcd> updateList);
 
+    int bulkUpdateConfirm2(WamDbStcd data);
+
     int bulkDelete(List<WamDbStcd> deleteList);
 
     int selectDupSdCodeCount(WamDbStcd data);

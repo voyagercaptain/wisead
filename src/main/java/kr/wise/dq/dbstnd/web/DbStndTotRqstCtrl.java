@@ -390,18 +390,24 @@ public class DbStndTotRqstCtrl {
 	public IBSResultVO<WaqMstr> regStndItemWamList(@RequestBody WamDbSditms data, WaqMstr reqmst, Locale locale) throws Exception {
 
 		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+
+		long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
+
 		ArrayList<WamDbSditm> list = data.get("data");
 		String decideYn =reqmst.getDecideYn();
+		int result = 0;
 		if("Y".equals(decideYn)) {
+			/*
 			for (WamDbSditm saveVo : list) {
 				saveVo.setDecideYn("Y");
 				saveVo.setConfirmYn("Y");
 			}
+			*/
+			result = dbStndService.bulkUpdateConfirm2(list.get(0));
+		} else {
+			//list = itemValidCheck(list,decideYn);
+			result = dbStndService.registerItemWam(list, reqmst);
 		}
-		long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
-		//list = itemValidCheck(list,decideYn);
-		int result = dbStndService.registerItemWam(list, reqmst);
-
 		
 		String resmsg;
 
@@ -428,22 +434,22 @@ public class DbStndTotRqstCtrl {
 	public IBSResultVO<WaqMstr> regStndCodeWamlist(@RequestBody WamDbStcds data, WaqMstr reqmst, Locale locale) throws Exception {
 
 		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
+		long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
+		int result = 0;
+
 		ArrayList<WamDbStcd> list = data.get("data");
 		String decideYn = reqmst.getDecideYn();
 		if("Y".equals(decideYn)) {
+			/*
 			for (WamDbStcd saveVo : list) {
 				saveVo.setDecideYn("Y");
 				saveVo.setConfirmYn("Y");
 			}
-		}
-		//list = stcdValidCheck(list, decideYn);
-		long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
-        
-		int result = 0;
-		try {
+		    */
+			result = dbStndService.bulkUpdateConfirm2(list.get(0));
+		} else {
+		 //list = stcdValidCheck(list, decideYn);
 			result = dbStndService.registerStcdWam(list);
-		} catch (Exception e) {
-			logger.error("", e);
 		}
 		String resmsg;
 
@@ -616,14 +622,19 @@ public class DbStndTotRqstCtrl {
 		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
 		ArrayList<WamDbDmn> list = data.get("data");
 		String decideYn =reqmst.getDecideYn();
+		int result = 0;
 		if("Y".equals(decideYn)) {
+			/*
 			for (WamDbDmn saveVo : list) {
 				saveVo.setDecideYn("Y");
 				saveVo.setConfirmYn("Y");
 			}
-		}
+			*/
+			result = dbStndService.bulkUpdateConfirm2(list.get(0));
+		} else {
 			//list   = dmnValidCheck(list,decideYn);
-		int result = dbStndService.registerDmnWam(list);
+			result = dbStndService.registerDmnWam(list);
+		}
 
 
 		String resmsg;
@@ -686,15 +697,19 @@ public class DbStndTotRqstCtrl {
 
 			ArrayList<WamDbStwd> list = data.get("data");
 			String decideYn = reqmst.getDecideYn();
+			int result = 0;
 			if("Y".equals(decideYn)) {
+				/*
 				for (WamDbStwd saveVo : list) {
 					saveVo.setDecideYn("Y");
 					saveVo.setConfirmYn("Y");
 				}
+				 */
+				result = dbStndService.bulkUpdateConfirm2(list.get(0));
+			} else {
+				//list = stwdValidCheck(list, decideYn);
+				result = dbStndService.registerStwdWam(list);
 			}
-			//list = stwdValidCheck(list, decideYn);
-			int result = dbStndService.registerStwdWam(list);
-	
 			String resmsg;
 
 			if(result > 0) {

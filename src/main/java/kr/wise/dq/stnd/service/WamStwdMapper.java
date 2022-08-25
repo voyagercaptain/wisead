@@ -66,6 +66,8 @@ public interface WamStwdMapper {
 
     int bulkUpdateConfirm(List<WamStwd> updateList);
 
+    int bulkUpdateConfirm2(WamStwd data);
+
     int bulkDelete(List<WamStwd> deleteList);
 
 

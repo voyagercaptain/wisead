@@ -49,6 +49,8 @@ public interface WamDmnMapper {
 
     int bulkUpdateConfirm(List<WamDmn> updateList);
 
+    int bulkUpdateConfirm2(WamDmn data);
+
     int bulkDelete(List<WamDmn> deleteList);
 
     int selectDupSdDmnCount(WamDmn data);

@@ -39,22 +39,7 @@ import kr.wise.commons.util.ValidationCheck;
 import kr.wise.dq.dbstnd.service.WamDbDmn;
 import kr.wise.dq.dbstnd.service.WamDbDmnMapper;
 import kr.wise.dq.dbstnd.service.WamDbSditm;
-import kr.wise.dq.stnd.service.StndItemRqstService;
-import kr.wise.dq.stnd.service.WamSditm;
-import kr.wise.dq.stnd.service.WamSditmMapper;
-import kr.wise.dq.stnd.service.WamStwdAbr;
-import kr.wise.dq.stnd.service.WapDvCanAsm;
-import kr.wise.dq.stnd.service.WapDvCanAsmMapper;
-import kr.wise.dq.stnd.service.WapDvCanDic;
-import kr.wise.dq.stnd.service.WapDvCanDicMapper;
-import kr.wise.dq.stnd.service.WaqDmn;
-import kr.wise.dq.stnd.service.WaqDmnMapper;
-import kr.wise.dq.stnd.service.WaqSditm;
-import kr.wise.dq.stnd.service.WaqSditmMapper;
-import kr.wise.dq.stnd.service.WaqStwd;
-import kr.wise.dq.stnd.service.WaqStwdCnfg;
-import kr.wise.dq.stnd.service.WaqStwdCnfgMapper;
-import kr.wise.dq.stnd.service.WaqStwdMapper;
+import kr.wise.dq.stnd.service.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1249,10 +1234,12 @@ public class StndItemRqstServiceImpl implements StndItemRqstService {
 			saveVo.setRqstUserId(userid);
 			saveVo.setRegTypCd("U");
 		}
-
+		/*
 		for (int id = 0; id < reglist.size(); id += WiseConfig.FETCH_SIZE){
 			result = wammapper.bulkUpdateConfirm(new ArrayList<WamSditm>(reglist.subList(id, min(id + WiseConfig.FETCH_SIZE, reglist.size()))));
 		}
+		*/
+		result = wammapper.bulkUpdateConfirm2((WamSditm)reglist.get(0));
 
 		return result;
 	}

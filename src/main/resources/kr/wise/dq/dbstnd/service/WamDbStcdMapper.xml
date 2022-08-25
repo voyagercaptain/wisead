@@ -484,4 +484,14 @@
    	 AND A.ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
    	</if> 
   </select>
+
+    <update id="bulkUpdateConfirm2" parameterType="kr.wise.dq.dbstnd.service.WamDbStcd" >
+        update WAM_DB_COMM_CD
+        set CONFIRM_DTM = sys_datetime,
+            CONFIRM_YN =  'Y',
+            ERR_CHK = ''
+        where VALID_YN = 'Y' AND ORG_NM = #{orgNm,jdbcType=VARCHAR}
+          AND DB_NM = #{dbNm,jdbcType=VARCHAR}
+    </update>
+
 </mapper>

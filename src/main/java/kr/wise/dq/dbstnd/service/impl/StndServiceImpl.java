@@ -193,10 +193,12 @@ public class StndServiceImpl implements StndService {
 			saveVo.setRqstUserId(userid);
 			saveVo.setRegTypCd("U");
 		}
-
+		/*
 		for (int id = 0; id < reglist.size(); id += WiseConfig.FETCH_SIZE){
 			result = wamStcdMapper.bulkUpdateConfirm(new ArrayList<WamDbStcd>(reglist.subList(id, min(id + WiseConfig.FETCH_SIZE, reglist.size()))));
 		}
+		*/
+		result = wamStcdMapper.bulkUpdateConfirm2((WamDbStcd)reglist.get(0));
 
 		return result;
 	}
@@ -318,4 +320,5 @@ public class StndServiceImpl implements StndService {
 
 		return regCount;
 	}
+
 }

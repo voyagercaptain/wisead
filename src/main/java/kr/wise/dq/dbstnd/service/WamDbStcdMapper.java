@@ -57,6 +57,8 @@ public interface WamDbStcdMapper {
 
     int bulkUpdate(List<WamDbStcd> updateList);
 
+    int bulkUpdateConfirm2(WamDbStcd data);
+
     int bulkDelete(List<WamDbStcd> deleteList);
     
     int dupliCheckDbStndStcd(Map<String, String> param);

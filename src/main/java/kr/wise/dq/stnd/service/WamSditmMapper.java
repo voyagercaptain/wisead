@@ -45,6 +45,8 @@ public interface WamSditmMapper {
 
 	int bulkUpdateConfirm(List<WamSditm> updateList);
 
+	int bulkUpdateConfirm2(WamSditm data);
+
 	int bulkDelete(List<WamSditm> deleteList);
 
 

@@ -594,10 +594,12 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
 			saveVo.setRqstUserId(userid);
 			saveVo.setRegTypCd("U");
 		}
-
+		/*
 		for (int id = 0; id < reglist.size(); id += WiseConfig.FETCH_SIZE){
 			result = wammapper.bulkUpdateConfirm(new ArrayList<WamStwd>(reglist.subList(id, min(id + WiseConfig.FETCH_SIZE, reglist.size()))));
 		}
+		*/
+		result = wammapper.bulkUpdateConfirm2((WamStwd)reglist.get(0));
 
 		return result;
 	}

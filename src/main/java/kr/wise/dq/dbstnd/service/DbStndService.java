@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.wise.commons.rqstmst.service.WaqMstr;
+import kr.wise.dq.stnd.service.WamSditm;
 
 public interface DbStndService {
 
@@ -53,6 +54,15 @@ public interface DbStndService {
 	int initDbStndStwd(List<WamDbStwd> reglist, WaqMstr reqmst) throws Exception;
 	
 	int initDbStndStcd(List<WamDbStcd> reglist, WaqMstr reqmst) throws Exception;
+
+	int bulkUpdateConfirm2(WamDbSditm data);
+
+	int bulkUpdateConfirm2(WamDbDmn data);
+
+	int bulkUpdateConfirm2(WamDbStwd data);
+
+	int bulkUpdateConfirm2(WamDbStcd data);
+
 	
 	List<WamDbSditm> selectDbSditmList();
 	List<WamDbDmn>   selectDbDmnList();

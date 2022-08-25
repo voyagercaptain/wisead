@@ -1031,5 +1031,14 @@
   	</where>
   	ORDER BY DMN_LNM
   </select>
+
+  <update id="bulkUpdateConfirm2" parameterType="kr.wise.dq.dbstnd.service.WamDbDmn" >
+    update WAM_DB_DMN
+    set CONFIRM_DTM = sys_datetime,
+        CONFIRM_YN =  'Y',
+        ERR_CHK = ''
+    where VALID_YN = 'Y' AND ORG_NM = #{orgNm,jdbcType=VARCHAR}
+      AND DB_NM = #{dbNm,jdbcType=VARCHAR}
+  </update>
   
 </mapper>

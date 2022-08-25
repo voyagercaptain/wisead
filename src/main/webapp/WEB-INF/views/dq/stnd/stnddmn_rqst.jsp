@@ -303,12 +303,12 @@ function doAction(sAction)
         	break;
         
 		case "Search":
-
+			/*
 			if(frmSearch.orgNm.value == '') {
 				showMsgBox("INF", "기관명을 입력하고 검색해 주세요.");
 				return;
 			}
-
+			*/
 			//프로파일별 url 셋팅
 			var url = "";
 			url = '<c:url value="/dq/stnd/getDomainlist.do"/>';

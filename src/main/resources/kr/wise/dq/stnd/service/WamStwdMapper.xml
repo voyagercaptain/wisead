@@ -791,6 +791,14 @@
         </foreach>
     </update>
 
+    <update id="bulkUpdateConfirm2" parameterType="kr.wise.dq.stnd.service.WamStwd" >
+            update WAM_STWD
+            set CONFIRM_DTM = sys_datetime,
+            CONFIRM_YN =  'Y',
+                ERR_CHK = ''
+            where VALID_YN = 'Y' AND ORG_NM = #{orgNm,jdbcType=VARCHAR}
+    </update>
+
     <delete id="bulkDelete" parameterType="java.util.List" >
         <foreach collection="list" index="index" item="item">
         delete from WAM_STWD

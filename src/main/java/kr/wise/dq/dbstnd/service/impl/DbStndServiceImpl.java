@@ -818,4 +818,21 @@ public class DbStndServiceImpl implements DbStndService {
 		return wamDbStcdMapper.selectStcdTotalCnt(data);
 	}
 
+
+	public int bulkUpdateConfirm2(WamDbSditm data) {
+		return wamDbSditmMapper.bulkUpdateConfirm2(data);
+	}
+
+	public int bulkUpdateConfirm2(WamDbDmn data) {
+		return wamDbDmnMapper.bulkUpdateConfirm2(data);
+	}
+
+	public int bulkUpdateConfirm2(WamDbStwd data) {
+		return wamDbStwdMapper.bulkUpdateConfirm2(data);
+	}
+
+	public int bulkUpdateConfirm2(WamDbStcd data) {
+		return wamDbStcdMapper.bulkUpdateConfirm2(data);
+	}
+
 }

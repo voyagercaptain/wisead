@@ -32,6 +32,7 @@ import kr.wise.commons.rqstmst.service.WaqRqstVrfDtls;
 import kr.wise.commons.rqstmst.service.WaqRqstVrfDtlsMapper;
 import kr.wise.commons.util.UtilString;
 import kr.wise.commons.util.ValidationCheck;
+import kr.wise.dq.dbstnd.service.WamDbStcd;
 import kr.wise.dq.stnd.service.*;
 
 import org.slf4j.Logger;
@@ -1374,10 +1375,12 @@ public class StndDmnRqstServiceImpl implements StndDmnRqstService {
 			saveVo.setRqstUserId(userid);
 			saveVo.setRegTypCd("U");
 		}
-
+		/*
 		for (int id = 0; id < reglist.size(); id += WiseConfig.FETCH_SIZE){
 			result = wammapper.bulkUpdateConfirm(new ArrayList<WamDmn>(reglist.subList(id, min(id + WiseConfig.FETCH_SIZE, reglist.size()))));
 		}
+		*/
+		result = wammapper.bulkUpdateConfirm2((WamDmn)reglist.get(0));
 
 		return result;
 	}
