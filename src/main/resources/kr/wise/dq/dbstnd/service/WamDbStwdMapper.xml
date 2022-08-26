@@ -98,7 +98,7 @@
         	 OR A.STWD_PNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
       </if>
    	) FSQ -- 임시 Alias
-  	ORDER BY STWD_LNM
+  	ORDER BY RQST_DTM DESC,STWD_LNM ASC
   </select>
   <select id="selectStndList" resultMap="BaseResultMap" parameterType="kr.wise.dq.dbstnd.service.WamDbStwd" >
   	SELECT 1 AS NO

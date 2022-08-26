@@ -570,7 +570,7 @@ SELECT *
       </if>
        AND ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
    ) FSQ 
-  ORDER BY DB_NM,SDITM_LNM
+  ORDER BY RQST_DTM DESC,SDITM_LNM ASC
   </select>
   <select id="selectSditmChangeList" resultMap="BaseResultMap" parameterType="java.lang.String" >
     SELECT A.SDITM_ID         

@@ -114,7 +114,7 @@
         AND COMM_CD_ID = #{commCdId,jdbcType=VARCHAR}
       </if>
   	</where>
-  	ORDER BY COMM_CD_NM
+  	ORDER BY WRIT_DTM DESC,COMM_CD_NM ASC
   </select>
  
   

@@ -160,7 +160,7 @@
       </if>
       
   	</where>
-  	ORDER BY DMN_LNM
+  	ORDER BY RQST_DTM DESC,DMN_LNM ASC
   </select>
   <select id="selectListSLC" resultMap="BaseResultMap" parameterType="kr.wise.dq.dbstnd.service.WamDbDmn" >
   	SELECT A.*
