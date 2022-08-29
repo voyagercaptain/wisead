@@ -548,46 +548,42 @@ SELECT *
 
 
   <select id="selectSditmList" parameterType="kr.wise.dq.stnd.service.WamSditm" resultMap="BaseResultMap">
-  SELECT * 
-  FROM
-	  (SELECT A.SDITM_ID
-             ,A.SDITM_LNM
-             ,A.SDITM_PNM
-             ,A.LNM_CRI_DS
-             ,A.DMN_ID
-             ,A.DMNG_ID
-             ,A.INFOTP_ID
-             ,A.INFOTP_CHG_YN
-             ,A.RQST_NO
-             ,A.RQST_SNO
-             ,A.OBJ_DESCN
-             ,A.OBJ_VERS
-             ,A.REG_TYP_CD
-             ,A.FRS_RQST_DTM
-             ,A.FRS_RQST_USER_ID
-             ,A.RQST_DTM
-             ,A.RQST_USER_ID
-             ,A.APRV_DTM
-             ,A.APRV_USER_ID
-             ,A.PNM_CRI_DS
-		     ,A.DATA_TYPE
-		     ,A.DATA_LEN
-		     ,A.DATA_SCAL
-		     ,(SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.FRS_RQST_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS FRS_RQST_USER_NM
-	    	 ,(SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.RQST_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS RQST_USER_NM
-	    	 ,(SELECT USER_NM FROM WAA_USER WHERE USER_ID = A.APRV_USER_ID and EXP_DTM = DATE_FORMAT('9999-12-31', '%Y-%m-%d')) AS APRV_USER_NM
-			 ,A.INFOTP_LNM, A.ALW_VAL, A.OWNR_ORG, A.ADMN_STND_CD
-			 ,A.SAVE_FRM, A.EXPRSN_FRM, A.UNIT, A.ORG_NM
-			 ,A.VRF_RMK
-			 , CASE WHEN A.ERR_CHK IS NOT NULL and A.ERR_CHK != '' THEN '#FF0000' ELSE NULL END AS FontColor
-			 , STND_CD
-      		 , SPCL_NT
-      		 , BSNSS_FLD
-      		 , PNM
-      		 , ERR_CHK
-	         , VALID_YN
-             , CONFIRM_YN
-		FROM WAM_SDITM A 
+      SELECT A.SDITM_ID
+            ,A.SDITM_LNM
+            ,A.SDITM_PNM
+            ,A.LNM_CRI_DS
+            ,A.DMN_ID
+            ,A.DMNG_ID
+            ,A.INFOTP_ID
+            ,A.INFOTP_CHG_YN
+            ,A.RQST_NO
+            ,A.RQST_SNO
+            ,A.OBJ_DESCN
+            ,A.OBJ_VERS
+            ,A.REG_TYP_CD
+            ,A.FRS_RQST_DTM
+            ,A.FRS_RQST_USER_ID
+            ,A.RQST_DTM
+            ,A.RQST_USER_ID
+            ,A.APRV_DTM
+            ,A.APRV_USER_ID
+            ,A.PNM_CRI_DS
+            ,A.DATA_TYPE
+            ,A.DATA_LEN
+            ,A.DATA_SCAL
+            ,A.INFOTP_LNM, A.ALW_VAL, A.OWNR_ORG, A.ADMN_STND_CD
+            ,A.SAVE_FRM, A.EXPRSN_FRM, A.UNIT, A.ORG_NM
+            ,A.VRF_RMK
+            , CASE WHEN A.ERR_CHK IS NOT NULL and A.ERR_CHK != '' THEN '#FF0000' ELSE NULL END AS FontColor
+            , STND_CD
+            , SPCL_NT
+            , BSNSS_FLD
+            , PNM
+            , ERR_CHK
+            , VALID_YN
+            , CONFIRM_YN FROM
+	    (SELECT *
+		FROM WAM_SDITM
 		WHERE 1 = 1
 		  <if test='!"2".equals(usergId) and !"3".equals(usergId)' >	 
 		  	AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
@@ -625,10 +621,12 @@ SELECT *
                  OR SDITM_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')
                  OR SDITM_PNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
         </if>
-        AND ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
-        ) FSQ
-    ORDER BY SDITM_LNM
+		ORDER BY RQST_DTM DESC, SDITM_LNM ASC
+        ) A
+        WHERE ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
+        ORDER BY RQST_DTM DESC, SDITM_LNM ASC
   </select>
+
   <select id="selectSditmChangeList" resultMap="BaseResultMap" parameterType="java.lang.String" >
     SELECT A.SDITM_ID         
          , A.EXP_DTM          

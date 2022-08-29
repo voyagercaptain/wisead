@@ -149,11 +149,10 @@
   </select>
 
   <select id="selectList" resultMap="BaseResultMap" parameterType="kr.wise.dq.stnd.service.WamDmn" >
-    SELECT *
+    SELECT A.*, CASE WHEN A.ERR_CHK IS NOT NULL and A.ERR_CHK != '' THEN '#FF0000' ELSE NULL END AS FontColor
     FROM
-      (SELECT A.*
-  	     , CASE WHEN A.ERR_CHK IS NOT NULL and A.ERR_CHK != '' THEN '#FF0000' ELSE NULL END AS FontColor
-  	   FROM WAM_DMN A
+      (SELECT *
+  	   FROM WAM_DMN
   	   WHERE  1 = 1
         <if test='!"2".equals(usergId) and !"3".equals(usergId)' >
   	   	  AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
@@ -173,7 +172,7 @@
         </if>
 
       <if test="dmnId != null" >
-        AND A.DMN_ID = #{dmnId,jdbcType=VARCHAR}
+        AND  DMN_ID = #{dmnId,jdbcType=VARCHAR}
       </if>
 
       <if test="orgNm != null" >
@@ -190,9 +189,10 @@
         	 OR DMNG_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')    	 
         	 )
       </if>
-       AND ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
-      ) FSQ
- 	ORDER BY DMN_LNM
+       ORDER BY RQST_DTM DESC, DMN_LNM ASC
+      ) A
+      WHERE ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
+      ORDER BY RQST_DTM DESC, DMN_LNM ASC
   </select>
 
   <select id="selectListSLC" resultMap="BaseResultMap" parameterType="kr.wise.dq.stnd.service.WamDmn" >

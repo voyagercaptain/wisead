@@ -116,8 +116,8 @@
   	SELECT *
       , CASE WHEN ERR_CHK IS NOT NULL AND ERR_CHK != '' THEN '#FF0000' ELSE NULL END AS FontColor
   	  FROM
-  	(SELECT A.*
-   	   FROM WAM_COMM_CD A
+  	(SELECT *
+   	   FROM WAM_COMM_CD
    	   WHERE 1 = 1
          <if test='!"2".equals(usergId) and !"3".equals(usergId)' >
           AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
@@ -153,9 +153,10 @@
         	 OR COMN_CD_ENNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
         	 OR COMN_CD_ENNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
       </if>
-      AND ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
+      ORDER BY WRIT_DTM DESC, COMM_CD_NM ASC
       ) FSQ
-  	  ORDER BY COMM_CD_NM
+      WHERE ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
+      ORDER BY WRIT_DTM DESC, COMM_CD_NM ASC
   </select>
 
 

@@ -157,9 +157,10 @@
         	 OR STWD_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')
         	 OR STWD_PNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
       </if>
-      AND ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
+      ORDER BY RQST_DTM DESC, STWD_LNM ASC
     ) FSQ
-  	ORDER BY STWD_LNM
+      WHERE  ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
+      ORDER BY RQST_DTM DESC, STWD_LNM ASC
   </select>
   <select id="selectStndList" resultMap="BaseResultMap" parameterType="kr.wise.dq.stnd.service.WamStwd" >
   	SELECT 1 AS NO
