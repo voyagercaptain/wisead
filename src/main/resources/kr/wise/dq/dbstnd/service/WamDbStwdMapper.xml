@@ -61,7 +61,7 @@
     	   , CASE WHEN A.ERR_CHK IS NOT null AND A.ERR_CHK != '' THEN '#FF0000' ELSE NULL END AS FontColor
    	FROM WAM_DB_STWD A
    	WHERE 1 = 1
-   	AND ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
+   	
    	<if test="vcWh != null">
          	<if test='vcWh == "Y"'>
          	AND A.VALID_YN   ='Y'
@@ -97,8 +97,10 @@
         	 OR A.STWD_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')
         	 OR A.STWD_PNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
       </if>
+     ORDER BY RQST_DTM DESC,STWD_LNM ASC 
    	) FSQ -- 임시 Alias
-  	ORDER BY RQST_DTM DESC,STWD_LNM ASC
+   	WHERE 1=1
+   	AND ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
   </select>
   <select id="selectStndList" resultMap="BaseResultMap" parameterType="kr.wise.dq.dbstnd.service.WamDbStwd" >
   	SELECT 1 AS NO

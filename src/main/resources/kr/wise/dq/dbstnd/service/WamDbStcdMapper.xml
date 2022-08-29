@@ -71,7 +71,7 @@
   	, CASE WHEN A.ERR_CHK IS NOT null AND A.ERR_CHK != '' THEN '#FF0000' ELSE NULL END AS FontColor
    	FROM WAM_DB_COMM_CD A
    	WHERE  1 = 1
-   	 AND ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
+   	 
    	 <if test="vcWh != null">
          	<if test='vcWh == "Y"'>
          	AND A.VALID_YN   ='Y'
@@ -105,7 +105,8 @@
         	 OR A.COMM_CD_DESC LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
         	 OR A.COMN_CD_ENNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
         	 OR A.COMN_CD_ENNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
-      </if> 
+      </if>
+      ORDER BY WRIT_DTM DESC,COMM_CD_NM ASC 
    	) FSQ -- 임시 Alias
   	<where>
 		/* AND REG_TYP_CD IN ('C', 'U') */
@@ -113,8 +114,8 @@
       <if test="commCdId != null" >
         AND COMM_CD_ID = #{commCdId,jdbcType=VARCHAR}
       </if>
+      AND ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
   	</where>
-  	ORDER BY WRIT_DTM DESC,COMM_CD_NM ASC
   </select>
  
   

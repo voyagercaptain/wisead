@@ -568,9 +568,10 @@ SELECT *
         	 OR A.SDITM_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')
         	 OR A.SDITM_PNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
       </if>
-       AND ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
+      ORDER BY RQST_DTM DESC,SDITM_LNM ASC
    ) FSQ 
-  ORDER BY RQST_DTM DESC,SDITM_LNM ASC
+  WHERE 1=1
+  AND ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
   </select>
   <select id="selectSditmChangeList" resultMap="BaseResultMap" parameterType="java.lang.String" >
     SELECT A.SDITM_ID         
