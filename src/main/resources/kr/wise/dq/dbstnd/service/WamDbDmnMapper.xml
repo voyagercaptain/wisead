@@ -113,12 +113,12 @@
 	limit 30
   </select>
   <select id="selectList" resultMap="BaseResultMap" parameterType="kr.wise.dq.dbstnd.service.WamDbDmn" >
-  	SELECT A.*
+  	SELECT T.*
+  	FROM(SELECT A.*
   	     , CASE WHEN A.ERR_CHK IS NOT null AND A.ERR_CHK != '' THEN '#FF0000' ELSE NULL END AS FontColor
   	  FROM WAM_DB_DMN A 
   	<where>
        AND A.REG_TYP_CD IN ('C', 'U')
-       AND ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
          <if test="vcWh != null">
          	<if test='vcWh == "Y"'>
          	AND A.VALID_YN   ='Y'
@@ -158,9 +158,11 @@
         	 OR A.DMNG_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')    	 
         	 )
       </if>
-      
+    ORDER BY RQST_DTM DESC,DMN_LNM ASC  
   	</where>
-  	ORDER BY DMN_LNM
+  	) T
+  	WHERE 1=1
+  	AND ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
   </select>
   <select id="selectListSLC" resultMap="BaseResultMap" parameterType="kr.wise.dq.dbstnd.service.WamDbDmn" >
   	SELECT A.*
