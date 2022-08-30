@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.wise.commons.helper.grid.IBSheetListVO;
 import kr.wise.commons.user.WaaUserg;
 import kr.wise.commons.user.service.CmpRateService;
+import kr.wise.commons.user.service.RegistStatService;
 
 /**
  * <PRE>
@@ -33,6 +35,9 @@ public class CmpRateCtrl {
 	@Inject
 	private CmpRateService service;
 	
+	@Inject
+	private RegistStatService registStatService;
+	
 	/**  기관표준 준수율 */
 	@RequestMapping("org_cmp_rat_lst.do")
 	public String formpage() {
@@ -41,7 +46,8 @@ public class CmpRateCtrl {
 	
 	/**  DB표준 준수율 */
 	@RequestMapping("db_cmp_rat_lst.do")
-	public String formpage2() {
+	public String formpage2(ModelMap model) {
+		model.addAttribute("userDbList", registStatService.selectDbList());
 		return "/commons/user/db_cmp_rat_lst";
 	}
 	

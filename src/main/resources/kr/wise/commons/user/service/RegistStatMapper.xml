@@ -102,10 +102,6 @@ SELECT
   	<if test="orgNm != null and orgNm != '' ">
   	AND WO.ORG_NM LIKE  '%' || #{orgNm} || '%'
   	</if>
-  	<if test="dbNm != null" >
-     AND replace(WO.DB_NM, ' ','') LIKE CONCAT('%',replace(#{dbNm,jdbcType=VARCHAR}, ' ',''),'%') 
-    </if>
-  	
 </select>
 
 <select id="getTotalDbCountList1" resultType="java.util.Map" parameterType="java.util.Map">

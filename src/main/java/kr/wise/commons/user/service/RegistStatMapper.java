@@ -5,7 +5,6 @@ import java.util.Map;
 
 import kr.wise.commons.cmm.annotation.Mapper;
 import kr.wise.commons.user.WaaUserg;
-import kr.wise.dq.dbstnd.service.WamDbSditm;
 
 @Mapper
 public interface RegistStatMapper {

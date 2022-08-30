@@ -88,15 +88,6 @@ function doAction(sAction)
         
         case "Search":
         	
-        	if(frmSearch.orgNm.value == '') {
-				showMsgBox("INF", "기관명을 입력하고 검색해 주세요.");
-				return;
-			}
-        	if(frmSearch.dbNm.value == '') {
-				showMsgBox("INF", "DB명을 입력하고 검색해 주세요.");
-				return;
-			}
-        	
         	var param = $('#frmSearch').serialize();
         	//alert(param);
         	grid_sheet.DoSearch('<c:url value="/commons/user/DbRegistStatSelectlist.do" />', param);
@@ -151,14 +142,8 @@ function doAction(sAction)
                                 <td >
                                 <input type="text" id="orgNm" name="orgNm" class="wd98p" placeholder="기관명을 입력해주세요"  />
 								</td>
-                            <th scope="row"><label for="dbNm">DB명</label></th> <!-- 사전유형 -->
+                            <th scope="row"><label for=""></label></th> <!-- 사전유형 -->
                             <td >
-                                <select id="dbNm" class="" name="dbNm">
-                                	<option value="">전체</option>
-	 							<c:forEach var="userDbList" items="${userDbList}" varStatus="status">
-	 							  <option value="${userDbList.dbNm}">${userDbList.dbNm}</option>
-	 							</c:forEach> 
-	 					 		</select> 
 							</td>
                        </tr>
                    </tbody>

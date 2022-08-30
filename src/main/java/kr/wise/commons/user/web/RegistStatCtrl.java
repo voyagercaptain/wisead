@@ -44,8 +44,7 @@ public class RegistStatCtrl {
 	
 	/**  DB별 등록 현황 */
 	@RequestMapping("db_regist_stat_lst.do")
-	public String formpage2(ModelMap model) {
-		model.addAttribute("userDbList", service.selectDbList());
+	public String formpage2() {
 		return "/commons/user/db_regist_stat_lst";
 	}
 	

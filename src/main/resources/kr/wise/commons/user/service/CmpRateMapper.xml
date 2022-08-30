@@ -122,12 +122,17 @@ SELECT T.*
 		ON(A.STWD_LNM=B.STWD_LNM AND A.STWD_PNM = B.STWD_PNM and A.org_nm = B.org_nm and A.confirm_yn='Y' and B.confirm_yn='Y')
 		)														  AS  ORG_WORD_COUNT,   --기관표준 단어 일치 수
 		(SELECT COUNT(*) FROM WAM_DB_STWD WHERE ORG_NM=WO.ORG_NM and confirm_yn='Y')  AS DB_WORD_COUNT    --DB표준 단어 수
-		FROM (select org_nm from WAA_ORG where target_yn ='Y') WO
+		FROM (SELECT  A.ORG_NM ,B.DB_NM FROM  WAA_ORG A INNER JOIN WAA_ORG_DB B ON (A.ORG_CD = B.ORG_CD) where A.TARGET_YN ='Y') WO
+		WHERE 1=1
+		<if test="orgNm != null and orgNm != '' ">
+ 		AND WO.ORG_NM LIKE  CONCAT('%', #{orgNm} , '%')
+		</if>
+		<if test="dbNm != null" >
+     	AND replace(WO.DB_NM, ' ','') LIKE CONCAT('%',replace(#{dbNm,jdbcType=VARCHAR}, ' ',''),'%') 
+ 		</if>
 	) T
 	where (T.DB_ITEM_COUNT > 0 or T.DB_DOMAIN_COUNT > 0  or T.DB_WORD_COUNT > 0 )
-<if test="orgNm != null and orgNm != '' ">
- AND T.ORG_NM LIKE  CONCAT('%', #{orgNm} , '%')
-</if>
+
 
 </select>
 </mapper>
