@@ -981,7 +981,9 @@ SELECT *
            	CONFIRM_DTM   = SYSDATE,
            	CONFIRM_YN    = 'Y',
            </if>
-            PNM 			= #{item.pnm,jdbcType=VARCHAR}
+            PNM 		= #{item.pnm,jdbcType=VARCHAR},
+            ERR_CHK = '',
+            VALID_YN = 'N'
         where SDITM_ID = #{item.sditmId,jdbcType=VARCHAR}
     </foreach>
   </update>

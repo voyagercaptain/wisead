@@ -81,7 +81,7 @@ public class StndServiceImpl implements StndService {
 
 
 	
-	public int registerStcdWam(List<WamDbStcd> reglist) throws Exception {
+	public int registerStcdWam(List<WamDbStcd> reglist, WaqMstr reqmst) throws Exception {
 
 		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
 		String userid = user.getUniqId();
@@ -123,6 +123,9 @@ public class StndServiceImpl implements StndService {
 				saveVo.setFrsRqstUserId(userid);
 				saveVo.setRqstUserId(userid);
 				saveVo.setRegTypCd("U");
+				if(!"inspect".equals(reqmst.getRqstNm())) {
+					saveVo.setValidYn("N");
+				}
 			}
 		}
 

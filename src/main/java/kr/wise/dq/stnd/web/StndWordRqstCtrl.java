@@ -415,7 +415,8 @@ public class StndWordRqstCtrl {
 		stndWordRqstService.registerWamCheck(list, reqmst);
 		logger.debug("검증 종료");
 
-		int result = stndWordRqstService.registerWam(list);
+		reqmst.setRqstNm("inspect");
+		int result = stndWordRqstService.registerWam(list, reqmst);
 		String resmsg;
 
 		if(result > 0 ){
@@ -486,7 +487,7 @@ public class StndWordRqstCtrl {
 
 		ArrayList<WamStwd> list = data.get("data");
 
-		int result = stndWordRqstService.registerWam(list);
+		int result = stndWordRqstService.registerWam(list, reqmst);
 		
 //		String stwdDcd = UtilString.null2Blank(session.getAttribute("stwdDcd"));
 		
@@ -576,7 +577,7 @@ public class StndWordRqstCtrl {
 			for(int i=0;i<list.size();i++) {
 				list.get(i).setIbsStatus("D");
 			}
-			int result = stndWordRqstService.registerWam(list);
+			int result = stndWordRqstService.registerWam(list, reqmst);
 			
 //			String stwdDcd = UtilString.null2Blank(session.getAttribute("stwdDcd"));
 			

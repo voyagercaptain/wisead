@@ -1298,12 +1298,16 @@ public class StndItemRqstServiceImpl implements StndItemRqstService {
 				result = wammapper.bulkInsert(new ArrayList<WamSditm>(insertList.subList(id, min(id + WiseConfig.FETCH_SIZE, insertList.size()))));
 			}
 
+
 			if (updateList != null) {
 				for (WamSditm saveVo : updateList) {
 					//요청번호 셋팅
 					saveVo.setFrsRqstUserId(userid);
 					saveVo.setRqstUserId(userid);
 					saveVo.setRegTypCd("U");
+					if(!"inspect".equals(reqmst.getRqstNm())) {
+						saveVo.setValidYn("N");
+					}
 				}
 			}
 

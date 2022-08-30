@@ -573,7 +573,8 @@ public class StndDmnRqstCtrl {
 		stndDmnRqstService.registerWamCheck(list, reqmst);
 		logger.debug("검증 종료");
 
-		int result = stndDmnRqstService.registerWam(list);
+		reqmst.setRqstNm("inspect");
+		int result = stndDmnRqstService.registerWam(list, reqmst);
 		String resmsg;
 
 		if(result > 0 ){
@@ -644,7 +645,7 @@ public class StndDmnRqstCtrl {
 		logger.debug("reqmst:{}\ndata:{}", reqmst, data);
 		ArrayList<WamDmn> list = data.get("data");
 
-		int result = stndDmnRqstService.registerWam(list);
+		int result = stndDmnRqstService.registerWam(list, reqmst);
 
 //		result += stndDmnRqstService.check(reqmst);
 
@@ -714,7 +715,7 @@ public class StndDmnRqstCtrl {
 			list.get(i).setIbsStatus("D");
 		}
 		
-		int result = stndDmnRqstService.registerWam(list);
+		int result = stndDmnRqstService.registerWam(list, reqmst);
 
 //		result += stndDmnRqstService.check(reqmst);
 

@@ -483,7 +483,8 @@ public class DbStndTotRqstCtrl {
 		list = stndStcdValidCheck(list, reqmst.getDecideYn());
 		logger.debug("검증 종료");
 
-		int result = stndService.registerStcdWam(list);
+		reqmst.setRqstNm("inspect");
+		int result = stndService.registerStcdWam(list, reqmst);
 		String resmsg;
 
 		if(result > 0 ){
@@ -555,7 +556,7 @@ public class DbStndTotRqstCtrl {
         
 		int result = 0;
 		try {
-			result = stndService.registerStcdWam(list);
+			result = stndService.registerStcdWam(list, reqmst);
 		} catch (Exception e) {
 			logger.error("", e);
 		}
@@ -798,7 +799,7 @@ public class DbStndTotRqstCtrl {
 			for(int i=0;i<list.size();i++) {
 				list.get(i).setIbsStatus("D");
 			}
-			int result = stndService.registerStcdWam(list);
+			int result = stndService.registerStcdWam(list, reqmst);
 			
 			String resmsg;
 

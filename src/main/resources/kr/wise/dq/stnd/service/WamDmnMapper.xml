@@ -1198,7 +1198,7 @@
                 ERR_CHK = #{item.errChk,jdbcType=VARCHAR},
                 VALID_YN = #{item.validYn,jdbcType=VARCHAR},
                 <if test="item.confirmYn eq 'Y'.toString()" >
-                    CONFIRM_DTM = sys_datetime,
+                  CONFIRM_DTM = sys_datetime,
                 </if>
                 CONFIRM_YN =  #{item.confirmYn,jdbcType=VARCHAR}
         where DMN_ID = #{item.dmnId,jdbcType=VARCHAR}

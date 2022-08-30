@@ -480,6 +480,7 @@ public class StndItemRqstCtrl {
 		stndItemRqstService.registerWamCheck(list, reqmst);
 		logger.debug("검증 종료");
 
+		reqmst.setRqstNm("inspect");
 		int result = stndItemRqstService.registerWam(list, reqmst);
 		String resmsg;
 

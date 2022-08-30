@@ -722,8 +722,9 @@
            		CONFIRM_DTM   = SYSDATE,
            		CONFIRM_YN    = 'Y',
             	</if>
-                SPCL_NT = #{item.spclNt,jdbcType=VARCHAR}
-              
+                SPCL_NT = #{item.spclNt,jdbcType=VARCHAR},
+                ERR_CHK = '',
+                VALID_YN = 'N'
         where STWD_ID = #{item.stwdId,jdbcType=VARCHAR}
         </foreach>
     </update>

@@ -13,7 +13,7 @@ public interface StndService {
 	
 	List<WamDbStcd> getStndCodelist(WamDbStcd data);
 	
-	int registerStcdWam(List<WamDbStcd> reglist) throws Exception;
+	int registerStcdWam(List<WamDbStcd> reglist, WaqMstr reqmst) throws Exception;
 
 	int decideStndCode(List<WamDbStcd> reglist, WaqMstr reqmst ) throws Exception;
 	int initStndCode(List<WamDbStcd> reglist, WaqMstr reqmst ) throws Exception;

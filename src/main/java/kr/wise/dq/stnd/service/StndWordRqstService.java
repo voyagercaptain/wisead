@@ -77,7 +77,7 @@ public interface StndWordRqstService extends CommonRqstService {
     
     int check(WaqMstr mstVo) throws Exception;
 
-    int registerWam(List<WamStwd> list) throws Exception;
+    int registerWam(List<WamStwd> list, WaqMstr reqmst) throws Exception;
 
 	int decideStndWord(List<WamStwd> reglist, WaqMstr reqmst ) throws Exception;
 	int initStndWord(List<WamStwd> reglist, WaqMstr reqmst ) throws Exception;

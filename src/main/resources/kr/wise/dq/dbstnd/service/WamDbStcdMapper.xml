@@ -396,6 +396,8 @@
            			,CONFIRM_YN    = 'Y'
            		</if>
                 , DB_NM = #{item.dbNm,jdbcType=VARCHAR}
+                , ERR_CHK = ''
+                , VALID_YN = 'N'
         where COMM_CD_ID = #{item.commCdId,jdbcType=VARCHAR}
         </foreach>
     </update>

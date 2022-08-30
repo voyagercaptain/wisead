@@ -1155,7 +1155,7 @@ public class StndDmnRqstServiceImpl implements StndDmnRqstService {
 	
 	
 	
-	public int registerWam(List<WamDmn> reglist) throws Exception {
+	public int registerWam(List<WamDmn> reglist, WaqMstr reqmst) throws Exception {
 
 //		logger.debug("mstVo:{}\nbizInfo:{}", mstVo, mstVo.getBizInfo());
 
@@ -1204,6 +1204,9 @@ public class StndDmnRqstServiceImpl implements StndDmnRqstService {
 				saveVo.setFrsRqstUserId(userid);
 				saveVo.setRqstUserId(userid);
 				saveVo.setRegTypCd("U");
+				if(!"inspect".equals(reqmst.getRqstNm())) {
+					saveVo.setValidYn("N");
+				}
 			}
 		}
 

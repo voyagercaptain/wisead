@@ -432,7 +432,7 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
 	/** 표준단어 리스트 등록 insomnia */
 	/** 요청서 내용을 저장한다.(완료 후 임시저장 상태로 변경) insomnia
 	 * @throws Exception */
-	public int registerWam(List<WamStwd> reglist) throws Exception {
+	public int registerWam(List<WamStwd> reglist, WaqMstr reqmst) throws Exception {
 
 		LoginVO user = (LoginVO) UserDetailHelper.getAuthenticatedUser();
 		String userid = user.getUniqId();
@@ -472,6 +472,9 @@ public class StndWordRqstServiceImpl implements StndWordRqstService {
 				saveVo.setFrsRqstUserId(userid);
 				saveVo.setRqstUserId(userid);
 				saveVo.setRegTypCd("U");
+				if(!"inspect".equals(reqmst.getRqstNm())) {
+					saveVo.setValidYn("N");
+				}
 			}
 		}
 

@@ -124,7 +124,7 @@ public interface StndDmnRqstService extends CommonRqstService {
 
 	List<WaqDmn> getDomainCdVal(WaqDmn data);
 	
-	int registerWam(List<WamDmn> list) throws Exception;
+	int registerWam(List<WamDmn> list, WaqMstr reqmst) throws Exception;
 
 	int decideStndDmn(List<WamDmn> reglist, WaqMstr reqmst ) throws Exception;
 	int initStndDmn(List<WamDmn> reglist, WaqMstr reqmst ) throws Exception;
