@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,6 +34,8 @@ public class RegistStatCtrl {
 	@Inject
 	private RegistStatService service;
 	
+	
+	
 	/**  기관별 등록 현황 */
 	@RequestMapping("regist_stat_lst.do")
 	public String formpage() {
@@ -41,7 +44,8 @@ public class RegistStatCtrl {
 	
 	/**  DB별 등록 현황 */
 	@RequestMapping("db_regist_stat_lst.do")
-	public String formpage2() {
+	public String formpage2(ModelMap model) {
+		model.addAttribute("userDbList", service.selectDbList());
 		return "/commons/user/db_regist_stat_lst";
 	}
 	

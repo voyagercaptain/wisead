@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.wise.commons.user.WaaUserg;
+import kr.wise.dq.dbstnd.service.WamDbSditm;
 
 public interface RegistStatService {
 	
@@ -16,4 +17,5 @@ public interface RegistStatService {
 	List<Map> getTotalDbCountList1(Map map);
 	Map getTotalDbCount2(Map map);
 	Map getTotalOrgCount(Map map);
+	List<WaaUserg> selectDbList();
 }

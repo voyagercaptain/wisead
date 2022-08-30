@@ -102,6 +102,9 @@ SELECT
   	<if test="orgNm != null and orgNm != '' ">
   	AND WO.ORG_NM LIKE  '%' || #{orgNm} || '%'
   	</if>
+  	<if test="dbNm != null" >
+     AND replace(WO.DB_NM, ' ','') LIKE CONCAT('%',replace(#{dbNm,jdbcType=VARCHAR}, ' ',''),'%') 
+    </if>
   	
 </select>
 
@@ -426,4 +429,9 @@ SELECT
 		  WHERE C.DB_NM = B.DB_NM
 		    AND B.TARGET_YN ='Y') A
 </select>
+
+ <select id="selectDbList" resultMap="BaseResultMap" >
+    SELECT DB_NAME DB_NM 
+      FROM WAA_USER_DB
+  </select>
 </mapper>

@@ -82,4 +82,9 @@ public class RegistStatServiceImpl implements RegistStatService{
 		return map;
 	}
 
+	@Override
+	public List<WaaUserg> selectDbList() {
+		return mapper.selectDbList();
+	}
+
 }
