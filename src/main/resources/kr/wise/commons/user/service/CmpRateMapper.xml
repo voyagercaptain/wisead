@@ -5,9 +5,11 @@
 	<result column="ORG_ITEM_COUNT"   		property="orgItemCount"   	   jdbcType="NUMERIC" />
     <result column="ORG_WORD_COUNT"   		property="orgWordCount"   	   jdbcType="NUMERIC" />
     <result column="ORG_DOMAIN_COUNT" 		property="orgDomainCount"      jdbcType="NUMERIC" />
+    <result column="ORG_CODE_COUNT" 		property="orgCodeCount"        jdbcType="NUMERIC" />
     <result column="DB_ITEM_COUNT"   		property="dbItemCount"   	   jdbcType="NUMERIC" />
     <result column="DB_WORD_COUNT"   		property="dbWordCount"   	   jdbcType="NUMERIC" />
     <result column="DB_DOMAIN_COUNT" 		property="dbDomainCount"       jdbcType="NUMERIC" />
+    <result column="DB_CODE_COUNT" 			property="dbCodeCount"         jdbcType="NUMERIC" />
     <result column="COMM_ITEM_COUNT"   		property="commItemCount"   	   jdbcType="NUMERIC" />
     <result column="COMM_WORD_COUNT"   		property="commWordCount"   	   jdbcType="NUMERIC" />
     <result column="COMM_DOMAIN_COUNT" 		property="commDomainCount"     jdbcType="NUMERIC" />
@@ -69,39 +71,60 @@ where (T.COMM_ITEM_COUNT >0 or T.COMM_DOMAIN_COUNT or T.COMM_WORD_COUNT)
 			   , a.infotp_lnm
 		  from wam_sditm a inner join wam_db_sditm B on (a.sditm_lnm = B.sditm_lnm and a.sditm_pnm = B.sditm_pnm and a.infotp_lnm = B.infotp_lnm and a.org_nm = B.org_nm)
 						   inner join waa_org C on (C.target_yn='Y' and a.org_nm = C.org_nm)
---where a.confirm_yn ='Y'
---  and b.confirm_yn ='Y'
+	where a.confirm_yn ='Y'
+  	and b.confirm_yn ='Y'
 		  group by a.org_nm , a.sditm_lnm , a.sditm_pnm , a.infotp_lnm
 		 ) T
+	group by T.org_nm
+</select>
+
+<select id="getDbCmpRateOrgCodeList"
+		parameterType="kr.wise.commons.user.WaaUserg" resultMap="BaseResultMap">
+	select T.org_nm,
+		   count(T.itemCount) as ORG_CODE_COUNT,
+		   (SELECT COUNT(*) FROM wam_db_comm_cd  WHERE ORG_NM=T.ORG_NM and confirm_yn='Y') as DB_CODE_COUNT
+	from
+		(select
+			 A.org_nm
+			  ,count(*) as itemCount
+			  ,A.comm_cd_nm
+			  ,A.comn_cd_ennm
+			  ,A.comm_dtl_cd_mn
+		 FROM   wam_comm_cd A inner join wam_db_comm_cd  B on (A.comm_cd_nm =B.comm_cd_nm AND A.comn_cd_ennm = B.comn_cd_ennm AND A.comm_dtl_cd_mn =B.comm_dtl_cd_mn and A.org_nm = B.org_nm)
+		 WHERE A.confirm_yn='Y'
+		   and B.confirm_yn='Y'
+		 group by A.org_nm, A.comm_cd_nm, A.comn_cd_ennm, A.comm_dtl_cd_mn
+		) T
 	group by T.org_nm
 </select>
 
 <select id="getDbCmpRateList"
 	parameterType="kr.wise.commons.user.WaaUserg" resultMap="BaseResultMap">
 SELECT T.*
-FROM (
-SELECT 
-	WO.ORG_NM,																		--기관명
-	(SELECT COUNT(*) FROM WAM_DB_SDITM WHERE ORG_NM=WO.ORG_NM) AS DB_ITEM_COUNT,	--DB표준 용어 수
-	(SELECT COUNT(*) FROM WAM_DB_DMN  WHERE ORG_NM=WO.ORG_NM)  AS DB_DOMAIN_COUNT,  --DB표준 도메인 수
-	(SELECT COUNT(*) FROM WAM_DB_STWD WHERE ORG_NM=WO.ORG_NM)  AS DB_WORD_COUNT,    --DB표준 단어 수
-	(SELECT COUNT(*) FROM COMM_SDITM A INNER JOIN (SELECT SDITM_LNM,SDITM_PNM,INFOTP_LNM FROM WAM_DB_SDITM WHERE ORG_NM = WO.ORG_NM) B
-	ON (A.SDITM_LNM =B.SDITM_LNM AND A.SDITM_PNM = B.SDITM_PNM AND A.INFOTP_LNM =B.INFOTP_LNM)
-	) 														  AS COMM_ITEM_COUNT,   --공통표준 용어 일치 수
-	(SELECT COUNT(*) FROM COMM_DMN  A INNER JOIN (SELECT INFOTP_LNM,DATA_LEN,DATA_TYPE FROM WAM_DB_DMN  WHERE ORG_NM = WO.ORG_NM) B
-	ON (A.INFOTP_LNM=B.INFOTP_LNM AND A.DATA_LEN = B.DATA_LEN AND A.DATA_TYPE = B.DATA_TYPE)
-	) 														  AS COMM_DOMAIN_COUNT, --공통표준 도메인 일치 수
-	(SELECT COUNT(*) FROM WAM_DMN  A INNER JOIN (SELECT ORG_NM, INFOTP_LNM,DATA_LEN,DATA_TYPE FROM WAM_DB_DMN   WHERE ORG_NM = WO.ORG_NM) B
-	ON (A.INFOTP_LNM=B.INFOTP_LNM AND A.DATA_LEN = B.DATA_LEN AND A.DATA_TYPE = B.DATA_TYPE and A.org_nm = B.org_nm)
-	) 														  AS ORG_DOMAIN_COUNT,  --기관표준 도메인 일치 수
-	(SELECT COUNT(*) FROM COMM_STWD A INNER JOIN (SELECT STWD_LNM,STWD_PNM FROM WAM_DB_STWD WHERE ORG_NM = WO.ORG_NM) B
-	ON(A.STWD_LNM=B.STWD_LNM AND A.STWD_PNM = B.STWD_PNM)
-	)														  AS  COMM_WORD_COUNT,  --공통표준 단어 일치 수
-	(SELECT COUNT(*) FROM WAM_STWD A INNER JOIN (SELECT ORG_NM, STWD_LNM,STWD_PNM FROM WAM_DB_STWD WHERE ORG_NM = WO.ORG_NM) B
-	ON(A.STWD_LNM=B.STWD_LNM AND A.STWD_PNM = B.STWD_PNM and A.org_nm = B.org_nm)
-	)														  AS  ORG_WORD_COUNT   --기관표준 단어 일치 수
-FROM WAA_ORG WO) T
-WHERE (T.DB_ITEM_COUNT > 0 or T.DB_ITEM_COUNT > 0  or T.DB_ITEM_COUNT > 0 )
+	FROM (
+		SELECT
+		WO.ORG_NM,
+		(SELECT COUNT(*) FROM COMM_SDITM A INNER JOIN (SELECT SDITM_LNM,SDITM_PNM,INFOTP_LNM FROM WAM_DB_SDITM WHERE ORG_NM = WO.ORG_NM and confirm_yn='Y') B
+		ON (A.SDITM_LNM =B.SDITM_LNM AND A.SDITM_PNM = B.SDITM_PNM AND A.INFOTP_LNM =B.INFOTP_LNM)
+		) 														  AS COMM_ITEM_COUNT,   --공통표준 용어 일치 수
+		(SELECT COUNT(*) FROM WAM_DB_SDITM WHERE ORG_NM=WO.ORG_NM and confirm_yn='Y') AS DB_ITEM_COUNT,	--DB표준 용어 수
+		(SELECT COUNT(*) FROM COMM_DMN  A INNER JOIN (SELECT INFOTP_LNM,DATA_LEN,DATA_TYPE FROM WAM_DB_DMN  WHERE ORG_NM = WO.ORG_NM and confirm_yn='Y') B
+		ON (A.INFOTP_LNM=B.INFOTP_LNM AND A.DATA_LEN = B.DATA_LEN AND A.DATA_TYPE = B.DATA_TYPE)
+		) 														  AS COMM_DOMAIN_COUNT, --공통표준 도메인 일치 수
+		(SELECT COUNT(*) FROM WAM_DMN  A INNER JOIN (SELECT ORG_NM, INFOTP_LNM,DATA_LEN,DATA_TYPE, confirm_yn FROM WAM_DB_DMN   WHERE ORG_NM = WO.ORG_NM) B
+		ON (A.INFOTP_LNM=B.INFOTP_LNM AND A.DATA_LEN = B.DATA_LEN AND A.DATA_TYPE = B.DATA_TYPE and A.org_nm = B.org_nm and A.confirm_yn='Y' and B.confirm_yn='Y')
+		) 														  AS ORG_DOMAIN_COUNT,  --기관표준 도메인 일치 수
+		(SELECT COUNT(*) FROM WAM_DB_DMN  WHERE ORG_NM=WO.ORG_NM and confirm_yn='Y')  AS DB_DOMAIN_COUNT,  --DB표준 도메인 수
+		(SELECT COUNT(*) FROM COMM_STWD A INNER JOIN (SELECT STWD_LNM,STWD_PNM FROM WAM_DB_STWD WHERE ORG_NM = WO.ORG_NM and confirm_yn='Y') B
+		ON(A.STWD_LNM=B.STWD_LNM AND A.STWD_PNM = B.STWD_PNM)
+		)														  AS  COMM_WORD_COUNT,  --공통표준 단어 일치 수
+		(SELECT COUNT(*) FROM WAM_STWD A INNER JOIN (SELECT ORG_NM, STWD_LNM,STWD_PNM, confirm_yn FROM WAM_DB_STWD WHERE ORG_NM = WO.ORG_NM) B
+		ON(A.STWD_LNM=B.STWD_LNM AND A.STWD_PNM = B.STWD_PNM and A.org_nm = B.org_nm and A.confirm_yn='Y' and B.confirm_yn='Y')
+		)														  AS  ORG_WORD_COUNT,   --기관표준 단어 일치 수
+		(SELECT COUNT(*) FROM WAM_DB_STWD WHERE ORG_NM=WO.ORG_NM and confirm_yn='Y')  AS DB_WORD_COUNT    --DB표준 단어 수
+		FROM (select org_nm from WAA_ORG where target_yn ='Y') WO
+	) T
+	where (T.DB_ITEM_COUNT > 0 or T.DB_DOMAIN_COUNT > 0  or T.DB_WORD_COUNT > 0 )
 <if test="orgNm != null and orgNm != '' ">
  AND T.ORG_NM LIKE  CONCAT('%', #{orgNm} , '%')
 </if>

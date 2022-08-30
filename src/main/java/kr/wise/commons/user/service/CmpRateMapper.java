@@ -11,4 +11,5 @@ public interface CmpRateMapper {
 	 List<WaaUserg> getOrgCmpRateList(WaaUserg param);
 	 List<WaaUserg> getDbCmpRateList(WaaUserg param);
 	 List<WaaUserg> getDbCmpRateOrgItemList(WaaUserg param);
+	 List<WaaUserg> getDbCmpRateOrgCodeList(WaaUserg param);
 }

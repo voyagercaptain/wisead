@@ -67,7 +67,8 @@ function initGrid()
         	{Type:"Text",   Format:"",    SaveName:"commWordCount",    Align:"Left",   Edit:0}, //단어  > 공통표준
         	{Type:"Text",   Format:"",    SaveName:"orgWordCount",     Align:"Left",   Edit:0}, //단어  > 기관표준
         	{Type:"Text",   Format:"",    SaveName:"dbWordCount",      Align:"Left",   Edit:0}, //단어  > db표준
-        	
+            {Type:"Text",   Format:"",    SaveName:"orgCodeCount",     Align:"Left",   Edit:0}, //단어  > 기관코드
+            {Type:"Text",   Format:"",    SaveName:"dbCodeCount",      Align:"Left",   Edit:0}, //단어  > db코드
         ];
                     
         InitColumns(cols);
@@ -131,6 +132,11 @@ function grid_sheet_OnSearchEnd(code, message, stCode, stMsg) {
         }
         if (data.orgWordCount > 0 && data.dbWordCount > 0) {
             data.orgWordCount = data.orgWordCount + "(" + parseFloat((data.orgWordCount/data.dbWordCount) * 100.0).toFixed(2) + "%)";
+        }
+
+        // 코드
+        if (data.orgCodeCount > 0 && data.dbCodeCount > 0) {
+            data.orgCodeCount = data.orgCodeCount + "(" + parseFloat((data.orgCodeCount/data.dbCodeCount) * 100.0).toFixed(2) + "%)";
         }
 
         grid_sheet.SetRowData(i+2, data);

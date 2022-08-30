@@ -30,11 +30,12 @@ public class CmpRateServiceImpl implements CmpRateService{
 	public List<WaaUserg> getDbCmpRateList(WaaUserg search) {
 		logger.debug("getDbCmpRateList Start.");
 		List<WaaUserg> list = mapper.getDbCmpRateList(search);
-		List<WaaUserg> list2 = mapper.getDbCmpRateOrgItemList(search);
+		List<WaaUserg> itemList = mapper.getDbCmpRateOrgItemList(search);
+		List<WaaUserg> codeList = mapper.getDbCmpRateOrgCodeList(search);
 
 		Boolean isContains = false;
 
-		for (WaaUserg orgItem : list2) {
+		for (WaaUserg orgItem : itemList) {
 			for (WaaUserg full : list) {
 				if (full.getOrgNm().equals(orgItem.getOrgNm())) {
 					isContains = true;
@@ -46,6 +47,23 @@ public class CmpRateServiceImpl implements CmpRateService{
 
 			isContains = false;
 		}
+
+		isContains = false;
+
+		for (WaaUserg codeItem : codeList) {
+			for (WaaUserg full : list) {
+				if (full.getOrgNm().equals(codeItem.getOrgNm())) {
+					isContains = true;
+					full.setOrgCodeCount(codeItem.getOrgCodeCount());
+					full.setDbCodeCount(codeItem.getDbCodeCount());
+				}
+			}
+			if (!isContains)
+				list.add(codeItem);
+
+			isContains = false;
+		}
+
 		return list;
 	}
 
