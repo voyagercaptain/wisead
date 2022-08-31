@@ -65,6 +65,7 @@ function initGrid()
 
         var cols = [                        
         	{Type:"Text",  Width : 60,  	  SaveName:"orgNm",            Align:"Left",  Edit:0}, //기관명
+            {Type:"Text",  Width : 60,  	  SaveName:"dbNm",            Align:"Left",  Edit:0}, //DB명
         	{Type:"Text",   Format:"",    SaveName:"commItemCount",    Align:"Left",   Edit:0}, //용어  > 공통표준
         	{Type:"Text",   Format:"",    SaveName:"orgItemCount",     Align:"Left",   Edit:0}, //용어  > 기관표준
         	{Type:"Text",   Format:"",    SaveName:"dbItemCount",      Align:"Left",   Edit:0}, //용어  > db표준
