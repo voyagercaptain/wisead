@@ -106,7 +106,7 @@
         	 OR A.COMN_CD_ENNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
         	 OR A.COMN_CD_ENNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
       </if>
-      ORDER BY WRIT_DTM DESC,COMM_CD_NM ASC 
+      ORDER BY WRIT_DTM ASC,COMM_CD_NM ASC 
    	) FSQ -- 임시 Alias
   	<where>
 		/* AND REG_TYP_CD IN ('C', 'U') */

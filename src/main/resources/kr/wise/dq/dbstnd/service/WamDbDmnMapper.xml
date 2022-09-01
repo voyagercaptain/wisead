@@ -158,7 +158,7 @@
         	 OR A.DMNG_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')    	 
         	 )
       </if>
-    ORDER BY RQST_DTM DESC,DMN_LNM ASC  
+    ORDER BY RQST_DTM ASC,DMN_LNM ASC  
   	</where>
   	) T
   	WHERE 1=1
