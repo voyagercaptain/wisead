@@ -189,10 +189,10 @@
         	 OR DMNG_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')    	 
         	 )
       </if>
-       ORDER BY RQST_DTM DESC, DMN_LNM ASC
+       ORDER BY RQST_DTM ASC, DMN_LNM ASC
       ) A
       WHERE ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
-      ORDER BY RQST_DTM DESC, DMN_LNM ASC
+      ORDER BY RQST_DTM ASC, DMN_LNM ASC
   </select>
 
   <select id="selectListSLC" resultMap="BaseResultMap" parameterType="kr.wise.dq.stnd.service.WamDmn" >

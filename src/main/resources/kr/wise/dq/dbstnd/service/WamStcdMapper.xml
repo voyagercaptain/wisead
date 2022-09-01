@@ -153,10 +153,10 @@
         	 OR COMN_CD_ENNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
         	 OR COMN_CD_ENNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
       </if>
-      ORDER BY WRIT_DTM DESC, COMM_CD_NM ASC
+      ORDER BY WRIT_DTM ASC, COMM_CD_NM ASC
       ) FSQ
       WHERE ROWNUM BETWEEN #{startNum,jdbcType=NUMERIC} AND  #{endNum,jdbcType=NUMERIC}
-      ORDER BY WRIT_DTM DESC, COMM_CD_NM ASC
+      ORDER BY WRIT_DTM ASC, COMM_CD_NM ASC
   </select>
 
 
