@@ -124,7 +124,7 @@
          	AND A.VALID_YN   ='Y'
          	</if>
          	<if test='vcWh == "N"'>
-         	AND A.VALID_YN   ='N'
+         	AND (A.VALID_YN IS NULL OR A.VALID_YN = '' OR A.VALID_YN = 'N')
          	</if>
          	<if test='vcWh == "E"'>
 			AND A.VALID_YN   ='E'
@@ -993,7 +993,7 @@
          	AND A.VALID_YN   ='Y'
          	</if>
          	<if test='vcWh == "N"'>
-         	AND A.VALID_YN   ='N'
+         	AND (A.VALID_YN IS NULL OR A.VALID_YN = '' OR A.VALID_YN = 'N')
          	</if>
          	<if test='vcWh == "E"'>
 			AND A.VALID_YN   ='E'

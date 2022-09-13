@@ -12,12 +12,17 @@
  *                    insomnia : 2014. 4. 4. :            : 신규 개발.
  */
 package kr.wise.dq.dbstnd.web;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -51,6 +56,7 @@ import kr.wise.commons.rqstmst.service.RequestMstService;
 import kr.wise.commons.rqstmst.service.WaqMstr;
 import kr.wise.commons.sysmgmt.basicinfo.service.BasicInfoLvlService;
 import kr.wise.commons.sysmgmt.basicinfo.service.WaaBscLvl;
+import kr.wise.commons.util.ExcelDownUtil;
 import kr.wise.commons.util.UtilJson;
 import kr.wise.commons.util.ValidationCheck;
 import kr.wise.dq.dbstnd.service.DbStndService;
@@ -61,6 +67,7 @@ import kr.wise.dq.dbstnd.service.WamDbStcd;
 import kr.wise.dq.dbstnd.service.WamDbStwd;
 import kr.wise.dq.dbstnd.service.WapDbDvCanAsm;
 import kr.wise.dq.dbstnd.service.WapDbDvCanDic;
+import kr.wise.dq.stnd.service.WamSditm;
 import kr.wise.dq.stnd.service.WaqSditm;
 
 @Controller
@@ -1411,5 +1418,51 @@ public class DbStndTotRqstCtrl {
 			
 			String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
 			return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
+		}
+	    
+	    
+	    @RequestMapping(value = "/dq/dbstnd/totalExcelDown.do", produces = "application/json; charset=UTF8")
+		public void allSditmExcel(@RequestBody WamDbSditm searchVO, HttpServletResponse response, HttpSession session) throws Exception {
+
+			ExcelDownUtil edu = ExcelDownUtil.getInstance();
+
+			searchVO.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
+			searchVO.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
+
+			Integer endNum   = 1000000;
+			Integer startNum = 0;
+			searchVO.setEndNum(endNum);
+			searchVO.setStartNum(startNum);
+			List<WamDbSditm> list = dbStndService.getDbStndItemList(searchVO);
+
+			List<String> header = Arrays.asList(new String[]{"No.",	"선택",	"기관명","DB명", "표준용어명",	"영문명",	"영문약어명",	"용어설명", "표준도메인명",
+					"허용값",	"관리부서명",	"표준코드명",	"업무분야",	"행정표준코드명",	"제정일자",	"특이사항",	"검증메세지"});
+
+			List<String> fields = Arrays.asList(new String[]{"", "", "orgNm","dbNm","sditmLnm",	"pnm",	"sditmPnm",	"objDescn", "infotpLnm",
+					"alwVal","ownrOrg",	"stndCd",	"bsnssFld",	"admnStndCd",	"rqstDtm",	"spclNt",	"errChk"});
+
+			try (
+					SXSSFWorkbook wb = edu.makeExcelFile(header, fields, Collections.singletonList(list));
+					OutputStream output = response.getOutputStream();
+					FileOutputStream fileOutputStream = new FileOutputStream("/Users/sangminKim/Documents/test.xlsx");
+			)
+			{
+				String fileName = "DB표준용어";										// 파일명
+				fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+				String fileExtension = ".xlsx";									// 확장자
+
+				response.setContentType("application/vnd.ms-excel");
+				response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + fileExtension + "\"");
+
+				// response 버퍼에 파일 생성
+				//wb.write(output);
+				//wb.dispose();
+
+				// 로컬에 파일 생성
+				wb.write(fileOutputStream);
+
+			} catch (IOException ie) {
+				ie.printStackTrace();
+			}
 		}
 }
