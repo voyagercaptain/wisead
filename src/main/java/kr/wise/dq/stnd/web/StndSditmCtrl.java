@@ -228,8 +228,8 @@ public class StndSditmCtrl {
 		return new IBSheetListVO<WamSditm>(list, list.size());
 	}
 
-	@RequestMapping(value = "/dq/stnd/sditmExcel.do", produces = "application/json; charset=UTF8")
-	public void allSditmExcel(@RequestBody WamSditm searchVO, HttpServletResponse response, HttpSession session) throws Exception {
+	@RequestMapping(value = "/dq/stnd/sditmExcel.do")
+	public void allSditmExcel(@ModelAttribute("searchVO") WamSditm searchVO, HttpServletResponse response, HttpSession session) throws Exception {
 
 		ExcelDownUtil edu = ExcelDownUtil.getInstance();
 
@@ -263,6 +263,7 @@ public class StndSditmCtrl {
 
 			// response 버퍼에 파일 생성
 			wb.write(output);
+			output.close();
 			wb.dispose();
 
 			// 로컬에 파일 생성
