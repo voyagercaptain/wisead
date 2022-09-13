@@ -399,7 +399,7 @@
     </update>
 
     <delete id="bulkDelete" parameterType="java.util.List" >
-        <foreach collection="list" item="item" index="index" separator=",">
+        <foreach collection="list" item="item" index="index">
         delete from WAM_DB_COMM_CD
         where COMM_CD_ID = #{item.commCdId,jdbcType=VARCHAR}
          /* AND CONFIRM_YN = 'N' */
