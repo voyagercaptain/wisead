@@ -417,7 +417,11 @@ SELECT
 </select>
 
  <select id="selectDbList" resultMap="BaseResultMap" >
-    SELECT DB_NAME DB_NM 
-      FROM WAA_USER_DB
+    	 SELECT  
+		 		wod.db_nm as DB_NM
+		 FROM waa_org wot inner join waa_org_db wod 
+		 	on (wod.org_cd = wot.org_cd OR wod.org_cd = wot.upper_org_cd)
+		WHERE wod.target_yn = 'Y'
+		group by wod.db_nm 
   </select>
 </mapper>
