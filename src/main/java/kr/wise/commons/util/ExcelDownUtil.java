@@ -85,7 +85,7 @@ public class ExcelDownUtil {
                 if (j == 1) cell.setCellValue("");
 
                 if (j > 1) {
-                    String value = getFieldValue(vo, fields.get(j)) == null ? "" : fields.get(j).toString();
+                    String value = getFieldValue(vo, fields.get(j) == null ? "" : fields.get(j)).toString();
                     cell.setCellValue(value);
                     System.out.println(fields.get(j) + " = " + value);
                 }
