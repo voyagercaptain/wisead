@@ -835,4 +835,16 @@ public class DbStndServiceImpl implements DbStndService {
 		return wamDbStcdMapper.bulkUpdateConfirm2(data);
 	}
 
+	@Override
+	public List<WamDbSditm> getDbStndItemList(WamDbSditm data) {
+		List<WamDbSditm> result = null;
+		try {
+			result = wamDbSditmMapper.getDbStndItemList(data);
+		} catch(Exception e) {
+			logger.error("", e);
+		}
+		
+		return result;
+	}
+
 }

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import kr.wise.commons.cmm.annotation.Mapper;
 import kr.wise.commons.user.service.WaaOrg;
+import kr.wise.dq.stnd.service.WamSditm;
 
 @Mapper
 public interface WamDbSditmMapper {
@@ -64,4 +65,6 @@ public interface WamDbSditmMapper {
 	 int updateDbSdimSchedule(List<WamDbSditm> updateList);
 	 
 	 Integer selectSditmTotalCnt(WamDbSditm data);
+	 
+	 List<WamDbSditm> getDbStndItemList(WamDbSditm data);
 }

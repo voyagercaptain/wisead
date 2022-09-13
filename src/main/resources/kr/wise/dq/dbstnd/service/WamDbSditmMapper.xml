@@ -1064,7 +1064,7 @@ SELECT *
          	AND A.VALID_YN   ='Y'
          	</if>
          	<if test='vcWh == "N"'>
-         	AND A.VALID_YN   ='N'
+         	AND (A.VALID_YN IS NULL OR A.VALID_YN = '' OR A.VALID_YN = 'N')
          	</if>
          	<if test='vcWh == "E"'>
 			AND A.VALID_YN   ='E'
@@ -1096,6 +1096,59 @@ SELECT *
     where VALID_YN = 'Y' AND ORG_NM = #{orgNm, jdbcType=VARCHAR}
       AND DB_NM = #{dbNm,jdbcType=VARCHAR}
   </update>
-
+	
+	
+	<select id="getDbStndItemList" parameterType="kr.wise.dq.dbstnd.service.WamDbSditm" resultMap="BaseResultMap">
+ 	   SELECT  A.ORG_NM  	   --기관명
+			 , A.DB_NM		   --db명
+             , A.SDITM_LNM     --표준용어명
+             , A.PNM	       --영문명
+             , A.SDITM_PNM     --영문약어명
+             , A.OBJ_DESCN     --용어설명
+             , A.INFOTP_LNM    --표준도메인명
+             , A.ALW_VAL       --허용값
+             , A.OWNR_ORG      --관리부서명
+             , STND_CD         --표준코드명
+             , BSNSS_FLD       --업무분야
+             , A.ADMN_STND_CD  --행정표준코드명
+             , A.RQST_DTM      --제정일자
+             , SPCL_NT		   --특이사항
+             , A.ERR_CHK       --검증메세지
+		FROM WAM_DB_SDITM A
+		WHERE  1 = 1 
+		 <if test='!"2".equals(usergId) and !"3".equals(usergId)' >
+		 AND replace(DB_NM, ' ','') IN (SELECT replace(DB_NAME, ' ','') AS DB_NAME FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})     
+		 AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
+		 </if>       
+         <if test="vcWh != null">
+         	<if test='vcWh == "Y"'>
+         	AND A.VALID_YN   ='Y'
+         	</if>
+         	<if test='vcWh == "N"'>
+         	AND (A.VALID_YN IS NULL OR A.VALID_YN = '' OR A.VALID_YN = 'N')
+         	</if>
+         	<if test='vcWh == "E"'>
+			AND A.VALID_YN   ='E'
+         	</if>
+         	<if test='vcWh == "YY"'>
+         	AND A.CONFIRM_YN ='Y'
+         	</if>
+         </if>
+       <if test="orgNm != null" >
+        AND A.ORG_NM LIKE CONCAT('%',#{orgNm,jdbcType=VARCHAR},'%')
+       </if>
+ 
+       <if test="dbNm != null" >
+        AND replace(A.DB_NM, ' ','') LIKE CONCAT('%',replace(#{dbNm,jdbcType=VARCHAR}, ' ',''),'%') 
+      </if>
+       <if test="stndNm != null" >
+        AND (   A.SDITM_LNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.SDITM_PNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.SDITM_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')
+        	 OR A.SDITM_PNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
+      </if>
+      ORDER BY RQST_DTM ASC,SDITM_LNM ASC
+  
+  </select>
 
 </mapper>

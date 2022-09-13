@@ -97,6 +97,8 @@ $(document).ready(function() {
 	
 	// 엑셀내리기 Event Bind
     $("#btnExcelDown").click( function(){ doAction("Down2Excel"); } ).show();
+	//전체 엑셀 내리기 Ecent Bind
+    $("#btnTotalExcelDown").click( function(){ doAction("TotalExcel"); } ).show();
 	//엑셀 LOAD
     $("#btnExcelLoad").click( function(){ doAction("LoadExcel"); } );
 	
@@ -366,6 +368,27 @@ function doAction(sAction)
     		grid_name.Down2Excel({HiddenColumn:1,Merge:1,Mode:2,FileName : fileName});
         	break;
         
+    	case "TotalExcel"://전체 엑셀 내리기
+    		var param = $('form[name=frmSearch]').serializeObject();
+
+			$.ajax({
+				type: "POST",
+				async: true,
+				contentType : "application/json",
+				url: '<c:url value="/dq/dbstnd/totalExcelDown.do"/>',
+				data: JSON.stringify(param),
+				beforeSend: function () {
+					// 처리중이니 잠시 기다려 주십시요.
+					showMsgBox("PRC", gMSG_PRC_WAIT);
+				},
+				success: function (data) {
+					//window.location = '/Common/Download?virpath=' + data.virtualPath + '&file=' + data.file;
+				},
+				error:function(e){
+					console.log(e.responseText);
+				}
+			});
+			break;
 		case "Search":
 			/*
 			if(frmSearch.orgNm.value == '') {
@@ -439,7 +462,6 @@ function doAction(sAction)
 	        IBSpostJson2(url, ibsSaveJson, param, ibscallback);
 	        
         	break;
-        
     	case "Delete" :
     		//초기화 버튼 클릭시
     		if(init ==="Y"){
@@ -717,7 +739,8 @@ function postProcessIBS(res) {
 			</div>
 			<div class="bt02"> 
 			  <button class="btn_decide"  id="btnDecide" name="btnDecide" disabled>확정</button>
-	          <button class="btn_excel_down"  id="btnExcelDown"  name="btnExcelDown"><s:message code="EXCL.DOWNLOAD" /></button> <!-- 엑셀 내리기 -->                       
+	          <button class="btn_excel_down"  id="btnExcelDown"  name="btnExcelDown"><s:message code="EXCL.DOWNLOAD" /></button> <!-- 엑셀 내리기 -->     
+	          <button class="btn_excel_down"  id="btnTotalExcelDown"  name="btnTotalExcelDown">전체 엑셀 내리기</button> <!-- 엑셀 내리기 -->                    
 	    	</div>
         </div>	
         

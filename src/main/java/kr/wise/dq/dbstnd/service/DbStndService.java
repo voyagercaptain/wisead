@@ -73,5 +73,6 @@ public interface DbStndService {
 	Integer getStndWordTotalCnt(WamDbStwd data);
 	Integer getStndCodeTotalCnt(WamDbStcd data);
 	void updateDbStndTotInspect(List<WamDbSditm> sditmList,List<WamDbDmn> dmnList,List<WamDbStwd> stwdList,List<WamDbStcd> stcdList) throws Exception;
+	List<WamDbSditm> getDbStndItemList(WamDbSditm data);
 	
 }
