@@ -540,19 +540,15 @@ SELECT *
          <if test="vcWh != null">
          	<if test='vcWh == "Y"'>
          	AND A.VALID_YN   ='Y'
-         	AND A.CONFIRM_YN ='N'
          	</if>
          	<if test='vcWh == "N"'>
          	AND A.VALID_YN   ='N'
-         	AND A.CONFIRM_YN ='N'
          	</if>
          	<if test='vcWh == "E"'>
 			AND A.VALID_YN   ='E'
-			AND A.CONFIRM_YN ='N'			         	
          	</if>
          	<if test='vcWh == "YY"'>
          	AND A.CONFIRM_YN ='Y'
-         	AND A.VALID_YN   ='Y' 
          	</if>
          </if>
        <if test="orgNm != null" >
@@ -1066,19 +1062,15 @@ SELECT *
          <if test="vcWh != null">
          	<if test='vcWh == "Y"'>
          	AND A.VALID_YN   ='Y'
-         	AND A.CONFIRM_YN ='N'
          	</if>
          	<if test='vcWh == "N"'>
          	AND A.VALID_YN   ='N'
-         	AND A.CONFIRM_YN ='N'
          	</if>
          	<if test='vcWh == "E"'>
 			AND A.VALID_YN   ='E'
-			AND A.CONFIRM_YN ='N'			         	
          	</if>
          	<if test='vcWh == "YY"'>
          	AND A.CONFIRM_YN ='Y'
-         	AND A.VALID_YN   ='Y' 
          	</if>
          </if>
        <if test="orgNm != null" >
