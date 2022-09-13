@@ -1,36 +1,35 @@
 package kr.wise.dq.stnd.web;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import kr.wise.commons.cmm.LoginVO;
 import kr.wise.commons.code.service.CmcdCodeService;
 import kr.wise.commons.code.service.CodeListService;
 import kr.wise.commons.helper.grid.IBSheetListVO;
+import kr.wise.commons.util.ExcelDownUtil;
 import kr.wise.commons.util.UtilJson;
 import kr.wise.commons.util.UtilObject;
 import kr.wise.dq.stnd.service.StndCommSditmService;
 import kr.wise.dq.stnd.service.StndSditmService;
 import kr.wise.dq.stnd.service.WamSditm;
-import kr.wise.dq.stnd.service.WamStwd;
 import kr.wise.dq.stnd.service.WamStwdCnfg;
 import kr.wise.dq.stnd.service.WamWhereUsed;
 
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <PRE>
@@ -229,4 +228,48 @@ public class StndSditmCtrl {
 		return new IBSheetListVO<WamSditm>(list, list.size());
 	}
 
+	@RequestMapping(value = "/dq/stnd/sditmExcel.do", produces = "application/json; charset=UTF8")
+	public void allSditmExcel(@RequestBody WamSditm searchVO, HttpServletResponse response, HttpSession session) throws Exception {
+
+		ExcelDownUtil edu = ExcelDownUtil.getInstance();
+
+		searchVO.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
+		searchVO.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
+
+		Integer endNum   = 1000000;
+		Integer startNum = 0;
+		searchVO.setEndNum(endNum);
+		searchVO.setStartNum(startNum);
+		List<WamSditm> list = stndSditmService.getStndItemList(searchVO);
+
+		List<String> header = Arrays.asList(new String[]{"No.",	"선택",	"기관명",	"표준용어명",	"영문명",	"영문약어명",	"용어설명", "표준도메인명",
+				"허용값",	"관리부서명",	"표준코드명",	"업무분야",	"행정표준코드명",	"제정일자",	"특이사항",	"검증메세지"});
+
+		List<String> fields = Arrays.asList(new String[]{"", "", "orgNm","sditmLnm",	"pnm",	"sditmPnm",	"objDescn", "infotpLnm",
+				"alwVal","ownrOrg",	"stndCd",	"bsnssFld",	"admnStndCd",	"rqstDtm",	"spclNt",	"errChk"});
+
+		try (
+				SXSSFWorkbook wb = edu.makeExcelFile(header, fields, Collections.singletonList(list));
+				OutputStream output = response.getOutputStream();
+				FileOutputStream fileOutputStream = new FileOutputStream("/Users/seungjaelee/Documents/data/test.xlsx");
+		)
+		{
+			String fileName = "기관표준용어";										// 파일명
+			fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+			String fileExtension = ".xlsx";									// 확장자
+
+			response.setContentType("application/vnd.ms-excel");
+			response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + fileExtension + "\"");
+
+			// response 버퍼에 파일 생성
+			wb.write(output);
+			wb.dispose();
+
+			// 로컬에 파일 생성
+			//wb.write(fileOutputStream);
+
+		} catch (IOException ie) {
+			ie.printStackTrace();
+		}
+	}
 }

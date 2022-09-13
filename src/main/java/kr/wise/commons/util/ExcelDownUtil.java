@@ -17,7 +17,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class ExcelDownUtil {
 
@@ -30,22 +33,23 @@ public class ExcelDownUtil {
         return new ExcelDownUtil();
     }
 
-    public SXSSFWorkbook makeExcelFile(List<String> titleList, List<Object> list) throws IllegalAccessException {
+    public SXSSFWorkbook makeExcelFile(List<String> headers, List<String> fields, List<Object> list) throws IllegalAccessException {
 
         // 엑셀생성
         SXSSFWorkbook wb = new SXSSFWorkbook();
-        // 리스트의 0번째 데이터는 Sheet Name
-        Sheet sh = wb.createSheet(titleList.get(0));
 
-        // 테이블 타이틀 입력
+        // Sheet 생성
+        Sheet sh = wb.createSheet();
+
+        // header row 입력
         Row row = sh.createRow(0);
         int cellnum = 0;
-        // titleList에서 Sheet Name 데이터 삭제
-        titleList.remove(0);
+
+        // headers 에서 Sheet Name 데이터 삭제
         Cell cell = row.createCell(cellnum);
 
-        for (String title : titleList) {
-            cell.setCellValue(title);
+        for (String header : headers) {
+            cell.setCellValue(header);
             cell = row.createCell(++cellnum);
         }
 
@@ -53,7 +57,7 @@ public class ExcelDownUtil {
         // 타이틀을 제외하고 1번 row부터 시트 저장
         int i = 1;
 
-        for(Object vo : list) {
+        for(Object vo : (List<Object>)list.get(0)) {
             Field[] f = null;
 
             if (vo instanceof WamDbSditm)
@@ -74,16 +78,59 @@ public class ExcelDownUtil {
                 f = WamCdVal.class.getDeclaredFields();
 
             row = sh.createRow(i++);
-            cellnum = 0;
 
-            for (int j = 0; j < f.length; j++) {
-                f[j].setAccessible(true);
-                cell = row.createCell(cellnum++);
-                cell.setCellValue(f[j].get(vo) != null ? f[j].get(vo).toString() : "");
+            for (int j = 0; j < headers.size(); j++) {
+                cell = row.createCell(j);
+                if (j == 0) cell.setCellValue(i-1);
+                if (j == 1) cell.setCellValue("");
+
+                if (j > 1) {
+                    String value = getFieldValue(vo, fields.get(j)).toString();
+                    cell.setCellValue(value);
+                    System.out.println(fields.get(j) + " = " + value);
+                }
             }
         }
 
         return wb;
     }
 
+    public static <T> T getFieldValue(Object obj, String fieldName){
+        Objects.requireNonNull(obj);
+
+        try {
+            Field field = getFieldByName(obj, fieldName); // 4. 해당 필드 조회 후
+            return (T) field.get(obj);	// 5. get 을 이용하여 field value 획득
+        } catch (IllegalAccessException e){
+            return null;
+        }
+    }
+
+    public static <T> Field getFieldByName(T t, String fieldName){
+        Objects.requireNonNull(t);
+
+        Field field = null;
+        for(Field f : getAllFields(t)){
+            if (f.getName().equals(fieldName)){
+                field = f;	// 2. 모든 필드들로부터 fieldName이 일치하는 필드 추출
+                break;
+            }
+        }
+        if (field != null){
+            field.setAccessible(true);	// 3. 접근 제어자가 private 일 경우
+        }
+        return field;
+    }
+
+    public static <T> List<Field> getAllFields(T t){
+        Objects.requireNonNull(t);
+
+        Class<?> clazz = t.getClass();
+        List<Field> fields = new ArrayList<>();
+        while(clazz != null){	// 1. 상위 클래스가 null 이 아닐때까지 모든 필드를 list 에 담는다.
+            fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+            clazz = clazz.getSuperclass();
+        }
+        return fields;
+    }
 }

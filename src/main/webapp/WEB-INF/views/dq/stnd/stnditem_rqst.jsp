@@ -69,7 +69,8 @@ $(document).ready(function() {
     $("#btnExcelDown").click( function(){ doAction("Down2Excel"); } ).show();
 	//엑셀 LOAD
     $("#btnExcelLoad").click( function(){ doAction("LoadExcel"); } );
-	
+	// 전체엑셀 내리기 Event Bind
+	$("#btnExcelDownAll").click( function(){ doAction("DownAllExcel"); } );
 	
 	//추가
     $("#btnNew").click( function(){
@@ -370,7 +371,24 @@ function doAction(sAction)
     		
     		
         	break;
-        
+		case "DownAllExcel":
+			var param = $('form[name=frmSearch]').serializeObject();
+
+			$.ajax({
+				type: "POST",
+				contentType : "application/json",
+				url: '<c:url value="/dq/stnd/sditmExcel.do"/>',
+				data: JSON.stringify(param),
+				success: function (data) {
+					//window.location = '/Common/Download?virpath=' + data.virtualPath + '&file=' + data.file;
+				},
+				error:function(e){
+					console.log(e.responseText);
+				}
+			});
+
+			break;
+
     	case "Down2Excel":  //엑셀다운로드
 //     		if(grid_name.GetTotalRows() == 0 ){
 //     			grid_name.DataInsert(0);
@@ -481,7 +499,7 @@ function doAction(sAction)
     		ibsSaveJson = grid_name.GetSaveJson(0);
     		
     		url = '<c:url value="/dq/stnd/regitemWamlist.do"/>';
-    					
+
     		var param = $('form[name=mstFrm]').serialize();
     		var chkYn = $('input:checkbox[id="chkYn"]:checked').val();
     		param = param + "&chkYn="+chkYn;
@@ -535,7 +553,7 @@ function doAction(sAction)
 			}else if(empty_Row_Location.length == 0 && vrfed_Row_Location.length != 0){
 				var DelJson = grid_name.GetSaveJson({AllSave:0, StdCol:"ibsCheck", ValidKeyField :0});
 				var param = $("#mstFrm").serialize();
-				
+
 				var delete_Row = '' 
 					
 				for(var i = 1; i <=vrfed_Row_Location.length; i++){
@@ -577,7 +595,7 @@ function doAction(sAction)
 				
 				var DelJson = grid_name.GetSaveJson({AllSave:0, StdCol:"ibsCheck", ValidKeyField :0});
 				var param = $("#mstFrm").serialize();
-				
+
 				var delete_Row = ''
 				
 				for(var i = 1; i <=grid_name.GetDataLastRow(); i++){
@@ -774,9 +792,9 @@ function postProcessIBS(res) {
 			<div class="bt02">
 				<button class="btn_decide" id="btnDecide" 	name="btnDecide"><s:message code="BTN.CONFIRM" /></button>
 	          	<button class="btn_excel_down"  id="btnExcelDown"  name="btnExcelDown"><s:message code="EXCL.DOWNLOAD" /></button> <!-- 엑셀 내리기 -->
+				<button class="btn_excel_down"  style="display:none;" id="btnExcelDownAll"  name="btnExcelDownAll"><s:message code="EXCL.DOWNLOAD.ALL" /></button> <!-- 엑셀 내리기 -->
 				<SCRIPT>
 					document.getElementById('btnDecide').disabled = true;
-					document.getElementById('btnInit').disabled = true;
 				</SCRIPT>
 	    	</div>
         </div>

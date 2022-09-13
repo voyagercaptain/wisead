@@ -12,21 +12,12 @@
  *                    insomnia : 2014. 4. 4. :            : 신규 개발.
  */
 package kr.wise.dq.dbstnd.web;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import kr.wise.commons.util.ExcelDownUtil;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -1421,44 +1412,4 @@ public class DbStndTotRqstCtrl {
 			String action = WiseMetaConfig.RqstAction.REGISTER.getAction();
 			return new IBSResultVO<WaqMstr>(reqmst, result, resmsg, action);
 		}
-	public void excelDown(List<WamDbSditm> list, HttpServletResponse response) throws Exception {
-
-		List<String> title = new ArrayList<String>();
-		List<Object> list2 = Arrays.asList(list);
-		List<Object> list3 = (List<Object>) list2.get(0);
-
-		title.add("관리자 목록"); // Sheet name
-		title.add("name"); // 첫번째 셀타이틀
-		title.add("hpNo");
-		title.add("createDt");
-		title.add("deviceCnt");
-		title.add("appVer");
-		title.add("osType");
-
-		ExcelDownUtil edu = ExcelDownUtil.getInstance();
-
-		try (
-				SXSSFWorkbook wb = edu.makeExcelFile(title, list3);
-				OutputStream output = response.getOutputStream();
-				FileOutputStream fileOutputStream = new FileOutputStream("D:\\home\\test.xlsx");
-				)
-		{
-			/*String fileName = "filetest";										// 파일명
-			fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
-			String fileExtension = ".xlsx";									// 확장자
-
-			response.reset();
-			response.setContentType("application/octet-stream");
-			response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + fileExtension + "\"");
-
-			// Write file to response.
-			wb.write(output);
-			wb.dispose();*/
-
-			wb.write(fileOutputStream);
-
-		} catch (IOException ie) {
-			ie.printStackTrace();
-		}
-	}
 }

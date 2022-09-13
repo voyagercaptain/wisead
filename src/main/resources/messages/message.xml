@@ -708,6 +708,7 @@
 <entry key="EXCL.UPLOAD"><![CDATA[엑셀 업로드]]></entry>
 <entry key="STRG"><![CDATA[저장]]></entry>
 <entry key="EXCL.DOWNLOAD"><![CDATA[엑셀 내리기]]></entry>
+<entry key="EXCL.DOWNLOAD.ALL"><![CDATA[전체 엑셀 내리기]]></entry>
 <entry key="REPORT"><![CDATA[보고서]]></entry>
 <entry key="LORQ.FLIN"><![CDATA[요청서작성]]></entry>
 <entry key="INON"><![CDATA[초기화]]></entry>
