@@ -242,7 +242,7 @@ function getOrgDbList() {
                     $('#dbNm').append(option);
 
                     for (var i = 0; i < data.length; i++) {
-                        var option = $("<option value='"+data[i].dbNm+"'>"+data[i].dbNm+"</option>");
+                        var option = $('<option value="'+data[i].dbNm+'">'+data[i].dbNm+'</option>');
                         $('#dbNm').append(option);
                     }
                 }
@@ -257,6 +257,18 @@ function getOrgDbList() {
     });
 
 };
+
+
+function escapeHtml(str) {
+    var map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return str.replace(/[&<>"']/g, function(m) { return map[m]; });
+}
 
 </script>
 </head>
@@ -300,10 +312,7 @@ function getOrgDbList() {
                             <td >
                                 <select id="dbNm" class="" name="dbNm">
                                 	<option value="">전체</option>
-	 							<c:forEach var="userDbList" items="${userDbList}" varStatus="status">
-	 							  <option value="${userDbList.dbNm}">${userDbList.dbNm}</option>
-	 							</c:forEach> 
-	 					 		</select> 
+	 					 		</select>
 							</td>
                        </tr>
                    </tbody>
