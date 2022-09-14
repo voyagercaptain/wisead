@@ -83,15 +83,7 @@ public class ExcelDownUtil {
                 if (j == 1) cell.setCellValue("");
 
                 if (j > 1) {
-                    System.out.println(fields.get(j) + " = " + getFieldValue(vo, fields.get(j)));
-                    Object obj = getFieldValue(vo, fields.get(j));
-                    //String value = getFieldValue(vo, fields.get(j));
-                    String value = "";
-                    if(obj instanceof String) {
-                        value = (String)obj;
-                    } else {
-                        value = String.valueOf(obj);
-                    }
+                    String value = getFieldValue(vo, fields.get(j));
                     cell.setCellValue(value);
                 }
             }
@@ -105,11 +97,17 @@ public class ExcelDownUtil {
 
         try {
             Field field = getFieldByName(obj, fieldName); // 4. 해당 필드 조회 후
+            if (field.get(obj) == null) {
+                return (T)new String("");
+            }
             if (field.getType().getName().equals("java.util.Date")) {
                 String dateToStr = DateFormatUtils.format((Date) field.get(obj), "yyyyMMdd");
                 return (T)dateToStr;
             }
-            return (T) field.get(obj);	// 5. get 을 이용하여 field value 획득
+            if(field.getType().getName().equals("java.lang.String")) {
+                return (T)(String)field.get(obj);
+            }
+            return (T)String.valueOf(field.get(obj));	// 5. get 을 이용하여 field value 획득
         } catch (IllegalAccessException e){
             return null;
         }
