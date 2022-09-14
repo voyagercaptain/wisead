@@ -68,4 +68,6 @@ public interface WamDbStcdMapper {
     int updateDbStcdSchedule(List<WamDbStcd> updateList);
     
     Integer selectStcdTotalCnt(WamDbStcd record);
+    
+    List<WamDbStcd> getDbStndStcdList(WamDbStcd data);
 }

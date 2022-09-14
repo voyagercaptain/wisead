@@ -1104,21 +1104,21 @@ SELECT *
 	
 	
 	<select id="getDbStndItemList" parameterType="kr.wise.dq.dbstnd.service.WamDbSditm" resultMap="BaseResultMap">
- 	   SELECT  A.ORG_NM  	   --기관명
-			 , A.DB_NM		   --db명
-             , A.SDITM_LNM     --표준용어명
-             , A.PNM	       --영문명
-             , A.SDITM_PNM     --영문약어명
-             , A.OBJ_DESCN     --용어설명
-             , A.INFOTP_LNM    --표준도메인명
-             , A.ALW_VAL       --허용값
-             , A.OWNR_ORG      --관리부서명
-             , STND_CD         --표준코드명
-             , BSNSS_FLD       --업무분야
-             , A.ADMN_STND_CD  --행정표준코드명
-             , A.RQST_DTM      --제정일자
-             , SPCL_NT		   --특이사항
-             , A.ERR_CHK       --검증메세지
+ 	   SELECT  A.ORG_NM  	   		  				 --기관명
+			 , A.DB_NM		   		  				 --db명
+             , A.SDITM_LNM     		  				 --표준용어명
+             , NVL(A.PNM,'') 	     AS PNM   		 --영문명
+             , A.SDITM_PNM     		  				 --영문약어명
+             , NVL(A.OBJ_DESCN,'')   AS OBJ_DESCN	 --용어설명
+             , A.INFOTP_LNM    	   	  				 --표준도메인명
+             , NVL(A.ALW_VAL,'')     AS ALW_VAL	     --허용값
+             , NVL(A.OWNR_ORG,'')     AS OWNR_ORG     --관리부서명
+             , NVL(STND_CD,'')        AS STND_CD      --표준코드명
+             , NVL(BSNSS_FLD,'')      AS BSNSS_FLD    --업무분야
+             , NVL(A.ADMN_STND_CD,'') AS ADMN_STND_CD --행정표준코드명
+             , A.RQST_DTM      		  				 --제정일자
+             , NVL(SPCL_NT,'')		 AS SPCL_NT 	 --특이사항
+             , NVL(A.ERR_CHK,'')     AS ERR_CHK		 --검증메세지
 		FROM WAM_DB_SDITM A
 		WHERE  1 = 1 
 		 <if test='!"2".equals(usergId) and !"3".equals(usergId)' >
@@ -1155,5 +1155,7 @@ SELECT *
       ORDER BY RQST_DTM ASC,SDITM_LNM ASC
   
   </select>
+  
+  
 
 </mapper>

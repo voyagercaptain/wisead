@@ -52,4 +52,6 @@ public interface WamDbDmnMapper {
     int updateDbDmnSchedule(List<WamDbDmn> updateList);
     
     Integer selectDmnTotalCnt(WamDbDmn data);
+    
+    List<WamDbDmn> getDbStndDmnList(WamDbDmn data);
 }

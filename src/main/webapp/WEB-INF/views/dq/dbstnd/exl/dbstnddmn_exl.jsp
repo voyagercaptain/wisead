@@ -54,7 +54,7 @@ function grid_DMN_init() {
 		
 		var headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과";
 		headtext += "|도메인ID|기관명|DB명|표준도메인그룹명|도메인분류명|도메인명|도메인설명|데이터타입|데이터길이|소수점길이|저장형식|표현형식|단위|허용값|관리부서명|행정표준코드명";
-		headtext += "|담당자ID|담당자명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항|검증내용|확정여부";
+		headtext += "|담당자ID|담당자명|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항|검증메세지|확정여부";
 		
 		headerText = headtext.split("|");
 		
@@ -100,7 +100,7 @@ function grid_DMN_init() {
 		{Type:"Text",       Width:60,   SaveName:"rqstNo",      Align:"Center", Edit:1, Hidden:1}, 
 		{Type:"Int",        Width:60,   SaveName:"rqstSno",     Align:"Center", Edit:1, Hidden:1},
 		{Type:"Text",   	Width:150,  SaveName:"spclNt",      Align:"Center", Edit:1, Hidden:0},			   //특이사항
-		{Type:"Text",   	Width:150,  SaveName:"errChk",      Align:"Center", Edit:1, Hidden:0},			   //필수항목
+		{Type:"Text",   	Width:150,  SaveName:"errChk",      Align:"Center", Edit:1, Hidden:0},			   //검증메세지
 		{Type:"Text",       Width:100,  SaveName:"confirmYn",   Align:"Left",   Edit:1, Hidden:1},			
 	];
 	colsCount = cols.length;

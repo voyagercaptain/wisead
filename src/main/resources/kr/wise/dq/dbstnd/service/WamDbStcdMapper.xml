@@ -7,6 +7,7 @@
     <result column="COMM_CD_DESC" property="commCdDesc" jdbcType="VARCHAR" />
     <result column="COMN_CD_DTTP_NM" property="comnCdDttpNm" jdbcType="VARCHAR" />
     <result column="COMN_CD_DATA_LEN" property="comnCdDataLen" jdbcType="VARCHAR" />
+    <result column="COMN_CD_DATA_LEN_S" property="comnCdDataLenS" jdbcType="VARCHAR" />
     <result column="COMN_CD_ENNM" property="comnCdEnnm" jdbcType="VARCHAR" />
     <result column="MNG_DEPT_CD" property="mngDeptCd" jdbcType="VARCHAR" />
     <result column="PCLR_MTR" property="pclrMtr" jdbcType="VARCHAR" />
@@ -493,5 +494,68 @@
         where VALID_YN = 'Y' AND ORG_NM = #{orgNm,jdbcType=VARCHAR}
           AND DB_NM = #{dbNm,jdbcType=VARCHAR}
     </update>
+    
+    <select id="getDbStndStcdList" resultMap="BaseResultMap" parameterType="kr.wise.dq.dbstnd.service.WamDbStcd" >
+  	SELECT * FROM 
+  	(SELECT 
+  		ORG_NM 											--기관명
+  	   ,DB_NM 											--db명
+  	   ,NVL(MNG_DEPT_CD,'') 	AS MNG_DEPT_CD  		--관리부서명
+  	   ,COMM_CD_NM 										--코드명 한글
+  	   ,NVL(COMN_CD_ENNM,'') 	AS COMN_CD_ENNM  		--코드명 영어
+  	   ,NVL(COMM_CD_DESC,'') 	AS COMM_CD_DESC 		--코드설명
+  	   ,NVL(COMN_CD_DTTP_NM,'') AS COMN_CD_DTTP_NM  	--데이터타입
+  	   ,NVL(COMN_CD_DATA_LEN,'')AS COMN_CD_DATA_LEN_S  	--데이터길이
+  	   ,COMM_DTL_CD_NM									--코드값
+  	   ,COMM_DTL_CD_MN 									--코드값 의미
+  	   ,NVL(COMM_DTL_CD_DESC,'')AS COMM_DTL_CD_DESC  	--코드값설명
+  	   ,WRIT_DTM 										--제정일자
+  	   ,NVL(PCLR_MTR,'')		AS PCLR_MTR  			--특이사항
+  	   ,NVL(UPP_COMM_CD_ID,'')  AS UPP_COMM_CD_ID 		--상위코드
+  	   ,NVL(USE_YN,'')          AS USE_YN 				--사용여부
+  	   ,NVL(ERR_CHK,'') 		AS ERR_CHK 				--검증메세지
+   	FROM WAM_DB_COMM_CD A
+   	WHERE  1 = 1
+   	 
+   	 <if test="vcWh != null">
+         	<if test='vcWh == "Y"'>
+         	AND A.VALID_YN   ='Y'
+         	</if>
+         	<if test='vcWh == "N"'>
+         	AND (A.VALID_YN IS NULL OR A.VALID_YN = '' OR A.VALID_YN = 'N')
+         	</if>
+         	<if test='vcWh == "E"'>
+			AND A.VALID_YN   ='E'
+         	</if>
+         	<if test='vcWh == "YY"'>
+         	AND A.CONFIRM_YN ='Y'
+         	</if>
+         </if>  
+   	<if test='!"2".equals(usergId) and !"3".equals(usergId)' >
+   	 AND REPLACE(DB_NM, ' ', '') IN (SELECT REPLACE(DB_NAME, ' ', '') AS DB_NAME FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})
+   	 AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
+   	</if>
+   	 <if test="orgNm != null" >
+        AND A.ORG_NM LIKE CONCAT('%',#{orgNm,jdbcType=VARCHAR},'%')
+     </if>
+     <if test="dbNm != null" >
+        AND REPLACE(A.DB_NM, ' ', '') LIKE CONCAT('%',REPLACE(#{dbNm,jdbcType=VARCHAR}, ' ', ''),'%')
+     </if>
+     <if test="stndNm != null" >
+       AND (A.COMM_CD_NM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.COMM_CD_DESC LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.COMN_CD_ENNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.COMN_CD_ENNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
+      </if>
+      ORDER BY WRIT_DTM ASC,COMM_CD_NM ASC 
+   	) FSQ -- 임시 Alias
+  	<where>
+		/* AND REG_TYP_CD IN ('C', 'U') */
+     	1 = 1 	
+      <if test="commCdId != null" >
+        AND COMM_CD_ID = #{commCdId,jdbcType=VARCHAR}
+      </if>
+  	</where>
+  </select>
 
 </mapper>

@@ -11,6 +11,7 @@ public class WamDbStcd extends CommonVo  {
 	private String commCdDesc;
 	private String comnCdDttpNm;
 	private Integer comnCdDataLen;
+	private String comnCdDataLenS;
 	private String comnCdEnnm;
 	private String mngDeptCd;
 	private String pclrMtr;
@@ -204,6 +205,12 @@ public class WamDbStcd extends CommonVo  {
 	}
 	public void setEndNum(Integer endNum) {
 		this.endNum = endNum;
+	}
+	public String getComnCdDataLenS() {
+		return comnCdDataLenS;
+	}
+	public void setComnCdDataLenS(String comnCdDataLenS) {
+		this.comnCdDataLenS = comnCdDataLenS;
 	}
 	
 	

@@ -823,5 +823,56 @@
         where VALID_YN = 'Y' AND ORG_NM = #{orgNm,jdbcType=VARCHAR}
           AND DB_NM = #{dbNm,jdbcType=VARCHAR}
     </update>
-
+    
+ <select id="getDbStndStwdList" resultMap="BaseResultMap" parameterType="kr.wise.dq.dbstnd.service.WamDbStwd" >
+  	SELECT 
+  		 ORG_NM 						--기관명
+  		,DB_NM 							--DB명
+  		,STWD_LNM 						--표준단어명
+  		,NVL(ENG_MEAN,'') AS ENG_MEAN   --단어영문명
+  		,STWD_PNM 						--단어영문약어명
+  		,OBJ_DESCN 						--단어설명
+  		,DMN_YN 						--형식단어여부
+  		,NVL(DMN_LNM,'')  AS DMN_LNM  	--도메인분류명
+  		,NVL(SYMN_LNM,'') AS SYMN_LNM   --이음동의어목록
+  		,NVL(FBDN_LNM,'') AS FBDN_LNM   --금칙어목록
+  		,NVL(OWNR_ORG,'') AS OWNR_ORG   --관리부서명
+  		,RQST_DTM 						--제정일자
+  		,NVL(SPCL_NT,'')  AS SPCL_NT  	--특이사항
+  		,NVL(ERR_CHK,'')  AS ERR_CHK    --검증메세지
+   	FROM WAM_DB_STWD A
+   	WHERE 1 = 1
+   	<if test="vcWh != null">
+         	<if test='vcWh == "Y"'>
+         	AND A.VALID_YN   ='Y'
+         	</if>
+         	<if test='vcWh == "N"'>
+         	AND (A.VALID_YN IS NULL OR A.VALID_YN = '' OR A.VALID_YN = 'N')
+         	</if>
+         	<if test='vcWh == "E"'>
+			AND A.VALID_YN   ='E'
+         	</if>
+         	<if test='vcWh == "YY"'>
+         	AND A.CONFIRM_YN ='Y'
+         	</if>
+     </if>
+		AND A.REG_TYP_CD IN ('C', 'U')
+	  <if test="orgNm != null" >
+        AND A.ORG_NM LIKE CONCAT('%',#{orgNm,jdbcType=VARCHAR},'%')
+      </if>
+       <if test="dbNm != null" >
+        AND REPLACE(A.DB_NM, ' ', '') LIKE CONCAT('%',REPLACE(#{dbNm,jdbcType=VARCHAR}, ' ', ''),'%')
+      </if>
+   	<if test='!"2".equals(usergId) and !"3".equals(usergId)' > 
+   		AND REPLACE(A.DB_NM, ' ', '') IN (SELECT REPLACE(DB_NM, ' ', '') AS DB_NM FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})
+   		AND A.ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
+   	</if>
+   	 <if test="stndNm != null" >
+        AND (A.STWD_LNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.STWD_PNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.STWD_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')
+        	 OR A.STWD_PNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%'))
+      </if>
+     ORDER BY RQST_DTM ASC,STWD_LNM ASC 
+  </select>
 </mapper>

@@ -347,47 +347,18 @@ function doAction(sAction)
         	break;
         
     	case "Down2Excel":  //엑셀다운로드
-//     		if(grid_name.GetTotalRows() == 0 ){
-//     			grid_name.DataInsert(0);
-//     		}
-    	    var fileName="DB";
-    	    if(bizDtlCd == "SDITM"){
-    	    	fileName = fileName+"표준용어.xlsx";
-			}else if(bizDtlCd == "DMN"){
-				fileName = fileName+"표준도메인.xlsx";
-			}else if(bizDtlCd == "STWD"){
-				fileName = fileName+"표준단어.xlsx";
-			}
-    	    
-    	    var SaveJson = grid_name.GetSaveJson(1); //doAllSave와 동일한 대상을 가져옴...
-    	    if(SaveJson.data.length == 0) {
-    	    	grid_name.DataInsert(0);
-    	    	grid_name.SetCellValue(1,"orgNm", "${userOrg.orgNm}");
-    	    }
-    	    
+    		if(grid_name.GetTotalRows() == 0) {
+      	    	return;
+      	    }
+    	    var fileName="DB표준용어.xlsx";
     		grid_name.Down2Excel({HiddenColumn:1,Merge:1,Mode:2,FileName : fileName});
         	break;
         
     	case "TotalExcel"://전체 엑셀 내리기
-    		var param = $('form[name=frmSearch]').serializeObject();
-
-			$.ajax({
-				type: "POST",
-				async: true,
-				contentType : "application/json",
-				url: '<c:url value="/dq/dbstnd/totalExcelDown.do"/>',
-				data: JSON.stringify(param),
-				beforeSend: function () {
-					// 처리중이니 잠시 기다려 주십시요.
-					showMsgBox("PRC", gMSG_PRC_WAIT);
-				},
-				success: function (data) {
-					//window.location = '/Common/Download?virpath=' + data.virtualPath + '&file=' + data.file;
-				},
-				error:function(e){
-					console.log(e.responseText);
-				}
-			});
+			if(grid_name.GetTotalRows() == 0){
+				return;
+			}
+    		$("#frmSearch").attr('action','<c:url value="/dq/dbstnd/item/totalExcelDown.do"/>').submit();
 			break;
 		case "Search":
 			/*

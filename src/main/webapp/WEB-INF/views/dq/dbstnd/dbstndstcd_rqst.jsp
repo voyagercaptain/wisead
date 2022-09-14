@@ -74,6 +74,8 @@ $(document).ready(function() {
 	
 	// 엑셀내리기 Event Bind
     $("#btnExcelDown").click( function(){ doAction("Down2Excel"); } ).show();
+	//전체 엑셀 내리기 Ecent Bind
+    $("#btnTotalExcelDown").click( function(){ doAction("TotalExcel"); } ).show();
 	//엑셀 LOAD
     $("#btnExcelLoad").click( function(){ doAction("LoadExcel"); } );
 	
@@ -300,28 +302,19 @@ function doAction(sAction)
         	break;
         
     	case "Down2Excel":  //엑셀다운로드
-//     		if(grid_name.GetTotalRows() == 0 ){
-//     			grid_name.DataInsert(0);
-//     		}
-    	    var fileName="DB";
-    	    if(bizDtlCd == "SDITM"){
-    	    	fileName = fileName+"표준용어.xlsx";
-			}else if(bizDtlCd == "DMN"){
-				fileName = fileName+"표준도메인.xlsx";
-			}else if(bizDtlCd == "STWD"){
-				fileName = fileName+"표준단어.xlsx";
-			}else if(bizDtlCd == "STCD"){
-				fileName = fileName+"표준코드.xlsx";
-			}
+     		if(grid_name.GetTotalRows() == 0 ){
+     		return;
+     		}
+    	    var fileName="DB표준코드.xlsx";
     	    
-    	    var SaveJson = grid_name.GetSaveJson(1); //doAllSave와 동일한 대상을 가져옴...
-    	    if(SaveJson.data.length == 0) {
-    	    	grid_name.DataInsert(0);
-    	    	grid_name.SetCellValue(1,"orgNm", "${userOrg.orgNm}");
-    	    }
     		grid_name.Down2Excel({HiddenColumn:1,Merge:1,Mode:2,FileName : fileName});
         	break;
-        
+		case "TotalExcel"://전체 엑셀 내리기
+			if(grid_name.GetTotalRows() == 0 ){
+	     		return;
+	     	}
+    		$("#frmSearch").attr('action','<c:url value="/dq/dbstnd/stcd/totalExcelDown.do"/>').submit();
+			break;	
 		case "Search":
 			/*
 			if(frmSearch.orgNm.value == '') {
@@ -680,7 +673,8 @@ function postProcessIBS(res) {
 			</div>
 			<div class="bt02"> 
 			  <button class="btn_decide"  id="btnDecide" 	name="btnDecide" disabled>확정</button>
-	          <button class="btn_excel_down"  id="btnExcelDown"  name="btnExcelDown"><s:message code="EXCL.DOWNLOAD" /></button> <!-- 엑셀 내리기 -->                       
+	          <button class="btn_excel_down"  id="btnExcelDown"  name="btnExcelDown"><s:message code="EXCL.DOWNLOAD" /></button> <!-- 엑셀 내리기 -->
+	          <button class="btn_excel_down"  id="btnTotalExcelDown"  name="btnTotalExcelDown">전체 엑셀 내리기</button> <!-- 엑셀 내리기 -->                       
 	    	</div>
         </div>	
         

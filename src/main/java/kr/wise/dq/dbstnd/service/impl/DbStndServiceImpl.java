@@ -847,4 +847,40 @@ public class DbStndServiceImpl implements DbStndService {
 		return result;
 	}
 
+	@Override
+	public List<WamDbDmn> getDbStndDmnList(WamDbDmn data) {
+		List<WamDbDmn> result = null;
+		try {
+			result = wamDbDmnMapper.getDbStndDmnList(data);
+		} catch(Exception e) {
+			logger.error("", e);
+		}
+		
+		return result;
+	}
+
+	@Override
+	public List<WamDbStwd> getDbStndStwdList(WamDbStwd data) {
+		List<WamDbStwd> result = null;
+		try {
+			result = wamDbStwdMapper.getDbStndStwdList(data);
+		} catch(Exception e) {
+			logger.error("", e);
+		}
+		
+		return result;
+	}
+
+	@Override
+	public List<WamDbStcd> getDbStndStcdList(WamDbStcd data) {
+		List<WamDbStcd> result = null;
+		try {
+			result = wamDbStcdMapper.getDbStndStcdList(data);
+		} catch(Exception e) {
+			logger.error("", e);
+		}
+		
+		return result;
+	}
+
 }

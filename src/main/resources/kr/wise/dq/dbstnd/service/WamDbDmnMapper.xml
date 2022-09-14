@@ -31,6 +31,8 @@
     <result column="DATA_TYPE"         property="dataType" jdbcType="VARCHAR" />
     <result column="DATA_LEN"          property="dataLen" jdbcType="VARCHAR" />
     <result column="DATA_SCAL"         property="dataScal" jdbcType="VARCHAR" />
+    <result column="DATA_LEN_S"        property="dataLenS" jdbcType="VARCHAR" />
+    <result column="DATA_SCAL_S"       property="dataScalS" jdbcType="VARCHAR" />
     <result column="LNM_CRI_DS"        property="lnmCriDs" jdbcType="VARCHAR" />
     <result column="PNM_CRI_DS"        property="pnmCriDs" jdbcType="VARCHAR" />
     <result column="FRS_RQST_USER_NM"  property="frsRqstUserNm" jdbcType="VARCHAR" />
@@ -1039,5 +1041,66 @@
     where VALID_YN = 'Y' AND ORG_NM = #{orgNm,jdbcType=VARCHAR}
       AND DB_NM = #{dbNm,jdbcType=VARCHAR}
   </update>
+  
+  <select id="getDbStndDmnList" resultMap="BaseResultMap" parameterType="kr.wise.dq.dbstnd.service.WamDbDmn" >
+  	SELECT  
+  		 A.ORG_NM 						    --기관명
+		,A.DB_NM 						    --DB명
+		,A.DMNG_LNM 					    --도메인그룹명
+		,NVL(A.DMN_LNM,'') 	  AS DMN_LNM	--도메인분류명
+		,NVL(A.INFOTP_LNM,'') AS INFOTP_LNM	--도메인명
+		,NVL(A.OBJ_DESCN,'')  AS OBJ_DESCN	--도메인설명
+		,NVL(A.DATA_TYPE,'')  AS DATA_TYPE  --데이터타입
+		,NVL(CAST(A.DATA_LEN  AS VARCHAR),'')  AS DATA_LEN_S	--데이터길이
+		,NVL(CAST(A.DATA_SCAL AS VARCHAR),'')  AS DATA_SCAL_S   --소수점길이
+		,NVL(A.SAVE_FRM,'')   AS SAVE_FRM   --저장형식
+		,NVL(A.EXPRSN_FRM,'') AS EXPRSN_FRM --표현형식
+		,NVL(A.UNIT,'')    	  AS UNIT	    --단위
+		,NVL(A.CD_VAL,'') 	  AS CD_VAL	    --허용값
+		,NVL(A.OWNR_ORG,'')   AS OWNR_ORG   --관리부서명
+		,A.RQST_DTM		      AS RQST_DTM   --제정일자
+		,NVL(A.SPCL_NT,'') 	  AS SPCL_NT	--특이사항
+		,NVL(ERR_CHK,'') 	  AS ERR_CHK    --검증메세지
+  	  FROM WAM_DB_DMN A 
+  	<where>
+       AND A.REG_TYP_CD IN ('C', 'U')
+         <if test="vcWh != null">
+         	<if test='vcWh == "Y"'>
+         	AND A.VALID_YN   ='Y'
+         	</if>
+         	<if test='vcWh == "N"'>
+         	AND (A.VALID_YN IS NULL OR A.VALID_YN = '' OR A.VALID_YN = 'N')
+         	</if>
+         	<if test='vcWh == "E"'>
+			AND A.VALID_YN   ='E'
+         	</if>
+         	<if test='vcWh == "YY"'>
+         	AND A.CONFIRM_YN ='Y'
+         	</if>
+         </if>  
+      <if test='!"2".equals(usergId) and !"3".equals(usergId)' >
+  	   AND REPLACE(DB_NM, ' ', '') IN (SELECT REPLACE(DB_NAME, ' ', '') AS DB_NAME FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})	
+  	   AND ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
+  	  </if> 
+      <if test="orgNm != null" >
+        AND A.ORG_NM LIKE CONCAT('%',#{orgNm,jdbcType=VARCHAR},'%')
+      </if>
+     <if test="dbNm != null" >
+        AND REPLACE(A.DB_NM, ' ', '') LIKE CONCAT('%',REPLACE(#{dbNm,jdbcType=VARCHAR}, ' ', ''),'%')
+      </if>
+      <if test="stndNm != null" >
+        AND (A.DMN_LNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.DMN_PNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.DMN_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')
+        	 OR A.DMN_PNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')
+        	 OR A.INFOTP_LNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.INFOTP_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')      
+        	 OR A.DMNG_LNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
+        	 OR A.DMNG_LNM LIKE CONCAT('%' , UPPER(#{stndNm,jdbcType=VARCHAR}) , '%')    	 
+        	 )
+      </if>
+    ORDER BY RQST_DTM ASC,DMN_LNM ASC  
+  	</where>
+  </select>
   
 </mapper>
