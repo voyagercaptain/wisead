@@ -83,9 +83,16 @@ public class ExcelDownUtil {
                 if (j == 1) cell.setCellValue("");
 
                 if (j > 1) {
-                    String value = getFieldValue(vo, fields.get(j));
+                    System.out.println(fields.get(j) + " = " + getFieldValue(vo, fields.get(j)));
+                    Object obj = getFieldValue(vo, fields.get(j));
+                    //String value = getFieldValue(vo, fields.get(j));
+                    String value = "";
+                    if(obj instanceof String) {
+                        value = (String)obj;
+                    } else {
+                        value = String.valueOf(obj);
+                    }
                     cell.setCellValue(value);
-                    System.out.println(fields.get(j) + " = " + value);
                 }
             }
         }
