@@ -973,13 +973,18 @@ SELECT *
             STND_CD 		= #{item.stndCd,jdbcType=VARCHAR},
             SPCL_NT 		= #{item.spclNt,jdbcType=VARCHAR},
             BSNSS_FLD   	= #{item.bsnssFld,jdbcType=VARCHAR},
-            <if test='item.decideYn =="Y" and item.confirmYn =="Y"'>
-           	CONFIRM_DTM   = SYSDATE,
-           	CONFIRM_YN    = 'Y',
-           </if>
+            <choose>
+              <when test='item.decideYn =="Y" and item.confirmYn =="Y"'>
+                CONFIRM_DTM   = SYSDATE,
+                CONFIRM_YN    = 'Y',
+              </when>
+              <otherwise>
+                CONFIRM_YN = 'N',
+                VALID_YN = 'N',
+              </otherwise>
+            </choose>
             PNM 		= #{item.pnm,jdbcType=VARCHAR},
-            ERR_CHK = '',
-            VALID_YN = 'N'
+            ERR_CHK = ''
         where SDITM_ID = #{item.sditmId,jdbcType=VARCHAR}
     </foreach>
   </update>

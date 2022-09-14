@@ -387,13 +387,18 @@
                 , COMM_DTL_CD_DESC = #{item.commDtlCdDesc,jdbcType=VARCHAR}
                 , USE_YN = #{item.useYn,jdbcType=VARCHAR}
                 , ORG_NM = #{item.orgNm,jdbcType=VARCHAR}
-                 <if test='item.decideYn =="Y" and item.confirmYn =="Y"'>
-           			,CONFIRM_DTM   = SYSDATE
-           			,CONFIRM_YN    = 'Y'
-           		</if>
-                , DB_NM = #{item.dbNm,jdbcType=VARCHAR}
+            <choose>
+                <when test='item.decideYn =="Y" and item.confirmYn =="Y"'>
+                    ,CONFIRM_DTM   = SYSDATE
+                    ,CONFIRM_YN    = 'Y'
+                </when>
+                <otherwise>
+                    ,CONFIRM_YN = 'N'
+                    ,VALID_YN = 'N'
+                </otherwise>
+            </choose>
                 , ERR_CHK = ''
-                , VALID_YN = 'N'
+                , DB_NM = #{item.dbNm,jdbcType=VARCHAR}
         where COMM_CD_ID = #{item.commCdId,jdbcType=VARCHAR}
         </foreach>
     </update>
