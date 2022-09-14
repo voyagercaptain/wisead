@@ -16,11 +16,9 @@ import kr.wise.commons.helper.grid.IBSheetListVO;
 import kr.wise.commons.util.ExcelDownUtil;
 import kr.wise.commons.util.UtilJson;
 import kr.wise.commons.util.UtilObject;
-import kr.wise.dq.stnd.service.StndCommSditmService;
-import kr.wise.dq.stnd.service.StndSditmService;
-import kr.wise.dq.stnd.service.WamSditm;
-import kr.wise.dq.stnd.service.WamStwdCnfg;
-import kr.wise.dq.stnd.service.WamWhereUsed;
+import kr.wise.dq.dbstnd.service.StndService;
+import kr.wise.dq.dbstnd.service.WamDbStcd;
+import kr.wise.dq.stnd.service.*;
 
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.slf4j.Logger;
@@ -47,6 +45,16 @@ public class StndSditmCtrl {
 
 	@Inject
 	private StndSditmService stndSditmService;
+
+	@Inject
+	private StndDomainService stndDomainService;
+
+	@Inject
+	private StndService stndService;
+
+	@Inject
+	private StndWordService stndWordService;
+
 	
 	@Inject
 	private StndCommSditmService stndCommSditmService;
@@ -251,10 +259,148 @@ public class StndSditmCtrl {
 		try (
 				SXSSFWorkbook wb = edu.makeExcelFile(header, fields, Collections.singletonList(list));
 				OutputStream output = response.getOutputStream();
-				FileOutputStream fileOutputStream = new FileOutputStream("/Users/seungjaelee/Documents/data/test.xlsx");
+				//FileOutputStream fileOutputStream = new FileOutputStream("/Users/seungjaelee/Documents/data/test.xlsx");
 		)
 		{
 			String fileName = "기관표준용어";										// 파일명
+			fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+			String fileExtension = ".xlsx";									// 확장자
+
+			response.setContentType("application/vnd.ms-excel");
+			response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + fileExtension + "\"");
+
+			// response 버퍼에 파일 생성
+			wb.write(output);
+			output.close();
+			wb.dispose();
+
+			// 로컬에 파일 생성
+			//wb.write(fileOutputStream);
+
+		} catch (IOException ie) {
+			ie.printStackTrace();
+		}
+	}
+
+	@RequestMapping(value = "/dq/stnd/sdDmnExcel.do")
+	public void allSdDmnExcel(@ModelAttribute("searchVO") WamDmn searchVO, HttpServletResponse response, HttpSession session) throws Exception {
+
+		ExcelDownUtil edu = ExcelDownUtil.getInstance();
+
+		searchVO.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
+		searchVO.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
+
+		Integer endNum   = 1000000;
+		Integer startNum = 0;
+		searchVO.setEndNum(endNum);
+		searchVO.setStartNum(startNum);
+		List<WamDmn> list = stndDomainService.getDomainList(searchVO);
+
+		List<String> header = Arrays.asList(new String[]{"No.",	"선택",	"기관명", "표준도메인그룹명",	"도메인분류명",	"도메인명",	"도메인설명", "데이터타입",
+				"데이터길이",	"소수점길이",	"저장형식",	"표현형식",	"단위",	"허용값",	"관리부서명",	"제정일자", "특이사항", "검증메세지"});
+
+		List<String> fields = Arrays.asList(new String[]{"", "", "orgNm","dmngLnm",	"dmnLnm",	"infotpLnm",	"objDescn", "dataType",
+				"dataLen", "dataScal",	"saveFrm",	"exprsnFrm",	"unit",	"cdVal",	"ownrOrg",	"rqstDtm", "spclNt", "errChk"});
+
+		try (
+				SXSSFWorkbook wb = edu.makeExcelFile(header, fields, Collections.singletonList(list));
+				OutputStream output = response.getOutputStream();
+				//FileOutputStream fileOutputStream = new FileOutputStream("/Users/seungjaelee/Documents/data/test.xlsx");
+		)
+		{
+			String fileName = "기관표준도메인";										// 파일명
+			fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+			String fileExtension = ".xlsx";									// 확장자
+
+			response.setContentType("application/vnd.ms-excel");
+			response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + fileExtension + "\"");
+
+			// response 버퍼에 파일 생성
+			wb.write(output);
+			output.close();
+			wb.dispose();
+
+			// 로컬에 파일 생성
+			//wb.write(fileOutputStream);
+
+		} catch (IOException ie) {
+			ie.printStackTrace();
+		}
+	}
+
+	@RequestMapping(value = "/dq/stnd/sdCdExcel.do")
+	public void allSdCdExcel(@ModelAttribute("searchVO") WamDbStcd searchVO, HttpServletResponse response, HttpSession session) throws Exception {
+
+		ExcelDownUtil edu = ExcelDownUtil.getInstance();
+
+		searchVO.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
+		searchVO.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
+
+		Integer endNum   = 1000000;
+		Integer startNum = 0;
+		searchVO.setEndNum(endNum);
+		searchVO.setStartNum(startNum);
+		List<WamDbStcd> list = stndService.getStndCodelist(searchVO);
+
+		List<String> header = Arrays.asList(new String[]{"No.",	"선택",	"기관명",	"관리부서명",	"코드명(한글)",	"코드명(영문)",	"코드설명", "데이터타입",
+				"데이터길이",	"코드값",	"코드값의미","코드값설명","제정일자","특이사항","상위코드값","사용여부","검증메세지"});
+
+		List<String> fields = Arrays.asList(new String[]{"", "", "orgNm","mngDeptCd",	"commCdNm",	"comnCdEnnm",	"commCdDesc", "comnCdDttpNm",
+				"comnCdDataLen","commDtlCdNm",	"commDtlCdMn",	"commDtlCdDesc",	"writDtm",	"pclrMtr",	"uppCommCdId", "useYn", "errChk"});
+
+		try (
+				SXSSFWorkbook wb = edu.makeExcelFile(header, fields, Collections.singletonList(list));
+				OutputStream output = response.getOutputStream();
+				//FileOutputStream fileOutputStream = new FileOutputStream("/Users/seungjaelee/Documents/data/test.xlsx");
+		)
+		{
+			String fileName = "기관표준코드";										// 파일명
+			fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+			String fileExtension = ".xlsx";									// 확장자
+
+			response.setContentType("application/vnd.ms-excel");
+			response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + fileExtension + "\"");
+
+			// response 버퍼에 파일 생성
+			wb.write(output);
+			output.close();
+			wb.dispose();
+
+			// 로컬에 파일 생성
+			//wb.write(fileOutputStream);
+
+		} catch (IOException ie) {
+			ie.printStackTrace();
+		}
+	}
+
+	@RequestMapping(value = "/dq/stnd/sdWdExcel.do")
+	public void allSdWdExcel(@ModelAttribute("searchVO") WamStwd searchVO, HttpServletResponse response, HttpSession session) throws Exception {
+
+		ExcelDownUtil edu = ExcelDownUtil.getInstance();
+
+		searchVO.setUserId(((LoginVO)session.getAttribute("loginVO")).getId());
+		searchVO.setUsergId(((LoginVO)session.getAttribute("loginVO")).getUsergId());
+
+		Integer endNum   = 1000000;
+		Integer startNum = 0;
+		searchVO.setEndNum(endNum);
+		searchVO.setStartNum(startNum);
+		List<WamStwd> list = stndWordService.getStndWordList(searchVO);
+
+		List<String> header = Arrays.asList(new String[]{"No.",	"선택",	"기관명",	"표준단어명",	"단어영문명",	"단어영문약어명",	"단어설명", "형식단어여부",
+				"도메인분류명",	"이음동의어목록",	"금칙어목록",	"관리부서명",	"제정일자",	"특이사항",	"검증메세지"});
+
+		List<String> fields = Arrays.asList(new String[]{"", "", "orgNm","stwdLnm",	"engMean",	"stwdPnm",	"objDescn", "dmnYn",
+				"dmnLnm","symnLnm",	"fbdnLnm",	"ownrOrg",	"rqstDtm",	"spclNt",	"errChk"});
+
+		try (
+				SXSSFWorkbook wb = edu.makeExcelFile(header, fields, Collections.singletonList(list));
+				OutputStream output = response.getOutputStream();
+				//FileOutputStream fileOutputStream = new FileOutputStream("/Users/seungjaelee/Documents/data/test.xlsx");
+		)
+		{
+			String fileName = "기관표준단어";										// 파일명
 			fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
 			String fileExtension = ".xlsx";									// 확장자
 

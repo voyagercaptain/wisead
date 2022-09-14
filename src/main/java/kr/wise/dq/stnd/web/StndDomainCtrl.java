@@ -118,6 +118,9 @@ public class StndDomainCtrl {
 		return new IBSheetListVO<WamDmn>(list, totalCnt);
 
 	}
+
+
+
 	
 	
 	/** 도메인 리스트 조회 */

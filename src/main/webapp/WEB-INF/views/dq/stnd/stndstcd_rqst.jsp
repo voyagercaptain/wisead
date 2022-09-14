@@ -64,7 +64,8 @@ $(document).ready(function() {
     $("#btnExcelDown").click( function(){ doAction("Down2Excel"); } ).show();
 	//엑셀 LOAD
     $("#btnExcelLoad").click( function(){ doAction("LoadExcel"); } );
-	
+	// 전체엑셀 내리기 Event Bind
+	$("#btnExcelDownAll").click( function(){ doAction("DownAllExcel"); } );
 	
 	//추가
     $("#btnNew").click( function(){
@@ -210,6 +211,10 @@ function doAction(sAction)
     	case "LoadExcel":  //엑셀업로드
     		grid_name.LoadExcel({Mode:'HeaderMatch', Append:1});
         	break;
+
+		case "DownAllExcel":
+			$("#frmSearch").attr('action','<c:url value="/dq/stnd/sdCdExcel.do"/>').submit();
+			break;
         
     	case "Down2Excel":  //엑셀다운로드
 //     		if(grid_name.GetTotalRows() == 0 ){
@@ -560,6 +565,7 @@ function postProcessIBS(res) {
 			<div class="bt02">
 				<button class="btn_decide" id="btnDecide" 	name="btnDecide"><s:message code="BTN.CONFIRM" /></button>
 				<button class="btn_excel_down"  id="btnExcelDown"  name="btnExcelDown"><s:message code="EXCL.DOWNLOAD" /></button> <!-- 엑셀 내리기 -->
+				<button class="btn_excel_down"  style="" id="btnExcelDownAll"  name="btnExcelDownAll"><s:message code="EXCL.DOWNLOAD.ALL" /></button> <!-- 엑셀 내리기 -->
 				<SCRIPT>
 					document.getElementById('btnDecide').disabled = true;
 					document.getElementById('btnInit').disabled = true;
