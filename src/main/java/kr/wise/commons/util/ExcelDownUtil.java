@@ -8,6 +8,7 @@ import kr.wise.dq.stnd.service.WamCdVal;
 import kr.wise.dq.stnd.service.WamDmn;
 import kr.wise.dq.stnd.service.WamSditm;
 import kr.wise.dq.stnd.service.WamStwd;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -17,10 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ExcelDownUtil {
 
@@ -85,7 +83,7 @@ public class ExcelDownUtil {
                 if (j == 1) cell.setCellValue("");
 
                 if (j > 1) {
-                    String value = getFieldValue(vo, fields.get(j) == null ? "" : fields.get(j)).toString();
+                    String value = getFieldValue(vo, fields.get(j));
                     cell.setCellValue(value);
                     System.out.println(fields.get(j) + " = " + value);
                 }
@@ -100,6 +98,10 @@ public class ExcelDownUtil {
 
         try {
             Field field = getFieldByName(obj, fieldName); // 4. 해당 필드 조회 후
+            if (field.getType().getName().equals("java.util.Date")) {
+                String dateToStr = DateFormatUtils.format((Date) field.get(obj), "yyyyMMdd");
+                return (T)dateToStr;
+            }
             return (T) field.get(obj);	// 5. get 을 이용하여 field value 획득
         } catch (IllegalAccessException e){
             return null;
