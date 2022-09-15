@@ -130,7 +130,7 @@ where (T.COMM_ITEM_COUNT >0 or T.COMM_DOMAIN_COUNT or T.COMM_WORD_COUNT)
 															 ON(A.comm_cd_nm=B.comm_cd_nm AND A.comn_cd_ennm = B.comn_cd_ennm and a.comm_dtl_cd_mn = b.comm_dtl_cd_mn and A.org_nm = B.org_nm)
 			 )														  AS  ORG_CODE_COUNT,   --기관표준 코드 일치 수
 			 (SELECT COUNT(*) FROM wam_db_comm_cd  WHERE ORG_NM=WO.ORG_NM and db_nm = WO.DB_NM) AS DB_CODE_COUNT	--DB표준 코드 수
-		 	FROM (select a.org_nm, b.db_nm from WAA_ORG a inner join waa_org_db b on (a.org_cd = b.org_cd) where a.target_yn ='Y' and b.target_yn ='Y') WO
+		 	FROM (select a.org_nm, b.db_nm from WAA_ORG a inner join waa_org_db b on (a.org_cd = b.org_cd)) WO
 		) T
 	where T.ORG_NM = #{orgNm}
 	  and T.DB_NM = #{dbNm}
