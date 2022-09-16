@@ -176,7 +176,7 @@
       </if>
 
       <if test="orgNm != null" >
-        AND ORG_NM LIKE CONCAT('%',#{orgNm,jdbcType=VARCHAR},'%')
+        AND ORG_NM = #{orgNm,jdbcType=VARCHAR}
       </if>
        <if test="stndNm != null" >
         AND (DMN_LNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')

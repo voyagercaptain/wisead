@@ -613,7 +613,7 @@ SELECT *
         </if>
 
         <if test="orgNm != null" >
-            AND ORG_NM LIKE CONCAT('%',#{orgNm,jdbcType=VARCHAR},'%')
+            AND ORG_NM = #{orgNm,jdbcType=VARCHAR}
         </if>
         <if test="stndNm != null" >
             AND (   SDITM_LNM LIKE CONCAT('%' , #{stndNm,jdbcType=VARCHAR} , '%')
