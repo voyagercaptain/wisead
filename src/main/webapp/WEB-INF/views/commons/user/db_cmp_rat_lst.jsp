@@ -53,7 +53,7 @@ function initGrid()
         SetMergeSheet(msHeaderOnly);
         var headers = [
                     {Text:"<s:message code='COMMON.HEADER.DBCMPRAT1.LST'/>", Align:"Center"},
-                    /* |용어|용어|용어|도메인|도메인|도메인|단어|단어|단어 */
+                    /* |용어|용어|용어|용어|도메인|도메인|도메인|도메인|단어|단어|단어|단어 */
                     {Text:"<s:message code='COMMON.HEADER.DBCMPRAT.LST'/>", Align:"Center"}
                     /* 기관명|공통표준|기관표준|DB표준|공통표준|기관표준|DB표준|공통표준|기관표준|DB표준 */
                 ];
@@ -69,14 +69,18 @@ function initGrid()
         	{Type:"Text",   Format:"",    SaveName:"commItemCount",    Align:"Left",   Edit:0}, //용어  > 공통표준
         	{Type:"Text",   Format:"",    SaveName:"orgItemCount",     Align:"Left",   Edit:0}, //용어  > 기관표준
         	{Type:"Text",   Format:"",    SaveName:"dbItemCount",      Align:"Left",   Edit:0}, //용어  > db표준
+        	{Type:"Text",   Format:"",    SaveName:"dbItemRqstDtm",    Align:"Left",   Edit:0}, //용어  > 제정일자
         	{Type:"Text",   Format:"",    SaveName:"commDomainCount",  Align:"Left",   Edit:0}, //도메인 > 공통표준
         	{Type:"Text",   Format:"",    SaveName:"orgDomainCount",   Align:"Left",   Edit:0}, //도메인 > 기관표준
         	{Type:"Text",   Format:"",    SaveName:"dbDomainCount",    Align:"Left",   Edit:0}, //도메인 > db표준
+        	{Type:"Text",   Format:"",    SaveName:"dbDomainRqstDtm",  Align:"Left",   Edit:0}, //도메인 > 제정일자
         	{Type:"Text",   Format:"",    SaveName:"commWordCount",    Align:"Left",   Edit:0}, //단어  > 공통표준
         	{Type:"Text",   Format:"",    SaveName:"orgWordCount",     Align:"Left",   Edit:0}, //단어  > 기관표준
         	{Type:"Text",   Format:"",    SaveName:"dbWordCount",      Align:"Left",   Edit:0}, //단어  > db표준
-            {Type:"Text",   Format:"",    SaveName:"orgCodeCount",     Align:"Left",   Edit:0}, //단어  > 기관코드
-            {Type:"Text",   Format:"",    SaveName:"dbCodeCount",      Align:"Left",   Edit:0}, //단어  > db코드
+        	{Type:"Text",   Format:"",    SaveName:"dbWordRqstDtm",    Align:"Left",   Edit:0}, //단어  > 제정일자
+            {Type:"Text",   Format:"",    SaveName:"orgCodeCount",     Align:"Left",   Edit:0}, //코드  > 기관코드
+            {Type:"Text",   Format:"",    SaveName:"dbCodeCount",      Align:"Left",   Edit:0}, //코드  > db코드
+            {Type:"Text",   Format:"",    SaveName:"dbCodeRqstDtm",    Align:"Left",   Edit:0}, //코드  > 제정일자
         ];
                     
         InitColumns(cols);
@@ -103,10 +107,10 @@ function doAction(sAction)
 				showMsgBox("INF", "기관명을 입력하고 검색해 주세요.");
 				return;
 			}
-        	if(frmSearch.dbNm.value == '') {
+        	/* if(frmSearch.dbNm.value == '') {
 				//showMsgBox("INF", "DB명을 입력하고 검색해 주세요.");
 				return;
-			}
+			} */
         	var param = $('#frmSearch').serialize();
         	//alert(param);
         	grid_sheet.DoSearch('<c:url value="/commons/user/DbCmpRatSelectlist.do" />', param, ibscallback);

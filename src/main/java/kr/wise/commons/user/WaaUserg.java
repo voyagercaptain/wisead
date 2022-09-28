@@ -52,6 +52,14 @@ public class WaaUserg extends CommonVo {
 	
 	private int commWordCount;
 	
+	private String dbItemRqstDtm;
+	
+	private String dbWordRqstDtm;
+	
+	private String dbDomainRqstDtm;
+	
+	private String dbCodeRqstDtm;
+	
 	public int getCommItemCount() {
 		return commItemCount;
 	}
@@ -574,6 +582,38 @@ public class WaaUserg extends CommonVo {
 				.append(usergPnm).append(", usergTypCd=").append(usergTypCd)
 				.append("]");
 		return builder.toString() + super.toString();
+	}
+
+	public String getDbItemRqstDtm() {
+		return dbItemRqstDtm;
+	}
+
+	public void setDbItemRqstDtm(String dbItemRqstDtm) {
+		this.dbItemRqstDtm = dbItemRqstDtm;
+	}
+
+	public String getDbWordRqstDtm() {
+		return dbWordRqstDtm;
+	}
+
+	public void setDbWordRqstDtm(String dbWordRqstDtm) {
+		this.dbWordRqstDtm = dbWordRqstDtm;
+	}
+
+	public String getDbDomainRqstDtm() {
+		return dbDomainRqstDtm;
+	}
+
+	public void setDbDomainRqstDtm(String dbDomainRqstDtm) {
+		this.dbDomainRqstDtm = dbDomainRqstDtm;
+	}
+
+	public String getDbCodeRqstDtm() {
+		return dbCodeRqstDtm;
+	}
+
+	public void setDbCodeRqstDtm(String dbCodeRqstDtm) {
+		this.dbCodeRqstDtm = dbCodeRqstDtm;
 	}
 
 //    public String getObjDescn() {

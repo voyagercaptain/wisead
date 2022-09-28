@@ -4293,8 +4293,8 @@
 <entry key="COMMON.HEADER.TOTALSTSTAT1.LST"><![CDATA[기관분류명|평가대상 기관수|용어|제출율|단어|제출율|도메인|제출율|코드|제출율|평가DB수|용어|제출율|단어|제출율|도메인|제출율|코드|제출율]]></entry>
 <entry key="COMMON.HEADER.TOTALSTSTAT.SUB.LST"><![CDATA[|전체기관|등록기관|용어|제출율|단어|제출율|도메인|제출율|코드|제출율]]></entry>
 <entry key="COMMON.HEADER.ORGCMPRAT.LST"><![CDATA[기관명|공통표준용어|기관표준용어|공통표준도메인|기관표준도메인|공통표준단어|기관표준단어]]></entry>
-<entry key="COMMON.HEADER.DBCMPRAT1.LST"><![CDATA[||용어|용어|용어|도메인|도메인|도메인|단어|단어|단어|코드|코드]]></entry>
-<entry key="COMMON.HEADER.DBCMPRAT.LST"><![CDATA[기관명|DB명|공통표준|기관표준|DB표준|공통표준|기관표준|DB표준|공통표준|기관표준|DB표준|기관코드|DB코드]]></entry>
+<entry key="COMMON.HEADER.DBCMPRAT1.LST"><![CDATA[||용어|용어|용어|용어|도메인|도메인|도메인|도메인|단어|단어|단어|단어|코드|코드|코드]]></entry>
+<entry key="COMMON.HEADER.DBCMPRAT.LST"><![CDATA[기관명|DB명|공통표준|기관표준|DB표준|제정일자|공통표준|기관표준|DB표준|제정일자|공통표준|기관표준|DB표준|제정일자|기관코드|DB코드|제정일자]]></entry>
 
 <entry key="META.HEADER.STWDCHANGE.DTL"><![CDATA[No.|표준단어ID|만료일자|시작일자|표준단어논리명|표준단어물리명|영문의미|한자명|출처구분|표준단어구분|도메인여부|요청번호|요청일련번호|설명|버전|등록유형|최초요청일시|최초요청사용자ID|요청일시|요청사용자ID|승인일시|승인사용자ID|비고]]></entry>
 <entry key="META.HEADER.STWDWHEREUSED.DTL.1"><![CDATA[No.|개체유형|개체ID|개체명|개체논리명|개체물리명|도메인ID|비고]]></entry>
