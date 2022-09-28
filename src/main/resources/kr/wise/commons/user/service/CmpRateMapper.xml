@@ -11,6 +11,10 @@
     <result column="DB_WORD_COUNT"   		property="dbWordCount"   	   jdbcType="NUMERIC" />
     <result column="DB_DOMAIN_COUNT" 		property="dbDomainCount"       jdbcType="NUMERIC" />
     <result column="DB_CODE_COUNT" 			property="dbCodeCount"         jdbcType="NUMERIC" />
+	<result column="DB_ITEM_RQST_DTM"   	property="dbItemRqstDtm"   	   jdbcType="VARCHAR" />
+	<result column="DB_WORD_RQST_DTM"   	property="dbWordRqstDtm"   	   jdbcType="VARCHAR" />
+	<result column="DB_DOMAIN_RQST_DTM" 	property="dbDomainRqstDtm"     jdbcType="VARCHAR" />
+	<result column="DB_CODE_RQST_DTM" 		property="dbCodeRqstDtm"       jdbcType="VARCHAR" />
     <result column="COMM_ITEM_COUNT"   		property="commItemCount"   	   jdbcType="NUMERIC" />
     <result column="COMM_WORD_COUNT"   		property="commWordCount"   	   jdbcType="NUMERIC" />
     <result column="COMM_DOMAIN_COUNT" 		property="commDomainCount"     jdbcType="NUMERIC" />
@@ -113,6 +117,7 @@ where (T.COMM_ITEM_COUNT >0 or T.COMM_DOMAIN_COUNT or T.COMM_WORD_COUNT)
 			 ON(A.sditm_lnm=B.sditm_lnm AND A.sditm_pnm = B.sditm_pnm and a.infotp_lnm = b.infotp_lnm and A.org_nm = B.org_nm)
 			 )														  AS  ORG_ITEM_COUNT,   --기관표준 단어 일치 수
 			 (SELECT COUNT(*) FROM WAM_DB_SDITM WHERE ORG_NM=WO.ORG_NM and db_nm = WO.DB_NM) AS DB_ITEM_COUNT,	--DB표준 용어 수
+			 (SELECT rqst_dtm FROM WAM_DB_SDITM WHERE ORG_NM=WO.ORG_NM and db_nm = WO.DB_NM order by rqst_dtm limit 1) AS DB_ITEM_RQST_DTM, -- 제정일자
 			 (SELECT COUNT(*) FROM COMM_DMN  A INNER JOIN (SELECT INFOTP_LNM,DATA_LEN,DATA_TYPE FROM WAM_DB_DMN  WHERE ORG_NM = WO.ORG_NM and db_nm = WO.DB_NM) B
 														  ON (A.INFOTP_LNM=B.INFOTP_LNM AND A.DATA_LEN = B.DATA_LEN AND A.DATA_TYPE = B.DATA_TYPE)
 			 ) 														  AS COMM_DOMAIN_COUNT, --공통표준 도메인 일치 수
@@ -120,17 +125,20 @@ where (T.COMM_ITEM_COUNT >0 or T.COMM_DOMAIN_COUNT or T.COMM_WORD_COUNT)
 														 ON (A.INFOTP_LNM=B.INFOTP_LNM AND A.DATA_LEN = B.DATA_LEN AND A.DATA_TYPE = B.DATA_TYPE and A.org_nm = B.org_nm)
 			 ) 														  AS ORG_DOMAIN_COUNT,  --기관표준 도메인 일치 수
 			 (SELECT COUNT(*) FROM WAM_DB_DMN  WHERE ORG_NM = WO.ORG_NM and db_nm = WO.DB_NM)  AS DB_DOMAIN_COUNT,  --DB표준 도메인 수
+			 (SELECT rqst_dtm FROM WAM_DB_DMN WHERE ORG_NM=WO.ORG_NM and db_nm = WO.DB_NM order by rqst_dtm limit 1) AS DB_DOMAIN_RQST_DTM, -- 제정일자
 			 (SELECT COUNT(*) FROM COMM_STWD A INNER JOIN (SELECT STWD_LNM,STWD_PNM FROM WAM_DB_STWD WHERE ORG_NM = WO.ORG_NM and db_nm = WO.DB_NM) B
 														  ON(A.STWD_LNM=B.STWD_LNM AND A.STWD_PNM = B.STWD_PNM))  AS  COMM_WORD_COUNT,  --공통표준 단어 일치 수
 			 (SELECT COUNT(*) FROM WAM_STWD A INNER JOIN (SELECT ORG_NM, STWD_LNM,STWD_PNM FROM WAM_DB_STWD WHERE ORG_NM = WO.ORG_NM and db_nm = WO.DB_NM) B
 														 ON(A.STWD_LNM=B.STWD_LNM AND A.STWD_PNM = B.STWD_PNM and A.org_nm = B.org_nm)
 			 )														  AS  ORG_WORD_COUNT,   --기관표준 단어 일치 수
 			 (SELECT COUNT(*) FROM WAM_DB_STWD WHERE ORG_NM=WO.ORG_NM and db_nm = WO.DB_NM)  AS DB_WORD_COUNT,    --DB표준 단어 수
+			 (SELECT rqst_dtm FROM WAM_DB_STWD WHERE ORG_NM=WO.ORG_NM and db_nm = WO.DB_NM order by rqst_dtm limit 1) AS DB_WORD_RQST_DTM, -- 제정일자
 			 (select count(*) from (
 									   SELECT ORG_NM, comm_cd_nm,comn_cd_ennm, comm_dtl_cd_mn FROM wam_comm_cd where ORG_NM = WO.org_nm
 									   intersect
 									   SELECT ORG_NM, comm_cd_nm,comn_cd_ennm, comm_dtl_cd_mn FROM wam_db_comm_cd where ORG_NM = WO.org_nm and DB_NM = WO.db_nm))  AS  ORG_CODE_COUNT,   --기관표준 코드 일치 수
-			 (SELECT COUNT(*) FROM wam_db_comm_cd  WHERE ORG_NM=WO.ORG_NM and db_nm = WO.DB_NM) AS DB_CODE_COUNT	--DB표준 코드 수
+			 (SELECT COUNT(*) FROM wam_db_comm_cd  WHERE ORG_NM=WO.ORG_NM and db_nm = WO.DB_NM) AS DB_CODE_COUNT,	--DB표준 코드 수
+			 (SELECT writ_dtm FROM WAM_DB_STWD WHERE ORG_NM=WO.ORG_NM and db_nm = WO.DB_NM order by writ_dtm limit 1) AS DB_CODE_RQST_DTM, -- 제정일자
 		 	FROM (select a.org_nm, b.db_nm from WAA_ORG a inner join waa_org_db b on (a.org_cd = b.org_cd)) WO
 		) T
 	where T.ORG_NM LIKE #{orgNm}
