@@ -76,7 +76,10 @@ public class QuartzJob extends QuartzJobBean {
 			return;
 		orgStndInspectJob();
 		dbStndInspectJob();
-		orgDbSyncJob();
+
+		String orgdbSync = System.getProperty("orgdb.sync");
+		if ("Y".equals(orgdbSync))
+			 orgDbSyncJob();
 	}
 
 	protected void orgDbSyncJob() {
