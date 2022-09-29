@@ -107,10 +107,10 @@ function doAction(sAction)
 				showMsgBox("INF", "기관명을 입력하고 검색해 주세요.");
 				return;
 			}
-        	/* if(frmSearch.dbNm.value == '') {
+        	if(frmSearch.dbNm.value == '') {
 				//showMsgBox("INF", "DB명을 입력하고 검색해 주세요.");
 				return;
-			} */
+			}
         	var param = $('#frmSearch').serialize();
         	//alert(param);
         	grid_sheet.DoSearch('<c:url value="/commons/user/DbCmpRatSelectlist.do" />', param, ibscallback);
