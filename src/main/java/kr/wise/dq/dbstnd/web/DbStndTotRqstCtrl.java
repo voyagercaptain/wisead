@@ -1444,7 +1444,6 @@ public class DbStndTotRqstCtrl {
 			try (
 					SXSSFWorkbook wb = edu.makeExcelFile(header, fields, Collections.singletonList(list));
 					OutputStream output = response.getOutputStream();
-					FileOutputStream fileOutputStream = new FileOutputStream("C:\\sangminKim\\Documents\\data\\test.xlsx");
 			)
 			{
 				String fileName = "DB표준용어";										// 파일명
@@ -1491,7 +1490,6 @@ public class DbStndTotRqstCtrl {
 			try (
 					SXSSFWorkbook wb = edu.makeExcelFile(header, fields, Collections.singletonList(list));
 					OutputStream output = response.getOutputStream();
-					FileOutputStream fileOutputStream = new FileOutputStream("C:\\sangminKim\\Documents\\data\\test.xlsx");
 			)
 			{
 				String fileName = "DB표준도메인";										// 파일명
@@ -1539,7 +1537,6 @@ public class DbStndTotRqstCtrl {
 			try (
 					SXSSFWorkbook wb = edu.makeExcelFile(header, fields, Collections.singletonList(list));
 					OutputStream output = response.getOutputStream();
-					FileOutputStream fileOutputStream = new FileOutputStream("C:\\sangminKim\\Documents\\data\\test.xlsx");
 			)
 			{
 				String fileName = "DB표준단어";										// 파일명
@@ -1587,7 +1584,6 @@ public class DbStndTotRqstCtrl {
 			try (
 					SXSSFWorkbook wb = edu.makeExcelFile(header, fields, Collections.singletonList(list));
 					OutputStream output = response.getOutputStream();
-					FileOutputStream fileOutputStream = new FileOutputStream("C:\\sangminKim\\Documents\\data\\test.xlsx");
 			)
 			{
 				String fileName = "DB표준코드";										// 파일명
