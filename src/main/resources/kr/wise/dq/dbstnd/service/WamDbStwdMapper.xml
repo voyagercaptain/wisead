@@ -84,7 +84,7 @@
         AND REPLACE(A.DB_NM, ' ', '') LIKE CONCAT('%',REPLACE(#{dbNm,jdbcType=VARCHAR}, ' ', ''),'%')
       </if>
    	<if test='!"2".equals(usergId) and !"3".equals(usergId)' > 
-   		AND REPLACE(A.DB_NM, ' ', '') IN (SELECT REPLACE(DB_NM, ' ', '') AS DB_NM FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})
+   		AND REPLACE(A.DB_NM, ' ', '') IN (SELECT REPLACE(DB_NAME, ' ', '') AS DB_NM FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})
    		AND A.ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
    	</if>
    	 <if test="stndNm != null" >
@@ -804,7 +804,7 @@
         AND REPLACE(A.DB_NM, ' ', '') LIKE CONCAT('%',REPLACE(#{dbNm,jdbcType=VARCHAR}, ' ', ''),'%')
       </if>
    	<if test='!"2".equals(usergId) and !"3".equals(usergId)' > 
-   		AND REPLACE(A.DB_NM, ' ', '') IN (SELECT REPLACE(A.DB_NM, ' ', '') AS DB_NM FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})
+   		AND REPLACE(A.DB_NM, ' ', '') IN (SELECT REPLACE(A.DB_NAME, ' ', '') AS DB_NM FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})
    		AND A.ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
    	</if>
    	 <if test="stndNm != null" >
@@ -864,7 +864,7 @@
         AND REPLACE(A.DB_NM, ' ', '') LIKE CONCAT('%',REPLACE(#{dbNm,jdbcType=VARCHAR}, ' ', ''),'%')
       </if>
    	<if test='!"2".equals(usergId) and !"3".equals(usergId)' > 
-   		AND REPLACE(A.DB_NM, ' ', '') IN (SELECT REPLACE(DB_NM, ' ', '') AS DB_NM FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})
+   		AND REPLACE(A.DB_NM, ' ', '') IN (SELECT REPLACE(DB_NAME, ' ', '') AS DB_NM FROM WAA_USER_DB WHERE USER_ID = #{userId,jdbcType=VARCHAR})
    		AND A.ORG_NM IN (SELECT ORG_NM FROM WAA_ORG WHERE ORG_CD IN (SELECT ORG_CD FROM WAA_USER_ORG WHERE USER_ID = #{userId,jdbcType=VARCHAR}))
    	</if>
    	 <if test="stndNm != null" >
