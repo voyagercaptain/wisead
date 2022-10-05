@@ -27,7 +27,14 @@ $(document).ready(function() {
         
         // 엑셀내리기 Event Bind
         $("#btnExcelDown").click( function(){ doAction("Down2Excel"); } );
-      
+
+        setautoComplete($("#frmSearch #orgNm"), "ORGNM", 10);
+
+        $("#frmSearch #orgNm").autocomplete({
+            select: function (event, ui) {
+                getOrgDbList();
+            }
+        });
     }
 );
 
@@ -84,19 +91,21 @@ function doAction(sAction)
     {		    
         
         case "Search":
+
+            if(frmSearch.orgNm.value == '') {
+                showMsgBox("INF", "기관명을 입력하고 검색해 주세요.");
+                return;
+            }
+
         	var param = $('#frmSearch').serialize();
         	//alert(param);
         	grid_sheet.DoSearch('<c:url value="/commons/user/OrgCmpRatSelectlist.do" />', param);
-        	
         	break;
        
         case "Down2Excel":  //엑셀내려받기
-        
-          
+
             grid_sheet.Down2Excel({FileName:'기관표준 준수율',HiddenColumn:1, Merge:1});
-            
             break;
-    
     }       
 }
  
