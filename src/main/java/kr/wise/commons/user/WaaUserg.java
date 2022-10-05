@@ -59,6 +59,46 @@ public class WaaUserg extends CommonVo {
 	private String dbDomainRqstDtm;
 	
 	private String dbCodeRqstDtm;
+
+	private String orgItemRqstDtm;
+
+	public String getOrgCodeRqstDtm() {
+		return orgCodeRqstDtm;
+	}
+
+	public void setOrgCodeRqstDtm(String orgCodeRqstDtm) {
+		this.orgCodeRqstDtm = orgCodeRqstDtm;
+	}
+
+	private String orgCodeRqstDtm;
+
+	public String getOrgItemRqstDtm() {
+		return orgItemRqstDtm;
+	}
+
+	public void setOrgItemRqstDtm(String orgItemRqstDtm) {
+		this.orgItemRqstDtm = orgItemRqstDtm;
+	}
+
+	public String getOrgWordRqstDtm() {
+		return orgWordRqstDtm;
+	}
+
+	public void setOrgWordRqstDtm(String orgWordRqstDtm) {
+		this.orgWordRqstDtm = orgWordRqstDtm;
+	}
+
+	public String getOrgDomainRqstDtm() {
+		return orgDomainRqstDtm;
+	}
+
+	public void setOrgDomainRqstDtm(String orgDomainRqstDtm) {
+		this.orgDomainRqstDtm = orgDomainRqstDtm;
+	}
+
+	private String orgWordRqstDtm;
+	private String orgDomainRqstDtm;
+
 	
 	public int getCommItemCount() {
 		return commItemCount;

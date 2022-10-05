@@ -64,21 +64,25 @@ function initGrid()
         
 
         var cols = [                        
-        	{Type:"Text",  Width : 60,  	  SaveName:"orgNm",            Align:"Left",  Edit:0}, //기관명
-            {Type:"Text",  Width : 60,  	  SaveName:"dbNm",            Align:"Left",  Edit:0}, //DB명
+        	{Type:"Text",  Width : 60,    SaveName:"orgNm",            Align:"Left",  Edit:0}, //기관명
+            {Type:"Text",  Width : 60,    SaveName:"dbNm",            Align:"Left",  Edit:0}, //DB명
         	{Type:"Text",   Format:"",    SaveName:"commItemCount",    Align:"Left",   Edit:0}, //용어  > 공통표준
         	{Type:"Text",   Format:"",    SaveName:"orgItemCount",     Align:"Left",   Edit:0}, //용어  > 기관표준
+            {Type:"Text",   Format:"",    SaveName:"orgItemRqstDtm",     Align:"Left",   Edit:0}, //용어  > 기관표준제정일자
         	{Type:"Text",   Format:"",    SaveName:"dbItemCount",      Align:"Left",   Edit:0}, //용어  > db표준
         	{Type:"Text",   Format:"",    SaveName:"dbItemRqstDtm",    Align:"Left",   Edit:0}, //용어  > 제정일자
         	{Type:"Text",   Format:"",    SaveName:"commDomainCount",  Align:"Left",   Edit:0}, //도메인 > 공통표준
         	{Type:"Text",   Format:"",    SaveName:"orgDomainCount",   Align:"Left",   Edit:0}, //도메인 > 기관표준
+            {Type:"Text",   Format:"",    SaveName:"orgDomainRqstDtm",     Align:"Left",   Edit:0}, //용어  > 기관표준제정일자
         	{Type:"Text",   Format:"",    SaveName:"dbDomainCount",    Align:"Left",   Edit:0}, //도메인 > db표준
         	{Type:"Text",   Format:"",    SaveName:"dbDomainRqstDtm",  Align:"Left",   Edit:0}, //도메인 > 제정일자
         	{Type:"Text",   Format:"",    SaveName:"commWordCount",    Align:"Left",   Edit:0}, //단어  > 공통표준
         	{Type:"Text",   Format:"",    SaveName:"orgWordCount",     Align:"Left",   Edit:0}, //단어  > 기관표준
+            {Type:"Text",   Format:"",    SaveName:"orgWordRqstDtm",     Align:"Left",   Edit:0}, //용어  > 기관표준제정일자
         	{Type:"Text",   Format:"",    SaveName:"dbWordCount",      Align:"Left",   Edit:0}, //단어  > db표준
         	{Type:"Text",   Format:"",    SaveName:"dbWordRqstDtm",    Align:"Left",   Edit:0}, //단어  > 제정일자
             {Type:"Text",   Format:"",    SaveName:"orgCodeCount",     Align:"Left",   Edit:0}, //코드  > 기관코드
+            {Type:"Text",   Format:"",    SaveName:"orgCodeRqstDtm",     Align:"Left",   Edit:0}, //용어  > 기관표준제정일자
             {Type:"Text",   Format:"",    SaveName:"dbCodeCount",      Align:"Left",   Edit:0}, //코드  > db코드
             {Type:"Text",   Format:"",    SaveName:"dbCodeRqstDtm",    Align:"Left",   Edit:0}, //코드  > 제정일자
         ];
