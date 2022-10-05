@@ -58,12 +58,9 @@ FROM
 	ON(A.STWD_LNM=B.STWD_LNM AND A.STWD_PNM = B.STWD_PNM)
 	)														AS  COMM_WORD_COUNT
 FROM WAA_ORG WO
-<if test="orgNm != null and orgNm != '' ">
  WHERE WO.ORG_NM LIKE  CONCAT('%', #{orgNm}, '%')
-</if> 
 ) T
-where (T.COMM_ITEM_COUNT >0 or T.COMM_DOMAIN_COUNT or T.COMM_WORD_COUNT)
-	
+
 </select>
 
 
