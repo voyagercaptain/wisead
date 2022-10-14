@@ -111,32 +111,42 @@ FROM WAA_ORG WO
 			SELECT
 			WO.ORG_NM,
 			WO.DB_NM,
-			(SELECT COUNT(*) FROM COMM_SDITM A INNER JOIN (SELECT SDITM_LNM,SDITM_PNM,INFOTP_LNM FROM WAM_DB_SDITM WHERE ORG_NM = WO.ORG_NM AND db_nm = WO.DB_NM) B
-			ON (A.SDITM_LNM =B.SDITM_LNM AND A.SDITM_PNM = B.SDITM_PNM AND A.INFOTP_LNM =B.INFOTP_LNM)
-			) 														  AS COMM_ITEM_COUNT,   --공통표준 용어 일치 수
-			(SELECT COUNT(*) FROM (SELECT sditm_lnm,sditm_pnm, infotp_lnm FROM wam_sditm WHERE INSTR(#{orgNm} , ORG_NM))  A
-									INNER JOIN (SELECT  sditm_lnm,sditm_pnm, infotp_lnm FROM wam_db_sditm  WHERE ORG_NM = WO.ORG_NM AND db_nm = WO.DB_NM) B
-									ON(A.sditm_lnm=B.sditm_lnm AND A.sditm_pnm = B.sditm_pnm and a.infotp_lnm = b.infotp_lnm)
-			)														  AS  ORG_ITEM_COUNT,   --기관표준 단어 일치 수
+			(SELECT COUNT(*) FROM
+				(SELECT SDITM_LNM,SDITM_PNM,INFOTP_LNM FROM COMM_SDITM
+				intersect
+				SELECT SDITM_LNM,SDITM_PNM,INFOTP_LNM FROM WAM_DB_SDITM WHERE ORG_NM = WO.ORG_NM AND db_nm = WO.DB_NM)
+			)  AS COMM_ITEM_COUNT,   --공통표준 용어 일치 수
+			(SELECT COUNT(*) FROM
+				(SELECT sditm_lnm,sditm_pnm, infotp_lnm FROM wam_sditm WHERE INSTR(#{orgNm}, ORG_NM)
+				intersect
+				SELECT  sditm_lnm,sditm_pnm, infotp_lnm FROM wam_db_sditm  WHERE ORG_NM = WO.ORG_NM AND db_nm = WO.DB_NM)
+			) AS ORG_ITEM_COUNT,  --기관표준 단어 일치 수
 			(SELECT to_char(rqst_dtm,'YYYY-MM-DD') FROM wam_sditm WHERE ORG_NM = WO.ORG_NM order by rqst_dtm limit 1) AS ORG_ITEM_RQST_DTM,	-- ORG 제정일자
 			(SELECT COUNT(*) FROM WAM_DB_SDITM WHERE ORG_NM=WO.ORG_NM and db_nm = WO.DB_NM) AS DB_ITEM_COUNT,	--DB표준 용어 수
 			(SELECT to_char(rqst_dtm,'YYYY-MM-DD')  FROM WAM_DB_SDITM WHERE ORG_NM=WO.ORG_NM and db_nm = WO.DB_NM order by rqst_dtm limit 1) AS DB_ITEM_RQST_DTM, -- DB 제정일자
-			(SELECT COUNT(*) FROM COMM_DMN  A INNER JOIN (SELECT INFOTP_LNM,DATA_LEN,DATA_TYPE FROM WAM_DB_DMN  WHERE ORG_NM = WO.ORG_NM and db_nm = WO.DB_NM) B
-													  ON (A.INFOTP_LNM=B.INFOTP_LNM AND A.DATA_LEN = B.DATA_LEN AND A.DATA_TYPE = B.DATA_TYPE)
-			) 														  AS COMM_DOMAIN_COUNT, --공통표준 도메인 일치 수
-			(SELECT COUNT(*) FROM (SELECT ORG_NM, INFOTP_LNM,NVL(DATA_LEN, '') AS DATA_LEN ,DATA_TYPE FROM WAM_DMN WHERE INSTR(#{orgNm} , ORG_NM))  A
-										INNER JOIN (SELECT  ORG_NM, INFOTP_LNM,NVL(DATA_LEN, '') AS DATA_LEN ,DATA_TYPE FROM WAM_DB_DMN  WHERE ORG_NM = WO.ORG_NM AND db_nm = WO.DB_NM) B
-										ON(A.INFOTP_LNM=B.INFOTP_LNM AND A.DATA_LEN = B.DATA_LEN AND A.DATA_TYPE = B.DATA_TYPE and A.org_nm = B.org_nm)
-			)														  AS  ORG_DOMAIN_COUNT,   --기관표준 도메인 일치 수
+			(SELECT COUNT(*) FROM
+				(SELECT INFOTP_LNM,DATA_LEN,DATA_TYPE FROM COMM_DMN
+				intersect
+				SELECT INFOTP_LNM,DATA_LEN,DATA_TYPE FROM WAM_DB_DMN  WHERE ORG_NM = WO.ORG_NM and db_nm = WO.DB_NM)
+			) 	 AS COMM_DOMAIN_COUNT, --공통표준 도메인 일치 수
+			(SELECT COUNT(*) FROM
+			                (SELECT ORG_NM, INFOTP_LNM,NVL(DATA_LEN, '') AS DATA_LEN ,DATA_TYPE FROM WAM_DMN WHERE INSTR(#{orgNm}, ORG_NM)
+								intersect
+							SELECT  ORG_NM, INFOTP_LNM,NVL(DATA_LEN, '') AS DATA_LEN ,DATA_TYPE FROM WAM_DB_DMN  WHERE ORG_NM = WO.ORG_NM AND db_nm = WO.DB_NM)
+			)  AS  ORG_DOMAIN_COUNT, --기관표준 도메인 일치 수
 			(SELECT to_char(rqst_dtm,'YYYY-MM-DD') FROM WAM_DMN WHERE ORG_NM = WO.ORG_NM order by rqst_dtm limit 1) AS ORG_DOMAIN_RQST_DTM,	-- ORG 제정일자
 			(SELECT COUNT(*) FROM WAM_DB_DMN  WHERE ORG_NM = WO.ORG_NM and db_nm = WO.DB_NM)  AS DB_DOMAIN_COUNT,  --DB표준 도메인 수
 			(SELECT to_char(rqst_dtm,'YYYY-MM-DD') FROM WAM_DB_DMN WHERE ORG_NM=WO.ORG_NM and db_nm = WO.DB_NM order by rqst_dtm limit 1) AS DB_DOMAIN_RQST_DTM, -- 제정일자
-			(SELECT COUNT(*) FROM COMM_STWD A INNER JOIN (SELECT STWD_LNM,STWD_PNM FROM WAM_DB_STWD WHERE ORG_NM = WO.ORG_NM and db_nm = WO.DB_NM) B
-													  ON(A.STWD_LNM=B.STWD_LNM AND A.ENG_MEAN = B.STWD_PNM))  AS  COMM_WORD_COUNT,  --공통표준 단어 일치 수
-			(SELECT COUNT(*) FROM (SELECT ORG_NM, STWD_LNM,STWD_PNM FROM WAM_STWD WHERE INSTR(#{orgNm} , ORG_NM))  A
-									INNER JOIN (SELECT  ORG_NM, STWD_LNM,STWD_PNM FROM WAM_DB_STWD  WHERE ORG_NM = WO.ORG_NM AND db_nm = WO.DB_NM) B
-									ON(A.STWD_LNM=B.STWD_LNM AND A.STWD_PNM = B.STWD_PNM and A.org_nm = B.org_nm)
-			)														  AS  ORG_WORD_COUNT,   --기관표준 단어 일치 수
+			(SELECT COUNT(*) FROM
+				(SELECT STWD_LNM, ENG_MEAN AS STWD_PNM FROM COMM_STWD
+				intersect
+				SELECT STWD_LNM, STWD_PNM FROM WAM_DB_STWD WHERE ORG_NM = WO.ORG_NM and db_nm = WO.DB_NM)
+            ) AS  COMM_WORD_COUNT,  --공통표준 단어 일치 수
+			(SELECT COUNT(*) FROM
+						 (SELECT ORG_NM, STWD_LNM,STWD_PNM FROM WAM_STWD WHERE INSTR(#{orgNm}, ORG_NM)
+							intersect
+						SELECT  ORG_NM, STWD_LNM,STWD_PNM FROM WAM_DB_STWD WHERE ORG_NM = WO.ORG_NM AND db_nm = WO.DB_NM)
+			)  AS  ORG_WORD_COUNT, --기관표준 단어 일치 수
 			(SELECT to_char(rqst_dtm,'YYYY-MM-DD') FROM WAM_STWD WHERE ORG_NM = WO.ORG_NM order by rqst_dtm limit 1) AS ORG_WORD_RQST_DTM,	-- ORG 제정일자
 			(SELECT COUNT(*) FROM WAM_DB_STWD WHERE ORG_NM=WO.ORG_NM and db_nm = WO.DB_NM)  AS DB_WORD_COUNT,    --DB표준 단어 수
 			(SELECT to_char(rqst_dtm,'YYYY-MM-DD') FROM WAM_DB_STWD WHERE ORG_NM=WO.ORG_NM and db_nm = WO.DB_NM order by rqst_dtm limit 1) AS DB_WORD_RQST_DTM, -- 제정일자
