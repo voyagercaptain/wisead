@@ -240,7 +240,7 @@ function getOrgDbList() {
 					$('#dbNm').append(option);
 
 					for (var i = 0; i < data.length; i++) {
-						var option = $("<option value="+data[i].dbNm+">"+data[i].dbNm+"</option>");
+						var option = $("<option value='"+data[i].dbNm+"'>"+data[i].dbNm+"</option>");
 						$('#dbNm').append(option);
 					}
 				}
