@@ -36,9 +36,10 @@ $(window).load(function() {
 	initGrid();
 	initGrid2();
 	initGrid3();
+	initGrid4();
 });
 
-
+//기관분류별 등록 현황
 function initGrid()
 {
     
@@ -95,7 +96,7 @@ function initGrid()
     //===========================
 }
 
-
+//기관별 등록 현황
 function initGrid2()
 {
     
@@ -141,7 +142,7 @@ function initGrid2()
     init_sheet(grid_sheet2);    
     //===========================
 }
-
+//DB별 표준 등록 현황
 function initGrid3()
 {
 
@@ -180,6 +181,52 @@ function initGrid3()
 	//===========================
 }
 
+//기관별 적용 현황
+function initGrid4()
+{
+    
+    with(grid_sheet4){
+    	
+    	var cfg = {SearchMode:2,Page:100};
+        SetConfig(cfg);
+                
+        SetMergeSheet(msHeaderOnly);
+        
+        var headers = [
+					{Text:"<s:message code='COMMON.HEADER.TOTALSTSTAT.SUB.LST3'/>", Align:"Center"},
+                ];
+        
+        var headerInfo = {Sort:1, ColMove:0, ColResize:1, HeaderCheck:1};
+        
+        InitHeaders(headers, headerInfo); 
+
+        var cols = [                        
+        			{Type:"Text",  Width : 50, 			   	SaveName:"title",       Align:"Center",  Edit:0}, //기관,DB                    
+                    {Type:"Int",   Format:"#,##0",  	    SaveName:"totalOrg",    Align:"Center",  Edit:0}, //전체기관
+                    {Type:"Int",   Format:"#,##0",          SaveName:"regOrg",   	Align:"Center",  Edit:0}, //등록기관
+                    {Type:"Int",   Format:"#,##0",          SaveName:"item", 		Align:"Center",  Edit:0}, //용어
+                    {Type:"Float", Format:"#,##0.##\\%",    SaveName:"itemRate",    Align:"Center",  Edit:0}, //용어  > 적용율
+                    {Type:"Int",   Format:"#,##0",  	    SaveName:"word",  		Align:"Center",  Edit:0}, //단어
+                    {Type:"Float", Format:"#,##0.##\\%",    SaveName:"wordRate",    Align:"Center",  Edit:0}, //단어  > 적용율
+                    {Type:"Int",   Format:"#,##0",  	    SaveName:"dmn", 		Align:"Center",  Edit:0}, //도메인
+                    {Type:"Float", Format:"#,##0.##\\%",    SaveName:"domainRate",  Align:"Center",  Edit:0}, //도메인 > 적용율
+                    {Type:"Int",   Format:"#,##0",  	    SaveName:"code", 	    Align:"Center",  Edit:0}, //코드
+                    {Type:"Float", Format:"#,##0.##\\%",    SaveName:"codeRate",    Align:"Center",  Edit:0}, //코드  > 적용율
+                    
+                ];
+                    
+        InitColumns(cols);
+      
+        FitColWidth();  
+        
+        SetExtendLastCol(1);    
+    }
+    
+    //==시트설정 후 아래에 와야함=== 
+    init_sheet(grid_sheet4);    
+    //===========================
+}
+
 function doAction(sAction)
 {
 
@@ -190,6 +237,7 @@ function doAction(sAction)
         	grid_sheet.DoSearch('<c:url value="/commons/user/TotalStatSelectlist.do" />');
         	grid_sheet2.DoSearch('<c:url value="/commons/user/TotalStatSubSelectlist.do" />');
         	grid_sheet3.DoSearch('<c:url value="/commons/user/RegTotalOrgSelectlist.do" />');
+        	grid_sheet4.DoSearch('<c:url value="/commons/user/ApplyTotalStatSubSelectlist.do" />');
         	break;
        
         case "Down2Excel":  //엑셀내려받기
@@ -197,6 +245,7 @@ function doAction(sAction)
         	grid_sheet.Down2ExcelBuffer(true);  
             grid_sheet.Down2Excel({FileName:'종합 등록 현황',SheetName:'기관분류별 등록 현황',HiddenColumn:1, Merge:1});
             grid_sheet2.Down2Excel({FileName:'종합 등록 현황',SheetName:'기관별 등록 현황',HiddenColumn:1, Merge:1});
+            grid_sheet4.Down2Excel({FileName:'종합 등록 현황',SheetName:'기관별 적용 현황',HiddenColumn:1, Merge:1});
             grid_sheet3.Down2Excel({FileName:'종합 등록 현황',SheetName:'DB별 표준 등록 현황',HiddenColumn:1, Merge:1});
             grid_sheet.Down2ExcelBuffer(false);
             break;
@@ -225,7 +274,7 @@ function doAction(sAction)
 </div>
 
 <div style="clear:both; height:5px;"><span></span></div>
-<div style="float:left; width:50%">
+<div style="float:left; width:20%">
 	<ul>
 		<li><h2>DB별 표준 등록 현황</h2></li> <!-- 메뉴권한 정보 -->
 	</ul>
@@ -236,7 +285,7 @@ function doAction(sAction)
 	<!-- 그리드 입력 입력 -->
 </div>
 <%-- <div style="clear:both; height:10px;"><span></span></div> --%>
-<div style="float:left; width:50%">
+<div style="float:left; width:40%">
 	<ul>
 		<li><h2>기관별 등록 현황</h2></li> <!-- 메뉴권한 정보 -->
 	</ul>
@@ -246,6 +295,16 @@ function doAction(sAction)
 	</div>
 	<!-- 그리드 입력 입력 -->    
 </div>
+<div style="float:left; width:40%">
+	<ul>
+		<li><h2>기관별 적용 현황</h2></li> <!-- 메뉴권한 정보 -->
+	</ul>
+	<!-- 그리드 입력 입력 -->
+	<div class="grid_02">
+	     <script type="text/javascript">createIBSheet("grid_sheet4", "100%", "130px");</script>
+	</div>
+	<!-- 그리드 입력 입력 -->
+</div>	
 <div style="clear:both; height:10px;"><span></span></div>
 	<ul>
 		<li><h2>기관분류별 등록 현황</h2></li> <!-- 메뉴권한 정보 -->

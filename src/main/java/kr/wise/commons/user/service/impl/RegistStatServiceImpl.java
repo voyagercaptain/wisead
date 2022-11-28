@@ -87,4 +87,12 @@ public class RegistStatServiceImpl implements RegistStatService{
 		return mapper.selectDbList();
 	}
 
+	@Override
+	public List<WaaUserg> getApplyTotalStatSubList(WaaUserg search) {
+		logger.debug("getApplyTotalStatSubList Start.");
+		List<WaaUserg> list = mapper.getApplyTotalStatSubList(search);
+
+		return list;
+	}
+
 }

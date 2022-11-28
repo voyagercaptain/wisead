@@ -103,6 +103,15 @@ public class RegistStatCtrl {
 
 		return new IBSheetListVO<WaaUserg>(list, list.size());
 	}
+	
+	/** 종합 적용 현황 조회 **/
+	@RequestMapping("ApplyTotalStatSubSelectlist.do")
+	@ResponseBody
+	public IBSheetListVO<WaaUserg> ApplyTotalStatSubSelectlist(@ModelAttribute WaaUserg search) {
+		logger.debug("{}", search);
+		List<WaaUserg> list = service.getApplyTotalStatSubList(search);
 
+		return new IBSheetListVO<WaaUserg>(list, list.size());
+	}
 
 }

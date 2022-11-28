@@ -12,6 +12,7 @@ public interface RegistStatService {
 	public List<WaaUserg> getDbRegistStatList(WaaUserg search);
 	public List<WaaUserg> getTotalStatList(WaaUserg search);
 	public List<WaaUserg> getTotalStatSubList(WaaUserg search);
+	public List<WaaUserg> getApplyTotalStatSubList(WaaUserg search);
 	public List<WaaUserg> RegTotalOrgSelectlist(WaaUserg search);
 
 	List<Map> getTotalDbCountList1(Map map);

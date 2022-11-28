@@ -424,4 +424,189 @@ SELECT
 		WHERE wod.target_yn = 'Y'
 		group by wod.db_nm 
   </select>
+  
+  
+  
+  <select id="getApplyTotalStatSubList" 
+	parameterType="kr.wise.commons.user.WaaUserg" resultMap="BaseResultMap">
+select 
+	'기관표준' AS TITLE,
+	(SELECT COUNT(*) FROM WAA_ORG WHERE TARGET_YN = 'Y') AS TOTAL_ORG,
+	(SELECT COUNT(ORG_NM) FROM (
+											   SELECT ORG_NM
+											   FROM
+												   (
+													   SELECT WO.ORG_NM FROM WAA_ORG WO
+																				 LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_ITEM_COUNT
+																								  FROM WAM_SDITM GROUP BY ORG_NM) B
+																								 ON (WO.ORG_NM = B.ORG_NM)
+													   WHERE B.ORG_ITEM_COUNT IS NOT NULL
+														 AND WO.TARGET_YN = 'Y'
+													   UNION ALL
+													   SELECT WO.ORG_NM FROM WAA_ORG WO
+																				 LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_WORD_COUNT
+																								  FROM WAM_STWD  GROUP BY ORG_NM) C
+																								 ON (WO.ORG_NM = C.ORG_NM)
+													   WHERE C.ORG_WORD_COUNT IS NOT NULL
+														 AND WO.TARGET_YN = 'Y'
+													   UNION ALL
+													   SELECT WO.ORG_NM FROM WAA_ORG WO
+																				 LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_DOMAIN_COUN
+																								  FROM WAM_DMN  GROUP BY ORG_NM) C
+																								 ON (WO.ORG_NM = C.ORG_NM)
+													   WHERE C.ORG_DOMAIN_COUN IS NOT NULL
+														 AND WO.TARGET_YN = 'Y'
+													   UNION ALL
+													   SELECT WO.ORG_NM FROM WAA_ORG WO
+																				 LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_CODE_COUNT
+																								  FROM WAM_COMM_CD  GROUP BY ORG_NM) C
+																								 ON (WO.ORG_NM = C.ORG_NM)
+													   WHERE C.ORG_CODE_COUNT IS NOT NULL
+														 AND WO.TARGET_YN = 'Y'
+												   )
+											   GROUP BY ORG_NM
+									)) AS REG_ORG, --등록기관 수
+	a.wam_sditm_cnt as ITEM,
+	round((cast(a.wam_sditm_cnt as float) * 100.0 / a.org_cnt),2) as ITEM_RATE,
+	a.wam_stwd_cnt as WORD,
+	round((cast(a.wam_stwd_cnt as float) * 100.0 / a.org_cnt),2) as WORD_RATE,
+	a.wam_dmn_cnt as DMN,
+	round((cast(a.wam_dmn_cnt as float) * 100.0 / a.org_cnt),2) as DOMAIN_RATE,
+	a.wam_comm_cd_cnt as CODE,
+	round((cast(a.wam_comm_cd_cnt as float) * 100.0 / a.org_cnt),2) as CODE_RATE
+ from (select 
+ 		(select count(*) from waa_org where target_yn  ='Y') as org_cnt,
+	(WITH SUMMARY AS (
+				select org_nm  from wam_sditm where confirm_yn ='Y' group by org_nm
+	        )
+	select count(a.org_nm) 
+	  from summary a inner join waa_org b on (a.org_nm = b.org_nm) -- waa_org b
+	 where a.org_nm = b.org_nm 
+	 and b.target_yn ='Y'
+	) as wam_sditm_cnt,
+	(
+	WITH SUMMARY AS (
+				select org_nm  from wam_stwd where confirm_yn ='Y' group by org_nm
+	        )
+	select count(a.org_nm) 
+	  from summary a inner join waa_org b on (a.org_nm = b.org_nm) -- waa_org b
+	 where a.org_nm = b.org_nm 
+	 and b.target_yn ='Y'
+	)  as wam_stwd_cnt
+	,
+	(
+	WITH SUMMARY AS (
+				select org_nm  from wam_dmn where confirm_yn ='Y' group by org_nm
+	        )
+	select count(a.org_nm)  
+	  from summary a inner join waa_org b on (a.org_nm = b.org_nm) -- waa_org b
+	 where a.org_nm = b.org_nm 
+	 and b.target_yn ='Y'
+	) as wam_dmn_cnt
+	,
+	(
+	WITH SUMMARY AS (
+				select org_nm  from wam_comm_cd where confirm_yn ='Y' group by org_nm
+	        )
+	select count(a.org_nm)  
+	  from summary a inner join waa_org b on (a.org_nm = b.org_nm) -- waa_org b
+	 where a.org_nm = b.org_nm 
+	 and b.target_yn ='Y'
+	) as wam_comm_cd_cnt
+) a
+
+union all 
+
+
+select 
+	'DB표준' AS TITLE,
+	(SELECT COUNT(*) FROM WAA_ORG WHERE TARGET_YN = 'Y') AS TOTAL_ORG,
+		(SELECT COUNT(ORG_NM) FROM (
+											   SELECT ORG_NM
+											   FROM
+												   (
+													   SELECT WO.ORG_NM FROM WAA_ORG WO
+																				 LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_ITEM_COUNT
+																								  FROM WAM_SDITM GROUP BY ORG_NM) B
+																								 ON (WO.ORG_NM = B.ORG_NM)
+													   WHERE B.ORG_ITEM_COUNT IS NOT NULL
+														 AND WO.TARGET_YN = 'Y'
+													   UNION ALL
+													   SELECT WO.ORG_NM FROM WAA_ORG WO
+																				 LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_WORD_COUNT
+																								  FROM WAM_STWD  GROUP BY ORG_NM) C
+																								 ON (WO.ORG_NM = C.ORG_NM)
+													   WHERE C.ORG_WORD_COUNT IS NOT NULL
+														 AND WO.TARGET_YN = 'Y'
+													   UNION ALL
+													   SELECT WO.ORG_NM FROM WAA_ORG WO
+																				 LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_DOMAIN_COUN
+																								  FROM WAM_DMN  GROUP BY ORG_NM) C
+																								 ON (WO.ORG_NM = C.ORG_NM)
+													   WHERE C.ORG_DOMAIN_COUN IS NOT NULL
+														 AND WO.TARGET_YN = 'Y'
+													   UNION ALL
+													   SELECT WO.ORG_NM FROM WAA_ORG WO
+																				 LEFT OUTER JOIN (SELECT ORG_NM, COUNT(*) AS ORG_CODE_COUNT
+																								  FROM WAM_COMM_CD  GROUP BY ORG_NM) C
+																								 ON (WO.ORG_NM = C.ORG_NM)
+													   WHERE C.ORG_CODE_COUNT IS NOT NULL
+														 AND WO.TARGET_YN = 'Y'
+												   )
+											   GROUP BY ORG_NM
+										   )) AS REG_ORG, --등록기관 수
+	a.wam_db_sditm_cnt as DB_ITEM,
+	round((cast(a.wam_db_sditm_cnt as float) * 100.0 / a.org_cnt),2) as ITEM_RATE,
+	a.wam_db_stwd_cnt as DB_WORD,
+	round((cast(a.wam_db_stwd_cnt as float) * 100.0 / a.org_cnt),2) as WORD_RATE,
+	a.wam_db_dmn_cnt as DB_DMN,
+	round((cast(a.wam_db_dmn_cnt as float) * 100.0 / a.org_cnt),2) as DOMAIN_RATE,
+	a.wam_db_comm_cd_cnt as DB_CODE,
+	round((cast(a.wam_db_comm_cd_cnt as float) * 100.0 / a.org_cnt),2) as CODE_RATE
+ from (select 
+ 	(select count(*) from waa_org where target_yn  ='Y') as org_cnt,
+	(
+	WITH SUMMARY AS (
+			select org_nm  from wam_db_sditm where confirm_yn ='Y' group by org_nm
+        )
+	select count(a.org_nm) 
+	  from summary a, waa_org b
+	 where a.org_nm = b.org_nm 
+	 and (b.target_yn ='Y' or b.upper_org_cd is not null)
+	) as wam_db_sditm_cnt,
+	(
+	WITH SUMMARY AS (
+			select org_nm  from wam_db_stwd where confirm_yn ='Y' group by org_nm
+        )
+	select count(a.org_nm) 
+	  from summary a, waa_org b
+	 where a.org_nm = b.org_nm 
+	 and (b.target_yn ='Y' or b.upper_org_cd is not null)
+	)  as wam_db_stwd_cnt
+	,
+	(
+	WITH SUMMARY AS (
+			select org_nm  from wam_db_dmn where confirm_yn ='Y' group by org_nm
+        )
+	select  count(a.org_nm) 
+	  from summary a, waa_org b
+	 where a.org_nm = b.org_nm 
+	 and (b.target_yn ='Y' or b.upper_org_cd is not null)
+	) as wam_db_dmn_cnt
+	,
+	(
+	WITH SUMMARY AS (
+			select org_nm  from wam_db_comm_cd where confirm_yn ='Y' group by org_nm
+        )
+	select count(a.org_nm) 
+	  from summary a, waa_org b
+	 where a.org_nm = b.org_nm 
+	 and (b.target_yn ='Y' or b.upper_org_cd is not null)
+	) as wam_db_comm_cd_cnt
+) a
+ 
+
+
+ ;
+</select>
 </mapper>

@@ -13,6 +13,7 @@ public interface RegistStatMapper {
 	 List<WaaUserg> getTotalStatList(WaaUserg param);
 	 List<WaaUserg> getTotalStatSubList(WaaUserg param);
 	 List<WaaUserg> RegTotalOrgSelectlist(WaaUserg param);
+	 List<WaaUserg> getApplyTotalStatSubList(WaaUserg param);
 
 	 List<Map> getTotalDbCountList1(Map map);
 	 Map getTotalDbCount2(Map map);
