@@ -1436,10 +1436,10 @@ public class DbStndTotRqstCtrl {
 			List<WamDbSditm> list = dbStndService.getDbStndItemList(searchVO);
 
 			List<String> header = Arrays.asList(new String[]{"No.",	"선택",	"기관명","DB명", "표준용어명",	"영문명",	"영문약어명",	"용어설명", "표준도메인명",
-					"허용값",	"관리부서명",	"표준코드명",	"업무분야",	"행정표준코드명",	"제정일자",	"특이사항",	"검증메세지"});
+					"허용값",	"관리부서명",	"표준코드명",	"업무분야",	"행정표준코드명",	"제정일자",	"특이사항",	"검증메세지", "도메인일치여부"});
 
 			List<String> fields = Arrays.asList(new String[]{"", "", "orgNm","dbNm","sditmLnm",	"pnm",	"sditmPnm",	"objDescn", "infotpLnm",
-					"alwVal","ownrOrg",	"stndCd",	"bsnssFld",	"admnStndCd",	"rqstDtm",	"spclNt",	"errChk"});
+					"alwVal","ownrOrg",	"stndCd",	"bsnssFld",	"admnStndCd",	"rqstDtm",	"spclNt",	"errChk", "dmnYn"});
 
 			try (
 					SXSSFWorkbook wb = edu.makeExcelFile(header, fields, Collections.singletonList(list));

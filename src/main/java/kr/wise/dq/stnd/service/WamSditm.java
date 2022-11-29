@@ -294,10 +294,18 @@ public class WamSditm extends CommonVo {
     private String dupYn;
     
     private String persInfoYn;
-    
-    
-    
-    public String getSaveFrm() {
+
+	private String dmnYn;
+
+	public String getDmnYn() {
+		return dmnYn;
+	}
+
+	public void setDmnYn(String dmnYn) {
+		this.dmnYn = dmnYn;
+	}
+
+	public String getSaveFrm() {
 		return saveFrm;
 	}
 

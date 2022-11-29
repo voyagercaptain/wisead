@@ -37,6 +37,10 @@ public interface WamDbDmnMapper {
 	
 	Map<String, String> selectDbDomainDataType(Map<String, String> param);
 
+    int updateDomainYnDbSditm(Map<String, String> param);
+
+    int updateDomainYnSditm(Map<String, String> param);
+
     int bulkInsert(List<WamDbDmn> insertList);
 
     int bulkUpdate(List<WamDbDmn> updateList);

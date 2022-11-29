@@ -89,6 +89,16 @@ public class DbStndServiceImpl implements DbStndService {
     public Map<String, String> selectDbDomainDataType(Map<String, String> param) {
     	return wamDbDmnMapper.selectDbDomainDataType(param);
     }
+
+	@Override
+	public int updateDomainYnDbSditm(Map<String, String> param) {
+		return wamDbDmnMapper.updateDomainYnDbSditm(param);
+	}
+
+	@Override
+	public int updateDomainYnSditm(Map<String, String> param) {
+		return wamDbDmnMapper.updateDomainYnSditm(param);
+	}
     
 	@Override
 	public List<WamDbSditm> getStndItemList(WamDbSditm data) {

@@ -102,7 +102,21 @@
       AND ORG_NM = #{orgNm,jdbcType=VARCHAR}
     LIMIT 1
   </select>
-  
+
+
+  <update id="updateDomainYnSditm" parameterType="java.util.Map">
+    update WAM_SDITM
+    set DMN_YN = #{dmnYn,jdbcType=VARCHAR}
+    where SDITM_ID = #{sditmId,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateDomainYnDbSditm" parameterType="java.util.Map">
+    update WAM_DB_SDITM
+    set DMN_YN = #{dmnYn,jdbcType=VARCHAR}
+    where SDITM_ID = #{sditmId,jdbcType=VARCHAR}
+  </update>
+
+
   
   <select id="selectTop30" resultMap="BaseResultMap" parameterType="kr.wise.dq.dbstnd.service.WamDbDmn">
   SELECT A.*<!-- , B.DATA_TYPE, B.DATA_LEN, B.DATA_SCAL  -->

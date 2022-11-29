@@ -54,7 +54,7 @@ function grid_SDITM_init() {
 
  		var headtext  = "No.|상태|선택|검토상태|검토내용|요청구분|등록유형|검증결과|";
  		headtext += "용어ID|기관명|DB명|표준용어명|영문명|영문약어명|용어설명|표준도메인명|허용값|관리부서명|표준코드명|업무분야|데이터타입|데이터길이|소수점길이|저장형식|표현형식|단위|행정표준코드명";
- 		headtext += "|검증결과|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항|검증메세지|확정여부";
+ 		headtext += "|검증결과|제정일자|요청자ID|요청자명|요청번호|요청일련번호|특이사항|검증메세지|확정여부|도메인일치여부";
 		
  		headerText = headtext.split("|");
  		
@@ -105,6 +105,7 @@ function grid_SDITM_init() {
 			{Type:"Text",     Width:150,  SaveName:"spclNt",      Align:"Center", Edit:1, Hidden:0},				//특이사항
 			{Type:"Text",     Width:150,  SaveName:"errChk",      Align:"Center", Edit:1, Hidden:0},			 	//검증내용
 			{Type:"Text",     Width:100,  SaveName:"confirmYn",   Align:"Left",   Edit:1, Hidden:1},				//확정여부
+            {Type:"Text",     Width:100,  SaveName:"dmnYn",   Align:"Center",   Edit:0, Hidden:0}
 		];
 		
 		colsCount = cols.length;

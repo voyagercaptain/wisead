@@ -55,7 +55,7 @@
     <result column="VALID_YN"        property="validYn"      jdbcType="VARCHAR" />
     <result column="CONFIRM_YN"        property="confirmYn"      jdbcType="VARCHAR" />
     <result column="SDITM_DTM"        property="sditmDtm"      jdbcType="VARCHAR" />
-
+    <result column="DMN_YN"  property="dmnYn" jdbcType = "VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
     SDITM_ID, SDITM_LNM, SDITM_PNM, LNM_CRI_DS, DMN_ID, DMNG_ID, INFOTP_ID, INFOTP_CHG_YN, 
@@ -581,7 +581,12 @@ SELECT *
             , PNM
             , ERR_CHK
             , VALID_YN
-            , CONFIRM_YN FROM
+            , CONFIRM_YN
+            , CASE WHEN INFOTP_LNM IS NULL OR INFOTP_LNM = '' THEN '누락'
+                WHEN (SELECT COUNT(*) FROM WAM_DMN WHERE INFOTP_LNM = A.INFOTP_LNM AND ORG_NM = A.ORG_NM) = 0 THEN 'N'
+                ELSE  'Y'
+               END  DMN_YN
+            FROM
 	    (SELECT *
 		FROM WAM_SDITM
 		WHERE 1 = 1

@@ -97,8 +97,18 @@ public class WamDbSditm extends CommonVo {
     private String confirmYn;
     
     private String confirmDtm ;
-        
-    public String getUsergId() {
+
+	private String dmnYn;
+
+	public String getDmnYn() {
+		return dmnYn;
+	}
+
+	public void setDmnYn(String dmnYn) {
+		this.dmnYn = dmnYn;
+	}
+
+	public String getUsergId() {
 		return usergId;
 	}
 

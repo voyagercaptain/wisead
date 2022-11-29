@@ -38,6 +38,12 @@ public interface DbStndService {
 	Map<String, String> selectDomainDataType(Map<String, String> param);
 	
 	Map<String, String> selectDbDomainDataType(Map<String, String> param);
+
+
+	int updateDomainYnDbSditm(Map<String, String> param);
+
+	int updateDomainYnSditm(Map<String, String> param);
+
 	
 	int dupliCheckDbStndItem(Map<String, String> param);
 	
